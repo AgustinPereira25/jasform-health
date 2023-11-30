@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable-next-line MD041 -->
-<p align="center"><a href="https://lightit.io" target="_blank"><img src="https://lightit.io/images/Logo_purple.svg" width="400"></a></p>
+<p align="center"><a href="https://jasform.com" target="_blank"><img src="https://raw.githubusercontent.com/JASForm/branding/8d48a433709f237952b546fbca7530afb8fc8bf4/JASFormByLight-it-landscape.svg" width="600"></a></p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
@@ -60,13 +60,13 @@ This step is not necessary when you use Docker.
 1. Clone GitHub repo for this project locally:
 
    ```bash
-   git clone git@github.com:Light-it-labs/lightranet
+   git clone git@github.com:joasegovia9427/jasform.git
    ```
 
 2. cd into your project and create a copy of your .env file
 
    ```bash
-   cd lightranet
+   cd jasform
    cp .env.example .env
    ```
 
@@ -88,12 +88,25 @@ This step is not necessary when you use Docker.
 4. After that you can use laravel sail for running your project.
 
    ```bash
-   sail up
+   sail up -d
    ```
-
+    (or 
+    ```bash
+       ./vendor/bin/sail up -d
+       ```
+    )
+    
    See more detail below.
 
 5. When the app is running, into the bash container (`sail bash`) you can use the following commands:
+    ```bash
+       sail bash
+       ```
+    (or 
+    ```bash
+       ./vendor/bin/sail bash
+       ```
+    )
 
    ```bash
    php artisan key:generate
