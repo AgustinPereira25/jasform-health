@@ -71,7 +71,7 @@ This step is not necessary when you use Docker.
    ```
 
 3. If you have Php installed you can install composer dependencies with sail included with
-
+    (you must have the Docker Engine / Docker Desktop turned on)
     <!-- cspell: disable -->
 
    ```bash
