@@ -125,6 +125,7 @@ In production environment is necessary run `npm run production`
 1. Install npm dependencies:
 
    ```bash
+   nvm install v20.6.1
    nvm use
    npm install
    ```
