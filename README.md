@@ -85,7 +85,7 @@ This step is not necessary when you use Docker.
 
    <!-- cspell: enable -->
 
-4. After that you can use laravel sail for running your project.
+4. After that you can use laravel sail for running your project. Make sure that you dont have any old trash volume created. 
 
    ```bash
    sail up -d
