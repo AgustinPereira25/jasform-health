@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-import { Logo } from "@/components";
+import { JASFormLogo } from "@/components";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
 import { icons } from "@/ui";
@@ -31,7 +31,7 @@ export const Sidebar = ({
   return (
     <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-black/50 px-6 ring-1 ring-white/5">
       <div className="mx-auto flex h-16 shrink-0 py-6 pr-2">
-        <Logo className="h-11" />
+        <JASFormLogo className="h-11" />
       </div>
       {user && (
         <nav className="flex flex-1 flex-col">

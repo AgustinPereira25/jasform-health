@@ -4,7 +4,7 @@
 // import { useNavigate } from "react-router-dom";
 
 // import { googleLogin } from "@/api";
-import { Logo } from "@/components";
+import { JASFormLogo } from "@/components";
 // import { ROUTES } from "@/router";
 // import { useUserStore } from "@/stores";
 // import { errorToast, useToastStore } from "@/ui";
@@ -56,13 +56,17 @@ export const Login = () => {
   return (
     <div className="flex h-screen grow flex-col items-center justify-center gap-9 bg-gray-800 px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Logo className="mx-auto h-16 w-auto" />
+        <JASFormLogo className="mx-auto h-16 w-auto" />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-          Sign in to your account
+          Create awesome forms easily,
         </h2>
+        <h1 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
+          but HIPAA Compliant
+        </h1>
       </div>
+    </div>
 
-      {/* <GoogleLogin
+      /* <GoogleLogin
         width={200}
         auto_select={false}
         useOneTap={false}
@@ -75,7 +79,6 @@ export const Login = () => {
               "An error occurred while trying to log in with a Google account",
           });
         }}
-      /> */}
-    </div>
+      /> */
   );
 };
