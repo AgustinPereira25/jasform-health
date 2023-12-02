@@ -43,7 +43,7 @@ export const Button = forwardRef(
 
         !disabled && [
           variant === BUTTON_VARIANT.PRIMARY &&
-            "bg-blue-800 text-white hover:bg-blue-700",
+            "bg-blue-700 text-white hover:bg-[#407EC9]",
           variant === BUTTON_VARIANT.SECONDARY &&
             "bg-blue-100 text-blue-800 hover:bg-blue-200",
           variant === BUTTON_VARIANT.OUTLINE &&
