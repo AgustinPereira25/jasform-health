@@ -23,7 +23,6 @@ createRoot(document.getElementById("app")!).render(
           <Router />
         </BrowserRouter>
 
-        <p>Hola mundo</p>
       {/* </GoogleOAuthProvider> */}
 
       {env.VITE_APP_ENV === "local" && (
