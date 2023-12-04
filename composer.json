@@ -20,6 +20,7 @@
     "akrillia/laravel-beyond": "^6.0",
     "barryvdh/laravel-ide-helper": "^2.13",
     "brianium/paratest": "^7.1",
+    "canvural/larastan-strict-rules": "^2.1",
     "captainhook/plugin-composer": "^5.3",
     "defstudio/pest-plugin-laravel-expectations": "^2.1",
     "fakerphp/faker": "^1.9.1",

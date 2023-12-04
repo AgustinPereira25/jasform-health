@@ -3,7 +3,7 @@ import type { Location } from "react-router-dom";
 
 import { Layout } from "@/layout";
 import { Home, NotFound, Users } from "@/screens";
-import { Login } from "@/screens/Login";
+import { Login } from "@/screens/login/Login";
 import { ModalRouter } from "./ModalRouter";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
