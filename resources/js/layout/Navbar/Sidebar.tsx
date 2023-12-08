@@ -9,15 +9,45 @@ import { NavbarLogo, LogOutLogo } from "./components";
 const navigation = [
   {
     path: ROUTES.home,
-    label: "Home",
-    icon: <icons.HomeIcon className="w-6" />,
-    role: ["standard", "admin"],
+    label: "Dashboard",
+    icon: <icons.DashboardIcon />,
+    role: "admin",
+  },
+  {
+    path: ROUTES.users,
+    label: "My Forms",
+    icon: <icons.MyFormsIcon />,
+    role: "admin",
+  },
+  {
+    path: ROUTES.users,
+    label: "My Bills",
+    icon: <icons.MyBillsIcon />,
+    role: "admin",
+  },
+  {
+    path: ROUTES.users,
+    label: "My Subscription",
+    icon: <icons.MySubscriptionIcon />,
+    role: "admin",
   },
   {
     path: ROUTES.users,
     label: "Users",
-    icon: <icons.UserGroupIcon className="w-6" />,
-    role: "admin",
+    icon: <icons.UsersIcon />,
+    role: "",
+  },
+  {
+    path: ROUTES.users,
+    label: "System's Forms",
+    icon: <icons.SystemsFormsIcon />,
+    role: "",
+  },
+  {
+    path: ROUTES.users,
+    label: "System's Billing",
+    icon: <icons.SystemsBillingIcon />,
+    role: "",
   },
 ] as const;
 
@@ -36,7 +66,7 @@ export const Sidebar = ({
     picture: '',
     role: 'admin',
   }
-  console.log(navigation)
+
   return (
     <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
       <div className="p-8 flex h-16 shrink-0">
@@ -61,13 +91,7 @@ export const Sidebar = ({
                       <Link
                         to={item.path}
                         onClick={onCloseSidebar}
-                        className="pl-5 group flex gap-x-3 py-3 text-sm font-semibold leading-6"
-                      // className={tw(
-                      //   item.path == currentPath
-                      //     ? "bg-[#00519E] text-white"
-                      //     : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                      //   "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                      // )}
+                        className="pl-5 group flex gap-x-3 py-3 text-sm font-semibold"
                       >
                         {item.icon}
                         {item.label}
@@ -75,13 +99,37 @@ export const Sidebar = ({
                     </li>
                   ))}
                 <li className="absolute bottom-0 w-full">
-                  <button
+                  <div className="flex justify-center">
+                    <hr className="bg-[#407EC9] w-11/12" />
+                  </div>
+                  {/* <button
                     onClick={() => setToken(null)}
                     className="pl-5 group flex w-full gap-x-3 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-[#407EC9] hover:text-white"
                   >
                     <icons.ArrowLeftOnRectangleIcon className="w-6" />
                     Sign Out
-                  </button>
+                  </button> */}
+                  {navigation
+                    .filter((item) => item.role === "")
+                    .map((item) => (
+                      <li
+                        key={item.label}
+                        className={tw(
+                          item.path == currentPath
+                            ? "bg-[#00519E] text-white"
+                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white",
+                        )}
+                      >
+                        <Link
+                          to={item.path}
+                          onClick={onCloseSidebar}
+                          className="pl-5 group flex gap-x-3 py-3 text-sm font-semibold"
+                        >
+                          {item.icon}
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
                 </li>
               </ul>
             </li>
