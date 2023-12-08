@@ -23,7 +23,8 @@ export const Router = () => {
         </Route>
 
         {/* PRIVATE ONLY ROUTES */}
-        <Route element={<ProtectedRoute expected={["admin", "standard"]} />}>
+        {/* Acá es cuando el usuario ya entró entonces mostramos una Layout (seria el menu lateral azul y demas) */}
+        {/* <Route element={<ProtectedRoute expected={["admin", "standard"]} />}> */}
           <Route element={<Layout />}>
             <Route element={<Navigate to={ROUTES.home} />} path={ROUTES.base} />
 
@@ -31,13 +32,13 @@ export const Router = () => {
 
             <Route path={ROUTES.notFound} element={<NotFound />} />
           </Route>
-        </Route>
+        {/* </Route> */}
 
-        <Route element={<ProtectedRoute expected="admin" />}>
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
           <Route element={<Layout />}>
             <Route element={<Users />} path={ROUTES.users} />
           </Route>
-        </Route>
+        {/* </Route> */}
       </Routes>
 
       {/* MODALS ROUTES */}
