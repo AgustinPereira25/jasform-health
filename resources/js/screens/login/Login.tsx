@@ -140,7 +140,7 @@ export const Login = () => {
               />
             </div>
             <div className="flex justify-end">
-              <button className="text-base font-medium text-blue-600">Forgot password?</button>
+              <button className="text-sm font-medium text-blue-600">Forgot password?</button>
             </div>
             <div className="pb-8">
               <Button 
