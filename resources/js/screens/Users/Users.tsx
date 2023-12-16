@@ -1,15 +1,22 @@
+import { useState } from 'react';
+import { Switch } from '@headlessui/react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { deleteUser, getUsersQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
-import { Button, errorToast, icons, useToastStore } from "@/ui";
+import { Button, Input, errorToast, icons, useToastStore } from "@/ui";
 import { tw } from "@/utils";
 
 const statuses = {
   Completed: "text-green-400 bg-green-400/10",
   Error: "text-rose-400 bg-rose-400/10",
 };
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ')
+}
+
 const activityItems = [
   {
     user: {
@@ -17,11 +24,11 @@ const activityItems = [
       imageUrl:
         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
-    commit: "2d89f0c8",
-    branch: "main",
-    status: "Completed",
-    duration: "25s",
-    date: "45 minutes ago",
+    title: "2d89f0c8",
+    organization: "main",
+    status: "Active",
+    plan: "25s",
+    role: "Admin",
     dateTime: "2023-01-23T11:00",
   },
   {
@@ -30,11 +37,11 @@ const activityItems = [
       imageUrl:
         "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
-    commit: "249df660",
-    branch: "main",
-    status: "Completed",
-    duration: "1m 32s",
-    date: "3 hours ago",
+    title: "249df660",
+    organization: "main",
+    status: "Active",
+    plan: "1m 32s",
+    role: "Admin",
     dateTime: "2023-01-23T09:00",
   },
   {
@@ -43,11 +50,11 @@ const activityItems = [
       imageUrl:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
-    commit: "11464223",
-    branch: "main",
-    status: "Error",
-    duration: "1m 4s",
-    date: "12 hours ago",
+    title: "11464223",
+    organization: "main",
+    status: "Inactive",
+    plan: "1m 4s",
+    role: "Free",
     dateTime: "2023-01-23T00:00",
   },
   {
@@ -56,11 +63,11 @@ const activityItems = [
       imageUrl:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
-    commit: "dad28e95",
-    branch: "main",
-    status: "Completed",
-    duration: "2m 15s",
-    date: "2 days ago",
+    title: "dad28e95",
+    organization: "main",
+    status: "Active",
+    plan: "2m 15s",
+    role: "Free",
     dateTime: "2023-01-21T13:00",
   },
   {
@@ -69,11 +76,11 @@ const activityItems = [
       imageUrl:
         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
-    commit: "624bc94c",
-    branch: "main",
-    status: "Completed",
-    duration: "1m 12s",
-    date: "5 days ago",
+    title: "624bc94c",
+    organization: "main",
+    status: "Active",
+    plan: "1m 12s",
+    role: "Plus",
     dateTime: "2023-01-18T12:34",
   },
   {
@@ -82,39 +89,39 @@ const activityItems = [
       imageUrl:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
-    commit: "e111f80e",
-    branch: "main",
-    status: "Completed",
-    duration: "1m 56s",
-    date: "1 week ago",
+    title: "e111f80e",
+    organization: "main",
+    status: "Active",
+    plan: "1m 56s",
+    role: "Admin",
     dateTime: "2023-01-16T15:54",
   },
-  {
-    user: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    commit: "5e136005",
-    branch: "main",
-    status: "Completed",
-    duration: "3m 45s",
-    date: "1 week ago",
-    dateTime: "2023-01-16T11:31",
-  },
-  {
-    user: {
-      name: "Whitney Francis",
-      imageUrl:
-        "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    commit: "5c1fd07f",
-    branch: "main",
-    status: "Completed",
-    duration: "37s",
-    date: "2 weeks ago",
-    dateTime: "2023-01-09T08:45",
-  },
+  // {
+  //   user: {
+  //     name: "Michael Foster",
+  //     imageUrl:
+  //       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  //   },
+  //   commit: "5e136005",
+  //   branch: "main",
+  //   status: "Active",
+  //   plan: "3m 45s",
+  //   role: "1 week ago",
+  //   dateTime: "2023-01-16T11:31",
+  // },
+  // {
+  //   user: {
+  //     name: "Whitney Francis",
+  //     imageUrl:
+  //       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  //   },
+  //   commit: "5c1fd07f",
+  //   branch: "main",
+  //   status: "Active",
+  //   plan: "37s",
+  //   role: "2 weeks ago",
+  //   dateTime: "2023-01-09T08:45",
+  // },
 ] as const;
 
 export const Users = () => {
@@ -154,7 +161,9 @@ export const Users = () => {
   });
 
   const navigateModal = useNavigateModal();
-
+  // For toggles
+  const [enabledActive, setEnabledActive] = useState(false);
+  const [enabledAdmin, setEnabledAdmin] = useState(false);
   return (
     <>
       <div className="bg-gray-200">
@@ -168,7 +177,86 @@ export const Users = () => {
           </Button>
         </h2>
       </div>
-      <div className="bg-white shadow-lg p-2 border-[1px] rounded-xl">
+      <div className="bg-white shadow-lg p-2 pt-4 border-[1px] rounded-xl">
+        <div className="flex gap-5">
+
+          <Input
+            type="search"
+            id="nameEmail"
+            label="Name/Email"
+            placeholder="Search by name or email"
+            //{...register("password")}
+            //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
+          />
+          <Input
+            type="search"
+            id="titleOrg"
+            label="Title/Organization"
+            placeholder="Search by title or organization"
+            //{...register("password")}
+            //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
+          />
+          <Input
+            type="search"
+            id="planType"
+            label="Plan Type"
+            placeholder="Search by name or email"
+            //{...register("password")}
+            //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
+          />  
+          <Switch.Group as="div" className="flex items-center justify-between gap-2">
+            <span className="flex flex-grow flex-col">
+              <Switch.Label as="span" className="text-sm font-medium leading-6 text-gray-900" passive>
+                Show only Active
+              </Switch.Label>
+            </span>
+            <Switch
+              checked={enabledActive}
+              onChange={setEnabledActive}
+              className={classNames(
+                enabledActive ? 'bg-[#00519E]' : 'bg-gray-200',
+                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
+              )}
+            >
+              <span
+                aria-hidden="true"
+                className={classNames(
+                  enabledActive ? 'translate-x-5' : 'translate-x-0',
+                  'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                )}
+              />
+            </Switch>
+          </Switch.Group> 
+          <Switch.Group as="div" className="flex items-center justify-between gap-2">
+            <span className="flex flex-grow flex-col">
+              <Switch.Label as="span" className="text-sm font-medium leading-6 text-gray-900" passive>
+                Show only Admin
+              </Switch.Label>
+            </span>
+            <Switch
+              checked={enabledAdmin}
+              onChange={setEnabledAdmin}
+              className={classNames(
+                enabledAdmin ? 'bg-[#00519E]' : 'bg-gray-200',
+                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
+              )}
+            >
+              <span
+                aria-hidden="true"
+                className={classNames(
+                  enabledAdmin ? 'translate-x-5' : 'translate-x-0',
+                  'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                )}
+              />
+            </Switch>
+          </Switch.Group>      
+        </div>
         <div className="border-gray-300 border-[1px] rounded-xl overflow-hidden">
           <table className="w-full whitespace-nowrap text-left bg-white shadow-md">
             <colgroup>
@@ -217,6 +305,12 @@ export const Users = () => {
                 >
                   <span className="sr-only">Action</span>
                 </th>
+                <th
+                  scope="col"
+                  className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                >
+                  <span className="sr-only">Action</span>
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -229,8 +323,8 @@ export const Users = () => {
                   </td>
                 </tr>
               )}
-              {users?.map((item) => (
-                <tr key={item.commit}>
+              {activityItems?.map((item) => (
+                <tr key={item.title}>
                   <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                     <div className="flex items-center gap-x-4">
                       <img
@@ -238,55 +332,60 @@ export const Users = () => {
                         alt=""
                         className="h-8 w-8 rounded-full bg-gray-800"
                       />
-                      <div className="truncate text-sm font-medium leading-6 text-white">
-                        {item.user.name}
+                      <div className="flex flex-col">
+                        <div className="truncate text-sm leading-6 text-black">
+                          {item.user.name}
+                        </div>
+                        <div className="truncate text-sm leading-6 text-gray-500">
+                          exampleemail@email.com
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                     <div className="flex gap-x-3">
-                      <div className="font-mono text-sm leading-6 text-gray-400">
-                        {item.commit}
-                      </div>
-                      <div className="rounded-md bg-gray-700/40 px-2 py-1 text-xs font-medium text-gray-400 ring-1 ring-inset ring-white/10">
-                        {item.branch}
+                      <div className="flex flex-col">
+                          <div className="truncate text-sm leading-6 text-black">
+                            {item.title}
+                          </div>
+                          <div className="truncate text-sm leading-6 text-gray-500">
+                            MediCall
+                          </div>
                       </div>
                     </div>
                   </td>
                   <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center justify-end gap-x-2 sm:justify-start">
-                      <time
-                        className="text-gray-400 sm:hidden"
-                        dateTime={item.dateTime}
-                      >
-                        {item.date}
-                      </time>
-                      <div
+                      {/* <div
                         className={tw(
                           statuses[item.status as keyof typeof statuses],
                           "flex-none rounded-full p-1",
                         )}
                       >
                         <div className="h-1.5 w-1.5 rounded-full bg-current" />
-                      </div>
-                      <div className="hidden text-white sm:block">
+                      </div> */}
+                      <div className={item.status === 'Active' ? "rounded-3xl px-3 hidden bg-[#D1FAE5] text-green-950 sm:block" : "rounded-3xl px-3 hidden bg-[#fad1d1] text-red-950 sm:block"}>
                         {item.status}
                       </div>
                     </div>
                   </td>
-                  <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-gray-400 md:table-cell lg:pr-20">
-                    {item.duration}
+                  <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
+                    {item.plan}
                   </td>
-                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-gray-400 sm:table-cell sm:pr-6 lg:pr-8">
-                    <time dateTime={item.dateTime}>{item.date}</time>
+                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                    <time dateTime={item.dateTime}>{item.role}</time>
                   </td>
-                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-gray-400 sm:table-cell sm:pr-6 lg:pr-8">
-                    <Button
+                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                    {/* <Button
                       variant="tertiary"
                       onClick={() => deleteUserMutation(item.user.id)}
                     >
                       <icons.TrashIcon className="h-5 w-5" />
-                    </Button>
+                    </Button> */}
+                    <a href="#" className="text-[#00519E]">Edit</a>
+                  </td>
+                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                    <a href="#" className="text-[#00519E]">Delete</a>
                   </td>
                 </tr>
               ))}
