@@ -14,7 +14,7 @@ const navigation = [
     role: "admin",
   },
   {
-    path: ROUTES.users,
+    path: ROUTES.forms,
     label: "My Forms",
     icon: <icons.MyFormsIcon />,
     role: "admin",

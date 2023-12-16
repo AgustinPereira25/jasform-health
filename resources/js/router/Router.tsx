@@ -39,6 +39,24 @@ export const Router = () => {
             <Route element={<Users />} path={ROUTES.users} />
           </Route>
         {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+            <Route element={<Users />} path={ROUTES.forms} />
+          </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+            <Route element={<Users />} path={ROUTES.newForm} />
+          </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+            <Route element={<Users />} path={ROUTES.newUser} />
+          </Route>
+        {/* </Route> */}
       </Routes>
 
       {/* MODALS ROUTES */}

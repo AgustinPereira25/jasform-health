@@ -166,8 +166,8 @@ export const Users = () => {
   const [enabledAdmin, setEnabledAdmin] = useState(false);
   return (
     <>
-      <div className="bg-gray-200">
-        <h2 className="flex items-center justify-between px-2 py-7 text-base font-semibold leading-7 text-black">
+      <div className="bg-white">
+        <h2 className="flex items-center justify-between px-2 pb-7 text-base font-semibold leading-7 text-black">
           Users
           <Button
             variant="primary"
