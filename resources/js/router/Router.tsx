@@ -8,6 +8,7 @@ import { ModalRouter } from "./ModalRouter";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
 import { Forms } from "@/screens/forms";
+import { Profile } from "@/screens/profile";
 
 export const Router = () => {
   const location = useLocation();
@@ -50,6 +51,12 @@ export const Router = () => {
         {/* <Route element={<ProtectedRoute expected="admin" />}> */}
         <Route element={<Layout />}>
             <Route element={<Users />} path={ROUTES.newForm} />
+          </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+            <Route element={<Profile />} path={ROUTES.profile} />
           </Route>
         {/* </Route> */}
 

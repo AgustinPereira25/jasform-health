@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Switch } from '@headlessui/react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
+import { FormDropdown } from './components';
 import { deleteUser, getUsersQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
@@ -325,10 +325,21 @@ export const Forms = () => {
                     >
                       <icons.TrashIcon className="h-5 w-5" />
                     </Button> */}
-                    <icons.GetLinkIcon />
+                    <Button
+                      variant="tertiary"
+                      onClick={() => console.log('delete')}
+                    >
+                      <icons.GetLinkIcon />
+                    </Button>
                   </td>
                   <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <icons.ThreeDotsIcon />
+                    {/* <Button
+                      variant="tertiary"
+                      onClick={() => <FormDropdown />}
+                    >
+                      <icons.ThreeDotsIcon />
+                    </Button> */}
+                    <FormDropdown />
                   </td>
                 </tr>
               ))}

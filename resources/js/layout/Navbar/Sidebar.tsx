@@ -20,13 +20,13 @@ const navigation = [
     role: "admin",
   },
   {
-    path: ROUTES.users,
+    path: "#",
     label: "My Bills",
     icon: <icons.MyBillsIcon />,
     role: "admin",
   },
   {
-    path: ROUTES.users,
+    path: "#",
     label: "My Subscription",
     icon: <icons.MySubscriptionIcon />,
     role: "admin",
@@ -38,16 +38,22 @@ const navigation = [
     role: "",
   },
   {
-    path: ROUTES.users,
+    path: "#",
     label: "System's Forms",
     icon: <icons.SystemsFormsIcon />,
     role: "",
   },
   {
-    path: ROUTES.users,
+    path: "#",
     label: "System's Billing",
     icon: <icons.SystemsBillingIcon />,
     role: "",
+  },
+  {
+    path: "/profile",
+    label: "View profile",
+    icon: <LogOutLogo />,
+    role: "all",
   },
 ] as const;
 
@@ -62,7 +68,7 @@ export const Sidebar = ({
   // MOCK USER FOR TESTING
   const mockUser: User = {
     email: 'mockemail@gmail.com',
-    name: 'UserTest Smith',
+    name: 'John Smith',
     picture: '',
     role: 'admin',
   }
@@ -133,26 +139,39 @@ export const Sidebar = ({
                 </li>
               </ul>
             </li>
+            {navigation
+              .filter((item) => item.role === "all")
+              .map((item) => (
+                <li key={item.label} className="flex items-center gap-x-3 pr-3 py-8 text-sm font-semibold leading-6 text-white mt-auto bg-[#0B365F]">
+                  <div 
+                    // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
+                    className={tw(
+                      item.path == currentPath
+                        ? "flex gap-3 pl-10 py-2 rounded-r-xl items-center w-10/12 bg-[#00519E] text-white"
+                        : "flex gap-3 pl-10 py-2 rounded-r-xl items-center w-10/12 text-white",
+                    )}
+                  >
+                    <img
+                      referrerPolicy="no-referrer"
+                      className="h-8 w-8 rounded-full bg-gray-800"
+                      src={mockUser.picture}
+                      alt={mockUser.name}
+                    />
+                    <span className="sr-only">Your profile</span>
+                    <div>
+                      <span aria-hidden="true">{mockUser.name}</span>
+                      <Link
+                        to="/profile"
+                        className="flex text-xs font-normal text-[#8C92AB]"
 
-            <li className="flex items-center gap-x-4 px-6 py-8 text-sm font-semibold leading-6 text-white mt-auto bg-[#0B365F]">
-              <img
-                referrerPolicy="no-referrer"
-                className="h-8 w-8 rounded-full bg-gray-800"
-                src={mockUser.picture}
-                alt={mockUser.name}
-              />
-              <span className="sr-only">Your profile</span>
-              <div>
-                <span aria-hidden="true">{mockUser.name}</span>
-                <Link
-                  to="#"
-                  className="flex text-xs font-normal leading-6 text-[#8C92AB]"
-                >
-                  <span>View Profile</span>
-                </Link>
-              </div>
-              <LogOutLogo />
-            </li>
+                      >
+                        <span>{item.label}</span>
+                      </Link>
+                    </div>
+                  </div>
+                  {item.icon}
+                </li>
+              ))}
           </ul>
         </nav>
       )}
