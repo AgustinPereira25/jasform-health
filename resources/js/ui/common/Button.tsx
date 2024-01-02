@@ -49,7 +49,7 @@ export const Button = forwardRef(
           variant === BUTTON_VARIANT.OUTLINE &&
             "border-gray-300 text-gray-300 hover:border-gray-400 hover:text-gray-800",
           variant === BUTTON_VARIANT.TERTIARY &&
-            "font-normal text-gray-500 hover:text-gray-600",
+            "font-normal text-white hover:text-white bg-[#FF8583] hover:bg-[#d87270]",
         ],
 
         disabled && [
