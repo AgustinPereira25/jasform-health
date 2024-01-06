@@ -20,7 +20,9 @@ class UserTransformer extends Transformer
             'position_in_organization' => (string) $user->position_in_organization,
             'status' => (string) $user->status,
             'email' => (string) $user->email,
-            'organization_id' => (string) $user->organization_id
+            'organization_id' => (string) $user->organization_id,
+            'organization_name' => $user->organization->name,
+            'organization_description' => $user->organization->description,
         ];
     }
 }

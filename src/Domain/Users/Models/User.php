@@ -8,6 +8,7 @@ namespace Domain\Users\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Domain\Organizations\Models\Organization;
 
 /**
  * Domain\Users\Models\User
@@ -92,4 +93,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
 }
