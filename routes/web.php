@@ -13,5 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('{unknown}', fn () => view('app  '))->where('unknown', '^(?!api).*$');
+Route::get('/test', function(){
+    return 'Hola mundo';
+});
 
+Route::get('{unknown}', fn () => view('app  '))->where('unknown', '^(?!api).*$');
