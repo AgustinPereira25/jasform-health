@@ -5,6 +5,7 @@ export const ROUTES = {
   users: "/users",
   forms: "/forms",
   profile: "/profile",
+  editUser: "/users/:id",
   newUser: "/users/new",
   newForm: "/forms/new",
   notFound: "*",

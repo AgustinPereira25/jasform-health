@@ -130,35 +130,35 @@ export const Forms = () => {
 
   const { data: users, isLoading: isLoadingUsers } = useQuery({
     ...getUsersQuery(),
-    select: (users) =>
-      users.map((user, idx) => {
-        const selectedItem =
-          activityItems[idx % activityItems.length] ?? activityItems[0];
+    // select: (users) =>
+    //   users.map((user, idx) => {
+    //     const selectedItem =
+    //       activityItems[idx % activityItems.length] ?? activityItems[0];
 
-        return {
-          ...selectedItem,
+    //     return {
+    //       ...selectedItem,
 
-          user: {
-            imageUrl: selectedItem.user.imageUrl,
-            name: user.name,
-            id: user.id,
-          },
-        };
-      }),
+    //       user: {
+    //         imageUrl: selectedItem.user.imageUrl,
+    //         name: 'name',
+    //         id: user.id,
+    //       },
+    //     };
+    //   }),
   });
 
-  const { mutate: deleteUserMutation } = useMutation({
-    mutationFn: deleteUser.mutation,
-    onSuccess: (_, requestedId) => {
-      deleteUser.invalidates(queryClient, { userId: requestedId });
-      void pushToast({
-        type: "success",
-        title: "Success",
-        message: "User successfully deleted!",
-      });
-    },
-    onError: errorToast,
-  });
+  // const { mutate: deleteUserMutation } = useMutation({
+  //   mutationFn: deleteUser.mutation,
+  //   onSuccess: (_, requestedId) => {
+  //     deleteUser.invalidates(queryClient, { userId: requestedId });
+  //     void pushToast({
+  //       type: "success",
+  //       title: "Success",
+  //       message: "User successfully deleted!",
+  //     });
+  //   },
+  //   onError: errorToast,
+  // });
 
   const navigateModal = useNavigateModal();
   // For toggles

@@ -61,6 +61,12 @@ export const Router = () => {
         {/* </Route> */}
 
         {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+            <Route element={<NewProfile />} path={ROUTES.editUser} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
           <Route element={<Layout />}>
             <Route element={<NewProfile />} path={ROUTES.newUser} />
           </Route>

@@ -2,13 +2,48 @@ import React from 'react'
 import { Button, Input, icons } from '@/ui'
 import { FileUploader } from '@/components'
 import { useForm } from 'react-hook-form'
+import { useQuery } from '@tanstack/react-query'
+import { getUserQuery } from '@/api'
+import { useParams } from 'react-router-dom'
 
 export const Profile = () => {
+    const { id } = useParams();
+
+    const { data: user, isLoading: isLoadingUsers } = useQuery({
+        ...getUserQuery(parseInt(id!)),
+        // select: (users) =>
+        //   users.map((user, idx) => {
+        //     const selectedItem =
+        //       activityItems[idx % activityItems.length] ?? activityItems[0];
+
+        //     return {
+        //       ...selectedItem,
+
+        //       user: {
+        //         imageUrl: selectedItem.user.imageUrl,
+        //         name: user.name,
+        //         id: user.id,
+        //       },
+        //     };
+        //   }),
+        // The query will not execute until the id exists
+        enabled: !!id,
+    });
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+        setValue,
+    } = useForm({
+        defaultValues: {
+            firstName: 'pepepepepe',
+            lastName: user?.last_name,
+            email: user?.email,
+            phone: user?.phone,
+            title: user?.position_in_organization,
+            organization: user?.organization_id,
+        }
+    });
 
     const onSubmit = (data: any) => {
         console.log(data);
@@ -68,11 +103,12 @@ export const Profile = () => {
                             containerClassName='w-full'
                             fullHeight
                             type="text"
-                            id="fname"
+                            id="firstName"
                             placeholder="Enter first name"
-                            {...register("fname")}
-                            // error={errors.password?.message}
-                            // value={passwordInput}
+                            {...register("firstName")}
+                            defaultValue={user?.first_name}
+                        // error={errors.password?.message}
+                        // value={passwordInput}
                         />
                     </div>
                 </div>
@@ -86,11 +122,12 @@ export const Profile = () => {
                             containerClassName='w-full'
                             fullHeight
                             type="text"
-                            id="lname"
+                            id="lastName"
                             placeholder="Enter last name"
-                            {...register("lname")}
-                            // error={errors.lname?.message}
-                            //value={passwordInput}
+                            {...register("lastName")}
+                            defaultValue={user?.last_name}
+                        // error={errors.lname?.message}
+                        //value={passwordInput}
                         />
                     </div>
                 </div>
@@ -107,8 +144,9 @@ export const Profile = () => {
                             id="email"
                             placeholder="Enter Email address"
                             {...register("email")}
-                            //error={errors.email?.message}
-                            //value={passwordInput}
+                            defaultValue={user?.email}
+                        //error={errors.email?.message}
+                        //value={passwordInput}
                         />
                     </div>
                 </div>
@@ -125,8 +163,9 @@ export const Profile = () => {
                             id="phone"
                             placeholder="Phone Number"
                             {...register("phone")}
-                            //error={errors.phone?.message}
-                            //value={passwordInput}
+                            defaultValue={user?.phone}
+                        //error={errors.phone?.message}
+                        //value={passwordInput}
                         />
                     </div>
                 </div>
@@ -143,8 +182,9 @@ export const Profile = () => {
                             id="title"
                             placeholder="Title"
                             {...register("title")}
-                            //error={errors.title?.message}
-                            //value={passwordInput}
+                            defaultValue={user?.position_in_organization}
+                        //error={errors.title?.message}
+                        //value={passwordInput}
                         />
                     </div>
                 </div>
@@ -161,16 +201,17 @@ export const Profile = () => {
                             id="organization"
                             placeholder="Organization"
                             {...register("organization")}
-                            // error={errors.organization?.message}
-                            // value={passwordInput}
+                            defaultValue={user?.organization_id}
+                        // error={errors.organization?.message}
+                        // value={passwordInput}
                         />
                     </div>
                 </div>
                 <hr className='mx-3' />
                 <div className='flex p-3 h-16'>
-                    <Button 
+                    <Button
                         variant='tertiary'
-                        // onClick={() => console.log('pepe')}
+                    // onClick={() => console.log('pepe')}
                     >
                         <icons.KeyIcon />
                         Change Password

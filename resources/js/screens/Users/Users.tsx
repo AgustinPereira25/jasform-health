@@ -17,112 +17,112 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const activityItems = [
-  {
-    user: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "2d89f0c8",
-    organization: "main",
-    status: "Active",
-    plan: "25s",
-    role: "Admin",
-    dateTime: "2023-01-23T11:00",
-  },
-  {
-    user: {
-      name: "Lindsay Walton",
-      imageUrl:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "249df660",
-    organization: "main",
-    status: "Active",
-    plan: "1m 32s",
-    role: "Admin",
-    dateTime: "2023-01-23T09:00",
-  },
-  {
-    user: {
-      name: "Courtney Henry",
-      imageUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "11464223",
-    organization: "main",
-    status: "Inactive",
-    plan: "1m 4s",
-    role: "Free",
-    dateTime: "2023-01-23T00:00",
-  },
-  {
-    user: {
-      name: "Courtney Henry",
-      imageUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "dad28e95",
-    organization: "main",
-    status: "Active",
-    plan: "2m 15s",
-    role: "Free",
-    dateTime: "2023-01-21T13:00",
-  },
-  {
-    user: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "624bc94c",
-    organization: "main",
-    status: "Active",
-    plan: "1m 12s",
-    role: "Plus",
-    dateTime: "2023-01-18T12:34",
-  },
-  {
-    user: {
-      name: "Courtney Henry",
-      imageUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "e111f80e",
-    organization: "main",
-    status: "Active",
-    plan: "1m 56s",
-    role: "Admin",
-    dateTime: "2023-01-16T15:54",
-  },
-  // {
-  //   user: {
-  //     name: "Michael Foster",
-  //     imageUrl:
-  //       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  //   },
-  //   commit: "5e136005",
-  //   branch: "main",
-  //   status: "Active",
-  //   plan: "3m 45s",
-  //   role: "1 week ago",
-  //   dateTime: "2023-01-16T11:31",
-  // },
-  // {
-  //   user: {
-  //     name: "Whitney Francis",
-  //     imageUrl:
-  //       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  //   },
-  //   commit: "5c1fd07f",
-  //   branch: "main",
-  //   status: "Active",
-  //   plan: "37s",
-  //   role: "2 weeks ago",
-  //   dateTime: "2023-01-09T08:45",
-  // },
-] as const;
+// const activityItems = [
+//   {
+//     user: {
+//       name: "Michael Foster",
+//       imageUrl:
+//         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     },
+//     title: "2d89f0c8",
+//     organization: "main",
+//     status: "Active",
+//     plan: "25s",
+//     role: "Admin",
+//     dateTime: "2023-01-23T11:00",
+//   },
+//   {
+//     user: {
+//       name: "Lindsay Walton",
+//       imageUrl:
+//         "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     },
+//     title: "249df660",
+//     organization: "main",
+//     status: "Active",
+//     plan: "1m 32s",
+//     role: "Admin",
+//     dateTime: "2023-01-23T09:00",
+//   },
+//   {
+//     user: {
+//       name: "Courtney Henry",
+//       imageUrl:
+//         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     },
+//     title: "11464223",
+//     organization: "main",
+//     status: "Inactive",
+//     plan: "1m 4s",
+//     role: "Free",
+//     dateTime: "2023-01-23T00:00",
+//   },
+//   {
+//     user: {
+//       name: "Courtney Henry",
+//       imageUrl:
+//         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     },
+//     title: "dad28e95",
+//     organization: "main",
+//     status: "Active",
+//     plan: "2m 15s",
+//     role: "Free",
+//     dateTime: "2023-01-21T13:00",
+//   },
+//   {
+//     user: {
+//       name: "Michael Foster",
+//       imageUrl:
+//         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     },
+//     title: "624bc94c",
+//     organization: "main",
+//     status: "Active",
+//     plan: "1m 12s",
+//     role: "Plus",
+//     dateTime: "2023-01-18T12:34",
+//   },
+//   {
+//     user: {
+//       name: "Courtney Henry",
+//       imageUrl:
+//         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     },
+//     title: "e111f80e",
+//     organization: "main",
+//     status: "Active",
+//     plan: "1m 56s",
+//     role: "Admin",
+//     dateTime: "2023-01-16T15:54",
+//   },
+//   // {
+//   //   user: {
+//   //     name: "Michael Foster",
+//   //     imageUrl:
+//   //       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//   //   },
+//   //   commit: "5e136005",
+//   //   branch: "main",
+//   //   status: "Active",
+//   //   plan: "3m 45s",
+//   //   role: "1 week ago",
+//   //   dateTime: "2023-01-16T11:31",
+//   // },
+//   // {
+//   //   user: {
+//   //     name: "Whitney Francis",
+//   //     imageUrl:
+//   //       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//   //   },
+//   //   commit: "5c1fd07f",
+//   //   branch: "main",
+//   //   status: "Active",
+//   //   plan: "37s",
+//   //   role: "2 weeks ago",
+//   //   dateTime: "2023-01-09T08:45",
+//   // },
+// ] as const;
 
 export const Users = () => {
   const { pushToast } = useToastStore();
@@ -130,21 +130,21 @@ export const Users = () => {
 
   const { data: users, isLoading: isLoadingUsers } = useQuery({
     ...getUsersQuery(),
-    select: (users) =>
-      users.map((user, idx) => {
-        const selectedItem =
-          activityItems[idx % activityItems.length] ?? activityItems[0];
+    // select: (users) =>
+    //   users.map((user, idx) => {
+    //     const selectedItem =
+    //       activityItems[idx % activityItems.length] ?? activityItems[0];
 
-        return {
-          ...selectedItem,
+    //     return {
+    //       ...selectedItem,
 
-          user: {
-            imageUrl: selectedItem.user.imageUrl,
-            name: user.name,
-            id: user.id,
-          },
-        };
-      }),
+    //       user: {
+    //         imageUrl: selectedItem.user.imageUrl,
+    //         name: user.name,
+    //         id: user.id,
+    //       },
+    //     };
+    //   }),
   });
 
   const { mutate: deleteUserMutation } = useMutation({
@@ -287,12 +287,12 @@ export const Users = () => {
                 >
                   STATUS
                 </th>
-                <th
+                {/* <th
                   scope="col"
                   className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
                 >
                   PLAN
-                </th>
+                </th> */}
                 <th
                   scope="col"
                   className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
@@ -323,21 +323,22 @@ export const Users = () => {
                   </td>
                 </tr>
               )}
-              {activityItems?.map((item) => (
-                <tr key={item.title}>
+              {users?.map((item) => (
+                <tr key={item.id}>
                   <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                     <div className="flex items-center gap-x-4">
                       <img
-                        src={item.user.imageUrl}
+                        src={item.photo}
                         alt=""
                         className="h-8 w-8 rounded-full bg-gray-800"
                       />
                       <div className="flex flex-col">
                         <div className="truncate text-sm leading-6 text-black">
-                          {item.user.name}
+                          {item.first_name}
+                          {item.last_name}
                         </div>
                         <div className="truncate text-sm leading-6 text-gray-500">
-                          exampleemail@email.com
+                          {item.email}
                         </div>
                       </div>
                     </div>
@@ -346,9 +347,10 @@ export const Users = () => {
                     <div className="flex gap-x-3">
                       <div className="flex flex-col">
                           <div className="truncate text-sm leading-6 text-black">
-                            {item.title}
+                            {item.position_in_organization}
                           </div>
                           <div className="truncate text-sm leading-6 text-gray-500">
+                            {/* {item.organization_id} */}
                             MediCall
                           </div>
                       </div>
@@ -369,11 +371,11 @@ export const Users = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                    {item.plan}
-                  </td>
+                  {/* <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
+                    plan??
+                  </td> */}
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <time dateTime={item.dateTime}>{item.role}</time>
+                    Admin
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     {/* <Button
@@ -382,10 +384,10 @@ export const Users = () => {
                     >
                       <icons.TrashIcon className="h-5 w-5" />
                     </Button> */}
-                    <a href="#" className="text-[#00519E]">Edit</a>
+                    <a href={`/users/${item.id}`} className="text-[#00519E]">Edit</a>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <a href="#" className="text-[#00519E]">Delete</a>
+                    <a href="/" className="text-[#00519E]">Delete</a>
                   </td>
                 </tr>
               ))}
