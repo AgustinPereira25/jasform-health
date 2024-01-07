@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->binary('logo');
+            $table->binary('logo')->nullable();
             $table->timestamps();
         });
     }

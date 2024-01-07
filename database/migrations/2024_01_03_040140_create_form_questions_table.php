@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('text');
             $table->integer('order');
-            $table->string('next_question');
             $table->boolean('obligatory');
             $table->timestamps();
+
+            $table->unsignedBigInteger('next_question')->nullable();
+            $table->foreign('next_question')->references('id')->on('form_questions');
 
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms');

@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('welcome_text');
             $table->string('description');
             $table->dateTime('creation_date_time');
-            $table->binary('logo');
-            $table->string('primary_color');
-            $table->string('secondary_color');
-            $table->string('rounded_style');
-            $table->string('api_url');
+            $table->binary('logo')->nullable();
+            $table->string('primary_color')->nullable();
+            $table->string('secondary_color')->nullable();
+            $table->string('rounded_style')->nullable();
+            $table->string('api_url')->nullable();
             $table->string('status');
             $table->string('public_code');
             $table->timestamps();
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_creator_id');
             $table->foreign('user_creator_id')->references('id')->on('users');
 
-            $table->unsignedBigInteger('user_auxiliary_editor_id');
+            $table->unsignedBigInteger('user_auxiliary_editor_id')->nullable();
             $table->foreign('user_auxiliary_editor_id')->references('id')->on('users');
         });
     }
