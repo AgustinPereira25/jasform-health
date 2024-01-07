@@ -4,6 +4,7 @@ namespace Domain\Roles\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Domain\Users\Models\User;
 
 /**
  * Domain\Roles\Models\Role
@@ -28,4 +29,9 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_role', 'role_id', 'user_id');
+    }
 }
