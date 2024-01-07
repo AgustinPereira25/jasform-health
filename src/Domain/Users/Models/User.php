@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Domain\Organizations\Models\Organization;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Domain\Users\Models\User
@@ -50,6 +51,7 @@ use Domain\Organizations\Models\Organization;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoto($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrganization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
+ * @property-read Organization $organization
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -94,7 +96,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function organization()
+    public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
     }

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->binary('photo');
-            $table->string('phone');
-            $table->string('position_in_organization');
+            $table->binary('photo')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('position_in_organization')->nullable();
             $table->string('status');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -27,7 +27,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreignId('organization_id')->constrained();
+            $table->unsignedBigInteger('organization_id');
+            $table->foreign('organization_id')->references('id')->on('organizations');
         });
     }
 
