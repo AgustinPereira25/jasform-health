@@ -24,6 +24,8 @@ use Domain\Form_instances\Models\Form_instance;
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
+ * @property-read int|null $form_instances_count
  * @mixin \Eloquent
  */
 class Completer_user extends Model

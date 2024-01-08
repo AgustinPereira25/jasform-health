@@ -28,6 +28,7 @@ use Domain\Form_instances\Models\Form_instance;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_activity whereFormInstanceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_activity whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_activity whereUpdatedAt($value)
+ * @property-read Form_instance $form_instance
  * @mixin \Eloquent
  */
 class Form_activity extends Model

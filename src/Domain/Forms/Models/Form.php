@@ -3,6 +3,7 @@
 namespace Domain\Forms\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Form_instances\Models\Form_instance;
 use Domain\Form_questions\Models\Form_question;
 
@@ -44,6 +45,10 @@ use Domain\Form_questions\Models\Form_question;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserAuxiliaryEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereWelcomeText($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
+ * @property-read int|null $form_instances_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
+ * @property-read int|null $form_questions_count
  * @mixin \Eloquent
  */
 class Form extends Model

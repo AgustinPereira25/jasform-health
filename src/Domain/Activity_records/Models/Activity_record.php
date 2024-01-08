@@ -40,6 +40,7 @@ use Domain\Users\Models\User;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereUserId($value)
+ * @property-read User $user
  * @mixin \Eloquent
  */
 class Activity_record extends Model

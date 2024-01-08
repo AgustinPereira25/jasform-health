@@ -3,6 +3,11 @@
 namespace Domain\Form_questions\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Domain\Forms\Models\Form;
+use Domain\Question_types\Models\Question_type;
+use Domain\Question_options\Models\Question_option;
 
 /**
  * Domain\Form_questions\Models\Form_question
@@ -30,6 +35,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereUpdatedAt($value)
+ * @property-read Form $form
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Question_option> $question_options
+ * @property-read int|null $question_options_count
+ * @property-read Question_type $question_type
  * @mixin \Eloquent
  */
 class Form_question extends Model

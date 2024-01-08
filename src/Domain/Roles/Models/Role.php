@@ -3,6 +3,7 @@
 namespace Domain\Roles\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Domain\Users\Models\User;
 
 /**
@@ -23,6 +24,8 @@ use Domain\Users\Models\User;
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read int|null $users_count
  * @mixin \Eloquent
  */
 class Role extends Model

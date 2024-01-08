@@ -3,6 +3,8 @@
 namespace Domain\Question_types\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Domain\Form_questions\Models\Form_question;
 
 /**
  * Domain\Question_types\Models\Question_type
@@ -20,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
+ * @property-read int|null $form_questions_count
  * @mixin \Eloquent
  */
 class Question_type extends Model

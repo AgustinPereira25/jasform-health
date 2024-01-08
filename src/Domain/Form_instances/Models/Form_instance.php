@@ -27,6 +27,10 @@ use Domain\Form_activities\Models\Form_activity;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereUpdatedAt($value)
+ * @property-read Completer_user $completer_user
+ * @property-read Form $form
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_activity> $form_activities
+ * @property-read int|null $form_activities_count
  * @mixin \Eloquent
  */
 class Form_instance extends Model

@@ -55,6 +55,10 @@ use Domain\Activity_records\Models\Activity_record;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrganization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @property-read Organization $organization
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity_record> $activity_records
+ * @property-read int|null $activity_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
+ * @property-read int|null $roles_count
  * @mixin \Eloquent
  */
 class User extends Authenticatable
