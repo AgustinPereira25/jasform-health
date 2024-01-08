@@ -14,6 +14,7 @@ export interface InputProps extends ComponentPropsWithoutRef<"input"> {
   label?: ReactNode;
   left?: ReactNode;
   message?: string;
+  fullHeight?: boolean;
 }
 
 export const Input = forwardRef(
@@ -27,6 +28,7 @@ export const Input = forwardRef(
       label,
       left,
       message,
+      fullHeight = false,
       ...rest
     }: InputProps,
     ref: ForwardedRef<HTMLInputElement>,
@@ -35,8 +37,9 @@ export const Input = forwardRef(
       {!!label && <Label htmlFor={id} label={label} />}
       <div
         className={tw(
-          "flex flex-row items-center rounded-md shadow-sm",
+          "flex flex-row rounded-md shadow-sm items-baseline",
           !!rest.disabled && "opacity-30",
+          fullHeight && "h-full",
         )}
       >
         {!!left && (
@@ -56,6 +59,7 @@ export const Input = forwardRef(
             !!error && "border-red-400 focus:border-red-400 focus:ring-red-50",
             !!left && "pl-10",
             !!rest.disabled && "border-gray-500 bg-gray-100",
+            fullHeight && "h-full",
             className,
           )}
         />
