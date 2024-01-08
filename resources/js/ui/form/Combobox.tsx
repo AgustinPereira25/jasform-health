@@ -12,6 +12,7 @@ interface Item {
 interface ComboBoxProps extends ComponentPropsWithoutRef<"input">  {
     items: Item[],
     defaultValue?: string,
+    onValueChange: (value: Item) => void
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -20,19 +21,22 @@ function classNames(...classes: (string | boolean)[]) {
 
 const ComboBox = forwardRef(
     (
-        { items, defaultValue }: ComboBoxProps,
+        { items, defaultValue, onValueChange }: ComboBoxProps,
         ref: ForwardedRef<HTMLInputElement>
     ) => {
-    const defaultItem = items.find(item => item.name.toUpperCase() === defaultValue?.toUpperCase());
-    const [query, setQuery] = useState('');
+    const defaultItem: Item = items.find(item => item.name.toUpperCase() === defaultValue?.toUpperCase())!;
     const [selectedItem, setSelectedItem] = useState(defaultItem);
- 
+        
+    const handleChange = (e: Item) => {
+        setSelectedItem(e);
+        onValueChange(e);
+    }
     return (
-        <Combobox as="div" value={selectedItem} onChange={setSelectedItem} ref={ref}>
+        <Combobox as="div" value={selectedItem} onChange={(e:Item) => handleChange(e)} ref={ref}>
             <div className="relative mt-2">
                 <Combobox.Input
                     className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(event) => setQuery(event.target.value)}
+                    // onChange={(event) => setQuery(event.target.value)}
                     displayValue={(item: Item) => item?.name}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">

@@ -6,32 +6,30 @@ import { getUserQuery } from '@/api'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import ComboBox from '@/ui/form/Combobox'
+import { tw } from '@/utils'
+
+interface NewProfileForm {
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    phone?: string,
+    title?: string,
+    organization?: string,
+    subscription?: string,
+    role?: string,
+    status?: string
+}
 
 export const NewProfile = () => {
     const { id } = useParams();
 
     //Mock.. combos
-    const SubscriptionPlans = [{ id: 1, name: 'Free' }, { id: 2, name: 'Premium' }, { id: 3, name: 'Enterprise' }];
-    const Roles = [{ id: 1, name: 'Admin' }, { id: 2, name: 'User' }, { id: 3, name: 'Viewer' }];
-    const Status = [{ id: 1, name: 'Active' }, { id: 2, name: 'Inactive' }, { id: 3, name: 'Pending' }];
+    const SubscriptionPlans = [{ id: 1, name: 'Free' }, { id: 2, name: 'Premium' }, { id: 3, name: 'Enterprise' }]; // solo name
+    const Roles = [{ id: 1, name: 'Admin' }, { id: 2, name: 'User' }, { id: 3, name: 'Viewer' }]; // el unico q prevalaece con esta structura
+    const Status = [{ id: 1, name: 'Active' }, { id: 2, name: 'Inactive' }, { id: 3, name: 'Pending' }]; //solo name
 
     const { data: user, isLoading: isLoadingUser } = useQuery({
         ...getUserQuery(parseInt(id!)),
-        // select: (users) =>
-        //   users.map((user, idx) => {
-        //     const selectedItem =
-        //       activityItems[idx % activityItems.length] ?? activityItems[0];
-
-        //     return {
-        //       ...selectedItem,
-
-        //       user: {
-        //         imageUrl: selectedItem.user.imageUrl,
-        //         name: user.name,
-        //         id: user.id,
-        //       },
-        //     };
-        //   }),
         // The query will not execute until the id exists
         enabled: !!id,
     });
@@ -41,6 +39,7 @@ export const NewProfile = () => {
         handleSubmit,
         formState: { errors },
         setValue,
+        setError,
     } = useForm({
         defaultValues: {
             firstName: user?.first_name,
@@ -52,11 +51,24 @@ export const NewProfile = () => {
             subscription: 'Free',
             role: 'Admin',
             status: user?.status,
-        }
+        },
     });
 
-    const onSubmit = (data: any) => {
+    // React.useEffect(() => {
+    //     setError("phone", {
+    //       type: "manual",
+    //       message: "Dont Forge t Your Phone Should Be Cool!",
+    //     })
+    //   }, [setError])
+
+    const onSubmit = (data: NewProfileForm) => {
         console.log(data);
+        // if (data.firstName === 'pepe') {
+        //     setError("firstName", {
+        //         type: "manual",
+        //         message: "Dont Forge t Your Phone Should Be Cool!",
+        //     },{shouldFocus: true})
+        // }
     };
 
     return (
@@ -112,7 +124,11 @@ export const NewProfile = () => {
                                     <FileUploader />
                                 </div>
                                 <hr className='mx-3' />
-                                <div className='flex p-3 h-16'>
+                                <div className={tw(
+                                    'flex p-3 h-16',
+                                    errors.firstName && 'pb-5'
+                                )}
+                                >
                                     <div className='flex w-40'>
                                         <span>First Name</span>
                                     </div>
@@ -124,14 +140,18 @@ export const NewProfile = () => {
                                             id="firstName"
                                             placeholder="Enter first name"
                                             {...register("firstName")}
-                                            // error={errors.password?.message}
+                                            error={errors.firstName?.message}
                                             // value={passwordInput}
                                             defaultValue={user?.first_name}
                                         />
                                     </div>
                                 </div>
                                 <hr className='mx-3' />
-                                <div className='flex p-3 h-16'>
+                                <div className={tw(
+                                    'flex p-3 h-16',
+                                    errors.lastName && 'pb-5'
+                                )}
+                                >
                                     <div className='flex w-40'>
                                         <span>Last name</span>
                                     </div>
@@ -150,7 +170,11 @@ export const NewProfile = () => {
                                     </div>
                                 </div>
                                 <hr className='mx-3' />
-                                <div className='flex p-3 h-16 '>
+                                <div className={tw(
+                                    'flex p-3 h-16',
+                                    errors.email && 'pb-5'
+                                )}
+                                >
                                     <div className='flex w-40'>
                                         <span>Email Address</span>
                                     </div>
@@ -169,7 +193,11 @@ export const NewProfile = () => {
                                     </div>
                                 </div>
                                 <hr className='mx-3' />
-                                <div className='flex p-3 h-16 '>
+                                <div className={tw(
+                                    'flex p-3 h-16',
+                                    errors.phone && 'pb-5'
+                                )}
+                                >
                                     <div className='flex w-40'>
                                         <span>Phone Number</span>
                                     </div>
@@ -180,15 +208,18 @@ export const NewProfile = () => {
                                             type="text"
                                             id="phone"
                                             placeholder="Phone Number"
-                                            {...register("phone")}
-                                            //error={errors.phone?.message}
-                                            //value={passwordInput}
+                                            {...register("phone", { required: true })}
+                                            error={errors.phone?.message}
                                             defaultValue={user?.phone}
                                         />
                                     </div>
                                 </div>
                                 <hr className='mx-3' />
-                                <div className='flex p-3 h-16 '>
+                                <div className={tw(
+                                    'flex p-3 h-16',
+                                    errors.title && 'pb-5'
+                                )}
+                                >
                                     <div className='flex w-40'>
                                         <span>Title</span>
                                     </div>
@@ -207,7 +238,11 @@ export const NewProfile = () => {
                                     </div>
                                 </div>
                                 <hr className='mx-3' />
-                                <div className='flex p-3 h-16 '>
+                                <div className={tw(
+                                    'flex p-3 h-16',
+                                    errors.organization && 'pb-5'
+                                )}
+                                >
                                     <div className='flex w-40'>
                                         <span>Organization</span>
                                     </div>
@@ -268,6 +303,10 @@ export const NewProfile = () => {
                                             items={SubscriptionPlans}
                                             defaultValue='Free'
                                             {...register("subscription")}
+                                            onValueChange={(item) => {
+                                                setValue("subscription", item.name);
+                                            }}
+                                            // onValueChange={(e) => console.log(e)}
                                         />
                                     </div>
                                 </div>
@@ -282,6 +321,9 @@ export const NewProfile = () => {
                                             items={Roles}
                                             defaultValue={'Admin'}
                                             {...register("role")}
+                                            onValueChange={(item) => {
+                                                setValue("role", item.name);
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -295,6 +337,9 @@ export const NewProfile = () => {
                                             items={Status}
                                             defaultValue={user?.status}
                                             {...register("status")}
+                                            onValueChange={(item) => {
+                                                setValue("status", item.name);
+                                            }}                                          
                                         />
                                     </div>
                                 </div>
