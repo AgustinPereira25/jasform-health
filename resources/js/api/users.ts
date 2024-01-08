@@ -28,6 +28,7 @@ export interface Datum {
   status:                   string;
   email:                    string;
   organization_id:          string;
+  organization_name:        string;
 }
 
 export const getUsersQuery = () => ({

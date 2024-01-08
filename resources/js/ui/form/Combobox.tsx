@@ -1,4 +1,5 @@
-import { ComponentPropsWithoutRef, ForwardedRef, useState } from 'react'
+import type { ComponentPropsWithoutRef, ForwardedRef} from 'react';
+import { useState } from 'react'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
 import { forwardRef } from '@/utils'
@@ -10,13 +11,8 @@ interface Item {
 
 interface ComboBoxProps extends ComponentPropsWithoutRef<"input">  {
     items: Item[],
-    defaultValue?: string
+    defaultValue?: string,
 }
-
-// const people = [
-//   { id: 1, name: 'Leslie Alexander' },
-//   // More users...
-// ]
 
 function classNames(...classes: (string | boolean)[]) {
     return classes.filter(Boolean).join(' ')
@@ -30,21 +26,14 @@ const ComboBox = forwardRef(
     const defaultItem = items.find(item => item.name.toUpperCase() === defaultValue?.toUpperCase());
     const [query, setQuery] = useState('');
     const [selectedItem, setSelectedItem] = useState(defaultItem);
-
-    //   const filteredPeople =
-    //     query === ''
-    //       ? people
-    //       : people.filter((person) => {
-    //           return person.name.toLowerCase().includes(query.toLowerCase())
-    //         })
-
+ 
     return (
         <Combobox as="div" value={selectedItem} onChange={setSelectedItem} ref={ref}>
             <div className="relative mt-2">
                 <Combobox.Input
                     className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={(event) => setQuery(event.target.value)}
-                    displayValue={(item) => item?.name}
+                    displayValue={(item: Item) => item?.name}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                     <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

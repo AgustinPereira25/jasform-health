@@ -40,14 +40,15 @@ export const NewProfile = () => {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm({
         defaultValues: {
-            firstName: 'pepepepepe',
+            firstName: user?.first_name,
             lastName: user?.last_name,
             email: user?.email,
             phone: user?.phone,
             title: user?.position_in_organization,
-            organization: user?.organization_id,
+            organization: user?.organization_name,
             subscription: 'Free',
             role: 'Admin',
             status: user?.status,
@@ -57,6 +58,7 @@ export const NewProfile = () => {
     const onSubmit = (data: any) => {
         console.log(data);
     };
+
     return (
         <>
             {isLoadingUser ? (
@@ -219,7 +221,7 @@ export const NewProfile = () => {
                                             {...register("organization")}
                                             // error={errors.organization?.message}
                                             // value={passwordInput}
-                                            defaultValue={user?.organization_id}
+                                            defaultValue={user?.organization_name}
                                         />
                                     </div>
                                 </div>
@@ -290,7 +292,6 @@ export const NewProfile = () => {
                                     </div>
                                     <div className="flex grow">
                                         <ComboBox
-                                            id='status'
                                             items={Status}
                                             defaultValue={user?.status}
                                             {...register("status")}
