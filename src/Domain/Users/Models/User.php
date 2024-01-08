@@ -8,9 +8,11 @@ namespace Domain\Users\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Organizations\Models\Organization;
 use Domain\Roles\Models\Role;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Domain\Activity_records\Models\Activity_record;
 
 /**
  * Domain\Users\Models\User
@@ -53,6 +55,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrganization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @property-read Organization $organization
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity_record> $activity_records
+ * @property-read int|null $activity_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
+ * @property-read int|null $roles_count
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -105,5 +111,16 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+    }
+
+    // Ver
+    // public function forms(): HasMany
+    // {
+    //     return $this->hasMany(Form::class);
+    // }
+
+    public function activity_records(): HasMany
+    {
+        return $this->hasMany(Activity_record::class);
     }
 }

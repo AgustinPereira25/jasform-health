@@ -2,8 +2,9 @@
 
 namespace Domain\Activity_records\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Domain\Users\Models\User;
 
 /**
  * Domain\Activity_records\Models\Activity_record
@@ -39,9 +40,28 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereUserId($value)
+ * @property-read User $user
  * @mixin \Eloquent
  */
 class Activity_record extends Model
 {
-    use HasFactory;
+
+    protected $fillable = [
+        'date_time',
+        'status',
+        'ip_address',
+        'activity_performed',
+        'description',
+        'session_duration',
+        'activity_result',
+        'login_type',
+        'device_info',
+        'physical_location',
+        'user_id',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
