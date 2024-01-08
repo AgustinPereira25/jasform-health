@@ -2,8 +2,9 @@
 
 namespace Domain\Forms\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Domain\Form_instances\Models\Form_instance;
+use Domain\Form_questions\Models\Form_question;
 
 /**
  * Domain\Forms\Models\Form
@@ -47,5 +48,37 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Form extends Model
 {
-    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'welcome_text',
+        'description',
+        'creation_date_time',
+        'logo',
+        'primary_color',
+        'secondary_color',
+        'rounded_style',
+        'api_url',
+        'status',
+        'public_code',
+        'user_creator_id',
+        'user_auxiliary_editor_id',
+    ];
+
+    public function form_instances(): HasMany
+    {
+        return $this->hasMany(Form_instance::class);
+    }
+
+    public function form_questions(): HasMany
+    {
+        return $this->hasMany(Form_question::class);
+    }
+
+    // Ver
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
+
 }

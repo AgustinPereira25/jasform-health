@@ -2,7 +2,6 @@
 
 namespace Domain\Question_types\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -25,5 +24,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Question_type extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    public function form_questions(): HasMany
+    {
+        return $this->hasMany(Form_question::class);
+    }
 }

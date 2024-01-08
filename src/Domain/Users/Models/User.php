@@ -8,9 +8,11 @@ namespace Domain\Users\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Organizations\Models\Organization;
 use Domain\Roles\Models\Role;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Domain\Activity_records\Models\Activity_record;
 
 /**
  * Domain\Users\Models\User
@@ -105,5 +107,16 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+    }
+
+    // Ver
+    // public function forms(): HasMany
+    // {
+    //     return $this->hasMany(Form::class);
+    // }
+
+    public function activity_records(): HasMany
+    {
+        return $this->hasMany(Activity_record::class);
     }
 }

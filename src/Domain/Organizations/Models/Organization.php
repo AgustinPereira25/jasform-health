@@ -3,7 +3,6 @@
 // namespace App;
 namespace Domain\Organizations\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Users\Models\User;
@@ -32,7 +31,11 @@ use Domain\Users\Models\User;
  */
 class Organization extends Model
 {
-    // use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+        'logo',
+    ];
 
     public function users(): HasMany
     {

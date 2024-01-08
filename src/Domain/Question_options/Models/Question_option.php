@@ -2,7 +2,6 @@
 
 namespace Domain\Question_options\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -31,5 +30,22 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Question_option extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'order',
+        'name',
+        'description',
+        'next_question',
+        'form_question_id',
+    ];
+
+    public function form_question(): BelongsTo
+    {
+        return $this->belongsTo(Form_question::class);
+    }
+
+    // Ver
+    // public function next_question(): BelongsTo
+    // {
+    //     return $this->belongsTo(Form_question::class);
+    // }
 }

@@ -2,8 +2,9 @@
 
 namespace Domain\Completer_users\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Domain\Form_instances\Models\Form_instance;
 
 /**
  * Domain\Completer_users\Models\Completer_user
@@ -27,5 +28,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Completer_user extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'email',
+        'first_name',
+        'last_name',
+    ];
+
+    public function form_instances(): HasMany
+    {
+        return $this->hasMany(Form_instance::class);
+    }
 }

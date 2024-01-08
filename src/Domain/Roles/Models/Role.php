@@ -2,7 +2,6 @@
 
 namespace Domain\Roles\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Domain\Users\Models\User;
 
@@ -28,7 +27,11 @@ use Domain\Users\Models\User;
  */
 class Role extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+        'activity',
+    ];
 
     public function users()
     {
