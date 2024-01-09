@@ -49,6 +49,8 @@ use Domain\Form_questions\Models\Form_question;
  * @property-read int|null $form_instances_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
  * @property-read int|null $form_questions_count
+ * @property int $user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserId($value)
  * @mixin \Eloquent
  */
 class Form extends Model
@@ -66,8 +68,7 @@ class Form extends Model
         'api_url',
         'status',
         'public_code',
-        'user_creator_id',
-        'user_auxiliary_editor_id',
+        'user_id',
     ];
 
     public function form_instances(): HasMany

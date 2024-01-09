@@ -18,8 +18,7 @@ class FormDto
         private readonly string $api_url,
         private readonly string $status,
         private readonly string $public_code,
-        private readonly string $user_creator_id,
-        private readonly string $user_auxiliary_editor_id,
+        private readonly string $user_id,
     ) {
     }
 
@@ -78,13 +77,8 @@ class FormDto
         return $this->public_code;
     }
 
-    public function getUserCreatorId(): string
+    public function getUserId(): string
     {
-        return $this->user_creator_id;
-    }
-
-    public function getAuxiliaryEditorId(): string
-    {
-        return $this->user_auxiliary_editor_id;
+        return $this->user_id;
     }
 }

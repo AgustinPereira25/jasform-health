@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('welcome_text');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->dateTime('creation_date_time');
             $table->binary('logo')->nullable();
             $table->string('primary_color')->nullable();
@@ -26,11 +26,8 @@ return new class extends Migration
             $table->string('public_code');
             $table->timestamps();
 
-            $table->unsignedBigInteger('user_creator_id');
-            $table->foreign('user_creator_id')->references('id')->on('users');
-
-            $table->unsignedBigInteger('user_auxiliary_editor_id')->nullable();
-            $table->foreign('user_auxiliary_editor_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
