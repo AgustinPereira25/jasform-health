@@ -183,8 +183,10 @@ export const Users = () => {
           <Input
             type="search"
             id="nameEmail"
+            right={<icons.MagnifyingGlassIcon/>}
             label="Name/Email"
             placeholder="Search by name or email"
+            className='min-w-[210px]'
             //{...register("password")}
             //error={errors.password?.message}
           //value={passwordInput}
@@ -193,8 +195,10 @@ export const Users = () => {
           <Input
             type="search"
             id="titleOrg"
+            right={<icons.MagnifyingGlassIcon/>}
             label="Title/Organization"
             placeholder="Search by title or organization"
+            className='min-w-[245px]'
             //{...register("password")}
             //error={errors.password?.message}
           //value={passwordInput}
@@ -203,8 +207,10 @@ export const Users = () => {
           <Input
             type="search"
             id="planType"
+            right={<icons.MagnifyingGlassIcon/>} // cuando el input es type=search aparece un cross para limpiar input
             label="Plan Type"
             placeholder="Search by name or email"
+            className='min-w-[210px]'
             //{...register("password")}
             //error={errors.password?.message}
           //value={passwordInput}
