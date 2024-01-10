@@ -1,10 +1,9 @@
 <?php
 
-// namespace App\Http\Controllers;
-namespace App\Organizations\Controllers;
+namespace App\Question_types\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\Organizations\Models\Organization;
+use Domain\Question_types\Models\Question_type;
 use Support\Controllers\Controller;
 
 class OrganizationsController extends Controller
