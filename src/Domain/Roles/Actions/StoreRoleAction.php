@@ -19,7 +19,6 @@ class StoreRoleAction
         return Role::create([
             'name' => $roleDto->getName(),
             'description' => $roleDto->getDescription(),
-            'activity' => $roleDto->getActivity(),
         ]);
     }
 }

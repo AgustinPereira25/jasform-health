@@ -28,8 +28,7 @@ class StoreFormAction
             'api_url' => $formDto->getApiUrl(),
             'status' => $formDto->getStatus(),
             'public_code' => $formDto->getPublicCode(),
-            'user_creator_id' => $formDto->getUserCreatorId(),
-            'user_auxiliary_editor_id' => $formDto->getAuxiliaryEditorId(),
+            'user_id' => $formDto->getUserId(),
         ]);
     }
 }

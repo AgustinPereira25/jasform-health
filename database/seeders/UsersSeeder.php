@@ -98,21 +98,18 @@ class UsersSeeder extends Seeder
             [
                 'name'=>'Admin',
                 'description'=>'Administrative tasks',
-                'activity'=>'User and forms management tasks',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'name'=>'Editor',
                 'description'=>'Editor tasks',
-                'activity'=>'Edit forms',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'name'=>'ReadOnly',
-                'description'=>'Tareas de solo lectura',
-                'activity'=>'Ver formularios y usuarios',
+                'description'=>'Read only tasks',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
