@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('date_time');
             $table->string('description')->nullable();
             $table->boolean('completed');
-            $table->string('completed_questions')->nullable();
+            $table->integer('completed_questions')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('form_instance_id');

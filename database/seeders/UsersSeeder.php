@@ -21,7 +21,7 @@ class UsersSeeder extends Seeder
             [
                 'first_name'=>'Angela',
                 'last_name'=>'Smith',
-                'photo'=>'NA',
+                'photo'=>'/uploads/photoAS.png',
                 'phone'=>'949-977-9865',
                 'position_in_organization'=>'Web designer',
                 'status'=>'Active',
@@ -36,7 +36,7 @@ class UsersSeeder extends Seeder
             [
                 'first_name'=>'Scott',
                 'last_name'=>'Dowler',
-                'photo'=>'NA',
+                'photo'=>'/uploads/photoSD.png',
                 'phone'=>'513-406-0528',
                 'position_in_organization'=>'Patient educator',
                 'status'=>'Inactive',
@@ -51,7 +51,7 @@ class UsersSeeder extends Seeder
             [
                 'first_name'=>'Nolan',
                 'last_name'=>'Longnecker',
-                'photo'=>'NA',
+                'photo'=>'/uploads/photoNL.png',
                 'phone'=>'775-296-5109',
                 'position_in_organization'=>'Atmospheric scientist',
                 'status'=>'Active',
@@ -66,7 +66,7 @@ class UsersSeeder extends Seeder
             [
                 'first_name'=>'Dustin',
                 'last_name'=>'Gentry',
-                'photo'=>'NA',
+                'photo'=>'/uploads/photoDG.png',
                 'phone'=>'347-328-6917',
                 'position_in_organization'=>'Health care interpreter',
                 'status'=>'Active',
@@ -81,7 +81,7 @@ class UsersSeeder extends Seeder
             [
                 'first_name'=>'Bertha',
                 'last_name'=>'McDavid',
-                'photo'=>'NA',
+                'photo'=>'/uploads/photoBM.png',
                 'phone'=>'305-782-4470',
                 'position_in_organization'=>'Tax examiner',
                 'status'=>'Active',

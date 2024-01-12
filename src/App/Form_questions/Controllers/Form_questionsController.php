@@ -1,13 +1,12 @@
 <?php
 
-// namespace App\Http\Controllers;
-namespace App\Organizations\Controllers;
+namespace App\Form_questions\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\Organizations\Models\Organization;
+use Domain\Form_questions\Models\Form_question;
 use Support\Controllers\Controller;
 
-class OrganizationsController extends Controller
+class Form_questionsController extends Controller
 {
     //
 }

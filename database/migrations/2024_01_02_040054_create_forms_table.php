@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('welcome_text');
             $table->string('description')->nullable();
             $table->dateTime('creation_date_time');
-            $table->binary('logo')->nullable();
+            $table->string('logo')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
             $table->string('rounded_style')->nullable();
