@@ -20,21 +20,21 @@ class OrganizationsSeeder extends Seeder
             [
                 'name'=>'UDE',
                 'description'=>'Universidad de la empresa',
-                'logo'=>'NA',
+                'logo'=>'/uploads/logoUDE.png',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'name'=>'Light-it',
                 'description'=>'Healthcare software development',
-                'logo'=>'NA',
+                'logo'=>'/uploads/logoLI.png',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
                 'name'=>'AWS',
                 'description'=>'Amazon Web Services',
-                'logo'=>'NA',
+                'logo'=>'/uploads/logoAwS.png',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
