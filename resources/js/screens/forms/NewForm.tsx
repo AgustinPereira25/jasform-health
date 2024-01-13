@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 import ComboBox from '@/ui/form/Combobox'
 import { tw } from '@/utils'
 import type { Form } from '@/api'
-
+// TODO - Finish this implementation by seeing figma and replying the design with the components.
 export const NewForm = () => {
     const { id } = useParams();
 
