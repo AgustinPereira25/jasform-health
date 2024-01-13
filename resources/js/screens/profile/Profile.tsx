@@ -1,34 +1,24 @@
-import React from 'react'
 import { Button, Input, icons } from '@/ui'
 import { FileUploader } from '@/components'
 import { useForm } from 'react-hook-form'
-import { useQuery } from '@tanstack/react-query'
-import { getUserQuery } from '@/api'
-import { useParams } from 'react-router-dom'
+import { useUserStore } from '@/stores'
+
+interface ProfileForm {
+    id?: number,
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    phone?: string,
+    title?: string,
+    organization?: string,
+    subscription?: string,
+    role?: string,
+    status?: string
+}
 
 export const Profile = () => {
-    const { id } = useParams();
+    const { user } = useUserStore();
 
-    const { data: user, isLoading: isLoadingUsers } = useQuery({
-        ...getUserQuery(parseInt(id!)),
-        // select: (users) =>
-        //   users.map((user, idx) => {
-        //     const selectedItem =
-        //       activityItems[idx % activityItems.length] ?? activityItems[0];
-
-        //     return {
-        //       ...selectedItem,
-
-        //       user: {
-        //         imageUrl: selectedItem.user.imageUrl,
-        //         name: user.name,
-        //         id: user.id,
-        //       },
-        //     };
-        //   }),
-        // The query will not execute until the id exists
-        enabled: !!id,
-    });
     const {
         register,
         handleSubmit,
@@ -36,19 +26,21 @@ export const Profile = () => {
         setValue,
     } = useForm({
         defaultValues: {
-            firstName: 'pepepepepe',
+            id: user?.id,
+            firstName: user?.first_name,
             lastName: user?.last_name,
             email: user?.email,
             phone: user?.phone,
             title: user?.position_in_organization,
-            organization: user?.organization_id,
+            organization: user?.organization_name,
         }
     });
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: ProfileForm) => {
         console.log(data);
     };
     return (
+
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-white">
                 <h2 className="flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7 text-black">
@@ -77,7 +69,7 @@ export const Profile = () => {
                     <div className="flex shrink-0 rounded-full overflow-hidden">
                         <div className='relative p-0 '>
                             <img
-                                src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                src={user?.photo}
                                 alt="user"
                                 className='h-[120px] w-[120px]'
                             />

@@ -3,126 +3,17 @@ import { Switch } from '@headlessui/react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { deleteUser, getUsersQuery } from "@/api";
-import { MODAL_ROUTES } from "@/router";
+import { MODAL_ROUTES, ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
 import { Button, Input, errorToast, icons, useToastStore } from "@/ui";
 import { tw } from "@/utils";
-
-const statuses = {
-  Completed: "text-green-400 bg-green-400/10",
-  Error: "text-rose-400 bg-rose-400/10",
-};
+import { FormDropdown } from '../forms/components';
+import { FormDropdownItem } from '@/shared.types';
+import { useNavigate } from 'react-router-dom';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
-
-// const activityItems = [
-//   {
-//     user: {
-//       name: "Michael Foster",
-//       imageUrl:
-//         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     },
-//     title: "2d89f0c8",
-//     organization: "main",
-//     status: "Active",
-//     plan: "25s",
-//     role: "Admin",
-//     dateTime: "2023-01-23T11:00",
-//   },
-//   {
-//     user: {
-//       name: "Lindsay Walton",
-//       imageUrl:
-//         "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     },
-//     title: "249df660",
-//     organization: "main",
-//     status: "Active",
-//     plan: "1m 32s",
-//     role: "Admin",
-//     dateTime: "2023-01-23T09:00",
-//   },
-//   {
-//     user: {
-//       name: "Courtney Henry",
-//       imageUrl:
-//         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     },
-//     title: "11464223",
-//     organization: "main",
-//     status: "Inactive",
-//     plan: "1m 4s",
-//     role: "Free",
-//     dateTime: "2023-01-23T00:00",
-//   },
-//   {
-//     user: {
-//       name: "Courtney Henry",
-//       imageUrl:
-//         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     },
-//     title: "dad28e95",
-//     organization: "main",
-//     status: "Active",
-//     plan: "2m 15s",
-//     role: "Free",
-//     dateTime: "2023-01-21T13:00",
-//   },
-//   {
-//     user: {
-//       name: "Michael Foster",
-//       imageUrl:
-//         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     },
-//     title: "624bc94c",
-//     organization: "main",
-//     status: "Active",
-//     plan: "1m 12s",
-//     role: "Plus",
-//     dateTime: "2023-01-18T12:34",
-//   },
-//   {
-//     user: {
-//       name: "Courtney Henry",
-//       imageUrl:
-//         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//     },
-//     title: "e111f80e",
-//     organization: "main",
-//     status: "Active",
-//     plan: "1m 56s",
-//     role: "Admin",
-//     dateTime: "2023-01-16T15:54",
-//   },
-//   // {
-//   //   user: {
-//   //     name: "Michael Foster",
-//   //     imageUrl:
-//   //       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//   //   },
-//   //   commit: "5e136005",
-//   //   branch: "main",
-//   //   status: "Active",
-//   //   plan: "3m 45s",
-//   //   role: "1 week ago",
-//   //   dateTime: "2023-01-16T11:31",
-//   // },
-//   // {
-//   //   user: {
-//   //     name: "Whitney Francis",
-//   //     imageUrl:
-//   //       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//   //   },
-//   //   commit: "5c1fd07f",
-//   //   branch: "main",
-//   //   status: "Active",
-//   //   plan: "37s",
-//   //   role: "2 weeks ago",
-//   //   dateTime: "2023-01-09T08:45",
-//   // },
-// ] as const;
 
 export const Users = () => {
   const { pushToast } = useToastStore();
@@ -160,10 +51,17 @@ export const Users = () => {
     onError: errorToast,
   });
 
-  const navigateModal = useNavigateModal();
+  // const navigateModal = useNavigateModal();
+  const navigate = useNavigate();
   // For toggles
   const [enabledActive, setEnabledActive] = useState(false);
   const [enabledAdmin, setEnabledAdmin] = useState(false);
+
+  const FormDropdownOptions:FormDropdownItem[] = [{ name: "Edit", icon: <icons.PencilIcon /> }, { name: "Delete", icon: <icons.TrashIcon/>, newSection: true} ];
+  
+  const handleClick = () => {
+    navigate(ROUTES.newUser);
+  }
   return (
     <>
       <div className="bg-white">
@@ -171,7 +69,7 @@ export const Users = () => {
           Users
           <Button
             variant="primary"
-            onClick={() => navigateModal(MODAL_ROUTES.userForm)}
+            onClick={handleClick}
           >
             + Create User
           </Button>
@@ -182,8 +80,7 @@ export const Users = () => {
 
           <Input
             type="search"
-            id="nameEmail"
-            right={<icons.MagnifyingGlassIcon/>}
+            id="nameEmail"            
             label="Name/Email"
             placeholder="Search by name or email"
             className='min-w-[210px]'
@@ -194,8 +91,7 @@ export const Users = () => {
           />
           <Input
             type="search"
-            id="titleOrg"
-            right={<icons.MagnifyingGlassIcon/>}
+            id="titleOrg"            
             label="Title/Organization"
             placeholder="Search by title or organization"
             className='min-w-[245px]'
@@ -207,7 +103,7 @@ export const Users = () => {
           <Input
             type="search"
             id="planType"
-            right={<icons.MagnifyingGlassIcon/>} // cuando el input es type=search aparece un cross para limpiar input
+            // cuando el input es type=search aparece un cross para limpiar input
             label="Plan Type"
             placeholder="Search by name or email"
             className='min-w-[210px]'
@@ -263,7 +159,7 @@ export const Users = () => {
             </Switch>
           </Switch.Group>      
         </div>
-        <div className="border-gray-300 border-[1px] rounded-xl overflow-hidden">
+        <div className="border-gray-300 border-[1px] rounded-sm">
           <table className="w-full whitespace-nowrap text-left bg-white shadow-md">
             <colgroup>
               <col className="w-full sm:w-4/12" />
@@ -304,12 +200,6 @@ export const Users = () => {
                   className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
                 >
                   ROLE
-                </th>
-                <th
-                  scope="col"
-                  className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                >
-                  <span className="sr-only">Action</span>
                 </th>
                 <th
                   scope="col"
@@ -372,7 +262,7 @@ export const Users = () => {
                       >
                         <div className="h-1.5 w-1.5 rounded-full bg-current" />
                       </div> */}
-                      <div className={item.status === 'Active' ? "rounded-3xl px-3 hidden bg-[#D1FAE5] text-green-950 sm:block" : "rounded-3xl px-3 hidden bg-[#fad1d1] text-red-950 sm:block"}>
+                      <div className={item.status === 'Active' ? "text-[#065F46] sm:block" : "text-[#a82d2d] sm:block"}>
                         {item.status}
                       </div>
                     </div>
@@ -383,22 +273,25 @@ export const Users = () => {
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     Admin
                   </td>
-                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    {/* <Button
-                      variant="tertiary"
-                      onClick={() => deleteUserMutation(item.user.id)}
-                    >
-                      <icons.TrashIcon className="h-5 w-5" />
-                    </Button> */}
+                  {/* <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <a href={`/users/${item.id}`} className="text-[#00519E]">Edit</a>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <a href="/" className="text-[#00519E]">Delete</a>
+                  </td> */}
+                  <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                    <FormDropdown
+                      mode='USERS' 
+                      items={FormDropdownOptions}
+                      param={item.id}
+                    />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="h-[100px]">
         </div>
       </div>
     </>

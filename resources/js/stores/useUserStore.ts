@@ -1,12 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface User {
-  email: string;
-  name: string;
-  picture: string;
-  role: "standard" | "admin";
-}
+import type { User } from "../api/users";
 
 export interface UserStoreState {
   user: User | null;

@@ -3,7 +3,6 @@ import { Menu, Transition } from '@headlessui/react'
 import {
   ArchiveBoxIcon,
   ArrowRightCircleIcon,
-  ChevronDownIcon,
   DocumentDuplicateIcon,
   HeartIcon,
   PencilSquareIcon,
@@ -11,12 +10,47 @@ import {
   UserPlusIcon,
 } from '@heroicons/react/20/solid'
 import { icons } from '@/ui'
+import type { FormDropdownItem } from '@/shared.types'
+
+interface FormDropdownProps {
+  mode: "FORM" | "USERS";
+  items: FormDropdownItem[],
+  param?: string | number,
+}
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export const FormDropdown = () => {
+const buildHref = (mode: string, itemName: string, param?: string | number) => {
+  if (mode === "USERS") {
+    switch (itemName) {
+      case 'Edit':
+        return `/users/${param}`
+      case 'Duplicate':
+        return `/users/${param}/duplicate`
+      case 'Archive':
+        return `/users/${param}/archive`
+      case 'Move':
+        return `/users/${param}/move`
+      case 'Share':
+        return `/users/${param}/share`
+      case 'Add to favorites':
+        return `/users/${param}/add-to-favorites`
+    }
+  }
+  else // mode === "FORM"
+  {
+    switch (itemName) {
+      case 'Edit':
+        return `/forms/${param}`
+      case 'Duplicate':
+        return `/forms/${param}/duplicate`
+    }
+  }
+}
+
+export const FormDropdown: React.FC<FormDropdownProps> = ({ items, mode, param }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -34,8 +68,48 @@ export const FormDropdown = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
+        <Menu.Items className="absolute max-h-[300px] overflow-scroll right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          {items.map((item, idx) => (
+            item.newSection ?? idx === 0 ? (
+              <div key={idx} className="py-1">
+                <Menu.Item key={idx}>
+                  {({ active }) => (
+                    <a
+                      href={buildHref(mode, item.name, param)}
+                      className={classNames(
+                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                        'group flex items-center px-4 py-2 text-sm'
+                      )}
+                    >
+                      <PencilSquareIcon
+                        className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </a>
+                  )}
+                </Menu.Item>
+              </div>
+            ) : (
+              <Menu.Item key={idx}>
+                {({ active }) => (
+                  <a
+                    href={buildHref(mode, item.name, param)}
+                    className={classNames(
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'group flex items-center px-4 py-2 text-sm'
+                    )}
+                  >
+                    <PencilSquareIcon
+                      className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                      aria-hidden="true"
+                    />
+                    {item.name}
+                  </a>
+                )}
+              </Menu.Item>
+            )))}
+          {/* <div className="py-1">
             <Menu.Item>
               {({ active }) => (
                 <a
@@ -149,7 +223,7 @@ export const FormDropdown = () => {
                 </a>
               )}
             </Menu.Item>
-          </div>
+          </div> */}
         </Menu.Items>
       </Transition>
     </Menu>
