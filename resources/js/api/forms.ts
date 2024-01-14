@@ -13,19 +13,19 @@ export interface Forms {
 }
 
 export interface Form {
-    id: number;
-    name: string;
-    welcome_text: string;
-    description: string;
-    creation_date_time: Date;
-    logo: Blob;
-    primary_color: string;
-    secondary_color: string;
-    rounded_style: string;
-    api_url: string;
-    status: string;
-    public_code: string;
-    user_creator_id: number;
+    id?: number;
+    name?: string;
+    welcome_text?: string;
+    description?: string;
+    creation_date_time?: Date;
+    logo?: Blob;
+    primary_color?: string;
+    secondary_color?: string;
+    rounded_style?: string;
+    api_url?: string;
+    status?: string;
+    public_code?: string;
+    user_creator_id?: number;
 }
 
 export const getFormsQuery = () => ({
