@@ -6,6 +6,7 @@ namespace App\Form_instances\Transformers;
 
 use Domain\Form_instances\Models\Form_instance;
 use Flugg\Responder\Transformers\Transformer;
+use Carbon\Carbon;
 
 class Form_instanceTransformer extends Transformer
 {
@@ -13,9 +14,9 @@ class Form_instanceTransformer extends Transformer
     {
         return [
             'id' => (int) $form_instance->id,
-            'date_time' => (string) $form_instance->date_time,
-            'last_name' => (string) $form_instance->form_id,
-            'photo' => (string) $form_instance->completer_user_id,
+            'date_time' => Carbon::parse($form_instance->date_time)->format('Y-m-d H:i:s'),
+            'form_id' => (int) $form_instance->form_id,
+            'completer_user_id' => (int) $form_instance->completer_user_id,
         ];
     }
 }

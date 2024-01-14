@@ -6,6 +6,7 @@ namespace App\Activity_records\Transformers;
 
 use Domain\Activity_records\Models\Activity_record;
 use Flugg\Responder\Transformers\Transformer;
+use Carbon\Carbon;
 
 class Activity_recordTransformer extends Transformer
 {
@@ -13,7 +14,7 @@ class Activity_recordTransformer extends Transformer
     {
         return [
             'id' => (int) $activity_record->id,
-            'date_time' => (string) $activity_record->date_time,
+            'date_time' => Carbon::parse($activity_record->date_time)->format('Y-m-d H:i:s'),
             'status' => (string) $activity_record->status,
             'ip_address' => (string) $activity_record->ip_address,
             'activity_performed' => (string) $activity_record->activity_performed,

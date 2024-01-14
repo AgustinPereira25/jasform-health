@@ -68,7 +68,7 @@ class Form_question extends Model
         return $this->hasMany(Question_option::class);
     }
 
-    // Ver
+    // TODO
     // public function next_questions(): HasMany
     // {
     //     return $this->hasMany(Question_option::class);

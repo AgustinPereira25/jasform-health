@@ -17,8 +17,8 @@ class Form_questionTransformer extends Transformer
             'text' => (string) $form_question->last_name,
             'order' => (string) $form_question->photo,
             'obligatory' => (string) $form_question->phone,
-            'form_id' => (string) $form_question->form->id,
-            'question_type_id' => (string) $form_question->question_type->id,
+            'form_id' => (int) $form_question->form_id,
+            'question_type_id' => (int) $form_question->question_type_id,
         ];
     }
 }

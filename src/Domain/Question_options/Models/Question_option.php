@@ -46,7 +46,7 @@ class Question_option extends Model
         return $this->belongsTo(Form_question::class);
     }
 
-    // Ver
+    // TODO
     // public function next_question(): BelongsTo
     // {
     //     return $this->belongsTo(Form_question::class);

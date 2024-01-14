@@ -21,7 +21,7 @@ class StoreQuestion_optionAction
             'name' => $question_optionDto->getName(),
             'description' => $question_optionDto->getDescription(),
             'next_question' => $question_optionDto->getNextQuestion(),
-            'form_question_id' => $question_optionDto->getQuestionId(),
+            'form_question_id' => $question_optionDto->getFormQuestionId(),
         ]);
     }
 }

@@ -13,11 +13,11 @@ class Question_optionTransformer extends Transformer
     {
         return [
             'id' => (int) $question_option->id,
-            'order' => (string) $question_option->order,
+            'order' => (int) $question_option->order,
             'name' => (string) $question_option->name,
             'description' => (string) $question_option->description,
-            'next_question' => (string) $question_option->form_question->id,
-            'form_question_id' => (string) $question_option->form_question->id,
+            'next_question' => (int) $question_option->form_question->id,
+            'form_question_id' => (int) $question_option->form_question->id,
         ];
     }
 }
