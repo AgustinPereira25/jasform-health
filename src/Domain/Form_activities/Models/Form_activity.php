@@ -2,8 +2,9 @@
 
 namespace Domain\Form_activities\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Domain\Form_instances\Models\Form_instance;
 
 /**
  * Domain\Form_activities\Models\Form_activity
@@ -27,9 +28,22 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_activity whereFormInstanceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_activity whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_activity whereUpdatedAt($value)
+ * @property-read Form_instance $form_instance
  * @mixin \Eloquent
  */
 class Form_activity extends Model
 {
-    use HasFactory;
+
+    protected $fillable = [
+        'date_time',
+        'description',
+        'completed',
+        'completed_question',
+        'form_instance_id',
+    ];
+
+    public function form_instance(): BelongsTo
+    {
+        return $this->belongsTo(Form_instance::class);
+    }
 }

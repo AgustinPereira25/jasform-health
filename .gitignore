@@ -23,3 +23,5 @@ yarn-error.log
 /tsconfig.tsbuildinfo
 /.phpunit.cache/
 .DS_Store
+.VSCodeCounter/
+.scannerwork/

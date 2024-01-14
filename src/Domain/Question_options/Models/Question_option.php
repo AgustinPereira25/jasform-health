@@ -2,8 +2,9 @@
 
 namespace Domain\Question_options\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Domain\Form_questions\Models\Form_question;
 
 /**
  * Domain\Question_options\Models\Question_option
@@ -27,9 +28,27 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Question_option whereNextQuestion($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_option whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_option whereUpdatedAt($value)
+ * @property-read Form_question $form_question
  * @mixin \Eloquent
  */
 class Question_option extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'order',
+        'name',
+        'description',
+        'next_question',
+        'form_question_id',
+    ];
+
+    public function form_question(): BelongsTo
+    {
+        return $this->belongsTo(Form_question::class);
+    }
+
+    // TODO
+    // public function next_question(): BelongsTo
+    // {
+    //     return $this->belongsTo(Form_question::class);
+    // }
 }

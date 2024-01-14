@@ -6,9 +6,14 @@ namespace App\Users\Transformers;
 
 use Domain\Users\Models\User;
 use Flugg\Responder\Transformers\Transformer;
+use App\Roles\Transformers\RoleTransformer;
 
 class UserTransformer extends Transformer
 {
+    protected $load = [
+        'roles' => RoleTransformer::class,
+    ];
+
     public function transform(User $user): array
     {
         return [

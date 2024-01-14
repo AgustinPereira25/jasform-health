@@ -3,8 +3,9 @@
 // namespace App;
 namespace Domain\Organizations\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Domain\Users\Models\User;
 
 /**
  * Domain\Organizations\Models\Organization
@@ -24,9 +25,20 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereLogo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read int|null $users_count
  * @mixin \Eloquent
  */
 class Organization extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'description',
+        'logo',
+    ];
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }

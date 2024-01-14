@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('form_activities', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_time');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->boolean('completed');
-            $table->string('completed_questions');
+            $table->integer('completed_questions')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('form_instance_id');

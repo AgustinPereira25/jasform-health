@@ -15,22 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('welcome_text');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->dateTime('creation_date_time');
-            $table->binary('logo');
-            $table->string('primary_color');
-            $table->string('secondary_color');
-            $table->string('rounded_style');
-            $table->string('api_url');
+            $table->string('logo')->nullable();
+            $table->string('primary_color')->nullable();
+            $table->string('secondary_color')->nullable();
+            $table->string('rounded_style')->nullable();
+            $table->string('api_url')->nullable();
             $table->string('status');
             $table->string('public_code');
             $table->timestamps();
 
-            $table->unsignedBigInteger('user_creator_id');
-            $table->foreign('user_creator_id')->references('id')->on('users');
-
-            $table->unsignedBigInteger('user_auxiliary_editor_id');
-            $table->foreign('user_auxiliary_editor_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -15,7 +15,7 @@ class ListUserController
     public function __invoke(Request $request): JsonResponse
     {
         $users = QueryBuilder::for(User::class)
-            ->with('organization')
+            ->with(['organization', 'roles'])
             ->get();
 
         return responder()

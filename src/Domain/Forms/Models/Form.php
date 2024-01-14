@@ -2,8 +2,10 @@
 
 namespace Domain\Forms\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Domain\Form_instances\Models\Form_instance;
+use Domain\Form_questions\Models\Form_question;
 
 /**
  * Domain\Forms\Models\Form
@@ -43,9 +45,46 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserAuxiliaryEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereWelcomeText($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
+ * @property-read int|null $form_instances_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
+ * @property-read int|null $form_questions_count
+ * @property int $user_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserId($value)
  * @mixin \Eloquent
  */
 class Form extends Model
 {
-    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'welcome_text',
+        'description',
+        'creation_date_time',
+        'logo',
+        'primary_color',
+        'secondary_color',
+        'rounded_style',
+        'api_url',
+        'status',
+        'public_code',
+        'user_id',
+    ];
+
+    public function form_instances(): HasMany
+    {
+        return $this->hasMany(Form_instance::class);
+    }
+
+    public function form_questions(): HasMany
+    {
+        return $this->hasMany(Form_question::class);
+    }
+
+    // TODO
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
+
 }

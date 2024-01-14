@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('text');
             $table->integer('order');
-            $table->string('next_question');
             $table->boolean('obligatory');
             $table->timestamps();
 
