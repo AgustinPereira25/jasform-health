@@ -72,3 +72,66 @@ Route::prefix('completer_users')
         // Route::post('/', StoreUserController::class);
         // Route::delete('/{user}', DeleteUserController::class);
     });
+
+Route::prefix('form_activities')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', Form_activitiesController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });
+
+Route::prefix('form_instances')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', Form_instancesController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });
+
+Route::prefix('form_questions')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', Form_questionsController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });
+
+Route::prefix('organizations')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', OrganizationsController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });
+
+Route::prefix('question_options')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', Question_optionsController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });
+
+Route::prefix('question_types')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', Question_typesController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });
+
+Route::prefix('roles')
+    ->middleware([])
+    ->group(static function () {
+        Route::get('/', RolesController::class);
+        // Route::get('/{user}', GetUserController::class);
+        // Route::post('/', StoreUserController::class);
+        // Route::delete('/{user}', DeleteUserController::class);
+    });

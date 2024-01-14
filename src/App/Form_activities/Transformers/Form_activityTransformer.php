@@ -6,6 +6,7 @@ namespace App\Form_activities\Transformers;
 
 use Domain\Form_activities\Models\Form_activity;
 use Flugg\Responder\Transformers\Transformer;
+use Carbon\Carbon;
 
 class Form_activityTransformer extends Transformer
 {
@@ -13,11 +14,11 @@ class Form_activityTransformer extends Transformer
     {
         return [
             'id' => (int) $form_activity->id,
-            'date_time' => (string) $form_activity->date_time,
+            'date_time' => Carbon::parse($form_activity->date_time)->format('Y-m-d H:i:s'),
             'description' => (string) $form_activity->description,
             'completed' => (string) $form_activity->completed,
             'completed_questions' => (string) $form_activity->completed_questions,
-            'form_instance_id' => (string) $form_activity->form_instance->id,
+            'form_instance_id' => (int) $form_activity->form_instance_id,
         ];
     }
 }
