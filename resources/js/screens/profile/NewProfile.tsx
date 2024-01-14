@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Input, icons } from '@/ui'
 import { FileUploader } from '@/components'
 import { useForm } from 'react-hook-form'
-import type { User } from '@/api'
+import type { User, UserRoles } from '@/api'
 import ComboBox from '@/ui/form/Combobox'
 import { tw } from '@/utils'
 
@@ -15,7 +15,7 @@ interface NewProfileForm {
     title?: string,
     organization?: string,
     subscription?: string,
-    role?: string,
+    roles?: UserRoles[],
     status?: string
 }
 interface NewProfileProps {
@@ -27,6 +27,8 @@ export const NewProfile: React.FC<NewProfileProps> = ({ initialData: user = {} }
     const SubscriptionPlans = [{ name: 'Free' }, { name: 'Premium' }, { name: 'Enterprise' }]; // solo name
     const Roles = [{ id: 1, name: 'Admin' }, { id: 2, name: 'User' }, { id: 3, name: 'Viewer' }]; // el unico q prevalaece con esta structura
     const Status = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Pending' }]; //solo name
+
+    const defaultRole = user.roles?.length === 0 ? 'Admin': user.roles![0]!.name;
 
     const {
         register,
@@ -44,11 +46,10 @@ export const NewProfile: React.FC<NewProfileProps> = ({ initialData: user = {} }
             title: user?.position_in_organization ?? "",
             organization: user?.organization_name ?? "",
             subscription: 'Free' ?? "",
-            role: 'Admin',
+            role: defaultRole,
             status: user?.status ?? "Active",
         },
     });
-
     const onSubmit = (data: NewProfileForm) => {
         console.log(data);
         // if (!data.phone) {
@@ -296,7 +297,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({ initialData: user = {} }
                             <ComboBox
                                 id='role'
                                 items={Roles}
-                                defaultValue={'Admin'}
+                                defaultValue={defaultRole}
                                 {...register("role")}
                                 onValueChange={(item) => {
                                     setValue("role", item.name);

@@ -37,7 +37,7 @@ export const Users = () => {
     //     };
     //   }),
   });
-
+// console.log(users);
   const { mutate: deleteUserMutation } = useMutation({
     mutationFn: deleteUser.mutation,
     onSuccess: (_, requestedId) => {
@@ -271,7 +271,7 @@ export const Users = () => {
                     plan??
                   </td> */}
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    Admin
+                    {item.roles?.length === 0 ? 'No role' : item.roles![0]!.name }
                   </td>
                   {/* <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <a href={`/users/${item.id}`} className="text-[#00519E]">Edit</a>

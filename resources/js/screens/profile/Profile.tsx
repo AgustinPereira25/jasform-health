@@ -2,6 +2,7 @@ import { Button, Input, icons } from '@/ui'
 import { FileUploader } from '@/components'
 import { useForm } from 'react-hook-form'
 import { useUserStore } from '@/stores'
+// import { UserRoles } from '@/api'
 
 interface ProfileForm {
     id?: number,
@@ -12,12 +13,14 @@ interface ProfileForm {
     title?: string,
     organization?: string,
     subscription?: string,
-    role?: string,
+    // roles?: UserRoles[],
     status?: string
 }
 
 export const Profile = () => {
     const { user } = useUserStore();
+
+    // const defaultRole = user!.roles?.length === 0 ? 'Admin': user!.roles![0]!.name;
 
     const {
         register,
@@ -33,6 +36,7 @@ export const Profile = () => {
             phone: user?.phone,
             title: user?.position_in_organization,
             organization: user?.organization_name,
+            // role: defaultRole,
         }
     });
 

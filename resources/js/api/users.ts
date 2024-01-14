@@ -12,6 +12,13 @@ export interface Users {
   data:    User[];
 }
 
+
+export interface UserRoles {
+  id:   number;
+  name: string;
+  description: string;
+}
+
 export interface User {
   id?:                       number;
   first_name?:               string;
@@ -23,15 +30,14 @@ export interface User {
   email?:                    string;
   organization_id?:          string;
   organization_name?:        string;
-  role_id?:                  string;
-  role_name?:                string;
+  roles?:                    UserRoles[];
 }
 
 export const getUsersQuery = () => ({
   queryKey: [DOMAIN, ALL, "getUsersQuery"],
   queryFn: async () => {
     const response = await privateAPI.get<ServiceResponse<User[]>>("/users");
-    // console.log(response)
+    //console.log(response);
     return response.data.data;
   },
 });
