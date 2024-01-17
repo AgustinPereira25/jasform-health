@@ -4,13 +4,11 @@ namespace App\Forms\Controllers;
 
 use Illuminate\Http\Request;
 use Domain\Forms\Models\Form;
-use Support\Controllers\Controller;
 use App\Forms\Transformers\FormTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 
-
-class FormsController extends Controller
+class ListFormController
 {
     public function __invoke(Request $request): JsonResponse
     {
