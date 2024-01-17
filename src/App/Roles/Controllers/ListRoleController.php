@@ -4,12 +4,11 @@ namespace App\Roles\Controllers;
 
 use Illuminate\Http\Request;
 use Domain\Roles\Models\Role;
-use Support\Controllers\Controller;
 use App\Roles\Transformers\RoleTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RolesController extends Controller
+class ListRoleController
 {
     public function __invoke(Request $request): JsonResponse
     {

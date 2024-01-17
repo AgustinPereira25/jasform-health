@@ -6,7 +6,6 @@ namespace App\Activity_records\Request;
 
 use Domain\Activity_records\DataTransferObjects\Activity_recordDto;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreActivity_recordRequest extends FormRequest
 {
