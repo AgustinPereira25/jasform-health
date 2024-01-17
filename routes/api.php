@@ -42,7 +42,10 @@ use App\Question_types\Controllers\ListQuestion_typeController;
 use App\Question_types\Controllers\GetQuestion_typeController;
 use App\Question_types\Controllers\StoreQuestion_typeController;
 use App\Question_types\Controllers\DeleteQuestion_typeController;
-use App\Roles\Controllers\RolesController;
+use App\Roles\Controllers\ListRoleController;
+use App\Roles\Controllers\GetRoleController;
+use App\Roles\Controllers\StoreRoleController;
+use App\Roles\Controllers\DeleteRoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,8 +160,8 @@ Route::prefix('question_types')
 Route::prefix('roles')
     ->middleware([])
     ->group(static function () {
-        Route::get('/', RolesController::class);
-        // Route::get('/{user}', GetUserController::class);
-        // Route::post('/', StoreUserController::class);
-        // Route::delete('/{user}', DeleteUserController::class);
+        Route::get('/', ListRoleController::class);
+        Route::get('/{role}', GetRoleController::class);
+        Route::post('/', StoreRoleController::class);
+        Route::delete('/{role}', DeleteRoleController::class);
     });
