@@ -9,7 +9,7 @@ use App\Form_activities\Transformers\Form_activityTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class Form_activitiesController extends Controller
+class ListForm_activityController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {

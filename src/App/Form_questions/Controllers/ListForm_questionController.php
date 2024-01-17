@@ -4,12 +4,11 @@ namespace App\Form_questions\Controllers;
 
 use Illuminate\Http\Request;
 use Domain\Form_questions\Models\Form_question;
-use Support\Controllers\Controller;
 use App\Form_questions\Transformers\Form_questionTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class Form_questionsController extends Controller
+class ListForm_questionController
 {
     public function __invoke(Request $request): JsonResponse
     {

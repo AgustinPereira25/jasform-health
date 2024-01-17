@@ -6,14 +6,13 @@ namespace App\Forms\Request;
 
 use Domain\Forms\DataTransferObjects\FormDto;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreFormRequest extends FormRequest
 {
     public const NAME = 'name';
     public const WELCOME_TEXT = 'welcome_text';
     public const DESCRIPTION = 'description';
-    public const CREATION_DATE = 'creation_date';
+    public const CREATION_DATE_TIME = 'creation_date';
     public const LOGO = 'logo';
     public const PRIMARY_COLOR = 'primary_color';
     public const SECONDARY_COLOR = 'secondary_color';
@@ -28,7 +27,7 @@ class StoreFormRequest extends FormRequest
         return [
             self::NAME => ['required'],
             self::WELCOME_TEXT => ['required'],
-            self::CREATION_DATE => ['required'],
+            self::CREATION_DATE_TIME => ['required'],
             self::STATUS => ['required'],
             self::PUBLIC_CODE => ['required'],
             self::USER_ID => ['required'],
@@ -41,7 +40,7 @@ class StoreFormRequest extends FormRequest
             name: $this->string(self::NAME)->toString(),
             welcome_text: $this->string(self::WELCOME_TEXT)->toString(),
             description: $this->string(self::DESCRIPTION)->toString(),
-            creation_date: $this->string(self::CREATION_DATE)->toString(),
+            creation_date_time: $this->string(self::CREATION_DATE_TIME)->toString(),
             logo: $this->string(self::LOGO)->toString(),
             primary_color: $this->string(self::PRIMARY_COLOR)->toString(),
             secondary_color: $this->string(self::SECONDARY_COLOR)->toString(),
