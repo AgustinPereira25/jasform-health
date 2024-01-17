@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Form, getUserQuery } from "@/api";
+import { Form, getFormQuery } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { NewForm } from "./NewForm";
@@ -10,16 +10,16 @@ export const PrepareFormForm: React.FunctionComponent = () => {
     // const navigate = useNavigate();
     // TODO- Error handling 404, and redirect to not found page. with navigate.
     let form: Form = {};
-    const { data: userData, isLoading: isLoadingForm  } = useQuery({
-        ...getUserQuery(parseInt(id!)),
+    const { data: formData, isLoading: isLoadingForm  } = useQuery({
+        ...getFormQuery(parseInt(id!)),
         // The query will not execute until the id exists
         enabled: !!id,
     });
-    form = userData!;
+    form = formData!;
     
     // useEffect(() => {
     //     console.log(isError)
-    //     if(!isLoadingForm && id && userData===undefined){
+    //     if(!isLoadingForm && id && form===undefined){
     //         navigate("/*");
     //     } 
     // }
@@ -35,7 +35,7 @@ return (
                 </td>
             </tr>
             ) : (
-                <NewForm initialData={user} />
+                <NewForm initialData={form} />
             )}
         </div>
     );

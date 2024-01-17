@@ -11,6 +11,7 @@ import { Forms } from "@/screens/forms";
 import { Profile } from "@/screens/profile";
 import NewForm from "@/screens/forms/NewForm";
 import { PrepareProfileForm } from "@/screens/profile/PrepareProfileForm";
+import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 
 export const Router = () => {
   const location = useLocation();
@@ -52,13 +53,13 @@ export const Router = () => {
 
         {/* <Route element={<ProtectedRoute expected="admin" />}> */}
         <Route element={<Layout />}>
-          <Route element={<NewForm />} path={ROUTES.newForm} />
+          <Route element={<PrepareFormForm />} path={ROUTES.newForm} />
         </Route>
         {/* </Route> */}
 
         {/* <Route element={<ProtectedRoute expected="admin" />}> */}
         <Route element={<Layout />}>
-          <Route element={<NewForm />} path={ROUTES.editForm} />
+          <Route element={<PrepareFormForm />} path={ROUTES.editForm} />
         </Route>
         {/* </Route> */}
 

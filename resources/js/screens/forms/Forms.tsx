@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Switch } from '@headlessui/react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormDropdown } from './components';
-import { deleteUser, getUsersQuery } from "@/api";
+import { deleteUser, getFormsQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
 import { Button, Input, errorToast, icons, useToastStore } from "@/ui";
@@ -125,8 +125,8 @@ export const Forms = () => {
   const { pushToast } = useToastStore();
   const queryClient = useQueryClient();
 
-  const { data: users, isLoading: isLoadingUsers } = useQuery({
-    ...getUsersQuery(),
+  const { data: forms, isLoading: isLoadingForms } = useQuery({
+    ...getFormsQuery(),
     // select: (users) =>
     //   users.map((user, idx) => {
     //     const selectedItem =
@@ -160,7 +160,6 @@ export const Forms = () => {
   const navigateModal = useNavigateModal();
   // For toggles
   const [enabledActive, setEnabledActive] = useState(false);
-  const [enabledAdmin, setEnabledAdmin] = useState(false);
 
   const FormDropdownOptions:FormDropdownItem[] = [{ name: "Edit", icon: <icons.PencilIcon /> }, { name: "Duplicate", icon: <icons.DocumentDuplicateIcon /> }, { name: "Get Link", icon: <icons.GetLinkIcon/> }, { name: "Delete", icon: <icons.TrashIcon/>, newSection: true} ];
   return (
@@ -189,7 +188,7 @@ export const Forms = () => {
           //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Input
-            type="search"
+            type="date"
             id="date"
             label="Date"
             placeholder="Search by Daten"
@@ -278,7 +277,7 @@ export const Forms = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {isLoadingUsers && (
+              {isLoadingForms && (
                 <tr className="h-full items-center">
                   <td colSpan={5}>
                     <div className="flex justify-center p-9">
@@ -287,27 +286,27 @@ export const Forms = () => {
                   </td>
                 </tr>
               )}
-              {activityItems?.map((item) => (
-                <tr key={item.title}>
+              {forms?.map((item) => (
+                <tr key={item.id}>
                   <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                     <div className="flex items-center gap-x-4">
                         <div className="truncate text-sm leading-6 text-black">
-                          {item.user.name}
+                          {item.name}
                         </div>
                     </div>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                     <div className="flex gap-x-3">
                       <div className="truncate text-sm leading-6 text-black">
-                        {item.title}
+                        {item.creation_date?.toString()}
                       </div>
                     </div>
                   </td>
                   <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                    {item.plan}
+                    99
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    {item.role}
+                    99
                   </td>
                   <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 sm:justify-start">
@@ -328,6 +327,7 @@ export const Forms = () => {
                     <FormDropdown 
                       items={FormDropdownOptions}
                       mode='FORM'
+                      param={item.id}
                     />
                   </td>
                 </tr>
