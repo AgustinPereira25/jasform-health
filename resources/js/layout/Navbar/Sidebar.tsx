@@ -1,11 +1,11 @@
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { ROUTES } from "@/router";
 import { User, useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
-import { NavbarLogo, LogOutLogo } from "./components";
-import React, { useEffect } from "react";
+import { LogOutLogo, NavbarLogo } from "./components";
 
 const navigation = [
   {
@@ -20,18 +20,18 @@ const navigation = [
     icon: <icons.MyFormsIcon />,
     role: "admin",
   },
-  {
-    path: "#",
-    label: "My Bills",
-    icon: <icons.MyBillsIcon />,
-    role: "admin",
-  },
-  {
-    path: "#",
-    label: "My Subscription",
-    icon: <icons.MySubscriptionIcon />,
-    role: "admin",
-  },
+  //   {
+  //     path: "#",
+  //     label: "My Bills",
+  //     icon: <icons.MyBillsIcon />,
+  //     role: "admin",
+  //   },
+  //   {
+  //     path: "#",
+  //     label: "My Subscription",
+  //     icon: <icons.MySubscriptionIcon />,
+  //     role: "admin",
+  //   },
   {
     path: ROUTES.users,
     label: "Users",
@@ -69,16 +69,18 @@ export const Sidebar = ({
 
   return (
     <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
-      <div className="p-8 flex h-16 shrink-0">
+      <div className="flex h-16 shrink-0 p-8">
         <NavbarLogo />
       </div>
       {mockUser && (
-        <nav className="flex flex-1 flex-col">
-          <ul className="flex flex-1 flex-col gap-y-7">
+        <nav className="flex flex-1 flex-col ">
+          <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">
             <li className="flex-1">
               <ul className="relative h-full">
                 {navigation
-                  .filter((item) => item.role.includes(mockUser.role_name!.toLowerCase()))
+                  .filter((item) =>
+                    item.role.includes(mockUser.role_name!.toLowerCase()),
+                  )
                   .map((item) => (
                     <li
                       key={item.label}
@@ -91,7 +93,7 @@ export const Sidebar = ({
                       <Link
                         to={item.path}
                         onClick={onCloseSidebar}
-                        className="pl-5 group flex gap-x-3 py-3 text-sm font-semibold"
+                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
                       >
                         {item.icon}
                         {item.label}
@@ -100,7 +102,7 @@ export const Sidebar = ({
                   ))}
                 <li className="absolute bottom-0 w-full">
                   <div className="flex justify-center">
-                    <hr className="bg-[#407EC9] w-11/12" />
+                    <hr className="w-11/12 bg-[#407EC9]" />
                   </div>
                   {/* <button
                     onClick={() => setToken(null)}
@@ -117,13 +119,13 @@ export const Sidebar = ({
                         className={tw(
                           item.path == currentPath
                             ? "bg-[#00519E] text-white"
-                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white",
+                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white",
                         )}
                       >
                         <Link
                           to={item.path}
                           onClick={onCloseSidebar}
-                          className="pl-5 group flex gap-x-3 py-3 text-sm font-semibold"
+                          className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
                         >
                           {item.icon}
                           {item.label}
@@ -136,13 +138,16 @@ export const Sidebar = ({
             {navigation
               .filter((item) => item.role === "all")
               .map((item) => (
-                <li key={item.label} className="flex items-center gap-x-3 pr-3 py-8 text-sm font-semibold leading-6 text-white mt-auto bg-[#0B365F]">
-                  <div 
+                <li
+                  key={item.label}
+                  className="mt-auto flex items-center gap-x-3 bg-[#0B365F] py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                >
+                  <div
                     // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
                     className={tw(
                       item.path == currentPath
-                        ? "flex gap-3 pl-10 py-2 rounded-r-xl items-center w-10/12 bg-[#00519E] text-white"
-                        : "flex gap-3 pl-10 py-2 rounded-r-xl items-center w-10/12 text-white",
+                        ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-10 text-white"
+                        : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-10 text-white",
                     )}
                   >
                     <img
@@ -153,11 +158,12 @@ export const Sidebar = ({
                     />
                     <span className="sr-only">Your profile</span>
                     <div>
-                      <span aria-hidden="true">{mockUser.first_name} {mockUser.last_name}</span>
+                      <span aria-hidden="true">
+                        {mockUser.first_name} {mockUser.last_name}
+                      </span>
                       <Link
                         to="/profile"
                         className="flex text-xs font-normal text-[#8C92AB]"
-
                       >
                         <span>{item.label}</span>
                       </Link>

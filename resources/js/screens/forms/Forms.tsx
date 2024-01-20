@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Switch } from '@headlessui/react';
+import { useState } from "react";
+import { Switch } from "@headlessui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FormDropdown } from './components';
+
 import { deleteUser, getFormsQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
-import { Button, Input, errorToast, icons, useToastStore } from "@/ui";
+import type { FormDropdownItem } from "@/shared.types";
+import { Button, errorToast, icons, Input, useToastStore } from "@/ui";
 import { tw } from "@/utils";
-import type { FormDropdownItem } from '@/shared.types';
-
+import { FormDropdown } from "./components";
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 const activityItems = [
@@ -161,7 +161,12 @@ export const Forms = () => {
   // For toggles
   const [enabledActive, setEnabledActive] = useState(false);
 
-  const FormDropdownOptions:FormDropdownItem[] = [{ name: "Edit", icon: <icons.PencilIcon /> }, { name: "Duplicate", icon: <icons.DocumentDuplicateIcon /> }, { name: "Get Link", icon: <icons.GetLinkIcon/> }, { name: "Delete", icon: <icons.TrashIcon/>, newSection: true} ];
+  const FormDropdownOptions: FormDropdownItem[] = [
+    { name: "Edit", icon: <icons.PencilIcon /> },
+    // { name: "Duplicate", icon: <icons.DocumentDuplicateIcon /> },
+    { name: "Get Link", icon: <icons.LinkIcon /> },
+    { name: "Delete", icon: <icons.TrashIcon />, newSection: true },
+  ];
   return (
     <>
       <div className="bg-white">
@@ -171,11 +176,12 @@ export const Forms = () => {
             variant="primary"
             onClick={() => navigateModal(MODAL_ROUTES.userForm)}
           >
-            + Create Form
+            <icons.PlusIcon className={tw(`h-5 w-5`)} />
+            Create Form
           </Button>
         </h2>
       </div>
-      <div className="bg-white shadow-lg p-2 pt-4 border-[1px] rounded-xl">
+      <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
         <div className="flex gap-5">
           <Input
             type="search"
@@ -184,8 +190,8 @@ export const Forms = () => {
             placeholder="Search by form title"
             //{...register("password")}
             //error={errors.password?.message}
-          //value={passwordInput}
-          //onChange={(e) => { setPasswordInput(e.target.value); }}
+            //value={passwordInput}
+            //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Input
             type="date"
@@ -194,12 +200,19 @@ export const Forms = () => {
             placeholder="Search by Daten"
             //{...register("password")}
             //error={errors.password?.message}
-          //value={passwordInput}
-          //onChange={(e) => { setPasswordInput(e.target.value); }}
+            //value={passwordInput}
+            //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
-          <Switch.Group as="div" className="flex items-center justify-between gap-2">
+          <Switch.Group
+            as="div"
+            className="flex items-center justify-between gap-2"
+          >
             <span className="flex flex-grow flex-col">
-              <Switch.Label as="span" className="text-sm font-medium leading-6 text-gray-900" passive>
+              <Switch.Label
+                as="span"
+                className="text-sm font-medium leading-6 text-gray-900"
+                passive
+              >
                 Show only Active
               </Switch.Label>
             </span>
@@ -207,22 +220,22 @@ export const Forms = () => {
               checked={enabledActive}
               onChange={setEnabledActive}
               className={classNames(
-                enabledActive ? 'bg-[#00519E]' : 'bg-gray-200',
-                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
+                enabledActive ? "bg-[#00519E]" : "bg-gray-200",
+                "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
               )}
             >
               <span
                 aria-hidden="true"
                 className={classNames(
-                  enabledActive ? 'translate-x-5' : 'translate-x-0',
-                  'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                  enabledActive ? "translate-x-5" : "translate-x-0",
+                  "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
                 )}
               />
             </Switch>
-          </Switch.Group>     
+          </Switch.Group>
         </div>
-        <div className="border-gray-300 border-[1px] rounded-sm">
-          <table className="w-full whitespace-nowrap text-left bg-white shadow-md">
+        <div className="rounded-sm border-[1px] border-gray-300">
+          <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
             <colgroup>
               <col className="w-full sm:w-4/12" />
               <col className="lg:w-4/12" />
@@ -231,7 +244,7 @@ export const Forms = () => {
               <col className="lg:w-1/12" />
               <col className="lg:w-1/12" />
             </colgroup>
-            <thead className="text-sm leading-6 border-gray-300 border-b-[1px] bg-gray-200">
+            <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-sm leading-6">
               <tr>
                 <th
                   scope="col"
@@ -272,8 +285,7 @@ export const Forms = () => {
                 <th
                   scope="col"
                   className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                >
-                </th>
+                ></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -290,9 +302,9 @@ export const Forms = () => {
                 <tr key={item.id}>
                   <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                     <div className="flex items-center gap-x-4">
-                        <div className="truncate text-sm leading-6 text-black">
-                          {item.name}
-                        </div>
+                      <div className="truncate text-sm leading-6 text-black">
+                        {item.name}
+                      </div>
                     </div>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
@@ -310,7 +322,13 @@ export const Forms = () => {
                   </td>
                   <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 sm:justify-start">
-                      <div className={item.status === 'Active' ? "text-[#065F46] sm:block" : "text-[#a82d2d] sm:block"}>
+                      <div
+                        className={
+                          item.status === "Active"
+                            ? "text-[#065F46] sm:block"
+                            : "text-[#a82d2d] sm:block"
+                        }
+                      >
                         {item.status}
                       </div>
                     </div>
@@ -320,13 +338,13 @@ export const Forms = () => {
                       variant="tertiary"
                       onClick={() => console.log('delete')}
                     >
-                      <icons.GetLinkIcon />
+                      <icons.LinkIcon />
                     </Button>
                   </td> */}
                   <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <FormDropdown 
+                    <FormDropdown
                       items={FormDropdownOptions}
-                      mode='FORM'
+                      mode="FORM"
                       param={item.id}
                     />
                   </td>
@@ -336,8 +354,7 @@ export const Forms = () => {
           </table>
         </div>
       </div>
-        <div className="h-[100px]">
-        </div>
+      <div className="h-[100px]"></div>
     </>
   );
 };
