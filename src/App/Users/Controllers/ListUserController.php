@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Users\Controllers;
 
-use App\Users\Transformers\UserTransformer;
+use App\Users\Transformers\UserListTransformer;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class ListUserController
             ->get();
 
         return responder()
-            ->success($users, UserTransformer::class)
+            ->success($users, UserListTransformer::class)
             ->respond();
     }
 }
