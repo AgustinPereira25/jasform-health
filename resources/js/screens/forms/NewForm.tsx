@@ -87,36 +87,50 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-white">
-                <h2 className="flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7 text-black">
-                    New Form&apos;s Information
-                    <div className='flex gap-5'>
-                        <Button
-                            variant="secondary"
-                            onClick={() => console.log('pepe')}
-                        >
-                            <icons.TrashIcon className={tw(`w-5 h-5`)} />
-                            Delete
-                        </Button>
-                        {
-                            form.id && (
-                                <Button
-                                    variant="primary"
-                                    onClick={() => console.log('pepe')}
-                                >
-                                    <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
-                                    Edit Form&apos;s Questions
-                                </Button>
-                            )
-                        }
-                        <Button
-                            type='submit'
-                            variant="primary"
-                        >
-                            Save
-                        </Button>
-                    </div>
-                </h2>
+            <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
+                <div className='flex gap-1 items-center'>
+                    <Button
+                        variant="secondary"
+                        onClick={() => console.log('pepe')}
+                    >
+                        <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
+                        Return
+                    </Button>
+                    <span className="pl-3 text-2xl text-black">
+                        New Form&apos;s Information
+                    </span>
+                    {
+                        form.id && (
+                            <span className='text-2xl text-gray-500 italic'>- Form Code: {form.id}</span>
+                        )
+                    }
+                </div>
+                <div className='flex gap-5'>
+                    <Button
+                        variant="secondary"
+                        onClick={() => console.log('pepe')}
+                    >
+                        <icons.TrashIcon className={tw(`w-5 h-5`)} />
+                        Delete
+                    </Button>
+                    {
+                        form.id && (
+                            <Button
+                                variant="primary"
+                                onClick={() => console.log('pepe')}
+                            >
+                                <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
+                                Edit Form&apos;s Questions
+                            </Button>
+                        )
+                    }
+                    <Button
+                        type='submit'
+                        variant="primary"
+                    >
+                        Save
+                    </Button>
+                </div>
             </div>
             <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full'>
                 <div className="flex gap-6 shrink-0">

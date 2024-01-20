@@ -28,7 +28,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({ initialData: user = {} }
     const Roles = [{ id: 1, name: 'Admin' }, { id: 2, name: 'User' }, { id: 3, name: 'Viewer' }]; // el unico q prevalaece con esta structura
     const Status = [{ name: 'Active' }, { name: 'Inactive' }, { name: 'Pending' }]; //solo name
 
-    const defaultRole = user.roles?.length === 0 ? 'Admin': user.roles![0]!.name;
+    const defaultRole = user.roles ? user.roles[0].name : 'Admin';
 
     const {
         register,
@@ -62,18 +62,38 @@ export const NewProfile: React.FC<NewProfileProps> = ({ initialData: user = {} }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-white">
-                <h2 className="flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7 text-black">
-                    New User’s Information
-                    <div className='flex gap-5'>
-                        <Button
-                            type='submit'
-                            variant="primary"
-                        >
-                            Save
-                        </Button>
-                    </div>
-                </h2>
+            <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
+                <div className='flex gap-1 items-center'>
+                    <Button
+                        variant="secondary"
+                        onClick={() => console.log('pepe')}
+                    >
+                        <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
+                        Return
+                    </Button>
+                    <span className="pl-3 text-2xl text-black">
+                        New User&apos;s Information
+                    </span>
+                </div>
+                <div className='flex gap-5'>
+                    {
+                        user.id && (
+                            <Button
+                                variant="secondary"
+                                onClick={() => console.log('pepe')}
+                            >
+                                <icons.TrashIcon className={tw(`w-5 h-5`)} />
+                                Delete
+                            </Button>
+                        )
+                    }
+                    <Button
+                        type='submit'
+                        variant="primary"
+                    >
+                        Save
+                    </Button>
+                </div>
             </div>
             <div className="flex gap-6">
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-3/5 shrink-0">
@@ -84,7 +104,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({ initialData: user = {} }
                         <div className="flex shrink-0 rounded-full overflow-hidden">
                             <div className='relative p-0 '>
                                 <img
-                                    src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                    src={user?.photo ?? ''}
                                     alt="user"
                                     className='h-[120px] w-[120px]'
                                 />
