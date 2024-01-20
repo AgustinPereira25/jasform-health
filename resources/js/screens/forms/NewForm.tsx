@@ -35,8 +35,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             borderRadius: form.rounded_style ?? '',
             logo: form.logo ?? '',
             apiURL: form.api_url ?? '',
-            publishState: form.status ?? false,
             publicCode: form.public_code ?? '',
+            publishState: form.status ?? false,
+            // anonAnswers: form.anonymous_answers ?? false,
+            // mandatoryInitialData: form.mandatory_initial_data ?? false,
         },
     });
 
@@ -96,13 +98,17 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <icons.TrashIcon className={tw(`w-5 h-5`)} />
                             Delete
                         </Button>
-                        <Button
-                            variant="primary"
-                            onClick={() => console.log('pepe')}
-                        >
-                            <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
-                            Edit Form&apos;s Questions
-                        </Button>
+                        {
+                            form.id && (
+                                <Button
+                                    variant="primary"
+                                    onClick={() => console.log('pepe')}
+                                >
+                                    <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
+                                    Edit Form&apos;s Questions
+                                </Button>
+                            )
+                        }
                         <Button
                             type='submit'
                             variant="primary"
@@ -336,10 +342,37 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         </div>
                         <hr className='mx-3' />
                         <div className='flex p-3 h-16 items-center justify-between'>
-                            <span>Store Encrypted and Unlinked Data</span>
+                            <span>Anonymous user&apos;s answers</span>
                             <div className='flex gap-3 pl-3'>
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
+                                        {...register("anonAnswers")}
+                                        checked={enabledEncUnlData}
+                                        onChange={setEnabledEncUnlData}
+                                        className={classNames(
+                                            enabledEncUnlData ? 'bg-[#065F46]' : 'bg-gray-200',
+                                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
+                                        )}
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className={classNames(
+                                                enabledEncUnlData ? 'translate-x-5' : 'translate-x-0',
+                                                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                            )}
+                                        />
+                                    </Switch>
+                                </Switch.Group>
+                                <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
+                            </div>
+                        </div>
+                        <hr className='mx-3' />
+                        <div className='flex p-3 h-16 items-center justify-between'>
+                            <span>Request mandatory initial data</span>
+                            <div className='flex gap-3 pl-3'>
+                                <Switch.Group as="div" className="flex items-center justify-between gap-2">
+                                    <Switch
+                                        {...register("mandatoryInitialData")}
                                         checked={enabledEncUnlData}
                                         onChange={setEnabledEncUnlData}
                                         className={classNames(
