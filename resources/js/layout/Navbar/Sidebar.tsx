@@ -5,6 +5,7 @@ import { User, useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
 import { NavbarLogo, LogOutLogo } from "./components";
+import React, { useEffect } from "react";
 
 const navigation = [
   {
@@ -63,15 +64,8 @@ export const Sidebar = ({
   onCloseSidebar?: () => void;
 }) => {
   const { pathname: currentPath } = useLocation();
-  const { user, setToken } = useUserStore();
-
-  // MOCK USER FOR TESTING
-  const mockUser: User = {
-    email: 'mockemail@gmail.com',
-    name: 'John Smith',
-    picture: '',
-    role: 'admin',
-  }
+  // TODO - Put real user here and change mocked user in Layout.tsx
+  const { user: mockUser, setToken } = useUserStore();
 
   return (
     <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
@@ -84,7 +78,7 @@ export const Sidebar = ({
             <li className="flex-1">
               <ul className="relative h-full">
                 {navigation
-                  .filter((item) => item.role.includes(mockUser.role))
+                  .filter((item) => item.role.includes(mockUser.role_name!.toLowerCase()))
                   .map((item) => (
                     <li
                       key={item.label}
@@ -154,12 +148,12 @@ export const Sidebar = ({
                     <img
                       referrerPolicy="no-referrer"
                       className="h-8 w-8 rounded-full bg-gray-800"
-                      src={mockUser.picture}
-                      alt={mockUser.name}
+                      src={mockUser.photo}
+                      alt={mockUser.first_name}
                     />
                     <span className="sr-only">Your profile</span>
                     <div>
-                      <span aria-hidden="true">{mockUser.name}</span>
+                      <span aria-hidden="true">{mockUser.first_name} {mockUser.last_name}</span>
                       <Link
                         to="/profile"
                         className="flex text-xs font-normal text-[#8C92AB]"

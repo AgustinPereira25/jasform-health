@@ -2,16 +2,13 @@ import { useState } from 'react';
 import { Switch } from '@headlessui/react';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormDropdown } from './components';
-import { deleteUser, getUsersQuery } from "@/api";
+import { deleteUser, getFormsQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
 import { Button, Input, errorToast, icons, useToastStore } from "@/ui";
 import { tw } from "@/utils";
+import type { FormDropdownItem } from '@/shared.types';
 
-const statuses = {
-  Completed: "text-green-400 bg-green-400/10",
-  Error: "text-rose-400 bg-rose-400/10",
-};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -128,8 +125,8 @@ export const Forms = () => {
   const { pushToast } = useToastStore();
   const queryClient = useQueryClient();
 
-  const { data: users, isLoading: isLoadingUsers } = useQuery({
-    ...getUsersQuery(),
+  const { data: forms, isLoading: isLoadingForms } = useQuery({
+    ...getFormsQuery(),
     // select: (users) =>
     //   users.map((user, idx) => {
     //     const selectedItem =
@@ -163,7 +160,8 @@ export const Forms = () => {
   const navigateModal = useNavigateModal();
   // For toggles
   const [enabledActive, setEnabledActive] = useState(false);
-  const [enabledAdmin, setEnabledAdmin] = useState(false);
+
+  const FormDropdownOptions:FormDropdownItem[] = [{ name: "Edit", icon: <icons.PencilIcon /> }, { name: "Duplicate", icon: <icons.DocumentDuplicateIcon /> }, { name: "Get Link", icon: <icons.GetLinkIcon/> }, { name: "Delete", icon: <icons.TrashIcon/>, newSection: true} ];
   return (
     <>
       <div className="bg-white">
@@ -190,7 +188,7 @@ export const Forms = () => {
           //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Input
-            type="search"
+            type="date"
             id="date"
             label="Date"
             placeholder="Search by Daten"
@@ -223,7 +221,7 @@ export const Forms = () => {
             </Switch>
           </Switch.Group>     
         </div>
-        <div className="border-gray-300 border-[1px] rounded-xl overflow-hidden">
+        <div className="border-gray-300 border-[1px] rounded-sm">
           <table className="w-full whitespace-nowrap text-left bg-white shadow-md">
             <colgroup>
               <col className="w-full sm:w-4/12" />
@@ -265,22 +263,21 @@ export const Forms = () => {
                 >
                   STATUS
                 </th>
-                <th
+                {/* <th
                   scope="col"
                   className="hidden py-2 pl-0 pr-4 font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
                 >
                   GET LINK
-                </th>
+                </th> */}
                 <th
                   scope="col"
                   className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
                 >
-                  ACTIONS
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {isLoadingUsers && (
+              {isLoadingForms && (
                 <tr className="h-full items-center">
                   <td colSpan={5}>
                     <div className="flex justify-center p-9">
@@ -289,57 +286,49 @@ export const Forms = () => {
                   </td>
                 </tr>
               )}
-              {activityItems?.map((item) => (
-                <tr key={item.title}>
+              {forms?.map((item) => (
+                <tr key={item.id}>
                   <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                     <div className="flex items-center gap-x-4">
                         <div className="truncate text-sm leading-6 text-black">
-                          {item.user.name}
+                          {item.name}
                         </div>
                     </div>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                     <div className="flex gap-x-3">
                       <div className="truncate text-sm leading-6 text-black">
-                        {item.title}
+                        {item.creation_date?.toString()}
                       </div>
                     </div>
                   </td>
                   <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                    {item.plan}
+                    99
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    {item.role}
+                    99
                   </td>
                   <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                     <div className="flex items-center gap-x-2 sm:justify-start">
-                      <div className={item.status === 'Active' ? "rounded-3xl px-3 hidden bg-[#D1FAE5] text-green-950 sm:block" : "rounded-3xl px-3 hidden bg-[#fad1d1] text-red-950 sm:block"}>
+                      <div className={item.status === 'Active' ? "text-[#065F46] sm:block" : "text-[#a82d2d] sm:block"}>
                         {item.status}
                       </div>
                     </div>
                   </td>
-                  <td className="hidden py-4 pl-3 text-center text-sm  text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    {/* <Button
-                      variant="tertiary"
-                      onClick={() => deleteUserMutation(item.user.id)}
-                    >
-                      <icons.TrashIcon className="h-5 w-5" />
-                    </Button> */}
+                  {/* <td className="hidden py-4 pl-3 text-center text-sm  text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <Button
                       variant="tertiary"
                       onClick={() => console.log('delete')}
                     >
                       <icons.GetLinkIcon />
                     </Button>
-                  </td>
+                  </td> */}
                   <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    {/* <Button
-                      variant="tertiary"
-                      onClick={() => <FormDropdown />}
-                    >
-                      <icons.ThreeDotsIcon />
-                    </Button> */}
-                    <FormDropdown />
+                    <FormDropdown 
+                      items={FormDropdownOptions}
+                      mode='FORM'
+                      param={item.id}
+                    />
                   </td>
                 </tr>
               ))}
@@ -347,6 +336,8 @@ export const Forms = () => {
           </table>
         </div>
       </div>
+        <div className="h-[100px]">
+        </div>
     </>
   );
 };

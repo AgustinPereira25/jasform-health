@@ -8,7 +8,10 @@ import { ModalRouter } from "./ModalRouter";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
 import { Forms } from "@/screens/forms";
-import { NewProfile, Profile } from "@/screens/profile";
+import { Profile } from "@/screens/profile";
+import NewForm from "@/screens/forms/NewForm";
+import { PrepareProfileForm } from "@/screens/profile/PrepareProfileForm";
+import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 
 export const Router = () => {
   const location = useLocation();
@@ -27,49 +30,56 @@ export const Router = () => {
         {/* PRIVATE ONLY ROUTES */}
         {/* Acá es cuando el usuario ya entró entonces mostramos una Layout (seria el menu lateral azul y demas) */}
         {/* <Route element={<ProtectedRoute expected={["admin", "standard"]} />}> */}
-          <Route element={<Layout />}>
-            <Route element={<Navigate to={ROUTES.home} />} path={ROUTES.base} />
-
-            <Route element={<Home />} path={ROUTES.home} />
-
-            <Route path={ROUTES.notFound} element={<NotFound />} />
-          </Route>
-        {/* </Route> */}
-
-        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-          <Route element={<Layout />}>
-            <Route element={<Users />} path={ROUTES.users} />
-          </Route>
-        {/* </Route> */}
-
-        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
         <Route element={<Layout />}>
-            <Route element={<Forms />} path={ROUTES.forms} />
-          </Route>
-        {/* </Route> */}
+          <Route element={<Navigate to={ROUTES.home} />} path={ROUTES.base} />
 
-        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-        <Route element={<Layout />}>
-            <Route element={<Users />} path={ROUTES.newForm} />
-          </Route>
-        {/* </Route> */}
+          <Route element={<Home />} path={ROUTES.home} />
 
-        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-        <Route element={<Layout />}>
-            <Route element={<Profile />} path={ROUTES.profile} />
-          </Route>
-        {/* </Route> */}
-
-        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-        <Route element={<Layout />}>
-            <Route element={<NewProfile />} path={ROUTES.editUser} />
+          <Route path={ROUTES.notFound} element={<NotFound />} />
         </Route>
         {/* </Route> */}
 
         {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-          <Route element={<Layout />}>
-            <Route element={<NewProfile />} path={ROUTES.newUser} />
-          </Route>
+        <Route element={<Layout />}>
+          <Route element={<Users />} path={ROUTES.users} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+          <Route element={<Forms />} path={ROUTES.forms} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+          <Route element={<PrepareFormForm />} path={ROUTES.newForm} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+          <Route element={<PrepareFormForm />} path={ROUTES.editForm} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+          <Route element={<Profile />} path={ROUTES.profile} />
+        </Route>
+        {/* </Route> */}
+
+      {/* TODO - Do the same as here in Forms Screen(create PrepareFormForm component and use it in the routes below in order to get data before rendering the form) */}
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+          <Route element={<PrepareProfileForm />} path={ROUTES.editUser} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+        <Route element={<Layout />}>
+          <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />
+        </Route>
         {/* </Route> */}
       </Routes>
 

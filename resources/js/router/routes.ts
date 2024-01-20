@@ -8,6 +8,7 @@ export const ROUTES = {
   editUser: "/users/:id",
   newUser: "/users/new",
   newForm: "/forms/new",
+  editForm: "/forms/:id",
   notFound: "*",
 } as const;
 

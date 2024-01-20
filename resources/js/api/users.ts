@@ -6,44 +6,46 @@ import { privateAPI } from "./axios";
 const DOMAIN = "user";
 const ALL = "all";
 
-// export interface User {
-//   id: number;
-//   name: string;
-//   email: string;
-// }
-
 export interface Users {
   status:  number;
   success: boolean;
-  data:    Datum[];
+  data:    User[];
 }
 
-export interface Datum {
-  id:                       number;
-  first_name:               string;
-  last_name:                string;
-  photo:                    string;
-  phone:                    string;
-  position_in_organization: string;
-  status:                   string;
-  email:                    string;
-  organization_id:          string;
-  organization_name:        string;
+
+export interface UserRoles {
+  id:   number;
+  name: string;
+  description: string;
+}
+
+export interface User {
+  id?:                       number;
+  first_name?:               string;
+  last_name?:                string;
+  photo?:                    string;
+  phone?:                    string;
+  position_in_organization?: string;
+  status?:                   string;
+  email?:                    string;
+  organization_id?:          string;
+  organization_name?:        string;
+  roles?:                    UserRoles[];
 }
 
 export const getUsersQuery = () => ({
   queryKey: [DOMAIN, ALL, "getUsersQuery"],
   queryFn: async () => {
-    const response = await privateAPI.get<ServiceResponse<Datum[]>>("/users");
-    // console.log(response)
+    const response = await privateAPI.get<ServiceResponse<User[]>>("/users");
+    //console.log(response);
     return response.data.data;
   },
 });
 
-export const getUserQuery = (userId: Datum["id"]) => ({
+export const getUserQuery = (userId: User["id"]) => ({
   queryKey: [DOMAIN, userId, "getUserQuery"],
   queryFn: async () => {
-    const response = await privateAPI.get<ServiceResponse<Datum>>(
+    const response = await privateAPI.get<ServiceResponse<User>>(
       `/users/${userId}`,
     );
 
