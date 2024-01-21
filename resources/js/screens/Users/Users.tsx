@@ -68,13 +68,13 @@ export const Users = () => {
   return (
     <>
       <div className="bg-white">
-        <h2 className="flex items-center justify-between px-2 pb-7 text-base font-semibold leading-7 text-black">
+        <h1 className="flex items-center justify-between px-2 pb-7 text-2xl font-semibold leading-7 text-black">
           Users
           <Button variant="primary" onClick={handleClick}>
             <icons.PlusIcon className={tw(`h-5 w-5`)} />
             Create User
           </Button>
-        </h2>
+        </h1>
       </div>
       <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
         <div className="flex gap-5">
