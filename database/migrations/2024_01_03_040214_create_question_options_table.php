@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('question_options', function (Blueprint $table) {
             $table->id();
             $table->integer('order');
-            $table->string('name');
-            $table->string('description')->nullable();
+            $table->string('title');
             $table->timestamps();
 
             $table->unsignedBigInteger('next_question')->nullable();

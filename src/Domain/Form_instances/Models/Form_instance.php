@@ -4,10 +4,8 @@ namespace Domain\Form_instances\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Forms\Models\Form;
 use Domain\Completer_users\Models\Completer_user;
-use Domain\Form_activities\Models\Form_activity;
 
 /**
  * Domain\Form_instances\Models\Form_instance
@@ -31,13 +29,24 @@ use Domain\Form_activities\Models\Form_activity;
  * @property-read Form $form
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_activity> $form_activities
  * @property-read int|null $form_activities_count
+ * @property string $initial_date_time
+ * @property int $is_completed
+ * @property int|null $completed_questions
+ * @property string $final_date_time
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereCompletedQuestions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereFinalDateTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereInitialDateTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereIsCompleted($value)
  * @mixin \Eloquent
  */
 class Form_instance extends Model
 {
 
     protected $fillable = [
-        'date_time',
+        'initial_date_time',
+        'is_completed',
+        'completed_questions',
+        'final_date_time',
         'form_id',
         'completer_user_id',
     ];
@@ -52,8 +61,4 @@ class Form_instance extends Model
         return $this->belongsTo(Completer_user::class);
     }
 
-    public function form_activities(): HasMany
-    {
-        return $this->hasMany(Form_activity::class);
-    }
 }

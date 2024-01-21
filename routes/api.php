@@ -14,10 +14,6 @@ use App\Completer_users\Controllers\ListCompleter_userController;
 use App\Completer_users\Controllers\GetCompleter_userController;
 use App\Completer_users\Controllers\StoreCompleter_userController;
 use App\Completer_users\Controllers\DeleteCompleter_userController;
-use App\Form_activities\Controllers\ListForm_activityController;
-use App\Form_activities\Controllers\GetForm_activityController;
-use App\Form_activities\Controllers\StoreForm_activityController;
-use App\Form_activities\Controllers\DeleteForm_activityController;
 use App\Form_instances\Controllers\ListForm_instanceController;
 use App\Form_instances\Controllers\GetForm_instanceController;
 use App\Form_instances\Controllers\StoreForm_instanceController;
@@ -101,15 +97,6 @@ Route::prefix('completer_users')
         Route::get('/{completer_user}', GetCompleter_userController::class);
         Route::post('/', StoreCompleter_userController::class);
         Route::delete('/{completer_user}', DeleteCompleter_userController::class);
-    });
-
-Route::prefix('form_activities')
-    ->middleware([])
-    ->group(static function () {
-        Route::get('/', ListForm_activityController::class);
-        Route::get('/{form_activity}', GetForm_activityController::class);
-        Route::post('/', StoreForm_activityController::class);
-        Route::delete('/{form_activity}', DeleteForm_activityController::class);
     });
 
 Route::prefix('form_instances')

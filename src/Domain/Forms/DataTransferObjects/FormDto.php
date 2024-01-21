@@ -11,12 +11,15 @@ class FormDto
         private readonly string $welcome_text,
         private readonly string $description,
         private readonly string $creation_date_time,
+        private readonly string $last_modified_date_time,
         private readonly string $logo,
         private readonly string $primary_color,
         private readonly string $secondary_color,
         private readonly string $rounded_style,
         private readonly string $api_url,
-        private readonly string $status,
+        private readonly string $is_active,
+        private readonly string $is_anonymous_user_answers,
+        private readonly string $is_request_mandatory_initial_data,
         private readonly string $public_code,
         private readonly string $user_id,
     ) {
@@ -40,6 +43,11 @@ class FormDto
     public function getCreationDateTime(): string
     {
         return $this->creation_date_time;
+    }
+
+    public function getLastModifiedDateTime(): string
+    {
+        return $this->last_modified_date_time;
     }
 
     public function getLogo(): string
@@ -67,11 +75,20 @@ class FormDto
         return $this->api_url;
     }
 
-    public function getStatus(): string
+    public function getIsActive(): string
     {
-        return $this->status;
+        return $this->is_active;
     }
     
+    public function getIsAnonymousUserAnswers(): string
+    {
+        return $this->is_anonymous_user_answers;
+    }
+    public function getIsRequestMandatoryInitialData(): string
+    {
+        return $this->is_request_mandatory_initial_data;
+    }
+
     public function getPublicCode(): string
     {
         return $this->public_code;

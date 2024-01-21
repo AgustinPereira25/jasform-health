@@ -11,8 +11,7 @@ use Illuminate\Validation\Rules\Password;
 class StoreQuestion_optionRequest extends FormRequest
 {
     public const ORDER = 'order';
-    public const NAME = 'name';
-    public const DESCRIPTION = 'description';
+    public const TITLE = 'title';
     public const NEXT_QUESTION = 'next_question';
     public const FORM_QUESTION_ID = 'form_question_id';
 
@@ -20,7 +19,7 @@ class StoreQuestion_optionRequest extends FormRequest
     {
         return [
             self::ORDER => ['required'],
-            self::NAME => ['required'],
+            self::TITLE => ['required'],
             self::FORM_QUESTION_ID => ['required'],
         ];
     }
@@ -29,8 +28,7 @@ class StoreQuestion_optionRequest extends FormRequest
     {
         return new Question_optionDto(
             order: $this->string(self::ORDER)->toString(),
-            name: $this->string(self::NAME)->toString(),
-            description: $this->string(self::DESCRIPTION)->toString(),
+            title: $this->string(self::TITLE)->toString(),
             next_question: $this->string(self::NEXT_QUESTION)->toString(),
             form_question_id: $this->string(self::FORM_QUESTION_ID)->toString(),
         );

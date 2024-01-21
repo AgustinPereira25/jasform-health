@@ -26,6 +26,8 @@ use Domain\Form_instances\Models\Form_instance;
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
  * @property-read int|null $form_instances_count
+ * @property string $code
+ * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereCode($value)
  * @mixin \Eloquent
  */
 class Completer_user extends Model
@@ -34,6 +36,7 @@ class Completer_user extends Model
         'email',
         'first_name',
         'last_name',
+        'code',
     ];
 
     public function form_instances(): HasMany

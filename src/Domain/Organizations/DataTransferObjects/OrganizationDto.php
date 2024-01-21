@@ -9,7 +9,6 @@ class OrganizationDto
     public function __construct(
         private readonly string $name,
         private readonly string $description,
-        private readonly string $logo,
     ) {
     }
 
@@ -23,8 +22,4 @@ class OrganizationDto
         return $this->description;
     }
 
-    public function getLogo(): string
-    {
-        return $this->logo;
-    }
 }

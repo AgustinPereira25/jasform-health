@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('form_instances', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date_time');
+            $table->dateTime('initial_date_time');
+            $table->boolean('is_completed');
+            $table->integer('completed_questions')->nullable();
+            $table->dateTime('final_date_time');
             $table->timestamps();
 
             $table->unsignedBigInteger('form_id');
-            $table->foreign('form_id')->references('id')->on('forms');
+            $table->foreign('form_id')->references('id')->on('forms')->onUpdate('cascade')->onDelete('cascade');
 
             $table->unsignedBigInteger('completer_user_id');
-            $table->foreign('completer_user_id')->references('id')->on('completer_users');
+            $table->foreign('completer_user_id')->references('id')->on('completer_users')->onUpdate('cascade')->onDelete('cascade');
 
         });
     }

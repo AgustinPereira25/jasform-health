@@ -19,7 +19,6 @@ class StoreOrganizationAction
         return Organization::create([
             'name' => $organizationDto->getName(),
             'description' => $organizationDto->getDescription(),
-            'logo' => $organizationDto->getLogo(),
         ]);
     }
 }

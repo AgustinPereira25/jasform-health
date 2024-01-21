@@ -22,7 +22,7 @@ class StoreUserAction
             'photo' => $userDto->getPhoto(),
             'phone' => $userDto->getPhone(),
             'position_in_organization' => $userDto->getPosition(),
-            'status' => $userDto->getStatus(),
+            'is_active' => $userDto->getIsActive(),
             'email' => $userDto->getEmail(),
             'password' => $this->hasher->make($userDto->getPassword()),
             'organization_id' => $userDto->getOrganization(),

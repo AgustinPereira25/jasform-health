@@ -8,8 +8,7 @@ class Question_optionDto
 {
     public function __construct(
         private readonly string $order,
-        private readonly string $name,
-        private readonly string $description,
+        private readonly string $title,
         private readonly string $next_question,
         private readonly string $form_question_id,
     ) {
@@ -20,14 +19,9 @@ class Question_optionDto
         return $this->order;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
+        return $this->title;
     }
 
     public function getNextQuestion(): string

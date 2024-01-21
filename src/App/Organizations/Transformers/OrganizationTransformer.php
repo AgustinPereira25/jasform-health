@@ -15,7 +15,6 @@ class OrganizationTransformer extends Transformer
             'id' => (int) $organization->id,
             'name' => (string) $organization->name,
             'description' => (string) $organization->description,
-            'logo' => (string) $organization->logo,
         ];
     }
 }

@@ -17,12 +17,15 @@ return new class extends Migration
             $table->string('welcome_text');
             $table->string('description')->nullable();
             $table->dateTime('creation_date_time');
+            $table->dateTime('last_modified_date_time');
             $table->string('logo')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
             $table->string('rounded_style')->nullable();
             $table->string('api_url')->nullable();
-            $table->string('status');
+            $table->boolean('is_active');
+            $table->boolean('is_anonymous_user_answers');
+            $table->boolean('is_request_mandatory_initial_data');
             $table->string('public_code');
             $table->timestamps();
 

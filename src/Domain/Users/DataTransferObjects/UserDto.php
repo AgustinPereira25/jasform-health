@@ -12,7 +12,7 @@ class UserDto
         private readonly string $photo,
         private readonly string $phone,
         private readonly string $position_in_organization,
-        private readonly string $status,
+        private readonly string $is_active,
         private readonly string $email,
         private readonly string $password,
         private readonly string $organization_id,
@@ -44,9 +44,9 @@ class UserDto
         return $this->position_in_organization;
     }
 
-    public function getStatus(): string
+    public function getIsActive(): string
     {
-        return $this->status;
+        return $this->is_active;
     }
 
     public function getEmail(): string

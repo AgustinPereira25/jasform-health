@@ -21,12 +21,15 @@ class FormsSeeder extends Seeder
                 'welcome_text'=>'Welcome to form 1',
                 'description'=>'This is the form 1',
                 'creation_date_time'=>'2024-01-11 00:00:00',
+                'last_modified_date_time'=>'2024-01-12 00:00:00',
                 'logo'=>'/uploads/logo1.png',
                 'primary_color'=>'Red',
                 'secondary_color'=>'Black',
                 'rounded_style'=>'Yes',
                 'api_url'=>'',
-                'status'=>'Active',
+                'is_active'=>true,
+                'is_anonymous_user_answers'=>true,
+                'is_request_mandatory_initial_data'=>true,
                 'public_code'=>'100',
                 'user_id'=>1,
                 'created_at' => Carbon::now(),
@@ -37,12 +40,15 @@ class FormsSeeder extends Seeder
                 'welcome_text'=>'Welcome to form 2',
                 'description'=>'This is the form 2',
                 'creation_date_time'=>'2024-01-05 00:00:00',
+                'last_modified_date_time'=>'2024-01-07 00:00:00',
                 'logo'=>'/uploads/logo2.png',
                 'primary_color'=>'Blue',
                 'secondary_color'=>'Green',
                 'rounded_style'=>'No',
                 'api_url'=>'',
-                'status'=>'Inactive',
+                'is_active'=>false,
+                'is_anonymous_user_answers'=>true,
+                'is_request_mandatory_initial_data'=>true,
                 'public_code'=>'200',
                 'user_id'=>2,
                 'created_at' => Carbon::now(),
@@ -70,6 +76,7 @@ class FormsSeeder extends Seeder
                 'email'=>'penatibus@outlook.couk',
                 'first_name'=>'Daquan',
                 'last_name'=>'Hess',
+                'code'=>'1234',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -77,6 +84,7 @@ class FormsSeeder extends Seeder
                 'email'=>'ipsum.dolor.sit@google.org',
                 'first_name'=>'Colby',
                 'last_name'=>'Floyd',
+                'code'=>'1111',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
@@ -84,14 +92,20 @@ class FormsSeeder extends Seeder
 
         DB::table('form_instances')->insert([
             [
-                'date_time'=>'2024-01-09 00:00:00',
+                'initial_date_time'=>'2024-01-09 00:00:00',
+                'is_completed'=>true,
+                'completed_questions'=>10,
+                'final_date_time'=>'2024-01-10 00:00:00',
                 'form_id'=>1,
                 'completer_user_id'=>1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'date_time'=>'2024-01-10 00:00:00',
+                'initial_date_time'=>'2024-01-10 00:00:00',
+                'is_completed'=>true,
+                'completed_questions'=>2,
+                'final_date_time'=>'2024-01-11 00:00:00',
                 'form_id'=>2,
                 'completer_user_id'=>2,
                 'created_at' => Carbon::now(),
@@ -104,7 +118,7 @@ class FormsSeeder extends Seeder
                 'title'=>'Question 1',
                 'text'=>'How are you?',
                 'order'=>1,
-                'obligatory'=>true,
+                'is_obligatory'=>true,
                 'form_id'=>1,
                 'question_type_id'=>1,
                 'created_at' => Carbon::now(),
@@ -114,7 +128,7 @@ class FormsSeeder extends Seeder
                 'title'=>'Question 2',
                 'text'=>'What is happening?',
                 'order'=>2,
-                'obligatory'=>true,
+                'is_obligatory'=>true,
                 'form_id'=>2,
                 'question_type_id'=>2,
                 'created_at' => Carbon::now(),
@@ -125,8 +139,7 @@ class FormsSeeder extends Seeder
         DB::table('question_options')->insert([
             [
                 'order'=>1,
-                'name'=>'Option 1',
-                'description'=>'This is the option 1',
+                'title'=>'Option 1',
                 'next_question'=>2,
                 'form_question_id'=>1,
                 'created_at' => Carbon::now(),
@@ -134,31 +147,9 @@ class FormsSeeder extends Seeder
             ],
             [
                 'order'=>2,
-                'name'=>'Option 2',
-                'description'=>'This is the option 2',
+                'title'=>'Option 2',
                 'next_question'=>NULL,
                 'form_question_id'=>1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]
-        ]);
-
-        DB::table('form_activities')->insert([
-            [
-                'date_time'=>'2024-01-05 00:00:00',
-                'description'=>'Activity 1',
-                'completed'=>false,
-                'completed_questions'=>1,
-                'form_instance_id'=>1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-            [
-                'date_time'=>'2024-01-07 00:00:00',
-                'description'=>'Activity 2',
-                'completed'=>true,
-                'completed_questions'=>NULL,
-                'form_instance_id'=>2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

@@ -23,9 +23,9 @@ class UserTransformer extends Transformer
             'photo' => (string) $user->photo,
             'phone' => (string) $user->phone,
             'position_in_organization' => (string) $user->position_in_organization,
-            'status' => (string) $user->status,
+            'is_active' => (bool) $user->is_active,
             'email' => (string) $user->email,
-            'organization_id' => (string) $user->organization_id,
+            'organization_id' => (int) $user->organization_id,
             'organization_name' => $user->organization->name,
             'organization_description' => $user->organization->description,
         ];

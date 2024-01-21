@@ -48,15 +48,12 @@ class Activity_record extends Model
 
     protected $fillable = [
         'date_time',
-        'status',
         'ip_address',
         'activity_performed',
-        'description',
         'session_duration',
         'activity_result',
         'login_type',
         'device_info',
-        'physical_location',
         'user_id',
     ];
 

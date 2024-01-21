@@ -51,6 +51,14 @@ use Domain\Form_questions\Models\Form_question;
  * @property-read int|null $form_questions_count
  * @property int $user_id
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserId($value)
+ * @property string $last_modified_date_time
+ * @property int $is_active
+ * @property int $is_anonymous_user_answers
+ * @property int $is_request_mandatory_initial_data
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsAnonymousUserAnswers($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsRequestMandatoryInitialData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereLastModifiedDateTime($value)
  * @mixin \Eloquent
  */
 class Form extends Model
@@ -61,12 +69,15 @@ class Form extends Model
         'welcome_text',
         'description',
         'creation_date_time',
+        'last_modified_date_time',
         'logo',
         'primary_color',
         'secondary_color',
         'rounded_style',
         'api_url',
-        'status',
+        'is_active',
+        'is_anonymous_user_answers',
+        'is_request_mandatory_initial_data',
         'public_code',
         'user_id',
     ];

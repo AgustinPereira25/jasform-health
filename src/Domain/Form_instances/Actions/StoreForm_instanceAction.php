@@ -17,9 +17,12 @@ class StoreForm_instanceAction
     public function execute(Form_instanceDto $form_instanceDto): Form_instance
     {
         return Form_instance::create([
-            'date_time' => $userDto->getDateTime(),
-            'form_id' => $userDto->getFormId(),
-            'completer_user_id' => $userDto->getCompleterUserId(),
+            'initial_date_time' => $form_instanceDto->getInitialDateTime(),
+            'is_completed' => $form_instanceDto->getIsCompleted(),
+            'completed_questions' => $form_instanceDto->getCompletedQuestions(),
+            'final_date_time' => $form_instanceDto->getFinalDateTime(),
+            'form_id' => $form_instanceDto->getFormId(),
+            'completer_user_id' => $form_instanceDto->getCompleterUserId(),
         ]);
     }
 }

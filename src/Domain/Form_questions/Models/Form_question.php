@@ -39,6 +39,8 @@ use Domain\Question_options\Models\Question_option;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Question_option> $question_options
  * @property-read int|null $question_options_count
  * @property-read Question_type $question_type
+ * @property int $is_obligatory
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsObligatory($value)
  * @mixin \Eloquent
  */
 class Form_question extends Model
@@ -48,7 +50,7 @@ class Form_question extends Model
         'title',
         'text',
         'order',
-        'obligatory',
+        'is_obligatory',
         'form_id',
         'question_type_id',
     ];

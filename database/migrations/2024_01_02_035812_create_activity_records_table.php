@@ -14,15 +14,12 @@ return new class extends Migration
         Schema::create('activity_records', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_time');
-            $table->string('status');
             $table->string('ip_address');
             $table->string('activity_performed');
-            $table->string('description')->nullable();
             $table->integer('session_duration');
             $table->string('activity_result');
             $table->string('login_type');
             $table->string('device_info')->nullable();
-            $table->string('physical_location')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');

@@ -6,13 +6,11 @@ namespace App\Organizations\Request;
 
 use Domain\Organizations\DataTransferObjects\OrganizationDto;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreOrganizationRequest extends FormRequest
 {
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
-    public const LOGO = 'logo';
 
     public function rules(): array
     {
@@ -26,7 +24,6 @@ class StoreOrganizationRequest extends FormRequest
         return new OrganizationDto(
             name: $this->string(self::NAME)->toString(),
             description: $this->string(self::DESCRIPTION)->toString(),
-            logo: $this->string(self::LOGO)->toString(),
         );
     }
 }

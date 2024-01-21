@@ -29,14 +29,15 @@ use Domain\Form_questions\Models\Form_question;
  * @method static \Illuminate\Database\Eloquent\Builder|Question_option whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_option whereUpdatedAt($value)
  * @property-read Form_question $form_question
+ * @property string $title
+ * @method static \Illuminate\Database\Eloquent\Builder|Question_option whereTitle($value)
  * @mixin \Eloquent
  */
 class Question_option extends Model
 {
     protected $fillable = [
         'order',
-        'name',
-        'description',
+        'title',
         'next_question',
         'form_question_id',
     ];

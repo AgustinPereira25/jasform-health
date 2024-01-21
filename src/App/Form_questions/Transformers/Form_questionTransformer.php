@@ -13,10 +13,10 @@ class Form_questionTransformer extends Transformer
     {
         return [
             'id' => (int) $form_question->id,
-            'title' => (string) $form_question->first_name,
-            'text' => (string) $form_question->last_name,
-            'order' => (string) $form_question->photo,
-            'obligatory' => (string) $form_question->phone,
+            'title' => (string) $form_question->title,
+            'text' => (string) $form_question->text,
+            'order' => (int) $form_question->order,
+            'is_obligatory' => (bool) $form_question->is_obligatory,
             'form_id' => (int) $form_question->form_id,
             'question_type_id' => (int) $form_question->question_type_id,
         ];

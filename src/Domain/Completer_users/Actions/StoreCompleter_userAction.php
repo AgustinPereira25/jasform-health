@@ -20,6 +20,7 @@ class StoreCompleter_userAction
             'email' => $completer_userDto->getEmail(),
             'first_name' => $completer_userDto->getFirstName(),
             'last_name' => $completer_userDto->getLastName(),
+            'code' => $completer_userDto->getCode(),
         ]);
     }
 }

@@ -18,15 +18,12 @@ class StoreActivity_recordAction
     {
         return Activity_record::create([
             'date_time' => $activity_recordDto->getDateTime(),
-            'status' => $activity_recordDto->getStatus(),
             'ip_address' => $activity_recordDto->getIpAddress(),
             'activity_performed' => $activity_recordDto->getActivityPerformed(),
-            'description' => $activity_recordDto->getDescription(),
             'session_duration' => $activity_recordDto->getSessionDuration(),
             'activity_result' => $activity_recordDto->getActivityResult(),
             'login_type' => $activity_recordDto->getLoginType(),
             'device_info' => $activity_recordDto->getDeviceInfo(),
-            'physical_location' => $activity_recordDto->getPhysicalLocation(),
             'user_id' => $activity_recordDto->getUserId(),
         ]);
     }

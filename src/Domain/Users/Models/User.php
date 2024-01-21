@@ -59,6 +59,8 @@ use Domain\Activity_records\Models\Activity_record;
  * @property-read int|null $activity_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
  * @property-read int|null $roles_count
+ * @property int $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsActive($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -77,7 +79,7 @@ class User extends Authenticatable
         'photo',
         'phone',
         'position_in_organization',
-        'status',
+        'is_active',
         'email',
         'password',
         'organization_id',

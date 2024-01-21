@@ -18,8 +18,7 @@ class StoreQuestion_optionAction
     {
         return Question_option::create([
             'order' => $question_optionDto->getOrder(),
-            'name' => $question_optionDto->getName(),
-            'description' => $question_optionDto->getDescription(),
+            'title' => $question_optionDto->getTitle(),
             'next_question' => $question_optionDto->getNextQuestion(),
             'form_question_id' => $question_optionDto->getFormQuestionId(),
         ]);

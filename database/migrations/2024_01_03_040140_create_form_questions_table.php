@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('text');
             $table->integer('order');
-            $table->boolean('obligatory');
+            $table->boolean('is_obligatory');
             $table->timestamps();
 
             $table->unsignedBigInteger('form_id');
