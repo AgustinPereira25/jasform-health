@@ -17,8 +17,13 @@ export const Layout = () => {
     email: "abcd@fdsfsd.com",
     organization_id: "1",
     organization_name: "Organization",
-    role_id: "1",
-    role_name: "Admin",
+    roles: [
+      {
+        "id": 1,
+        "name": "Admin",
+        "description": "Admin tasks"
+      }
+    ]
   };
 
   const { setUser } = useUserStore();

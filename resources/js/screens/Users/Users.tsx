@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import { deleteUser, getUsersQuery } from "@/api";
-import { MODAL_ROUTES, ROUTES } from "@/router";
-import { useNavigateModal } from "@/router/useNavigateModal";
+import { getUsersQuery } from "@/api";
+import { ROUTES } from "@/router";
 import type { FormDropdownItem } from "@/shared.types";
-import { Button, errorToast, icons, Input, useToastStore } from "@/ui";
+import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import { FormDropdown } from "../forms/components";
 
@@ -16,8 +15,8 @@ function classNames(...classes: string[]) {
 }
 
 export const Users = () => {
-  const { pushToast } = useToastStore();
-  const queryClient = useQueryClient();
+  // const { pushToast } = useToastStore();
+  // const queryClient = useQueryClient();
 
   const { data: users, isLoading: isLoadingUsers } = useQuery({
     ...getUsersQuery(),
@@ -38,18 +37,18 @@ export const Users = () => {
     //   }),
   });
   // console.log(users);
-  const { mutate: deleteUserMutation } = useMutation({
-    mutationFn: deleteUser.mutation,
-    onSuccess: (_, requestedId) => {
-      deleteUser.invalidates(queryClient, { userId: requestedId });
-      void pushToast({
-        type: "success",
-        title: "Success",
-        message: "User successfully deleted!",
-      });
-    },
-    onError: errorToast,
-  });
+  // const { mutate: deleteUserMutation } = useMutation({
+  //   mutationFn: deleteUser.mutation,
+  //   onSuccess: (_, requestedId) => {
+  //     deleteUser.invalidates(queryClient, { userId: requestedId });
+  //     void pushToast({
+  //       type: "success",
+  //       title: "Success",
+  //       message: "User successfully deleted!",
+  //     });
+  //   },
+  //   onError: errorToast,
+  // });
 
   // const navigateModal = useNavigateModal();
   const navigate = useNavigate();
@@ -84,10 +83,10 @@ export const Users = () => {
             label="Name/Email"
             placeholder="Search by name or email"
             className="min-w-[210px]"
-            //{...register("password")}
-            //error={errors.password?.message}
-            //value={passwordInput}
-            //onChange={(e) => { setPasswordInput(e.target.value); }}
+          //{...register("password")}
+          //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Input
             type="search"
@@ -95,10 +94,10 @@ export const Users = () => {
             label="Title/Organization"
             placeholder="Search by title or organization"
             className="min-w-[245px]"
-            //{...register("password")}
-            //error={errors.password?.message}
-            //value={passwordInput}
-            //onChange={(e) => { setPasswordInput(e.target.value); }}
+          //{...register("password")}
+          //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Input
             type="search"
@@ -107,10 +106,10 @@ export const Users = () => {
             label="Plan Type"
             placeholder="Search by name or email"
             className="min-w-[210px]"
-            //{...register("password")}
-            //error={errors.password?.message}
-            //value={passwordInput}
-            //onChange={(e) => { setPasswordInput(e.target.value); }}
+          //{...register("password")}
+          //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Switch.Group
             as="div"

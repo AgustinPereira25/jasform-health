@@ -27,8 +27,8 @@ export const Profile = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    setValue,
+    // formState: { errors },
+    // setValue,
   } = useForm({
     defaultValues: {
       id: user?.id,
@@ -98,8 +98,8 @@ export const Profile = () => {
               placeholder="Enter first name"
               {...register("firstName")}
               defaultValue={user?.first_name}
-              // error={errors.password?.message}
-              // value={passwordInput}
+            // error={errors.password?.message}
+            // value={passwordInput}
             />
           </div>
         </div>
@@ -117,8 +117,8 @@ export const Profile = () => {
               placeholder="Enter last name"
               {...register("lastName")}
               defaultValue={user?.last_name}
-              // error={errors.lname?.message}
-              //value={passwordInput}
+            // error={errors.lname?.message}
+            //value={passwordInput}
             />
           </div>
         </div>
@@ -136,8 +136,8 @@ export const Profile = () => {
               placeholder="Enter Email address"
               {...register("email")}
               defaultValue={user?.email}
-              //error={errors.email?.message}
-              //value={passwordInput}
+            //error={errors.email?.message}
+            //value={passwordInput}
             />
           </div>
         </div>
@@ -155,8 +155,8 @@ export const Profile = () => {
               placeholder="Phone Number"
               {...register("phone")}
               defaultValue={user?.phone}
-              //error={errors.phone?.message}
-              //value={passwordInput}
+            //error={errors.phone?.message}
+            //value={passwordInput}
             />
           </div>
         </div>
@@ -174,8 +174,8 @@ export const Profile = () => {
               placeholder="Title"
               {...register("title")}
               defaultValue={user?.position_in_organization}
-              //error={errors.title?.message}
-              //value={passwordInput}
+            //error={errors.title?.message}
+            //value={passwordInput}
             />
           </div>
         </div>
@@ -193,8 +193,8 @@ export const Profile = () => {
               placeholder="Organization"
               {...register("organization")}
               defaultValue={user?.organization_id}
-              // error={errors.organization?.message}
-              // value={passwordInput}
+            // error={errors.organization?.message}
+            // value={passwordInput}
             />
           </div>
         </div>
@@ -202,7 +202,7 @@ export const Profile = () => {
         <div className="flex h-16 p-3">
           <Button
             variant="tertiary"
-            // onClick={() => console.log('pepe')}
+          // onClick={() => console.log('pepe')}
           >
             <icons.KeyIcon />
             Change Password

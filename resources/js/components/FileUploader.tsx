@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
-import { CloudArrowUpIcon } from "@heroicons/react/24/outline";
 import { tw } from "@/utils"; //Usamos esto para que quede mas legible y aparte ser mas amigables con Laravel (resuelve conflictos)
-import axios from "axios";
+// import axios from "axios";
 import { icons } from "@/ui";
 
 export const FileUploader: React.FC = () => {
@@ -14,8 +13,7 @@ export const FileUploader: React.FC = () => {
     };
 
     const handleMultiUpload = () => {
-        // const UPLOAD_URL = "YOUR URL HERE";
-        const UPLOAD_URL = "/api/upload";
+        // const UPLOAD_URL = "/api/upload";
         const data = new FormData();
         
         for (const file of fileList!) {
@@ -37,14 +35,14 @@ export const FileUploader: React.FC = () => {
         const fileToUpload: File[] = [file];
         setFileList(fileToUpload);
         
-        const UPLOAD_URL = "/api/upload";
+        // const UPLOAD_URL = "/api/upload";
         const data = new FormData();
         data.append(fileToUpload[0]!.name, fileToUpload[0]!);
         //ToDo: Agregar el post a upload URL con la data
         // await axios.post(UPLOAD_URL, data);
     };
     
-    const handleChange = async (e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         setFileList(null);
         const fileUploaded:File | null = e.target.files![0]!;
         fileUploaded &&

@@ -43,7 +43,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
     { name: "Pending" },
   ]; //solo name
 
-  const defaultRole = user.roles ? user.roles[0].name : "Admin";
+  const defaultRole = user.roles ? user.roles[0]!.name : "Admin";
 
   const {
     register,
@@ -242,7 +242,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
           <div className="flex h-16 p-3">
             <Button
               variant="tertiary"
-              // onClick={() => console.log('pepe')}
+            // onClick={() => console.log('pepe')}
             >
               <icons.KeyIcon />
               Change Password
@@ -284,7 +284,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                 onValueChange={(item) => {
                   setValue("subscription", item.name);
                 }}
-                // onValueChange={(e) => console.log(e)}
+              // onValueChange={(e) => console.log(e)}
               />
             </div>
           </div>

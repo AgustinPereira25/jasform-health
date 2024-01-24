@@ -21,8 +21,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         register,
         handleSubmit,
         formState: { errors },
-        setValue,
-        setError,
+        // setValue,
+        // setError,
     } = useForm({
         // // TODO - Complete this fields.. 
         defaultValues: {
@@ -60,11 +60,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const handleClickOutside = (event: MouseEvent) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if (primaryWrapperRef.current && (!primaryWrapperRef.current.contains(event.target) && !primaryPickerRef.current.contains(event.target))) {
+        if (primaryWrapperRef.current && (!primaryWrapperRef.current.contains(event.target) && !primaryPickerRef.current!.contains(event.target))) {
             setShowPrimaryColorPicker(false);
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if (secondaryWrapperRef.current && (!secondaryWrapperRef.current.contains(event.target) && !secondaryPickerRef.current.contains(event.target))) {
+        if (secondaryWrapperRef.current && secondaryPickerRef.current && (!secondaryWrapperRef.current.contains(event.target as Node) && !secondaryPickerRef.current.contains(event.target as Node))) {
             setShowSecondaryColorPicker(false);
         }
     };
@@ -360,7 +360,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <div className='flex gap-3 pl-3'>
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
-                                        {...register("anonAnswers")}
+                                        // {...register("anonAnswers")}
                                         checked={enabledEncUnlData}
                                         onChange={setEnabledEncUnlData}
                                         className={classNames(
@@ -386,7 +386,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <div className='flex gap-3 pl-3'>
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
-                                        {...register("mandatoryInitialData")}
+                                        // {...register("mandatoryInitialData")}
                                         checked={enabledEncUnlData}
                                         onChange={setEnabledEncUnlData}
                                         className={classNames(
