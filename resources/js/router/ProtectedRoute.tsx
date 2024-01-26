@@ -1,16 +1,19 @@
 import type { ReactNode } from "react";
+// import { Navigate, Outlet } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 // import { useUserStore } from "@/stores/useUserStore";
-// import { ROUTES } from "./routes";
+import { ROUTES } from "./routes";
 
 type UserState = "loggedOut" | "standard" | "admin";
 
-// const HOME = {
-//   loggedOut: ROUTES.login,
-//   admin: ROUTES.users,
-//   standard: ROUTES.home,
-// } as const;
+// No sacar esto sino no anda mas el router.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const HOME = {
+  loggedOut: ROUTES.login,
+  admin: ROUTES.users,
+  standard: ROUTES.home,
+} as const;
 
 export const ProtectedRoute = ({
   children,
@@ -20,13 +23,13 @@ export const ProtectedRoute = ({
   expected: UserState | UserState[];
 }) => {
   // const userState = useUserStore((state) =>
-  //   state.token ? state.user?.roles ?? "standard" : "loggedOut",
+  //   state.token ? state.user?.role ?? "standard" : "loggedOut",
   // );
 
-  //Todo: fix this
   // if (!expected.includes(userState)) {
   //   return <Navigate to={HOME[userState]} replace />;
   // }
-
-  return children ? <>{children}</> : <Outlet />;
+  // if puesto para que no patee ts
+  if (HOME.admin === '/users')
+    return children ? <>{children}</> : <Outlet />;
 };

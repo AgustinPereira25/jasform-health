@@ -275,12 +275,12 @@ export const Users = () => {
                       </div> */}
                       <div
                         className={
-                          item.status === "Active"
+                          item.is_active
                             ? "text-[#065F46] sm:block"
                             : "text-[#a82d2d] sm:block"
                         }
                       >
-                        {item.status}
+                        {item.is_active ? "Active" : "Inactive"}
                       </div>
                     </div>
                   </td>

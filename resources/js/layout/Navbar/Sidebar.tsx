@@ -19,18 +19,6 @@ const navigation = [
     icon: <icons.MyFormsIcon />,
     role: "admin",
   },
-  //   {
-  //     path: "#",
-  //     label: "My Bills",
-  //     icon: <icons.MyBillsIcon />,
-  //     role: "admin",
-  //   },
-  //   {
-  //     path: "#",
-  //     label: "My Subscription",
-  //     icon: <icons.MySubscriptionIcon />,
-  //     role: "admin",
-  //   },
   {
     path: ROUTES.users,
     label: "Users",

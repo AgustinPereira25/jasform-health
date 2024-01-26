@@ -13,7 +13,7 @@ export const Layout = () => {
     photo: "https://images.nightcafe.studio//assets/man-in-suit.jpg",
     phone: "1234",
     position_in_organization: "Gerente",
-    status: "Active",
+    is_active: true,
     email: "abcd@fdsfsd.com",
     organization_id: "1",
     organization_name: "Organization",
@@ -40,4 +40,4 @@ export const Layout = () => {
       </main>
     </div>
   );
-};
+}; 
