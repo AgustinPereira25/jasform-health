@@ -40,4 +40,4 @@ export const Layout = () => {
       </main>
     </div>
   );
-}; 
+};

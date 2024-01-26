@@ -1,48 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { Button, Input, icons } from '@/ui'
-import { FileUploader } from '@/components'
 import { useForm } from 'react-hook-form'
 import { tw } from '@/utils'
-import type { Form } from '@/api'
-import { Switch } from '@headlessui/react'
-import { HexColorPicker } from 'react-colorful'
+import { IFormQuestion } from '@/api'
 
-interface NewFormProps {
-    initialData: Form;
-}
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
+interface FormQuestionsProps {
+    initialData: IFormQuestion[];
 }
 
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
-export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
-
+export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form = {} }) => {
+    console.log(form);
     const {
         register,
         handleSubmit,
         formState: { errors },
-        setValue,
-        setError,
+        // setValue,
+        // setError,
     } = useForm({
         // // TODO - Complete this fields.. 
-        defaultValues: {
-            id: form.id ?? 0,
-            name: form.name ?? '',
-            welcomeTxt: form.welcome_text ?? '',
-            description: form.description ?? '',
-            pcolor: form.primary_color ?? '',
-            scolor: form.secondary_color ?? '',
-            borderRadius: form.rounded_style ?? '',
-            logo: form.logo ?? '',
-            apiURL: form.api_url ?? '',
-            publicCode: form.public_code ?? '',
-            publishState: form.status ?? false,
-            // anonAnswers: form.anonymous_answers ?? false,
-            // mandatoryInitialData: form.mandatory_initial_data ?? false,
-        },
+        // defaultValues: {
+        //     id: form.id ?? 0,
+        //     name: form.name ?? '',
+        //     welcomeTxt: form.welcome_text ?? '',
+        //     description: form.description ?? '',
+        //     pcolor: form.primary_color ?? '',
+        //     scolor: form.secondary_color ?? '',
+        //     borderRadius: form.rounded_style ?? '',
+        //     logo: form.logo ?? '',
+        //     apiURL: form.api_url ?? '',
+        //     publicCode: form.public_code ?? '',
+        //     publishState: form.status ?? false,
+        //     // anonAnswers: form.anonymous_answers ?? false,
+        //     // mandatoryInitialData: form.mandatory_initial_data ?? false,
+        // },
     });
 
-    const onSubmit = (data: Form) => {
+    const onSubmit = (data: IFormQuestion[]) => {
         console.log(data);
         // if (!data.phone) {
         //     setError("phone", {
@@ -51,39 +45,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         //     },{shouldFocus: true})
         // }
     };
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside, false);
-        return () => {
-            document.removeEventListener("click", handleClickOutside, false);
-        };
-    }, []);
-
-    const handleClickOutside = (event: MouseEvent) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if (primaryWrapperRef.current && (!primaryWrapperRef.current.contains(event.target) && !primaryPickerRef.current.contains(event.target))) {
-            setShowPrimaryColorPicker(false);
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if (secondaryWrapperRef.current && (!secondaryWrapperRef.current.contains(event.target) && !secondaryPickerRef.current.contains(event.target))) {
-            setShowSecondaryColorPicker(false);
-        }
-    };
-
-    const primaryWrapperRef = useRef(null);
-    const secondaryWrapperRef = useRef(null);
-
-    const primaryPickerRef = useRef(null);
-    const secondaryPickerRef = useRef(null);
-
-    // For toggles
-    const [enabledPublishStatus, setEnabledPublishStatus] = useState(false);
-    const [enabledEncUnlData, setEnabledEncUnlData] = useState(false);
-    // For color picker
-    const [primaryColor, setPrimaryColor] = useState("#aabbcc"); //TODO- Put the default color from the form if it exists
-    const [secondaryColor, setSecondaryColor] = useState("#aabbcc"); //TODO- Put the default color from the form if it exists
-
-    const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useState(false);
-    const [showSecondaryColorPicker, setShowSecondaryColorPicker] = useState(false);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -139,24 +100,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <div className='flex shrink-0 w-40'>
                                 <span>Logo</span>
                             </div>
-                            {/* <div className="flex shrink-0 rounded-full overflow-hidden">
-                                    <div className='relative p-0 '>
-                                        <img
-                                            src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                            alt="user"
-                                            className='h-[120px] w-[120px]'
-                                        />
-                                        <Button
-                                            variant="primary"
-                                            onClick={() => console.log('pepe')}
-                                            className='text-xs absolute bottom-0 right-0 left-0 w-full p-0'
-                                        >
-                                            Edit
-                                        </Button>
-                                    </div>
-                                </div> */}
-                            {/* ToDo: Agregar props como url del endpoint,etc para hacerlo mas generico */}
-                            <FileUploader />
                         </div>
                         <hr className='mx-3' />
                         <div className={tw(
@@ -236,34 +179,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <div className='flex w-40'>
                                 <span>Primary Color</span>
                             </div>
-                            <div className="flex grow gap-2">
-                                <Input
-                                    containerClassName='w-full'
-                                    fullHeight
-                                    type="text"
-                                    id="pcolor"
-                                    placeholder="Primary Color"
-                                    {...register("pcolor")}
-                                    // {...register("pcolor")}
-                                    // error={errors.pcolor?.message}
-                                    // defaultValue={''}
-                                    value={primaryColor}
-                                />
-                                <Button ref={primaryWrapperRef} style={{
-                                    backgroundColor: primaryColor,
-                                    color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
-                                    borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
-                                }}
-                                    onClick={() => setShowPrimaryColorPicker(true)}
-                                >
-                                    <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
-                                </Button>
-                                {showPrimaryColorPicker && (
-                                    <div ref={primaryPickerRef} className='z-[1] absolute left-1/2 top-[30%]'>
-                                        <HexColorPicker color={primaryColor} onChange={setPrimaryColor} />
-                                    </div>
-                                )}
-                            </div>
                         </div>
                         <hr className='mx-3' />
                         <div className={tw(
@@ -273,34 +188,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         >
                             <div className='flex w-40'>
                                 <span>Secondary Color</span>
-                            </div>
-                            <div className="flex grow gap-2">
-                                <Input
-                                    containerClassName='w-full'
-                                    fullHeight
-                                    type="text"
-                                    id="scolor"
-                                    placeholder="Secondary Color"
-                                    {...register("scolor")}
-                                    // {...register("pcolor")}
-                                    // error={errors.pcolor?.message}
-                                    // defaultValue={''}
-                                    value={secondaryColor}
-                                />
-                                <Button ref={secondaryWrapperRef} style={{
-                                    backgroundColor: secondaryColor,
-                                    color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") ? 'black' : 'white',
-                                    borderColor: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#fff") ? 'black' : 'white',
-                                }}
-                                    onClick={() => setShowSecondaryColorPicker(true)}
-                                >
-                                    <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
-                                </Button>
-                                {showSecondaryColorPicker && (
-                                    <div ref={secondaryPickerRef} className='z-[1] absolute left-1/2 top-[30%]'>
-                                        <HexColorPicker color={secondaryColor} onChange={setSecondaryColor} />
-                                    </div>
-                                )}
                             </div>
                         </div>
                         <hr className='mx-3' />
@@ -325,121 +212,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     defaultValue={''}
                                 />
                             </div>
-                        </div>
-                        <hr className='mx-3' />
-                    </div>
-                    <div className="w-full">
-                        <div className='flex p-3 h-16 items-center justify-between'>
-                            <span>Form&apos;s Publish State</span>
-                            <div className='flex gap-3 pl-3'>
-                                <Switch.Group as="div" className="flex items-center justify-between gap-2">
-                                    <Switch
-                                        {...register("publishState")}
-                                        checked={enabledPublishStatus}
-                                        onChange={setEnabledPublishStatus}
-                                        className={classNames(
-                                            enabledPublishStatus ? 'bg-[#065F46]' : 'bg-gray-200',
-                                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
-                                        )}
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className={classNames(
-                                                enabledPublishStatus ? 'translate-x-5' : 'translate-x-0',
-                                                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                            )}
-                                        />
-                                    </Switch>
-                                </Switch.Group>
-                                <span className={classNames(enabledPublishStatus ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledPublishStatus ? 'Active' : 'Inactive'}</span>
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 items-center justify-between'>
-                            <span>Anonymous user&apos;s answers</span>
-                            <div className='flex gap-3 pl-3'>
-                                <Switch.Group as="div" className="flex items-center justify-between gap-2">
-                                    <Switch
-                                        {...register("anonAnswers")}
-                                        checked={enabledEncUnlData}
-                                        onChange={setEnabledEncUnlData}
-                                        className={classNames(
-                                            enabledEncUnlData ? 'bg-[#065F46]' : 'bg-gray-200',
-                                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
-                                        )}
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className={classNames(
-                                                enabledEncUnlData ? 'translate-x-5' : 'translate-x-0',
-                                                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                            )}
-                                        />
-                                    </Switch>
-                                </Switch.Group>
-                                <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 items-center justify-between'>
-                            <span>Request mandatory initial data</span>
-                            <div className='flex gap-3 pl-3'>
-                                <Switch.Group as="div" className="flex items-center justify-between gap-2">
-                                    <Switch
-                                        {...register("mandatoryInitialData")}
-                                        checked={enabledEncUnlData}
-                                        onChange={setEnabledEncUnlData}
-                                        className={classNames(
-                                            enabledEncUnlData ? 'bg-[#065F46]' : 'bg-gray-200',
-                                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
-                                        )}
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className={classNames(
-                                                enabledEncUnlData ? 'translate-x-5' : 'translate-x-0',
-                                                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                            )}
-                                        />
-                                    </Switch>
-                                </Switch.Group>
-                                <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex px-3 h-16 items-center justify-between'>
-                            <span>Creation Date: 15/01/2024 03:45PM</span>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex px-3 h-16 items-center justify-between'>
-                            <span>Last Modified Date: 15/01/2024 03:45PM</span>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 '>
-                            <Button
-                                variant='primary'
-                            >
-                                <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
-                                Get Embedded Windows Code (iFrame)
-                            </Button>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 '>
-                            <Button
-                                variant='primary'
-                            >
-                                <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
-                                Get Public Link with Code to Share
-                            </Button>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 '>
-                            <Button
-                                variant='primary'
-                            >
-                                <icons.EyeIcon className={tw(`w-5 h-5`)} />
-                                Preview the Form
-                            </Button>
                         </div>
                         <hr className='mx-3' />
                     </div>
@@ -472,4 +244,4 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     )
 }
 
-export default NewForm;
+export default QuestionsForm;

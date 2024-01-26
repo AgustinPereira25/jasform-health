@@ -1,21 +1,20 @@
-import { useEffect } from "react";
-import { Form, getFormQuery } from "@/api";
+// import { useEffect } from "react";
+import { getFormQuestionsQuery } from "@/api";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { icons } from "@/ui";
+import { QuestionsForm } from "./FormQuestions";
 
 export const PrepareQuestionsForm: React.FunctionComponent = () => {
     const { id } = useParams();
     // const navigate = useNavigate();
     // TODO- Error handling 404, and redirect to not found page. with navigate.
-    let form: Form = {};
-    const { data: formData, isLoading: isLoadingQuestsForm  } = useQuery({
-        ...getFormQuery(parseInt(id!)),
+    const { data: formQtsData, isLoading: isLoadingQuestsForm } = useQuery({
+        ...getFormQuestionsQuery(parseInt(id!)),
         // The query will not execute until the id exists
         enabled: !!id,
     });
-    form = formData!;
-    
+
     // useEffect(() => {
     //     console.log(isError)
     //     if(!isLoadingQuestsForm && id && form===undefined){
@@ -23,19 +22,18 @@ export const PrepareQuestionsForm: React.FunctionComponent = () => {
     //     } 
     // }
     // , [isLoadingQuestsForm]);
-return (
+    return (
         <div>
             {isLoadingQuestsForm ? (
                 <tr className="h-full items-center">
-                <td colSpan={5}>
-                    <div className="flex justify-center p-9">
-                        <icons.SpinnerIcon />
-                    </div>
-                </td>
-            </tr>
+                    <td colSpan={5}>
+                        <div className="flex justify-center p-9">
+                            <icons.SpinnerIcon />
+                        </div>
+                    </td>
+                </tr>
             ) : (
-                // <NewForm initialData={form} />
-                <></>
+                <QuestionsForm initialData={formQtsData ?? []} />
             )}
         </div>
     );
