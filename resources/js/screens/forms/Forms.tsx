@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-import { deleteUser, getFormsQuery } from "@/api";
+import { getFormsQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
 import type { FormDropdownItem } from "@/shared.types";
-import { Button, errorToast, icons, Input, useToastStore } from "@/ui";
+import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import { FormDropdown } from "./components";
 
@@ -14,116 +14,9 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const activityItems = [
-  {
-    user: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "2d89f0c8",
-    organization: "main",
-    status: "Active",
-    plan: "25s",
-    role: "Admin",
-    dateTime: "2023-01-23T11:00",
-  },
-  {
-    user: {
-      name: "Lindsay Walton",
-      imageUrl:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "249df660",
-    organization: "main",
-    status: "Active",
-    plan: "1m 32s",
-    role: "Admin",
-    dateTime: "2023-01-23T09:00",
-  },
-  {
-    user: {
-      name: "Courtney Henry",
-      imageUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "11464223",
-    organization: "main",
-    status: "Inactive",
-    plan: "1m 4s",
-    role: "Free",
-    dateTime: "2023-01-23T00:00",
-  },
-  {
-    user: {
-      name: "Courtney Henry",
-      imageUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "dad28e95",
-    organization: "main",
-    status: "Active",
-    plan: "2m 15s",
-    role: "Free",
-    dateTime: "2023-01-21T13:00",
-  },
-  {
-    user: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "624bc94c",
-    organization: "main",
-    status: "Active",
-    plan: "1m 12s",
-    role: "Plus",
-    dateTime: "2023-01-18T12:34",
-  },
-  {
-    user: {
-      name: "Courtney Henry",
-      imageUrl:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    title: "e111f80e",
-    organization: "main",
-    status: "Active",
-    plan: "1m 56s",
-    role: "Admin",
-    dateTime: "2023-01-16T15:54",
-  },
-  // {
-  //   user: {
-  //     name: "Michael Foster",
-  //     imageUrl:
-  //       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  //   },
-  //   commit: "5e136005",
-  //   branch: "main",
-  //   status: "Active",
-  //   plan: "3m 45s",
-  //   role: "1 week ago",
-  //   dateTime: "2023-01-16T11:31",
-  // },
-  // {
-  //   user: {
-  //     name: "Whitney Francis",
-  //     imageUrl:
-  //       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  //   },
-  //   commit: "5c1fd07f",
-  //   branch: "main",
-  //   status: "Active",
-  //   plan: "37s",
-  //   role: "2 weeks ago",
-  //   dateTime: "2023-01-09T08:45",
-  // },
-] as const;
-
 export const Forms = () => {
-  const { pushToast } = useToastStore();
-  const queryClient = useQueryClient();
+  // const { pushToast } = useToastStore();
+  // const queryClient = useQueryClient();
 
   const { data: forms, isLoading: isLoadingForms } = useQuery({
     ...getFormsQuery(),
@@ -188,20 +81,20 @@ export const Forms = () => {
             id="title"
             label="Title"
             placeholder="Search by form title"
-            //{...register("password")}
-            //error={errors.password?.message}
-            //value={passwordInput}
-            //onChange={(e) => { setPasswordInput(e.target.value); }}
+          //{...register("password")}
+          //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Input
             type="date"
             id="date"
             label="Date"
             placeholder="Search by Daten"
-            //{...register("password")}
-            //error={errors.password?.message}
-            //value={passwordInput}
-            //onChange={(e) => { setPasswordInput(e.target.value); }}
+          //{...register("password")}
+          //error={errors.password?.message}
+          //value={passwordInput}
+          //onChange={(e) => { setPasswordInput(e.target.value); }}
           />
           <Switch.Group
             as="div"

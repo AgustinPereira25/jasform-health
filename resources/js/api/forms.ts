@@ -2,6 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 
 import type { ServiceResponse } from "./api.types";
 import { privateAPI } from "./axios";
+import type { User } from "./users";
 
 const DOMAIN = "form";
 const ALL = "all";

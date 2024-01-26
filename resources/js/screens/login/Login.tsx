@@ -5,10 +5,10 @@
 
 // import { googleLogin } from "@/api";
 import HomeTextAndImage from "@/components/HomeTextAndImage";
-import { Button, errorToast, icons, Input, useToastStore } from "@/ui";
-import { handleAxiosFieldErrors } from "@/utils";
+import { Button, Input } from "@/ui";
+// import { handleAxiosFieldErrors } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -75,17 +75,17 @@ export const Login = () => {
   //   googleLoginMutation({ email, name, googleToken: credential });
   // };
   const [emailInput, setEmailInput] = useState<string>("");
-  const [passwordInput, setPasswordInput] = useState<string>("");
+  // const [passwordInput, setPasswordInput] = useState<string>("");
   const {
-    formState: { errors, isDirty },
-    handleSubmit,
+    formState: { errors },
+    // handleSubmit,
     register,
-    setError,
+    // setError,
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
 
-  const { pushToast } = useToastStore();
+  // const { pushToast } = useToastStore();
   // const queryClient = useQueryClient();
 
   // const { mutate: logUserMutation, isPending: isPendingLogUserMutation } =
@@ -112,8 +112,8 @@ export const Login = () => {
         <div className="flex justify-center">
           <h2 className="text-2xl font-medium text-gray-900">Welcome!</h2>
         </div>
-        <form 
-          // onSubmit={(e) => { void handleSubmit((value) => logUserMutation(value))(e); }}
+        <form
+        // onSubmit={(e) => { void handleSubmit((value) => logUserMutation(value))(e); }}
         >
           <div className="grid gap-3">
             <div>
@@ -135,20 +135,20 @@ export const Login = () => {
                 placeholder="Enter Password"
                 {...register("password")}
                 error={errors.password?.message}
-                //value={passwordInput}
-                //onChange={(e) => { setPasswordInput(e.target.value); }}
+              //value={passwordInput}
+              //onChange={(e) => { setPasswordInput(e.target.value); }}
               />
             </div>
             <div className="flex justify-end">
               <button className="text-sm font-medium text-blue-600">Forgot password?</button>
             </div>
             <div className="pb-8">
-              <Button 
+              <Button
                 type="submit"
                 variant="primary"
                 //className="block w-full rounded-md bg-[#00519e] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#407EC9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 className="block w-full"
-                // disabled={!isDirty || isPendingLogUserMutation}
+              // disabled={!isDirty || isPendingLogUserMutation}
               >
                 {/* {isPendingLogUserMutation ? (
                   <icons.SpinnerIcon className="h-5 w-5" />

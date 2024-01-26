@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import { FileUploader } from "@/components";
 import { Button, icons, Input } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
+import { Switch } from "@headlessui/react";
 
 interface NewProfileForm {
   id?: number;
@@ -18,11 +19,16 @@ interface NewProfileForm {
   organization?: string;
   subscription?: string;
   roles?: UserRoles[];
-  status?: string;
+  is_active?: boolean;
 }
 interface NewProfileProps {
   initialData: User;
 }
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export const NewProfile: React.FC<NewProfileProps> = ({
   initialData: user = {},
 }) => {
@@ -37,13 +43,10 @@ export const NewProfile: React.FC<NewProfileProps> = ({
     { id: 2, name: "User" },
     { id: 3, name: "Viewer" },
   ]; // el unico q prevalaece con esta structura
-  const Status = [
-    { name: "Active" },
-    { name: "Inactive" },
-    { name: "Pending" },
-  ]; //solo name
 
-  const defaultRole = user.roles ? user.roles[0].name : "Admin";
+  const defaultRole = user.roles ? user.roles[0]!.name : "Admin";
+  // For toggles
+  const [enabledActive, setEnabledActive] = useState(false);
 
   const {
     register,
@@ -62,7 +65,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
       organization: user?.organization_name ?? "",
       subscription: "Free" ?? "",
       role: defaultRole,
-      status: user?.status ?? "Active",
+      is_active: user?.is_active ?? true,
     },
   });
   const onSubmit = (data: NewProfileForm) => {
@@ -242,7 +245,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
           <div className="flex h-16 p-3">
             <Button
               variant="tertiary"
-              // onClick={() => console.log('pepe')}
+            // onClick={() => console.log('pepe')}
             >
               <icons.KeyIcon />
               Change Password
@@ -272,7 +275,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
         </div>
         <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
           <div className="flex h-16 p-3">
-            <div className="flex w-40">
+            <div className="flex w-40 items-center">
               <span>Subscription Plan</span>
             </div>
             <div className="flex grow">
@@ -284,13 +287,13 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                 onValueChange={(item) => {
                   setValue("subscription", item.name);
                 }}
-                // onValueChange={(e) => console.log(e)}
+              // onValueChange={(e) => console.log(e)}
               />
             </div>
           </div>
           <hr className="mx-3" />
           <div className="flex h-16 p-3">
-            <div className="flex w-40">
+            <div className="flex w-40 items-center">
               <span>Role</span>
             </div>
             <div className="flex grow">
@@ -307,37 +310,49 @@ export const NewProfile: React.FC<NewProfileProps> = ({
           </div>
           <hr className="mx-3" />
           <div className="flex h-16 p-3 ">
-            <div className="flex w-40">
-              <span>Status</span>
+            <div className="flex w-40 items-center">
+              <span>Is the user Active?</span>
             </div>
             <div className="flex grow">
-              <ComboBox
-                items={Status}
-                defaultValue={user?.status}
-                {...register("status")}
-                onValueChange={(item) => {
-                  setValue("status", item.name);
-                }}
-              />
+              <Switch.Group
+                as="div"
+                className="flex items-center justify-between gap-2"
+              >
+                <Switch
+                  checked={enabledActive}
+                  onChange={setEnabledActive}
+                  className={classNames(
+                    enabledActive ? "bg-[#00519E]" : "bg-gray-200",
+                    "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={classNames(
+                      enabledActive ? "translate-x-5" : "translate-x-0",
+                      "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                    )}
+                  />
+                </Switch>
+              </Switch.Group>
             </div>
           </div>
           <hr className="mx-3" />
-          <div className="flex h-16 p-3 ">
-            <Button variant="primary">User&apos;s Dashboard</Button>
-          </div>
-          <hr className="mx-3" />
-          <div className="flex h-16 p-3 ">
-            <Button variant="primary">User&apos;s Forms</Button>
-          </div>
-          <hr className="mx-3" />
-          <div className="flex h-16 p-3 ">
-            <Button variant="primary">User&apos;s Bills</Button>
-          </div>
-          <hr className="mx-3" />
-          <div className="flex h-16 p-3 ">
-            <Button variant="primary">User&apos;s Subscription History</Button>
-          </div>
-          <hr className="mx-3" />
+          {
+            user.id && (
+              <>
+                <div className="flex h-16 p-3 ">
+                  <Button variant="primary">User&apos;s Dashboard</Button>
+                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
+                  <Button variant="primary">User&apos;s Forms</Button>
+                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
+                  <Button variant="primary">User&apos;s Bills</Button>
+                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
+                  <Button variant="primary">User&apos;s Subscription History</Button>
+                </div><hr className="mx-3" />
+              </>
+            )
+          }
         </div>
       </div>
     </form>
