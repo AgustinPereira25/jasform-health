@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { ROUTES } from "@/router";
-import { User, useUserStore } from "@/stores";
+import { useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo, NavbarLogo } from "./components";
@@ -20,18 +19,6 @@ const navigation = [
     icon: <icons.MyFormsIcon />,
     role: "admin",
   },
-  //   {
-  //     path: "#",
-  //     label: "My Bills",
-  //     icon: <icons.MyBillsIcon />,
-  //     role: "admin",
-  //   },
-  //   {
-  //     path: "#",
-  //     label: "My Subscription",
-  //     icon: <icons.MySubscriptionIcon />,
-  //     role: "admin",
-  //   },
   {
     path: ROUTES.users,
     label: "Users",
@@ -65,7 +52,8 @@ export const Sidebar = ({
 }) => {
   const { pathname: currentPath } = useLocation();
   // TODO - Put real user here and change mocked user in Layout.tsx
-  const { user: mockUser, setToken } = useUserStore();
+  // const { user: mockUser, setToken } = useUserStore();
+  const { user: mockUser } = useUserStore();
 
   return (
     <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
@@ -79,7 +67,7 @@ export const Sidebar = ({
               <ul className="relative h-full">
                 {navigation
                   .filter((item) =>
-                    item.role.includes(mockUser.role_name!.toLowerCase()),
+                    item.role.includes(mockUser.roles![0]!.name.toLowerCase() ?? ""),
                   )
                   .map((item) => (
                     <li

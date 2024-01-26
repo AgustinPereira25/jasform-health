@@ -9,7 +9,7 @@
     },
     "prettier.configPath": "./prettier.config.cjs",
     "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "editor.gotoLocation.multipleDefinitions": "goto"
 }

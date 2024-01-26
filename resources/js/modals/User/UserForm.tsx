@@ -47,7 +47,7 @@ export const UserForm = ({ onClose }: { onClose: () => void }) => {
         void pushToast({
           type: "success",
           title: "Success",
-          message: `User "${data.name}" successfully created!`,
+          message: `User "${data.first_name}" successfully created!`,
         });
         onClose();
       },

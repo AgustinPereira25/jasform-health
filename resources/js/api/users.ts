@@ -26,7 +26,7 @@ export interface User {
   photo?:                    string;
   phone?:                    string;
   position_in_organization?: string;
-  status?:                   string;
+  is_active?:                boolean;
   email?:                    string;
   organization_id?:          string;
   organization_name?:        string;

@@ -9,7 +9,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
 import { Forms } from "@/screens/forms";
 import { Profile } from "@/screens/profile";
-import NewForm from "@/screens/forms/NewForm";
+// import NewForm from "@/screens/forms/NewForm";
 import { PrepareProfileForm } from "@/screens/profile/PrepareProfileForm";
 import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 
@@ -69,7 +69,7 @@ export const Router = () => {
         </Route>
         {/* </Route> */}
 
-      {/* TODO - Do the same as here in Forms Screen(create PrepareFormForm component and use it in the routes below in order to get data before rendering the form) */}
+        {/* TODO - Do the same as here in Forms Screen(create PrepareFormForm component and use it in the routes below in order to get data before rendering the form) */}
         {/* <Route element={<ProtectedRoute expected="admin" />}> */}
         <Route element={<Layout />}>
           <Route element={<PrepareProfileForm />} path={ROUTES.editUser} />

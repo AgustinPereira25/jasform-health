@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { env } from "@/env";
+// import { env } from "@/env";
 import { errorResponse, privateRequest } from "./interceptors";
 
 const baseConfig = {
