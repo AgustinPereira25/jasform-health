@@ -3,6 +3,7 @@ import { Button, Input, icons } from '@/ui'
 import { useForm } from 'react-hook-form'
 import { tw } from '@/utils'
 import { IFormQuestion } from '@/api'
+import { useNavigate, useParams } from 'react-router-dom'
 
 interface FormQuestionsProps {
     initialData: IFormQuestion[];
@@ -46,23 +47,26 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
         // }
     };
 
+    const navigate = useNavigate();
+    const { id: formId } = useParams();
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
                 <div className='flex gap-1 items-center'>
                     <Button
                         variant="secondary"
-                        onClick={() => console.log('pepe')}
+                        onClick={() => navigate(-1)}
                     >
                         <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
                         Return
                     </Button>
                     <span className="pl-3 text-2xl text-black">
-                        New Form&apos;s Information
+                        Form&apos;s Questions
                     </span>
                     {
-                        form.id && (
-                            <span className='text-2xl text-gray-500 italic'>- Form Code: {form.id}</span>
+                        formId && (
+                            <span className='text-2xl text-gray-500 italic'>- Form Code: {formId}</span>
                         )
                     }
                 </div>

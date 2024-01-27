@@ -6,6 +6,7 @@ import { tw } from '@/utils'
 import type { Form } from '@/api'
 import { Switch } from '@headlessui/react'
 import { HexColorPicker } from 'react-colorful'
+import { useNavigate } from 'react-router-dom'
 
 interface NewFormProps {
     initialData: Form;
@@ -16,6 +17,8 @@ function classNames(...classes: string[]) {
 
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
 export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
+
+    const navigate = useNavigate();
 
     const {
         register,
@@ -91,7 +94,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                 <div className='flex gap-1 items-center'>
                     <Button
                         variant="secondary"
-                        onClick={() => console.log('pepe')}
+                        onClick={() => navigate(-1)}
                     >
                         <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
                         Return
@@ -117,7 +120,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         form.id && (
                             <Button
                                 variant="primary"
-                                onClick={() => console.log('pepe')}
+                                onClick={() => navigate(`/forms/${form.id}/questions`)}
                             >
                                 <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
                                 Edit Form&apos;s Questions
