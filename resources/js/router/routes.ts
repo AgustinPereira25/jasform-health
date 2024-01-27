@@ -9,6 +9,7 @@ export const ROUTES = {
   newUser: "/users/new",
   newForm: "/forms/new",
   editForm: "/forms/:id",
+  questionsForm: "/forms/:id/questions",
   notFound: "*",
 } as const;
 
