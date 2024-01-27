@@ -15,10 +15,10 @@ services:
       - "443:443"
     volumes:
       - .:/var/www/html/:cached
-      - ./certs/jasform.com.origin.pem:/etc/ssl/web/jasform.com.origin.pem
-      - ./certs/jasform.com.origin.key:/etc/ssl/web/jasform.com.origin.key
-      - ./certs/origin_ca_rsa_root.pem:/etc/ssl/web/origin_ca_rsa_root.pem
-      - ./certs/https.conf:/etc/nginx/site-opts.d/https.conf
+      - ./production/jasform.com.origin.pem:/etc/ssl/web/jasform.com.origin.pem
+      - ./production/jasform.com.origin.key:/etc/ssl/web/jasform.com.origin.key
+      - ./production/origin_ca_rsa_root.pem:/etc/ssl/web/origin_ca_rsa_root.pem
+      - ./production/https.conf:/etc/nginx/site-opts.d/https.conf
     networks:
       - jasform-network
     depends_on:
