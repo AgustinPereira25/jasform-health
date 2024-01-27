@@ -6,21 +6,22 @@ DIR=/home/laravel/jasform
 echo "--------------------" >> $LOG
 echo "Deploy starting at - $(date)"  >> $LOG
 echo "--------------------"  >> $LOG
+echo "Variables: LOG: $LOG - DIR: $DIR" >> $LOG
 
-echo "Accessing the DIR"  >> $LOG
+echo "Accessing DIR"  >> $LOG
 cd $DIR
 
-echo "Running git pull command"  >> $LOG
-OUTPUT=$(git pull)
-echo $OUTPUT >> $LOG
-LINES=$(echo "$OUTPUT" | wc -l)
-
-echo "Running docker compose command"  >> $LOG
-if [ $LINES -gt 1 ]; then
+echo "Checking changes in repo"  >> $LOG
+GIT=$(git rev-list HEAD...origin/main --count)
+if [ $GIT -gt 0 ]; then
+    echo "Changes detected - $(echo $GIT). Running git pull command"  >> $LOG
+    git pull >> $LOG
     echo "Repo updated. Running docker compose" >> $LOG
     docker compose up -d --build  >> $LOG
+    docker ps >> $LOG
 else
-    echo "Skip it. Lines - $(echo $LINES)" >> $LOG
+    echo "No changes. Skip it." >> $LOG
+    docker ps >> $LOG
 fi
 
 echo "--------------------" >> $LOG
