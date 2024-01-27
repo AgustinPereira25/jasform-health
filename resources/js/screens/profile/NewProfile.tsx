@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import type { User, UserRoles } from "@/api";
 import { FileUploader } from "@/components";
@@ -77,17 +77,15 @@ export const NewProfile: React.FC<NewProfileProps> = ({
     //     },{shouldFocus: true})
     // }
   };
-
+  const navigate = useNavigate();
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
         <div className="flex items-center gap-1">
-          <Link to="/users">
-            <Button variant="secondary">
-              <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
-              Return
-            </Button>
-          </Link>
+          <Button variant="secondary" onClick={() => navigate(-1)}>
+            <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
+            Return
+          </Button>
           <span className="pl-3 text-2xl text-black">New User Information</span>
         </div>
         <div className="flex gap-5">
@@ -111,7 +109,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
             <div className="flex shrink-0 overflow-hidden rounded-full">
               <div className="relative p-0 ">
                 <img
-                  src={user?.photo ?? ""}
+                  src={user?.photo ?? '/Profile-Hello-Smile1b.png'}
                   alt="user"
                   className="h-[120px] w-[120px]"
                 />
