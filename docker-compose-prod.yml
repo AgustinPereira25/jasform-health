@@ -14,7 +14,7 @@ services:
       - "80:80" #TODO Commentar en prod
       - "443:443"
     volumes:
-      - .:/var/www/html/:cached
+      - .:/var/www/html/:
       - ./production/jasform.com.origin.pem:/etc/ssl/web/jasform.com.origin.pem
       - ./production/jasform.com.origin.key:/etc/ssl/web/jasform.com.origin.key
       - ./production/origin_ca_rsa_root.pem:/etc/ssl/web/origin_ca_rsa_root.pem
