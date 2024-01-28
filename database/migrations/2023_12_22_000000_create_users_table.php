@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('organization_id');
-            $table->foreign('organization_id')->references('id')->on('organizations');
+            $table->foreign('organization_id')->references('id')->on('organizations')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

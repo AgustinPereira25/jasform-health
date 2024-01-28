@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('title');
             $table->string('text');
             $table->integer('order');
-            $table->boolean('is_obligatory');
+            $table->boolean('is_mandatory');
             $table->timestamps();
 
             $table->unsignedBigInteger('form_id');
-            $table->foreign('form_id')->references('id')->on('forms');
+            $table->foreign('form_id')->references('id')->on('forms')->onUpdate('cascade')->onDelete('cascade');
 
             $table->unsignedBigInteger('question_type_id');
-            $table->foreign('question_type_id')->references('id')->on('question_types');
+            $table->foreign('question_type_id')->references('id')->on('question_types')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

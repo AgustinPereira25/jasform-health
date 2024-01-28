@@ -16,14 +16,14 @@ return new class extends Migration
             $table->dateTime('initial_date_time');
             $table->boolean('is_completed');
             $table->integer('completed_questions')->nullable();
-            $table->dateTime('final_date_time');
+            $table->dateTime('final_date_time')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->unsignedBigInteger('completer_user_id');
-            $table->foreign('completer_user_id')->references('id')->on('completer_users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('completer_user_id')->nullable();
+            $table->foreign('completer_user_id')->references('id')->on('completer_users')->cascadeOnUpdate()->nullOnDelete();
 
         });
     }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('welcome_text');
             $table->string('description')->nullable();
             $table->dateTime('creation_date_time');
-            $table->dateTime('last_modified_date_time');
+            $table->dateTime('last_modified_date_time')->nullable();
             $table->string('logo')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
