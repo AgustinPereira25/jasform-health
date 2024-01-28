@@ -29,6 +29,8 @@ class FormTransformer extends Transformer
             'is_request_mandatory_initial_data' => (bool) $form->is_request_mandatory_initial_data,
             'public_code' => (string) $form->public_code,
             'user_id' => (int) $form->user_id,
+            'form_instances_count' => (int) $form->form_instances_count,
+            'form_questions_count' => (int) $form->form_questions_count,
         ];
     }
 }
