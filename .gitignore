@@ -16,10 +16,12 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
-/.vscode
 /_ide_helper.php
 /.phpstorm.meta.php
 /reports/
 /tsconfig.tsbuildinfo
 /.phpunit.cache/
 .DS_Store
+.VSCodeCounter/
+.scannerwork/
+package-lock.json

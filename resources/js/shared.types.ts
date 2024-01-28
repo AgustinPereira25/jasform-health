@@ -6,3 +6,10 @@ export interface ModalProps {
   show: boolean;
   onClose: () => void;
 }
+
+export interface FormDropdownItem {
+  name: string;
+  icon: React.ReactNode;
+  href?: string;
+  newSection?: boolean;
+}

@@ -1,23 +1,47 @@
 import { Link, useLocation } from "react-router-dom";
 
-import { Logo } from "@/components";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
+import { LogOutLogo, NavbarLogo } from "./components";
 
 const navigation = [
   {
     path: ROUTES.home,
-    label: "Home",
-    icon: <icons.HomeIcon className="w-6" />,
-    role: ["standard", "admin"],
+    label: "Dashboard",
+    icon: <icons.DashboardIcon />,
+    role: "admin",
+  },
+  {
+    path: ROUTES.forms,
+    label: "My Forms",
+    icon: <icons.MyFormsIcon />,
+    role: "admin",
   },
   {
     path: ROUTES.users,
     label: "Users",
-    icon: <icons.UserGroupIcon className="w-6" />,
-    role: "admin",
+    icon: <icons.UsersIcon />,
+    role: "",
+  },
+  {
+    path: "#",
+    label: "System's Forms",
+    icon: <icons.SystemsFormsIcon />,
+    role: "",
+  },
+  {
+    path: "#",
+    label: "System's Billing",
+    icon: <icons.SystemsBillingIcon />,
+    role: "",
+  },
+  {
+    path: "/profile",
+    label: "View profile",
+    icon: <LogOutLogo />,
+    role: "all",
   },
 ] as const;
 
@@ -27,30 +51,37 @@ export const Sidebar = ({
   onCloseSidebar?: () => void;
 }) => {
   const { pathname: currentPath } = useLocation();
-  const { user, setToken } = useUserStore();
+  // TODO - Put real user here and change mocked user in Layout.tsx
+  // const { user: mockUser, setToken } = useUserStore();
+  const { user: mockUser } = useUserStore();
+
   return (
-    <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-black/50 px-6 ring-1 ring-white/5">
-      <div className="mx-auto flex h-16 shrink-0 py-6 pr-2">
-        <Logo className="h-11" />
+    <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
+      <div className="flex h-16 shrink-0 p-8">
+        <NavbarLogo />
       </div>
-      {user && (
-        <nav className="flex flex-1 flex-col">
-          <ul className="flex flex-1 flex-col gap-y-7">
+      {mockUser && (
+        <nav className="flex flex-1 flex-col ">
+          <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">
             <li className="flex-1">
-              <ul className="relative -mx-2 h-full space-y-1">
+              <ul className="relative h-full">
                 {navigation
-                  .filter((item) => item.role.includes(user.role))
+                  .filter((item) =>
+                    item.role.includes(mockUser.roles![0]!.name.toLowerCase() ?? ""),
+                  )
                   .map((item) => (
-                    <li key={item.label}>
+                    <li
+                      key={item.label}
+                      className={tw(
+                        item.path == currentPath
+                          ? "bg-[#00519E] text-white"
+                          : "text-gray-400 hover:bg-[#407EC9] hover:text-white",
+                      )}
+                    >
                       <Link
                         to={item.path}
                         onClick={onCloseSidebar}
-                        className={tw(
-                          item.path == currentPath
-                            ? "bg-gray-800 text-white"
-                            : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-                        )}
+                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
                       >
                         {item.icon}
                         {item.label}
@@ -58,32 +89,77 @@ export const Sidebar = ({
                     </li>
                   ))}
                 <li className="absolute bottom-0 w-full">
-                  <button
+                  <div className="flex justify-center">
+                    <hr className="w-11/12 bg-[#407EC9]" />
+                  </div>
+                  {/* <button
                     onClick={() => setToken(null)}
-                    className="group flex w-full gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
+                    className="pl-5 group flex w-full gap-x-3 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-[#407EC9] hover:text-white"
                   >
                     <icons.ArrowLeftOnRectangleIcon className="w-6" />
                     Sign Out
-                  </button>
+                  </button> */}
+                  {navigation
+                    .filter((item) => item.role === "")
+                    .map((item) => (
+                      <li
+                        key={item.label}
+                        className={tw(
+                          item.path == currentPath
+                            ? "bg-[#00519E] text-white"
+                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white",
+                        )}
+                      >
+                        <Link
+                          to={item.path}
+                          onClick={onCloseSidebar}
+                          className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
+                        >
+                          {item.icon}
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
                 </li>
               </ul>
             </li>
-
-            <li className="-mx-6 mt-auto">
-              <Link
-                to="#"
-                className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
-              >
-                <img
-                  referrerPolicy="no-referrer"
-                  className="h-8 w-8 rounded-full bg-gray-800"
-                  src={user.picture}
-                  alt={user.name}
-                />
-                <span className="sr-only">Your profile</span>
-                <span aria-hidden="true">{user.name}</span>
-              </Link>
-            </li>
+            {navigation
+              .filter((item) => item.role === "all")
+              .map((item) => (
+                <li
+                  key={item.label}
+                  className="mt-auto flex items-center gap-x-3 bg-[#0B365F] py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                >
+                  <div
+                    // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
+                    className={tw(
+                      item.path == currentPath
+                        ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-10 text-white"
+                        : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-10 text-white",
+                    )}
+                  >
+                    <img
+                      referrerPolicy="no-referrer"
+                      className="h-8 w-8 rounded-full bg-gray-800"
+                      src={mockUser.photo}
+                      alt={mockUser.first_name}
+                    />
+                    <span className="sr-only">Your profile</span>
+                    <div>
+                      <span aria-hidden="true">
+                        {mockUser.first_name} {mockUser.last_name}
+                      </span>
+                      <Link
+                        to="/profile"
+                        className="flex text-xs font-normal text-[#8C92AB]"
+                      >
+                        <span>{item.label}</span>
+                      </Link>
+                    </div>
+                  </div>
+                  {item.icon}
+                </li>
+              ))}
           </ul>
         </nav>
       )}

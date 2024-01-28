@@ -14,6 +14,8 @@ export interface InputProps extends ComponentPropsWithoutRef<"input"> {
   label?: ReactNode;
   left?: ReactNode;
   message?: string;
+  fullHeight?: boolean;
+  right?: ReactNode;
 }
 
 export const Input = forwardRef(
@@ -26,7 +28,9 @@ export const Input = forwardRef(
       id,
       label,
       left,
+      right,
       message,
+      fullHeight = false,
       ...rest
     }: InputProps,
     ref: ForwardedRef<HTMLInputElement>,
@@ -35,8 +39,9 @@ export const Input = forwardRef(
       {!!label && <Label htmlFor={id} label={label} />}
       <div
         className={tw(
-          "flex flex-row items-center rounded-md shadow-sm",
+          "flex flex-row rounded-md shadow-sm items-baseline",
           !!rest.disabled && "opacity-30",
+          fullHeight && "h-full",
         )}
       >
         {!!left && (
@@ -52,13 +57,21 @@ export const Input = forwardRef(
           id={id}
           {...rest}
           className={tw(
-            "block w-full rounded-md border border-gray-300 bg-gray-800 px-3 py-2 text-sm text-gray-50 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500",
+            "block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500",
             !!error && "border-red-400 focus:border-red-400 focus:ring-red-50",
             !!left && "pl-10",
             !!rest.disabled && "border-gray-500 bg-gray-100",
+            fullHeight && "h-full",
             className,
           )}
         />
+        {!!right && (
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <IconWrapper size="sm" className="text-gray-400 bg-gray-50 h-5 w-5">
+              {right}
+            </IconWrapper>
+          </div>
+        )}
       </div>
       {(!compact || !!message || !!error) && (
         <Message message={message} error={error} />

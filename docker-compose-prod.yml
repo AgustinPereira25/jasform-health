@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  jasform-app:
+    image: serversideup/php:8.2-fpm-nginx
+    hostname: jasform-app
+    container_name: jasform-app
+    restart: unless-stopped
+    environment:
+      # AUTORUN_ENABLED: "true" #Default
+      # AUTORUN_LARAVEL_STORAGE_LINK: "true" #Default
+      # AUTORUN_LARAVEL_MIGRATION: "true"
+      SSL_MODE: "mixed" #off - mixed - full (Default) #TODO full en prod
+    ports:
+      - "80:80" #TODO Commentar en prod
+      - "443:443"
+    volumes:
+      - .:/var/www/html/:cached
+      - ./production/jasform.com.origin.pem:/etc/ssl/web/jasform.com.origin.pem
+      - ./production/jasform.com.origin.key:/etc/ssl/web/jasform.com.origin.key
+      - ./production/origin_ca_rsa_root.pem:/etc/ssl/web/origin_ca_rsa_root.pem
+      - ./production/https.conf:/etc/nginx/site-opts.d/https.conf
+    networks:
+      - jasform-network
+    depends_on:
+      - database
+  database:
+    image: "mariadb:10.11"
+    hostname: database
+    container_name: database
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "{PROD_DB_ROOT_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "{PROD_DB_DATABASE}"
+      MYSQL_USER: "{PROD_DB_USERNAME}"
+      MYSQL_PASSWORD: "{PROD_DB_PASSWORD}"
+    volumes:
+      - "database-data:/var/lib/mysql"
+    networks:
+      - jasform-network
+networks:
+  jasform-network:
+    driver: bridge
+volumes:
+  database-data:
+    driver: local

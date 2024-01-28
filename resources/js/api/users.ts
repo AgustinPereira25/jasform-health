@@ -6,17 +6,38 @@ import { privateAPI } from "./axios";
 const DOMAIN = "user";
 const ALL = "all";
 
-export interface User {
-  id: number;
+export interface Users {
+  status:  number;
+  success: boolean;
+  data:    User[];
+}
+
+
+export interface UserRoles {
+  id:   number;
   name: string;
-  email: string;
+  description: string;
+}
+
+export interface User {
+  id?:                       number;
+  first_name?:               string;
+  last_name?:                string;
+  photo?:                    string;
+  phone?:                    string;
+  position_in_organization?: string;
+  is_active?:                boolean;
+  email?:                    string;
+  organization_id?:          string;
+  organization_name?:        string;
+  roles?:                    UserRoles[];
 }
 
 export const getUsersQuery = () => ({
   queryKey: [DOMAIN, ALL, "getUsersQuery"],
   queryFn: async () => {
     const response = await privateAPI.get<ServiceResponse<User[]>>("/users");
-
+    //console.log(response);
     return response.data.data;
   },
 });

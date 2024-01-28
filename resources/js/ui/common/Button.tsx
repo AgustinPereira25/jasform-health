@@ -43,13 +43,13 @@ export const Button = forwardRef(
 
         !disabled && [
           variant === BUTTON_VARIANT.PRIMARY &&
-            "bg-blue-800 text-white hover:bg-blue-700",
+            "bg-[#407EC9] text-white hover:bg-[rgb(65,107,158)] transition-all ease-in-out duration-300",
           variant === BUTTON_VARIANT.SECONDARY &&
-            "bg-blue-100 text-blue-800 hover:bg-blue-200",
+            "bg-transparent text-black hover:bg-gray-100 border-gray-400 transition-all ease-in-out duration-300",
           variant === BUTTON_VARIANT.OUTLINE &&
-            "border-gray-300 text-gray-300 hover:border-gray-400 hover:text-gray-800",
+            "border-gray-300 text-gray-300 hover:border-gray-400 hover:text-gray-800 transition-all ease-in-out duration-300",
           variant === BUTTON_VARIANT.TERTIARY &&
-            "font-normal text-gray-500 hover:text-gray-600",
+            "font-normal text-white hover:text-white bg-[#FF8583] hover:bg-[#d87270] transition-all ease-in-out duration-300",
         ],
 
         disabled && [

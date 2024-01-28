@@ -6,15 +6,28 @@ namespace App\Users\Transformers;
 
 use Domain\Users\Models\User;
 use Flugg\Responder\Transformers\Transformer;
+use App\Roles\Transformers\RoleTransformer;
 
 class UserTransformer extends Transformer
 {
+    protected $load = [
+        'roles' => RoleTransformer::class,
+    ];
+
     public function transform(User $user): array
     {
         return [
             'id' => (int) $user->id,
-            'name' => (string) $user->name,
-            'email' => (string) $user->email
+            'first_name' => (string) $user->first_name,
+            'last_name' => (string) $user->last_name,
+            'photo' => (string) $user->photo,
+            'phone' => (string) $user->phone,
+            'position_in_organization' => (string) $user->position_in_organization,
+            'is_active' => (bool) $user->is_active,
+            'email' => (string) $user->email,
+            'organization_id' => (int) $user->organization_id,
+            'organization_name' => $user->organization->name,
+            'organization_description' => $user->organization->description,
         ];
     }
 }
