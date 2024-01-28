@@ -18,10 +18,10 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('next_question')->nullable();
-            $table->foreign('next_question')->references('id')->on('form_questions');
+            $table->foreign('next_question')->references('id')->on('form_questions')->cascadeOnUpdate()->nullOnDelete();
 
             $table->unsignedBigInteger('form_question_id');
-            $table->foreign('form_question_id')->references('id')->on('form_questions');
+            $table->foreign('form_question_id')->references('id')->on('form_questions')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
