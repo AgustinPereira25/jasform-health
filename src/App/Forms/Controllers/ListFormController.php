@@ -13,6 +13,8 @@ class ListFormController
     public function __invoke(Request $request): JsonResponse
     {
         $forms = QueryBuilder::for(Form::class)
+            ->withCount('form_instances')
+            ->withCount('form_questions')
             ->get();
 
         return responder()

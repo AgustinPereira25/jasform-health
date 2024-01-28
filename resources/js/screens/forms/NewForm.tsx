@@ -27,7 +27,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         // setValue,
         // setError,
     } = useForm({
-        // // TODO - Complete this fields.. 
+        // // TODO - Complete this fields..
         defaultValues: {
             id: form.id ?? 0,
             name: form.name ?? '',
@@ -416,6 +416,14 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         <hr className='mx-3' />
                         <div className='flex px-3 h-16 items-center justify-between'>
                             <span>Last Modified Date: 15/01/2024 03:45PM</span>
+                        </div>
+                        <hr className='mx-3' />
+                        <div className='flex px-3 h-16 items-center justify-between'>
+                            <span>Instances: 100</span>
+                        </div>
+                        <hr className='mx-3' />
+                        <div className='flex px-3 h-16 items-center justify-between'>
+                            <span>Questions: 10</span>
                         </div>
                         <hr className='mx-3' />
                         <div className='flex p-3 h-16 '>
