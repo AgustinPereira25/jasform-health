@@ -161,7 +161,7 @@ export const Forms = () => {
                                     scope="col"
                                     className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
                                 >
-                                    # COMPLETED
+                                    # INSTANCES
                                 </th>
                                 <th
                                     scope="col"
