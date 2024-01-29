@@ -86,7 +86,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
                         Return
                     </Button>
-                    <span className="pl-3 text-2xl text-black">New User Information</span>
+                    <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
                 </div>
                 <div className="flex gap-5">
                     {user.id && (
@@ -256,8 +256,8 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                             <span className="text-[#CD3533]">Inactive Forms:</span>
                         </div>
                         <div className="flex flex-col">
-                            <span>20</span>
-                            <span>15</span>
+                            <span>{user?.active_forms}</span>
+                            <span>{user?.inactive_forms}</span>
                         </div>
                     </div>
                     <hr className="mx-3" />
@@ -266,7 +266,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                             <span>Total Forms:</span>
                         </div>
                         <div className="flex flex-col">
-                            <span>20</span>
+                            <span>{user?.total_forms}</span>
                         </div>
                     </div>
                     <hr className="mx-3" />

@@ -7,30 +7,32 @@ const DOMAIN = "user";
 const ALL = "all";
 
 export interface Users {
-  status:  number;
+  status: number;
   success: boolean;
-  data:    User[];
+  data: User[];
 }
 
-
 export interface UserRoles {
-  id:   number;
+  id: number;
   name: string;
   description: string;
 }
 
 export interface User {
-  id?:                       number;
-  first_name?:               string;
-  last_name?:                string;
-  photo?:                    string;
-  phone?:                    string;
+  id?: number;
+  first_name?: string;
+  last_name?: string;
+  photo?: string;
+  phone?: string;
   position_in_organization?: string;
-  is_active?:                boolean;
-  email?:                    string;
-  organization_id?:          string;
-  organization_name?:        string;
-  roles?:                    UserRoles[];
+  is_active?: boolean;
+  email?: string;
+  organization_id?: string;
+  organization_name?: string;
+  roles?: UserRoles[];
+  total_forms?: number;
+  active_forms?: number;
+  inactive_forms?: number;
 }
 
 export const getUsersQuery = () => ({

@@ -16,6 +16,10 @@ class UserListTransformer extends Transformer
 
     public function transform(User $user): array
     {
+        $totalForms = $user->forms->count();
+        $activeForms = $user->forms->where('is_active', true)->count();
+        $inactiveForms = $user->forms->where('is_active', false)->count();
+
         return [
             'id' => (int) $user->id,
             'first_name' => (string) $user->first_name,
@@ -25,6 +29,9 @@ class UserListTransformer extends Transformer
             'is_active' => (bool) $user->is_active,
             'email' => (string) $user->email,
             'organization_name' => $user->organization->name,
+            'total_forms' => $totalForms,
+            'active_forms' => $activeForms,
+            'inactive_forms' => $inactiveForms,
         ];
     }
 }

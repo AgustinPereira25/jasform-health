@@ -215,8 +215,8 @@ export const Profile = () => {
                         <span className="text-[#CD3533]">Inactive Forms:</span>
                     </div>
                     <div className="flex flex-col">
-                        <span>20</span>
-                        <span>15</span>
+                        <span>{user?.active_forms}</span>
+                        <span>{user?.inactive_forms}</span>
                     </div>
                 </div>
                 <hr className="mx-3" />
@@ -225,7 +225,7 @@ export const Profile = () => {
                         <span>Total Forms:</span>
                     </div>
                     <div className="flex flex-col">
-                        <span>20</span>
+                        <span>{user?.total_forms}</span>
                     </div>
                 </div>
                 <hr className="mx-3" />
