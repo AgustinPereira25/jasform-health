@@ -250,29 +250,33 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         </Button>
                     </div>
                     <hr className="mx-3" />
-                    <div className="flex h-16 p-3">
-                        <div className="flex w-32 flex-col">
-                            <span className="text-[#008001]">Active Forms:</span>
-                            <span className="text-[#CD3533]">Inactive Forms:</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span>{user?.active_forms}</span>
-                            <span>{user?.inactive_forms}</span>
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className="flex h-16 p-3">
-                        <div className="flex w-32">
-                            <span>Total Forms:</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span>{user?.total_forms}</span>
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
+                    {user.id && (
+                        <>
+                            <div className="flex h-16 p-3">
+                                <div className="flex w-32 flex-col">
+                                    <span className="text-[#008001]">Active Forms:</span>
+                                    <span className="text-[#CD3533]">Inactive Forms:</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span>{user?.active_forms}</span>
+                                    <span>{user?.inactive_forms}</span>
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
+                            <div className="flex h-16 p-3">
+                                <div className="flex w-32">
+                                    <span>Total Forms:</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span>{user?.total_forms}</span>
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
+                        </>
+                    )}
                 </div>
                 <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                    <div className="flex h-16 p-3">
+                    {/* <div className="flex h-16 p-3">
                         <div className="flex w-40 items-center">
                             <span>Subscription Plan</span>
                         </div>
@@ -289,7 +293,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                             />
                         </div>
                     </div>
-                    <hr className="mx-3" />
+                     <hr className="mx-3" />*/}
                     <div className="flex h-16 p-3">
                         <div className="flex w-40 items-center">
                             <span>Role</span>

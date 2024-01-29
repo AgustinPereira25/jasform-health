@@ -28,6 +28,7 @@ use App\Form_questions\Controllers\GetForm_questionController;
 use App\Form_questions\Controllers\StoreForm_questionController;
 use App\Form_questions\Controllers\DeleteForm_questionController;
 use App\Forms\Controllers\ListFormController;
+use App\Forms\Controllers\ListForm_byUserIdController;
 use App\Forms\Controllers\GetFormController;
 use App\Forms\Controllers\StoreFormController;
 use App\Forms\Controllers\DeleteFormController;
@@ -81,6 +82,7 @@ Route::prefix('forms')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListFormController::class);
+        Route::get('/byUserId/{user}', ListForm_byUserIdController::class);
         Route::get('/{form}', GetFormController::class);
         Route::post('/', StoreFormController::class);
         Route::delete('/{form}', DeleteFormController::class);
