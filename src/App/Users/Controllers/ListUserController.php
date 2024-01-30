@@ -17,14 +17,38 @@ class ListUserController
     {
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
+        $isActive = $request->get('isActive', false);
+        $isAdmin = $request->get('isAdmin', false);
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
         });
 
-        $users = QueryBuilder::for(User::class)
+        if ($isActive && $isAdmin) {
+            $users = QueryBuilder::for(User::class)
+            ->with(['organization', 'roles'])
+            ->where('is_active', true)
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'Admin');
+            })
+            ->paginate($perPage);
+        } elseif ($isActive) {
+            $users = QueryBuilder::for(User::class)
+            ->with(['organization', 'roles'])
+            ->where('is_active', true)
+            ->paginate($perPage);
+        } elseif ($isAdmin) {
+            $users = QueryBuilder::for(User::class)
+            ->with(['organization', 'roles'])
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'Admin');
+            })
+            ->paginate($perPage);
+        } else {
+            $users = QueryBuilder::for(User::class)
             ->with(['organization', 'roles'])
             ->paginate($perPage);
+        }
 
         return responder()
             ->success($users, UserListTransformer::class)
