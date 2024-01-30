@@ -21,9 +21,6 @@ use App\Form_instances\Controllers\StoreForm_instanceController;
 use App\Form_instances\Controllers\DeleteForm_instanceController;
 use App\Form_questions\Controllers\ListForm_questionController;
 use App\Form_questions\Controllers\ListForm_question_byFormIdController;
-
-
-
 use App\Form_questions\Controllers\GetForm_questionController;
 use App\Form_questions\Controllers\StoreForm_questionController;
 use App\Form_questions\Controllers\DeleteForm_questionController;
@@ -48,6 +45,7 @@ use App\Roles\Controllers\ListRoleController;
 use App\Roles\Controllers\GetRoleController;
 use App\Roles\Controllers\StoreRoleController;
 use App\Roles\Controllers\DeleteRoleController;
+use App\Users\Controllers\ListActiveUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +71,7 @@ Route::prefix('users')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListUserController::class);
+        Route::get('/active', ListActiveUserController::class);
         Route::get('/{user}', GetUserController::class);
         Route::post('/', StoreUserController::class);
         Route::delete('/{user}', DeleteUserController::class);
