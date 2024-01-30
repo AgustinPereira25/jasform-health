@@ -8,7 +8,7 @@ import { Button, icons, Input } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
 import { Switch } from "@headlessui/react";
-import { isValidImageUrl } from "@/utils/helpers";
+import { isValidImageUrl } from "@/helpers/helpers";
 interface NewProfileForm {
     id?: number;
     firstName?: string;

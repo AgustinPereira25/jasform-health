@@ -5,7 +5,7 @@ import { useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo, NavbarLogo } from "./components";
-import { isValidImageUrl } from "@/utils/helpers";
+import { isValidImageUrl } from "@/helpers/helpers";
 
 const navigation = [
     {

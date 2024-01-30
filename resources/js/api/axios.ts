@@ -16,3 +16,9 @@ export const privateAPI = axios.create(baseConfig);
 
 privateAPI.interceptors.request.use(privateRequest);
 privateAPI.interceptors.response.use((response) => response, errorResponse);
+
+export const getAuthHeaders = () => ({ Authorization: `Bearer ${getToken()}` });
+
+const getToken = () => {
+  return "replaceTokenHere";
+};
