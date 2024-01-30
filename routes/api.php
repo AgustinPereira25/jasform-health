@@ -46,6 +46,7 @@ use App\Roles\Controllers\GetRoleController;
 use App\Roles\Controllers\StoreRoleController;
 use App\Roles\Controllers\DeleteRoleController;
 use App\Users\Controllers\ListActiveUserController;
+use App\Users\Controllers\ListAdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,7 @@ Route::prefix('users')
     ->group(static function () {
         Route::get('/', ListUserController::class);
         Route::get('/active', ListActiveUserController::class);
+        Route::get('/admin', ListAdminUserController::class);
         Route::get('/{user}', GetUserController::class);
         Route::post('/', StoreUserController::class);
         Route::delete('/{user}', DeleteUserController::class);
