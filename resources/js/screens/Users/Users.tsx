@@ -3,24 +3,30 @@ import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
+import { paginatorValues } from "../../constants/pagination";
+
 import { getUsersQuery } from "@/api";
 import { ROUTES } from "@/router";
 import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import { FormDropdown } from "../forms/components";
-import { isValidImageUrl } from "@/utils/helpers";
+import { isValidImageUrl } from "@/helpers/helpers";
+import Pagination from "@/ui/common/Pagination";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
 export const Users = () => {
+    const [perPage, setPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+
     // const { pushToast } = useToastStore();
     // const queryClient = useQueryClient();
 
-    const { data: users, isLoading: isLoadingUsers } = useQuery({
-        ...getUsersQuery(),
+    const { data, isLoading: isLoadingUsers } = useQuery({
+        ...getUsersQuery(paginatorValues, perPage, currentPage),
         // select: (users) =>
         //   users.map((user, idx) => {
         //     const selectedItem =
@@ -37,7 +43,9 @@ export const Users = () => {
         //     };
         //   }),
     });
-    // console.log(users);
+    console.log("data:", data);
+    const users = data?.data;
+    console.log("users:", users);
     // const { mutate: deleteUserMutation } = useMutation({
     //   mutationFn: deleteUser.mutation,
     //   onSuccess: (_, requestedId) => {
@@ -310,6 +318,21 @@ export const Users = () => {
                             ))}
                         </tbody>
                     </table>
+
+                    {Object.keys(paginatorValues).includes(perPage.toString()) &&
+                        Number(currentPage) > 0 && (
+                            <Pagination
+                                paginatorValues={paginatorValues}
+                                totalItems={data?.pagination?.total}
+                                itemsPerPage={parseInt(perPage.toString(), 10)}
+                                currentPage={parseInt(currentPage.toString(), 10)}
+                                onPageChange={(newPerPage, newCurrentPage) => {
+                                    setPerPage(newPerPage)
+                                    setCurrentPage(newCurrentPage)
+                                }}
+                            />
+                        )}
+
                 </div>
                 <div className="h-[100px]"></div>
             </div>
