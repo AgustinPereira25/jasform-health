@@ -17,14 +17,14 @@ class ListUserController
     {
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
-        $isActive = $request->get('isActive', false);
-        $isAdmin = $request->get('isAdmin', false);
+        $isActive = $request->get('isActive', "false");
+        $isAdmin = $request->get('isAdmin', "false");
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
         });
 
-        if ($isActive && $isAdmin) {
+        if ($isActive=="true" && $isAdmin=="true") {
             $users = QueryBuilder::for(User::class)
             ->with(['organization', 'roles'])
             ->where('is_active', true)
@@ -32,12 +32,12 @@ class ListUserController
                 $query->where('name', 'Admin');
             })
             ->paginate($perPage);
-        } elseif ($isActive) {
+        } elseif ($isActive=="true") {
             $users = QueryBuilder::for(User::class)
             ->with(['organization', 'roles'])
             ->where('is_active', true)
             ->paginate($perPage);
-        } elseif ($isAdmin) {
+        } elseif ($isAdmin=="true") {
             $users = QueryBuilder::for(User::class)
             ->with(['organization', 'roles'])
             ->whereHas('roles', function ($query) {

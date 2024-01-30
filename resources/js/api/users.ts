@@ -41,13 +41,25 @@ export const getUsersQuery = (
   inPaginatorValues: typeof paginatorValues,
   perPage: number,
   currentPage: number,
+  isActive: boolean,
+  isAdmin: boolean,
 ) => ({
-  queryKey: [DOMAIN, ALL, query_keys.USERS_LIST, perPage, currentPage],
+  queryKey: [
+    DOMAIN,
+    ALL,
+    query_keys.USERS_LIST,
+    perPage,
+    currentPage,
+    isActive,
+    isAdmin,
+  ],
   queryFn: async () => {
     const response = await privateAPI.get<ServiceResponse<User[]>>("users", {
       params: {
         perPage,
         currentPage,
+        isActive,
+        isAdmin,
       },
       headers: getAuthHeaders(),
     });

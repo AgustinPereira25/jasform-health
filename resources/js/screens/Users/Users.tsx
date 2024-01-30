@@ -25,8 +25,12 @@ export const Users = () => {
     // const { pushToast } = useToastStore();
     // const queryClient = useQueryClient();
 
+    // For toggles
+    const [enabledActive, setEnabledActive] = useState(false);
+    const [enabledAdmin, setEnabledAdmin] = useState(false);
+
     const { data, isLoading: isLoadingUsers } = useQuery({
-        ...getUsersQuery(paginatorValues, perPage, currentPage),
+        ...getUsersQuery(paginatorValues, perPage, currentPage, enabledActive, enabledAdmin),
         // select: (users) =>
         //   users.map((user, idx) => {
         //     const selectedItem =
@@ -61,9 +65,6 @@ export const Users = () => {
 
     // const navigateModal = useNavigateModal();
     const navigate = useNavigate();
-    // For toggles
-    const [enabledActive, setEnabledActive] = useState(false);
-    const [enabledAdmin, setEnabledAdmin] = useState(false);
 
     const FormDropdownOptions: FormDropdownItem[] = [
         { name: "Edit", icon: <icons.PencilIcon /> },
