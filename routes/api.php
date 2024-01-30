@@ -72,8 +72,6 @@ Route::prefix('users')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListUserController::class);
-        Route::get('/active', ListActiveUserController::class);
-        Route::get('/admin', ListAdminUserController::class);
         Route::get('/{user}', GetUserController::class);
         Route::post('/', StoreUserController::class);
         Route::delete('/{user}', DeleteUserController::class);
