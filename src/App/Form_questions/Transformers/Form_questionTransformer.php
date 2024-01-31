@@ -19,6 +19,7 @@ class Form_questionTransformer extends Transformer
             'is_obligatory' => (bool) $form_question->is_obligatory,
             'form_id' => (int) $form_question->form_id,
             'question_type_id' => (int) $form_question->question_type_id,
+            'question_type_name' => $form_question->question_type->name,
         ];
     }
 }

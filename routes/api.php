@@ -15,18 +15,17 @@ use App\Completer_users\Controllers\GetCompleter_userController;
 use App\Completer_users\Controllers\StoreCompleter_userController;
 use App\Completer_users\Controllers\DeleteCompleter_userController;
 use App\Form_instances\Controllers\ListForm_instanceController;
+use App\Form_instances\Controllers\ListForm_instance_byFormIdController;
 use App\Form_instances\Controllers\GetForm_instanceController;
 use App\Form_instances\Controllers\StoreForm_instanceController;
 use App\Form_instances\Controllers\DeleteForm_instanceController;
 use App\Form_questions\Controllers\ListForm_questionController;
 use App\Form_questions\Controllers\ListForm_question_byFormIdController;
-
-
-
 use App\Form_questions\Controllers\GetForm_questionController;
 use App\Form_questions\Controllers\StoreForm_questionController;
 use App\Form_questions\Controllers\DeleteForm_questionController;
 use App\Forms\Controllers\ListFormController;
+use App\Forms\Controllers\ListForm_byUserIdController;
 use App\Forms\Controllers\GetFormController;
 use App\Forms\Controllers\StoreFormController;
 use App\Forms\Controllers\DeleteFormController;
@@ -46,6 +45,8 @@ use App\Roles\Controllers\ListRoleController;
 use App\Roles\Controllers\GetRoleController;
 use App\Roles\Controllers\StoreRoleController;
 use App\Roles\Controllers\DeleteRoleController;
+use App\Users\Controllers\ListActiveUserController;
+use App\Users\Controllers\ListAdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,7 @@ Route::prefix('forms')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListFormController::class);
+        Route::get('/byUserId/{user}', ListForm_byUserIdController::class);
         Route::get('/{form}', GetFormController::class);
         Route::post('/', StoreFormController::class);
         Route::delete('/{form}', DeleteFormController::class);
@@ -107,6 +109,7 @@ Route::prefix('form_instances')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListForm_instanceController::class);
+        Route::get('/byFormId/{form}', ListForm_instance_byFormIdController::class);
         Route::get('/{form_instance}', GetForm_instanceController::class);
         Route::post('/', StoreForm_instanceController::class);
         Route::delete('/{form_instance}', DeleteForm_instanceController::class);

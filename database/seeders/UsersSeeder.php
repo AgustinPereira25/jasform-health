@@ -92,6 +92,36 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3
+            ],
+            [
+                'first_name' => 'UserTest',
+                'last_name' => 'WithOutPhotoLink',
+                'photo' => '',
+                'phone' => '305-782-4470',
+                'position_in_organization' => 'Tax examiner',
+                'is_active' => true,
+                'email' => 'usertestwithoutphoto@dayrep.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('Oongox2vei'),
+                'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0049',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'organization_id' => 3
+            ],
+            [
+                'first_name' => 'UserTestSecond',
+                'last_name' => 'WithInvalidPhotoLink',
+                'photo' => 'https://static.generated.photos/vue-static/face-generator/landing/wall/12.jpgN/A',
+                'phone' => '305-782-4470',
+                'position_in_organization' => 'Tax examiner',
+                'is_active' => true,
+                'email' => 'usertestwithphoto@dayrep.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('Oongox2vei'),
+                'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0049',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'organization_id' => 3
             ]
         ]);
         DB::table('roles')->insert([

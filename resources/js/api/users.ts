@@ -1,45 +1,62 @@
 import type { QueryClient } from "@tanstack/react-query";
 
+import type { paginatorValues } from "../constants/pagination";
+import { query_keys } from "../constants/query_keys";
 import type { ServiceResponse } from "./api.types";
-import { privateAPI } from "./axios";
+import { getAuthHeaders, privateAPI } from "./axios";
 
 const DOMAIN = "user";
 const ALL = "all";
 
 export interface Users {
-  status:  number;
+  status: number;
   success: boolean;
-  data:    User[];
+  data: User[];
 }
 
-
 export interface UserRoles {
-  id:   number;
+  id: number;
   name: string;
   description: string;
 }
 
 export interface User {
-  id?:                       number;
-  first_name?:               string;
-  last_name?:                string;
-  photo?:                    string;
-  phone?:                    string;
+  id?: number;
+  first_name?: string;
+  last_name?: string;
+  photo?: string;
+  phone?: string;
   position_in_organization?: string;
-  is_active?:                boolean;
-  email?:                    string;
-  organization_id?:          string;
-  organization_name?:        string;
-  roles?:                    UserRoles[];
+  is_active?: boolean;
+  email?: string;
+  organization_id?: string;
+  organization_name?: string;
+  roles?: UserRoles[];
+  total_forms?: number;
+  active_forms?: number;
+  inactive_forms?: number;
 }
 
-export const getUsersQuery = () => ({
-  queryKey: [DOMAIN, ALL, "getUsersQuery"],
+export const getUsersQuery = (
+  inPaginatorValues: typeof paginatorValues,
+  perPage: number,
+  currentPage: number,
+) => ({
+  queryKey: [DOMAIN, ALL, query_keys.USERS_LIST, perPage, currentPage],
   queryFn: async () => {
-    const response = await privateAPI.get<ServiceResponse<User[]>>("/users");
+    const response = await privateAPI.get<ServiceResponse<User[]>>("users", {
+      params: {
+        perPage,
+        currentPage,
+      },
+      headers: getAuthHeaders(),
+    });
     //console.log(response);
-    return response.data.data;
+    return response.data;
   },
+  //   keepPreviousData: true,
+  //   enabled:
+  //     Object.keys(inPaginatorValues).includes(perPage) && Number(currentPage) > 0,
 });
 
 export const getUserQuery = (userId: User["id"]) => ({
