@@ -34,9 +34,9 @@ export const NewProfile: React.FC<NewProfileProps> = ({
 }) => {
   //TODO: put this in a constants file
   const SubscriptionPlans = [
-    { name: "Free" },
-    { name: "Premium" },
-    { name: "Enterprise" },
+    { id: 1, name: "Free" },
+    { id: 2, name: "Premium" },
+    { id: 3, name: "Enterprise" },
   ]; // solo name
   const Roles = [
     { id: 1, name: "Admin" },

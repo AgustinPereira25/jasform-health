@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, icons } from '@/ui'
 import { useForm } from 'react-hook-form'
 import { tw } from '@/utils'
@@ -48,6 +48,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
 
+    const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
+
     const handleAddQuestionClick = () => {
         const getLastQuestionId = Object.values(questions).pop()?.id;
 
@@ -61,12 +63,11 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         setCurrentQuestionIdx(idx);
     }
 
-    let QuestionTypeScreen = questionScreens[1];
+    const QuestionTypeScreen = questionScreens[questionTypeForm];
 
-    const handleComboboxChange = (item: { id?: number, name: string }) => {
-        setValue("questionType", item.name);
-        const screenToShow: 1 | 2 = (item.id && item.id > 0 && item.id < 3) ? item.id as 1 | 2 : 1;
-        QuestionTypeScreen = questionScreens[screenToShow];
+    const handleComboboxChange = (id: keyof typeof questionScreens, name: string) => {
+        setValue("questionType", name);
+        setQuestionTypeForm(id);
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -170,7 +171,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                             items={questionTypes}
                                             defaultValue={'Simple Text'}
                                             {...register("questionType")}
-                                            onValueChange={(item) => handleComboboxChange(item)}
+                                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens, item.name)}
                                         />
                                     </div>
                                 </div>

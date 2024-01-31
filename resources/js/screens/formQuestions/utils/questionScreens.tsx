@@ -13,7 +13,7 @@ import { InputFieldScreen, SimpleTextScreen } from "../components";
 export const questionScreens = {
     1: SimpleTextScreen,
     2: InputFieldScreen,
-    // 3: null,
-    // 4: null,
-    // 5: null,
+    // 3: MultipleChoiceScreen,
+    // 4: SingleRadioScreen,
+    // 5: SingleDropDownScreen,
 }
