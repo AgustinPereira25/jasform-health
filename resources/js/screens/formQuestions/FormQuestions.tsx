@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, icons } from '@/ui'
 import { useForm } from 'react-hook-form'
 import { tw } from '@/utils'
-import { IFormQuestion } from '@/api'
+import type { IFormQuestion } from '@/api'
 import { useNavigate, useParams } from 'react-router-dom'
+import ComboBox from '@/ui/form/Combobox'
+import { questionScreens } from './utils'
 
 interface FormQuestionsProps {
     initialData: IFormQuestion[];
@@ -12,11 +14,20 @@ interface FormQuestionsProps {
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
 export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [] }) => {
 
+    // TODO- Put this in constants file
+    const questionTypes = [
+        { id: 1, name: "Simple Text" },
+        { id: 2, name: "Input Field" },
+        { id: 3, name: "Multiple Choice - Check Box" },
+        { id: 4, name: "Single Option - Radio Button" },
+        { id: 5, name: "Single Option - Drop Down Combo" },
+    ];
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-        // setValue,
+        setValue,
         // setError,
     } = useForm();
 
@@ -35,6 +46,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
     const [questions, setQuestions] = useState(formQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+    const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionId = Object.values(questions).pop()?.id;
@@ -42,6 +54,19 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         const lastQuestionId = getLastQuestionId ? getLastQuestionId + 1 : 1;
         const newElement: IFormQuestion = { id: lastQuestionId };
         setQuestions([...questions, newElement]);
+    };
+
+    const handleQuestionClick = (item: IFormQuestion, idx: number) => {
+        setCurrentQuestion(item);
+        setCurrentQuestionIdx(idx);
+    }
+
+    let QuestionTypeScreen = questionScreens[1];
+
+    const handleComboboxChange = (item: { id?: number, name: string }) => {
+        setValue("questionType", item.name);
+        const screenToShow: 1 | 2 = (item.id && item.id > 0 && item.id < 3) ? item.id as 1 | 2 : 1;
+        QuestionTypeScreen = questionScreens[screenToShow];
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +108,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         id={item.id?.toString()}
                                         key={item.id}
                                         className='flex relative w-full items-center hover:bg-gray-50'
-                                        onClick={() => setCurrentQuestion(item)}
+                                        onClick={() => handleQuestionClick(item, idx)}
                                         role='presentation'
                                     >
                                         <div className={tw(`absolute border-l-4 h-[80%] -left-2`,
@@ -126,8 +151,35 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </div>
                 </div>
                 {/* TODO - Make this html a component */}
-                <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[70%]'>
-                    pppp
+                <div className='bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]'>
+                    {
+                        currentQuestion && (
+                            <div>
+                                <div className='flex justify-between'>
+                                    <div className='flex flex-col'>
+                                        <span className={tw(`text-xs font-semibold`, 'text-[#407EC9]')}
+                                        >
+                                            STEP {currentQuestionIdx + 1}
+                                        </span>
+                                        <span className='text-sm font-medium'>{currentQuestion.title}</span>
+                                    </div>
+                                    <div className='flex gap-2 items-center pb-2'>
+                                        <span>Question Type</span>
+                                        <ComboBox
+                                            id="questionType"
+                                            items={questionTypes}
+                                            defaultValue={'Simple Text'}
+                                            {...register("questionType")}
+                                            onValueChange={(item) => handleComboboxChange(item)}
+                                        />
+                                    </div>
+                                </div>
+                                <hr />
+                                {/* TODO - Place the dynamic component to render */}
+                                <QuestionTypeScreen />
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         </form>
