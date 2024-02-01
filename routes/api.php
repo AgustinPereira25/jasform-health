@@ -45,8 +45,6 @@ use App\Roles\Controllers\ListRoleController;
 use App\Roles\Controllers\GetRoleController;
 use App\Roles\Controllers\StoreRoleController;
 use App\Roles\Controllers\DeleteRoleController;
-use App\Users\Controllers\ListActiveUserController;
-use App\Users\Controllers\ListAdminUserController;
 
 /*
 |--------------------------------------------------------------------------
