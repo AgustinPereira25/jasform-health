@@ -1,6 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
 
-import type { paginatorValues } from "../constants/pagination";
 import { query_keys } from "../constants/query_keys";
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
@@ -38,11 +37,12 @@ export interface User {
 }
 
 export const getUsersQuery = (
-  inPaginatorValues: typeof paginatorValues,
   perPage: number,
   currentPage: number,
   isActive: boolean,
   isAdmin: boolean,
+  nameOrEmail: string,
+  positionOrOrganization: string,
 ) => ({
   queryKey: [
     DOMAIN,
@@ -52,23 +52,25 @@ export const getUsersQuery = (
     currentPage,
     isActive,
     isAdmin,
+    nameOrEmail,
+    positionOrOrganization,
   ],
   queryFn: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
     const response = await privateAPI.get<ServiceResponse<User[]>>("users", {
       params: {
         perPage,
         currentPage,
         isActive,
         isAdmin,
+        nameOrEmail,
+        positionOrOrganization,
       },
       headers: getAuthHeaders(),
     });
-    //console.log(response);
     return response.data;
   },
-  //   keepPreviousData: true,
-  //   enabled:
-  //     Object.keys(inPaginatorValues).includes(perPage) && Number(currentPage) > 0,
 });
 
 export const getUserQuery = (userId: User["id"]) => ({

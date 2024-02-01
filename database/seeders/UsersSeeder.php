@@ -95,7 +95,7 @@ class UsersSeeder extends Seeder
             ],
             [
                 'first_name' => 'UserTest',
-                'last_name' => 'WithOutPhotoLink',
+                'last_name' => 'WithOutAngPhotoLink',
                 'photo' => '',
                 'phone' => '305-782-4470',
                 'position_in_organization' => 'Tax examiner',
@@ -109,11 +109,11 @@ class UsersSeeder extends Seeder
                 'organization_id' => 3
             ],
             [
-                'first_name' => 'UserTestSecond',
+                'first_name' => 'UserTestAngSecond',
                 'last_name' => 'WithInvalidPhotoLink',
                 'photo' => 'https://static.generated.photos/vue-static/face-generator/landing/wall/12.jpgN/A',
                 'phone' => '305-782-4470',
-                'position_in_organization' => 'Tax examiner',
+                'position_in_organization' => 'Tax iTexaminer',
                 'is_active' => true,
                 'email' => 'usertestwithphoto@dayrep.com',
                 'email_verified_at' => Carbon::now(),
