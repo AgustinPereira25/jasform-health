@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, icons } from '@/ui'
-import { useForm } from 'react-hook-form'
 import { tw } from '@/utils'
 import type { IFormQuestion } from '@/api'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -22,24 +21,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         { id: 4, name: "Single Option - Radio Button" },
         { id: 5, name: "Single Option - Drop Down Combo" },
     ];
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setValue,
-        // setError,
-    } = useForm();
-
-    const onSubmit = (data: IFormQuestion[]) => {
-        console.log(data);
-        // if (!data.phone) {
-        //     setError("phone", {
-        //         type: "manual",
-        //         message: "error!!!",
-        //     },{shouldFocus: true})
-        // }
-    };
 
     const { id: formId } = useParams();
     const navigate = useNavigate();
@@ -66,11 +47,10 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const QuestionTypeScreen = questionScreens[questionTypeForm];
 
     const handleComboboxChange = (id: keyof typeof questionScreens, name: string) => {
-        setValue("questionType", name);
         setQuestionTypeForm(id);
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='pb-6 h-[90%]'>
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
                 <div className='flex gap-1 items-center'>
                     <Button
@@ -98,7 +78,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </Button>
                 </div>
             </div>
-            <div className="flex gap-3 w-full">
+            <div className="flex gap-3 w-full h-full">
                 <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%]'>
                     <span>Content</span>
                     <div className="flex flex-col items-center">
@@ -155,7 +135,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 <div className='bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]'>
                     {
                         currentQuestion && (
-                            <div>
+                            <div className='h-full'>
                                 <div className='flex justify-between'>
                                     <div className='flex flex-col'>
                                         <span className={tw(`text-xs font-semibold`, 'text-[#407EC9]')}
@@ -170,20 +150,18 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                             id="questionType"
                                             items={questionTypes}
                                             defaultValue={'Simple Text'}
-                                            {...register("questionType")}
                                             onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens, item.name)}
                                         />
                                     </div>
                                 </div>
                                 <hr />
-                                {/* TODO - Place the dynamic component to render */}
                                 <QuestionTypeScreen />
                             </div>
                         )
                     }
                 </div>
             </div>
-        </form>
+        </div>
     )
 }
 

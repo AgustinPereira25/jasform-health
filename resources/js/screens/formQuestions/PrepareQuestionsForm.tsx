@@ -23,7 +23,7 @@ export const PrepareQuestionsForm: React.FunctionComponent = () => {
     // }
     // , [isLoadingQuestsForm]);
     return (
-        <div>
+        <div className="h-full">
             {isLoadingQuestsForm ? (
                 <tr className="h-full items-center">
                     <td colSpan={5}>
