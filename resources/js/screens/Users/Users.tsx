@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
 import { paginatorValues } from "../../constants/pagination";
 
+import { debounce } from 'lodash';
 import { getUsersQuery } from "@/api";
 import { ROUTES } from "@/router";
 import type { FormDropdownItem } from "@/shared.types";
@@ -13,12 +13,31 @@ import { tw } from "@/utils";
 import { FormDropdown } from "../forms/components";
 import { isValidImageUrl } from "@/helpers/helpers";
 import Pagination from "@/ui/common/Pagination";
-
+import TableSkeleton from "@/ui/common/TableSkeleton";
+import EmptyState from "@/ui/common/EmptyState";
+import { message } from "@/constants/message";
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
+
 export const Users = () => {
+    const [search, setSearch] = useState({ nameEmail: "", positionOrg: "" });
+    const [debouncedSearch, setDebouncedSearch] = useState({ nameEmail: "", positionOrg: "" });
+
+    const handleDebouncedSearch = useCallback(debounce((query) => {
+        setDebouncedSearch(query);
+    }, 500), []);
+
+    const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setSearch(prevState => {
+            const updatedState = { ...prevState, [id]: value };
+            handleDebouncedSearch(updatedState);
+            return updatedState;
+        });
+    };
+
     const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -29,8 +48,8 @@ export const Users = () => {
     const [enabledActive, setEnabledActive] = useState(false);
     const [enabledAdmin, setEnabledAdmin] = useState(false);
 
-    const { data, isLoading: isLoadingUsers } = useQuery({
-        ...getUsersQuery(paginatorValues, perPage, currentPage, enabledActive, enabledAdmin),
+    const { data, isFetching, isError, isLoading: isLoadingUsers } = useQuery({
+        ...getUsersQuery(perPage, currentPage, enabledActive, enabledAdmin, debouncedSearch.nameEmail, debouncedSearch.positionOrg),
         // select: (users) =>
         //   users.map((user, idx) => {
         //     const selectedItem =
@@ -85,7 +104,7 @@ export const Users = () => {
                     </Button>
                 </h1>
             </div>
-            <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
+            <div className="rounded-xl border-[1px] bg-white p-2 pt-4 pl-4 shadow-lg">
                 <div className="flex gap-5">
                     <Input
                         type="search"
@@ -93,23 +112,27 @@ export const Users = () => {
                         label="Name/Email"
                         placeholder="Search by name or email"
                         className="min-w-[210px]"
-                    //{...register("password")}
-                    //error={errors.password?.message}
-                    //value={passwordInput}
-                    //onChange={(e) => { setPasswordInput(e.target.value); }}
+                        value={search.nameEmail}
+                        onChange={handleInputChange}
+                    // {...register("nameOrEmail")}
+                    // error={errors.nameOrEmail?.message}
+                    // value={passwordInput}
+                    // onChange={(e) => { setPasswordInput(e.target.value); }}
                     />
                     <Input
                         type="search"
-                        id="titleOrg"
-                        label="Title/Organization"
-                        placeholder="Search by title or organization"
+                        id="positionOrg"
+                        label="Position/Organization"
+                        placeholder="Search by position or organization"
                         className="min-w-[245px]"
-                    //{...register("password")}
-                    //error={errors.password?.message}
+                        value={search.positionOrg}
+                        onChange={handleInputChange}
+                    // {...register("positionOrOrganization")}
+                    // error={errors.positionOrOrganization?.message}
                     //value={passwordInput}
                     //onChange={(e) => { setPasswordInput(e.target.value); }}
                     />
-                    <Input
+                    {/* <Input
                         type="search"
                         id="planType"
                         // cuando el input es type=search aparece un cross para limpiar input
@@ -120,7 +143,7 @@ export const Users = () => {
                     //error={errors.password?.message}
                     //value={passwordInput}
                     //onChange={(e) => { setPasswordInput(e.target.value); }}
-                    />
+                    /> */}
                     <Switch.Group
                         as="div"
                         className="flex items-center justify-between gap-2"
@@ -182,100 +205,113 @@ export const Users = () => {
                         </Switch>
                     </Switch.Group>
                 </div>
-                <div className="rounded-sm border-[1px] border-gray-300">
-                    <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
-                        <colgroup>
-                            <col className="w-full sm:w-4/12" />
-                            <col className="lg:w-4/12" />
-                            <col className="lg:w-2/12" />
-                            <col className="lg:w-1/12" />
-                            <col className="lg:w-1/12" />
-                            <col className="lg:w-1/12" />
-                        </colgroup>
-                        <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-sm leading-6">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
-                                >
-                                    NAME
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
-                                >
-                                    TITLE / ORGANIZATION
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:pr-8 sm:text-left lg:pr-20"
-                                >
-                                    STATUS
-                                </th>
-                                {/* <th
+
+
+                {isFetching ? (
+                    <TableSkeleton />
+                ) : isError ? (
+                    <EmptyState
+                        message={message.ERROR_STATE}
+                        iconName="ArchiveBoxXMarkIcon"
+                    />
+                ) : !data?.data.length ? (
+                    <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
+                ) : (
+
+                    <div className="rounded-lg border border-gray-300">
+                        <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
+                            <colgroup>
+                                <col className="w-full sm:w-4/12" />
+                                <col className="lg:w-4/12" />
+                                <col className="lg:w-2/12" />
+                                <col className="lg:w-1/12" />
+                                <col className="lg:w-1/12" />
+                                <col className="lg:w-1/12" />
+                            </colgroup>
+                            <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-sm leading-6">
+                                <tr>
+                                    <th
+                                        scope="col"
+                                        className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
+                                    >
+                                        NAME
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
+                                    >
+                                        POSITION / ORGANIZATION
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:pr-8 sm:text-left lg:pr-20"
+                                    >
+                                        STATUS
+                                    </th>
+                                    {/* <th
                   scope="col"
                   className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
                 >
                   PLAN
                 </th> */}
-                                <th
-                                    scope="col"
-                                    className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                >
-                                    ROLE
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                >
-                                    <span className="sr-only">Action</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/5">
-                            {isLoadingUsers && (
-                                <tr className="h-full items-center">
-                                    <td colSpan={5}>
-                                        <div className="flex justify-center p-9">
-                                            <icons.SpinnerIcon />
-                                        </div>
-                                    </td>
+                                    <th
+                                        scope="col"
+                                        className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                                    >
+                                        ROLE
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                                    >
+                                        <span className="sr-only">Action</span>
+                                    </th>
                                 </tr>
-                            )}
-                            {users?.map((item) => (
-                                <tr key={item.id}>
-                                    <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
-                                        <div className="flex items-center gap-x-4">
-                                            <img
-                                                src={isValidImageUrl(item?.photo ?? '') ? item?.photo : '/Profile-Hello-Smile1b.png'}
-                                                alt={`${item.first_name} ${item.last_name}`}
-                                                className="h-8 w-8 rounded-full bg-gray-800"
-                                            />
-                                            <div className="flex flex-col">
-                                                <div className="truncate text-sm leading-6 text-black">
-                                                    {item.first_name} {item.last_name}
-                                                </div>
-                                                <div className="truncate text-sm leading-6 text-gray-500">
-                                                    {item.email}
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                                {isLoadingUsers && (
+                                    <tr className="h-full items-center">
+                                        <td colSpan={5}>
+                                            <div className="flex justify-center p-9">
+                                                <icons.SpinnerIcon />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )}
+                                {users?.map((item) => (
+                                    <tr key={item.id}>
+                                        <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
+                                            <div className="flex items-center gap-x-4">
+                                                <img
+                                                    src={isValidImageUrl(item?.photo ?? '') ? item?.photo : '/Profile-Hello-Smile1b.png'}
+                                                    alt={`${item.first_name} ${item.last_name}`}
+                                                    className="h-8 w-8 rounded-full bg-gray-800"
+                                                />
+                                                <div className="flex flex-col">
+                                                    <div className="truncate text-sm leading-6 text-black">
+                                                        {item.first_name} {item.last_name}
+                                                    </div>
+                                                    <div className="truncate text-sm leading-6 text-gray-500">
+                                                        {item.email}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
-                                        <div className="flex gap-x-3">
-                                            <div className="flex flex-col">
-                                                <div className="truncate text-sm leading-6 text-black">
-                                                    {item.position_in_organization}
-                                                </div>
-                                                <div className="truncate text-sm leading-6 text-gray-500">
-                                                    {item.organization_name}
+                                        </td>
+                                        <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
+                                            <div className="flex gap-x-3">
+                                                <div className="flex flex-col">
+                                                    <div className="truncate text-sm leading-6 text-black">
+                                                        {item.position_in_organization}
+                                                    </div>
+                                                    <div className="truncate text-sm leading-6 text-gray-500">
+                                                        {item.organization_name}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
-                                        <div className="flex items-center justify-end gap-x-2 sm:justify-start">
-                                            {/* <div
+                                        </td>
+                                        <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
+                                            <div className="flex items-center justify-end gap-x-2 sm:justify-start">
+                                                {/* <div
                         className={tw(
                           statuses[item.status as keyof typeof statuses],
                           "flex-none rounded-full p-1",
@@ -283,59 +319,60 @@ export const Users = () => {
                       >
                         <div className="h-1.5 w-1.5 rounded-full bg-current" />
                       </div> */}
-                                            <div
-                                                className={
-                                                    item.is_active
-                                                        ? "text-[#065F46] sm:block"
-                                                        : "text-[#a82d2d] sm:block"
-                                                }
-                                            >
-                                                {item.is_active ? "Active" : "Inactive"}
+                                                <div
+                                                    className={
+                                                        item.is_active
+                                                            ? "text-[#065F46] sm:block"
+                                                            : "text-[#a82d2d] sm:block"
+                                                    }
+                                                >
+                                                    {item.is_active ? "Active" : "Inactive"}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    {/* <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
+                                        </td>
+                                        {/* <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
                     plan??
                   </td> */}
-                                    <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        {item.roles?.length === 0
-                                            ? "No role"
-                                            : item.roles![0]!.name}
-                                    </td>
-                                    {/* <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                        <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                            {item.roles?.length === 0
+                                                ? "No role"
+                                                : item.roles![0]!.name}
+                                        </td>
+                                        {/* <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <a href={`/users/${item.id}`} className="text-[#00519E]">Edit</a>
                   </td>
                   <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <a href="/" className="text-[#00519E]">Delete</a>
                   </td> */}
-                                    <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        <FormDropdown
-                                            mode="USERS"
-                                            items={FormDropdownOptions}
-                                            param={item.id}
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                        <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                            <FormDropdown
+                                                mode="USERS"
+                                                items={FormDropdownOptions}
+                                                param={item.id}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
 
-                    {Object.keys(paginatorValues).includes(perPage.toString()) &&
-                        Number(currentPage) > 0 && (
-                            <Pagination
-                                paginatorValues={paginatorValues}
-                                totalItems={data?.pagination?.total}
-                                itemsPerPage={parseInt(perPage.toString(), 10)}
-                                currentPage={parseInt(currentPage.toString(), 10)}
-                                onPageChange={(newPerPage, newCurrentPage) => {
-                                    setPerPage(newPerPage)
-                                    setCurrentPage(newCurrentPage)
-                                }}
-                            />
-                        )}
+                        {Object.keys(paginatorValues).includes(perPage.toString()) &&
+                            Number(currentPage) > 0 && (
+                                <Pagination
+                                    paginatorValues={paginatorValues}
+                                    totalItems={data?.pagination?.total}
+                                    itemsPerPage={parseInt(perPage.toString(), 10)}
+                                    currentPage={parseInt(currentPage.toString(), 10)}
+                                    onPageChange={(newPerPage, newCurrentPage) => {
+                                        setPerPage(newPerPage)
+                                        setCurrentPage(newCurrentPage)
+                                    }}
+                                />
+                            )}
 
-                </div>
-                <div className="h-[100px]"></div>
+                    </div>
+                )}
+                <div className="h-[50px]"></div>
             </div>
         </>
     );
