@@ -1,41 +1,35 @@
-import React from 'react'
-import { Button, Input, icons } from '@/ui'
+import React, { useState } from 'react'
+import { Button, icons } from '@/ui'
 import { useForm } from 'react-hook-form'
 import { tw } from '@/utils'
-import { IFormQuestion } from '@/api'
+import type { IFormQuestion } from '@/api'
 import { useNavigate, useParams } from 'react-router-dom'
+import ComboBox from '@/ui/form/Combobox'
+import { questionScreens } from './utils'
 
 interface FormQuestionsProps {
     initialData: IFormQuestion[];
 }
 
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
-export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form = {} }) => {
-    console.log(form);
+export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [] }) => {
+
+    // TODO- Put this in constants file
+    const questionTypes = [
+        { id: 1, name: "Simple Text" },
+        { id: 2, name: "Input Field" },
+        { id: 3, name: "Multiple Choice - Check Box" },
+        { id: 4, name: "Single Option - Radio Button" },
+        { id: 5, name: "Single Option - Drop Down Combo" },
+    ];
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-        // setValue,
+        setValue,
         // setError,
-    } = useForm({
-        // // TODO - Complete this fields.. 
-        // defaultValues: {
-        //     id: form.id ?? 0,
-        //     name: form.name ?? '',
-        //     welcomeTxt: form.welcome_text ?? '',
-        //     description: form.description ?? '',
-        //     pcolor: form.primary_color ?? '',
-        //     scolor: form.secondary_color ?? '',
-        //     borderRadius: form.rounded_style ?? '',
-        //     logo: form.logo ?? '',
-        //     apiURL: form.api_url ?? '',
-        //     publicCode: form.public_code ?? '',
-        //     publishState: form.status ?? false,
-        //     // anonAnswers: form.anonymous_answers ?? false,
-        //     // mandatoryInitialData: form.mandatory_initial_data ?? false,
-        // },
-    });
+    } = useForm();
 
     const onSubmit = (data: IFormQuestion[]) => {
         console.log(data);
@@ -47,9 +41,34 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
         // }
     };
 
-    const navigate = useNavigate();
     const { id: formId } = useParams();
+    const navigate = useNavigate();
 
+    const [questions, setQuestions] = useState(formQuestions);
+    const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
+    const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
+
+    const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
+
+    const handleAddQuestionClick = () => {
+        const getLastQuestionId = Object.values(questions).pop()?.id;
+
+        const lastQuestionId = getLastQuestionId ? getLastQuestionId + 1 : 1;
+        const newElement: IFormQuestion = { id: lastQuestionId };
+        setQuestions([...questions, newElement]);
+    };
+
+    const handleQuestionClick = (item: IFormQuestion, idx: number) => {
+        setCurrentQuestion(item);
+        setCurrentQuestionIdx(idx);
+    }
+
+    const QuestionTypeScreen = questionScreens[questionTypeForm];
+
+    const handleComboboxChange = (id: keyof typeof questionScreens, name: string) => {
+        setValue("questionType", name);
+        setQuestionTypeForm(id);
+    }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
@@ -72,24 +91,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                 </div>
                 <div className='flex gap-5'>
                     <Button
-                        variant="secondary"
-                        onClick={() => console.log('pepe')}
-                    >
-                        <icons.TrashIcon className={tw(`w-5 h-5`)} />
-                        Delete
-                    </Button>
-                    {
-                        form.id && (
-                            <Button
-                                variant="primary"
-                                onClick={() => console.log('pepe')}
-                            >
-                                <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
-                                Edit Form&apos;s Questions
-                            </Button>
-                        )
-                    }
-                    <Button
                         type='submit'
                         variant="primary"
                     >
@@ -97,152 +98,90 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                     </Button>
                 </div>
             </div>
-            <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full'>
-                <div className="flex gap-6 shrink-0">
-                    <div className='shrink-0'>
-                        <div className='flex gap-8 p-3 h-36'>
-                            <div className='flex shrink-0 w-40'>
-                                <span>Logo</span>
-                            </div>
+            <div className="flex gap-3 w-full">
+                <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%]'>
+                    <span>Content</span>
+                    <div className="flex flex-col items-center">
+                        {
+                            questions.map((item, idx) => {
+                                return (
+                                    <div
+                                        id={item.id?.toString()}
+                                        key={item.id}
+                                        className='flex relative w-full items-center hover:bg-gray-50'
+                                        onClick={() => handleQuestionClick(item, idx)}
+                                        role='presentation'
+                                    >
+                                        <div className={tw(`absolute border-l-4 h-[80%] -left-2`,
+                                            item.id === currentQuestion?.id && 'border-l-[#407EC9]'
+                                        )}
+                                        />
+                                        <div className={
+                                            tw(`flex w-full h-14 justify-between`,
+                                                idx === 0 && `border-t border-t-gray-200`,
+                                                idx !== 0 && `border-y border-y-gray-200`
+                                            )}>
+                                            <div className='flex flex-col justify-center pl-3'>
+                                                <span className={tw(`text-xs font-semibold`,
+                                                    item.id === currentQuestion?.id && 'text-[#407EC9]',
+                                                    item.id !== currentQuestion?.id && 'text-[#6B7280]'
+                                                )}
+                                                >
+                                                    STEP {idx + 1}
+                                                </span>
+                                                <span className='text-sm font-medium'>{item.title}</span>
+                                            </div>
+                                            <div className='flex gap-2 items-center'>
+                                                <icons.TrashIcon className='w-5 h-5' />
+                                                <icons.DocumentDuplicateIcon className='w-5 h-5' />
+                                                <icons.Bars3Icon className='w-5 h-5' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        <div className='pt-2'>
+                            <Button
+                                variant='secondary'
+                                onClick={handleAddQuestionClick}
+                            >
+                                + Add Question
+                            </Button>
                         </div>
-                        <hr className='mx-3' />
-                        <div className={tw(
-                            'flex p-3 h-16',
-                            errors.name && 'pb-5'
-                        )}
-                        >
-                            <div className='flex w-40'>
-                                <span>Name*</span>
-                            </div>
-                            <div className="flex grow">
-                                <Input
-                                    containerClassName='w-full'
-                                    fullHeight
-                                    type="text"
-                                    id="name"
-                                    placeholder="Enter Form Name"
-                                    {...register("name")}
-                                    // error={errors.firstName?.message}
-                                    // value={passwordInput}
-                                    defaultValue={form?.name}
-                                />
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className={tw(
-                            'flex p-3 h-16',
-                            errors.welcomeTxt && 'pb-5'
-                        )}
-                        >
-                            <div className='flex w-40'>
-                                <span>Welcome Text*</span>
-                            </div>
-                            <div className="flex grow">
-                                <Input
-                                    containerClassName='w-full'
-                                    fullHeight
-                                    type="text"
-                                    id="welcomeTxt"
-                                    placeholder="Enter Welcome Text"
-                                    {...register("welcomeTxt")}
-                                    // error={errors.welcomeTxt?.message}
-                                    //value={passwordInput}
-                                    defaultValue={''}
-                                />
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className={tw(
-                            'flex p-3 h-16',
-                            errors.description && 'pb-5'
-                        )}
-                        >
-                            <div className='flex w-40'>
-                                <span>Description*</span>
-                            </div>
-                            <div className="flex grow">
-                                <Input
-                                    containerClassName='w-full'
-                                    fullHeight
-                                    type="text"
-                                    id="description"
-                                    placeholder="Enter Description"
-                                    {...register("description")}
-                                    //error={errors.email?.message}
-                                    //value={passwordInput}
-                                    defaultValue={''}
-                                />
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className={tw(
-                            'flex p-3 h-16',
-                            errors.pcolor && 'pb-5'
-                        )}
-                        >
-                            <div className='flex w-40'>
-                                <span>Primary Color</span>
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className={tw(
-                            'flex p-3 h-16',
-                            errors.scolor && 'pb-5'
-                        )}
-                        >
-                            <div className='flex w-40'>
-                                <span>Secondary Color</span>
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
-                        <div className={tw(
-                            'flex p-3 h-16',
-                            errors.borderRadius && 'pb-5'
-                        )}
-                        >
-                            <div className='flex w-40'>
-                                <span>Border Radius</span>
-                            </div>
-                            <div className="flex grow">
-                                <Input
-                                    containerClassName='w-full'
-                                    fullHeight
-                                    type="text"
-                                    id="borderRadius"
-                                    placeholder="Border Radius"
-                                    {...register("borderRadius")}
-                                    // error={errors.organization?.message}
-                                    // value={passwordInput}
-                                    defaultValue={''}
-                                />
-                            </div>
-                        </div>
-                        <hr className='mx-3' />
                     </div>
                 </div>
-                <div className={tw(
-                    'flex p-3 h-16',
-                    errors.apiURL && 'pb-5'
-                )}
-                >
-                    <div className='flex shrink-0 w-40'>
-                        <span>API URL (callback)</span>
-                    </div>
-                    <div className="flex w-full">
-                        <Input
-                            containerClassName='w-full'
-                            fullHeight
-                            type="text"
-                            id="apiURL"
-                            placeholder="Enter API URL"
-                            {...register("apiURL")}
-                            // error={errors.organization?.message}
-                            // value={passwordInput}
-                            defaultValue={''}
-                        />
-                    </div>
+                {/* TODO - Make this html a component */}
+                <div className='bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]'>
+                    {
+                        currentQuestion && (
+                            <div>
+                                <div className='flex justify-between'>
+                                    <div className='flex flex-col'>
+                                        <span className={tw(`text-xs font-semibold`, 'text-[#407EC9]')}
+                                        >
+                                            STEP {currentQuestionIdx + 1}
+                                        </span>
+                                        <span className='text-sm font-medium'>{currentQuestion.title}</span>
+                                    </div>
+                                    <div className='flex gap-2 items-center pb-2'>
+                                        <span>Question Type</span>
+                                        <ComboBox
+                                            id="questionType"
+                                            items={questionTypes}
+                                            defaultValue={'Simple Text'}
+                                            {...register("questionType")}
+                                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens, item.name)}
+                                        />
+                                    </div>
+                                </div>
+                                <hr />
+                                {/* TODO - Place the dynamic component to render */}
+                                <QuestionTypeScreen />
+                            </div>
+                        )
+                    }
                 </div>
-                <hr className='mx-3' />
             </div>
         </form>
     )
