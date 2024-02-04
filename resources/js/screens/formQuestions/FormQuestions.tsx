@@ -25,6 +25,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const { id: formId } = useParams();
     const navigate = useNavigate();
 
+    // TODO - Order is undefined?
+    formQuestions = formQuestions.sort((a, b) => a.order! - b.order!)
     const [questions, setQuestions] = useState(formQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
