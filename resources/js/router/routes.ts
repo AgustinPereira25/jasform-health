@@ -6,6 +6,7 @@ export const ROUTES = {
   forms: "/forms",
   profile: "/profile",
   editUser: "/users/:id",
+  deleteUser: "/users/:id/delete",
   newUser: "/users/new",
   newForm: "/forms/new",
   editForm: "/forms/:id",
