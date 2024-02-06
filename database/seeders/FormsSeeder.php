@@ -58,14 +58,32 @@ class FormsSeeder extends Seeder
 
         DB::table('question_types')->insert([
             [
-                'name' => 'Type 1',
-                'description' => 'Question type 1',
+                'name' => 'Simple Text',
+                'description' => 'Simple Text',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => 'Type 2',
-                'description' => 'Question type 2',
+                'name' => 'Input Field',
+                'description' => 'Input Field',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'Multiple Choice - Check Box',
+                'description' => 'Multiple Choice - Check Box',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'Single Option - Radio Button',
+                'description' => 'Single Option - Radio Button',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'Single Option - Drop Down Combo',
+                'description' => 'Single Option - Drop Down Combo',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
@@ -172,7 +190,15 @@ class FormsSeeder extends Seeder
                 'form_question_id' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
-            ]
+            ],
+            [
+                'order' => 1,
+                'title' => 'Option 1',
+                'next_question' => 2,
+                'form_question_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
         ]);
     }
 }
