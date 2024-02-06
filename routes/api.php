@@ -34,6 +34,7 @@ use App\Organizations\Controllers\GetOrganizationController;
 use App\Organizations\Controllers\StoreOrganizationController;
 use App\Organizations\Controllers\DeleteOrganizationController;
 use App\Question_options\Controllers\ListQuestion_optionController;
+use App\Question_options\Controllers\ListQuestion_option_byQuestionIdController;
 use App\Question_options\Controllers\GetQuestion_optionController;
 use App\Question_options\Controllers\StoreQuestion_optionController;
 use App\Question_options\Controllers\DeleteQuestion_optionController;
@@ -136,6 +137,7 @@ Route::prefix('question_options')
     ->middleware([])
     ->group(static function () {
         Route::get('/', ListQuestion_optionController::class);
+        Route::get('/byQuestionId/{form_question}', ListQuestion_option_byQuestionIdController::class);
         Route::get('/{question_option}', GetQuestion_optionController::class);
         Route::post('/', StoreQuestion_optionController::class);
         Route::delete('/{question_option}', DeleteQuestion_optionController::class);
