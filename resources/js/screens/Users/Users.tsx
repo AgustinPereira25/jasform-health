@@ -3,33 +3,33 @@ import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { paginatorValues } from "../../constants/pagination";
-
 import { debounce } from 'lodash';
 import { getUsersQuery } from "@/api";
 import { ROUTES } from "@/router";
-import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
-import { FormDropdown } from "../forms/components";
 import { isValidImageUrl } from "@/helpers/helpers";
 import Pagination from "@/ui/common/Pagination";
 import TableSkeleton from "@/ui/common/TableSkeleton";
 import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
+
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
-
 
 export const Users = () => {
     const [search, setSearch] = useState({ nameEmail: "", positionOrg: "" });
     const [debouncedSearch, setDebouncedSearch] = useState({ nameEmail: "", positionOrg: "" });
 
-    const handleDebouncedSearch = useCallback(debounce((query) => {
-        setDebouncedSearch(query);
-    }, 500), []);
+    const handleDebouncedSearch = useCallback(
+        debounce((query: any) => {
+            setDebouncedSearch(query);
+        }, 500) as (query: any) => void,
+        []
+    );
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         setSearch(prevState => {
             const updatedState = { ...prevState, [id]: value };
@@ -38,67 +38,24 @@ export const Users = () => {
         });
     };
 
-    const [perPage, setPerPage] = useState(10);
+    const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
-    // const { pushToast } = useToastStore();
-    // const queryClient = useQueryClient();
-
-    // For toggles
     const [enabledActive, setEnabledActive] = useState(false);
     const [enabledAdmin, setEnabledAdmin] = useState(false);
 
     const { data, isFetching, isError, isLoading: isLoadingUsers } = useQuery({
         ...getUsersQuery(perPage, currentPage, enabledActive, enabledAdmin, debouncedSearch.nameEmail, debouncedSearch.positionOrg),
-        // select: (users) =>
-        //   users.map((user, idx) => {
-        //     const selectedItem =
-        //       activityItems[idx % activityItems.length] ?? activityItems[0];
-
-        //     return {
-        //       ...selectedItem,
-
-        //       user: {
-        //         imageUrl: selectedItem.user.imageUrl,
-        //         name: user.name,
-        //         id: user.id,
-        //       },
-        //     };
-        //   }),
     });
-    console.log("data:", data);
     const users = data?.data;
-    console.log("users:", users);
-    // const { mutate: deleteUserMutation } = useMutation({
-    //   mutationFn: deleteUser.mutation,
-    //   onSuccess: (_, requestedId) => {
-    //     deleteUser.invalidates(queryClient, { userId: requestedId });
-    //     void pushToast({
-    //       type: "success",
-    //       title: "Success",
-    //       message: "User successfully deleted!",
-    //     });
-    //   },
-    //   onError: errorToast,
-    // });
-
-    // const navigateModal = useNavigateModal();
     const navigate = useNavigate();
 
-    const FormDropdownOptions: FormDropdownItem[] = [
-        { name: "Edit", icon: <icons.PencilIcon /> },
-        { name: "Delete", icon: <icons.TrashIcon />, newSection: true },
-    ];
-
-    const handleClick = () => {
-        navigate(ROUTES.newUser);
-    };
     return (
         <>
             <div className="bg-white">
                 <h1 className="flex items-center justify-between px-2 pb-7 text-2xl font-semibold leading-7 text-black">
                     Users
-                    <Button variant="primary" onClick={handleClick}>
+                    <Button variant="primary" onClick={() => navigate(ROUTES.newUser)}>
                         <icons.PlusIcon className={tw(`h-5 w-5`)} />
                         Create User
                     </Button>
@@ -114,36 +71,16 @@ export const Users = () => {
                         className="min-w-[210px]"
                         value={search.nameEmail}
                         onChange={handleInputChange}
-                    // {...register("nameOrEmail")}
-                    // error={errors.nameOrEmail?.message}
-                    // value={passwordInput}
-                    // onChange={(e) => { setPasswordInput(e.target.value); }}
                     />
                     <Input
                         type="search"
                         id="positionOrg"
                         label="Position/Organization"
                         placeholder="Search by position or organization"
-                        className="min-w-[245px]"
+                        className="min-w-[270px]"
                         value={search.positionOrg}
                         onChange={handleInputChange}
-                    // {...register("positionOrOrganization")}
-                    // error={errors.positionOrOrganization?.message}
-                    //value={passwordInput}
-                    //onChange={(e) => { setPasswordInput(e.target.value); }}
                     />
-                    {/* <Input
-                        type="search"
-                        id="planType"
-                        // cuando el input es type=search aparece un cross para limpiar input
-                        label="Plan Type"
-                        placeholder="Search by name or email"
-                        className="min-w-[210px]"
-                    //{...register("password")}
-                    //error={errors.password?.message}
-                    //value={passwordInput}
-                    //onChange={(e) => { setPasswordInput(e.target.value); }}
-                    /> */}
                     <Switch.Group
                         as="div"
                         className="flex items-center justify-between gap-2"
@@ -248,15 +185,9 @@ export const Users = () => {
                                     >
                                         STATUS
                                     </th>
-                                    {/* <th
-                  scope="col"
-                  className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
-                >
-                  PLAN
-                </th> */}
                                     <th
                                         scope="col"
-                                        className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                                        className="hidden py-2 pl-0 pr-4 text-left font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
                                     >
                                         ROLE
                                     </th>
@@ -279,7 +210,10 @@ export const Users = () => {
                                     </tr>
                                 )}
                                 {users?.map((item) => (
-                                    <tr key={item.id}>
+                                    <tr key={item.id}
+                                        onClick={() => { navigate(`/users/${item.id}`) }}
+                                        className="cursor-pointer hover:bg-gray-100"
+                                    >
                                         <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                             <div className="flex items-center gap-x-4">
                                                 <img
@@ -311,14 +245,6 @@ export const Users = () => {
                                         </td>
                                         <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                                             <div className="flex items-center justify-end gap-x-2 sm:justify-start">
-                                                {/* <div
-                        className={tw(
-                          statuses[item.status as keyof typeof statuses],
-                          "flex-none rounded-full p-1",
-                        )}
-                      >
-                        <div className="h-1.5 w-1.5 rounded-full bg-current" />
-                      </div> */}
                                                 <div
                                                     className={
                                                         item.is_active
@@ -330,32 +256,20 @@ export const Users = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        {/* <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                    plan??
-                  </td> */}
-                                        <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                        <td className="hidden py-4 pl-0 pr-4 text-left text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             {item.roles?.length === 0
                                                 ? "No role"
                                                 : item.roles![0]!.name}
                                         </td>
-                                        {/* <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <a href={`/users/${item.id}`} className="text-[#00519E]">Edit</a>
-                  </td>
-                  <td className="hidden py-4 pl-0 pr-4 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <a href="/" className="text-[#00519E]">Delete</a>
-                  </td> */}
-                                        <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                            <FormDropdown
-                                                mode="USERS"
-                                                items={FormDropdownOptions}
-                                                param={item.id}
-                                            />
+                                        <td className="flex justify-end py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                            <a href={`/users/${item.id}`} className="flex justify-end">
+                                                <icons.ChevronRightIcon className="h-6 w-6 text-primary" />
+                                            </a>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-
                         {Object.keys(paginatorValues).includes(perPage.toString()) &&
                             Number(currentPage) > 0 && (
                                 <Pagination
@@ -369,7 +283,6 @@ export const Users = () => {
                                     }}
                                 />
                             )}
-
                     </div>
                 )}
                 <div className="h-[50px]"></div>
