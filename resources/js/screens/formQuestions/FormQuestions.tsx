@@ -30,7 +30,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [questions, setQuestions] = useState(formQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
-
     const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
 
     const handleAddQuestionClick = () => {
@@ -157,7 +156,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                     </div>
                                 </div>
                                 <hr />
-                                <QuestionTypeScreen />
+                                <QuestionTypeScreen text='pepe' nextSteps={questions} />
                             </div>
                         )
                     }
