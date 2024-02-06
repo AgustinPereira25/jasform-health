@@ -33,7 +33,7 @@ const ComboBox = forwardRef(
         }
         return (
             <Combobox as="div" value={selectedItem} onChange={(e: Item) => handleChange(e)} ref={ref}>
-                <div className="relative mt-2">
+                <div className="relative">
                     <Combobox.Input
                         className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         // onChange={(event) => setQuery(event.target.value)}
