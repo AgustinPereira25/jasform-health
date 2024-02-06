@@ -4,16 +4,16 @@ import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
-import { LogOutLogo, NavbarLogo } from "./components";
+import { LogOutLogo, JASForm_Isologo_big_transp_white } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
 
 const navigation = [
-    {
-        path: ROUTES.home,
-        label: "Dashboard",
-        icon: <icons.DashboardIcon />,
-        role: "admin",
-    },
+    // {
+    //     path: ROUTES.home,
+    //     label: "Dashboard",
+    //     icon: <icons.DashboardIcon />,
+    //     role: "admin",
+    // },
     {
         path: ROUTES.forms,
         label: "My Forms",
@@ -32,12 +32,12 @@ const navigation = [
         icon: <icons.SystemsFormsIcon />,
         role: "",
     },
-    {
-        path: "#",
-        label: "System's Billing",
-        icon: <icons.SystemsBillingIcon />,
-        role: "",
-    },
+    // {
+    //     path: "#",
+    //     label: "System's Billing",
+    //     icon: <icons.SystemsBillingIcon />,
+    //     role: "",
+    // },
     {
         path: "/profile",
         label: "View profile",
@@ -56,10 +56,14 @@ export const Sidebar = ({
     // const { user: mockUser, setToken } = useUserStore();
     const { user: mockUser } = useUserStore();
 
+    const logout = () => {
+        alert("Logout");
+    };
+
     return (
         <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
             <div className="flex h-16 shrink-0 p-8">
-                <NavbarLogo />
+                <img src='/JASForm_Isologo_big_transp_white.png' alt="Logo" className="h-10" />
             </div>
             {mockUser && (
                 <nav className="flex flex-1 flex-col ">
@@ -135,8 +139,8 @@ export const Sidebar = ({
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
                                         className={tw(
                                             item.path == currentPath
-                                                ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-10 text-white"
-                                                : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-10 text-white",
+                                                ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-8 pr-3 text-white"
+                                                : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-8 pr-3 text-white",
                                         )}
                                     >
                                         <img
@@ -146,19 +150,25 @@ export const Sidebar = ({
                                             alt={mockUser.first_name}
                                         />
                                         <span className="sr-only">Your profile</span>
-                                        <div>
+                                        <div >
                                             <span aria-hidden="true">
                                                 {mockUser.first_name} {mockUser.last_name}
                                             </span>
                                             <Link
                                                 to="/profile"
-                                                className="flex text-xs font-normal text-[#8C92AB]"
+                                                className="flex text-xs font-normal text-nowrap text-[#8C92AB]"
                                             >
                                                 <span>{item.label}</span>
                                             </Link>
                                         </div>
                                     </div>
-                                    {item.icon}
+                                    <button
+                                        className="mr-2"
+                                        onClick={logout}
+                                        title="Logout"
+                                    >
+                                        {item.icon}
+                                    </button>
                                 </li>
                             ))}
                     </ul>

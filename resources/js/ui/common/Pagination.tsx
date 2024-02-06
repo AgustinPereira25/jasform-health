@@ -1,11 +1,10 @@
 import React from "react";
-
 import type { paginatorValues } from "../../constants/pagination"
 import { icons } from "./Icons";
 
 interface PaginationProps {
     paginatorValues: typeof paginatorValues;
-    totalItems: number;
+    totalItems: number | undefined;
     itemsPerPage: number;
     currentPage: number;
     onPageChange: (itemsPerPage: number, page: number) => void;
@@ -13,7 +12,7 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({
     paginatorValues,
-    totalItems,
+    totalItems = 0,
     itemsPerPage,
     currentPage,
     onPageChange,
@@ -64,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({
                             onPageChange(itemsPerPage, 1);
                         }}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus:z-20 focus:outline-offset-0"
+                        className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 ${currentPage !== 1 ? 'hover:bg-gray-200' : 'cursor-not-allowed'} focus:z-20 focus:outline-offset-0`}
                     >
                         <icons.ChevronDoubleLeftIcon
                             className="h-5 w-5"
@@ -77,7 +76,7 @@ const Pagination: React.FC<PaginationProps> = ({
                             onPageChange(itemsPerPage, currentPage - 1);
                         }}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus:z-20 focus:outline-offset-0"
+                        className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 ${currentPage !== 1 ? 'hover:bg-gray-200' : 'cursor-not-allowed'} focus:z-20 focus:outline-offset-0`}
                     >
                         <span className="sr-only">Previous</span>
                         <icons.ChevronLeftIcon
@@ -93,7 +92,7 @@ const Pagination: React.FC<PaginationProps> = ({
                             onPageChange(itemsPerPage, currentPage + 1);
                         }}
                         disabled={currentPage === totalPages}
-                        className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus:z-20 focus:outline-offset-0"
+                        className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 ${currentPage !== totalPages ? 'hover:bg-gray-200' : 'cursor-not-allowed'} focus:z-20 focus:outline-offset-0`}
                     >
                         <span className="sr-only">Next</span>
                         <icons.ChevronRightIcon
@@ -106,7 +105,7 @@ const Pagination: React.FC<PaginationProps> = ({
                             onPageChange(itemsPerPage, totalPages);
                         }}
                         disabled={currentPage === totalPages}
-                        className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus:z-20 focus:outline-offset-0"
+                        className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 ${currentPage !== totalPages ? 'hover:bg-gray-200' : 'cursor-not-allowed'} focus:z-20 focus:outline-offset-0`}
                     >
                         <icons.ChevronDoubleRightIcon
                             className="h-5 w-5"
