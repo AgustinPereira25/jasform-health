@@ -10,7 +10,7 @@ import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import { isValidImageUrl } from "@/helpers/helpers";
 import Pagination from "@/ui/common/Pagination";
-import TableSkeleton from "@/ui/common/TableSkeleton";
+import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
 
@@ -142,8 +142,6 @@ export const Users = () => {
                         </Switch>
                     </Switch.Group>
                 </div>
-
-
                 {isFetching ? (
                     <TableSkeleton />
                 ) : isError ? (

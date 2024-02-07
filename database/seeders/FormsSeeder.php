@@ -153,11 +153,31 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Question 2',
+                'title' => 'Question 1',
                 'text' => 'What is happening?',
+                'order' => 1,
+                'is_mandatory' => true,
+                'form_id' => 2,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'Question 2',
+                'text' => 'What is happening??',
                 'order' => 2,
                 'is_mandatory' => true,
                 'form_id' => 2,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'Question 2',
+                'text' => 'What is happening??',
+                'order' => 2,
+                'is_mandatory' => true,
+                'form_id' => 1,
                 'question_type_id' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -167,8 +187,8 @@ class FormsSeeder extends Seeder
                 'text' => 'What is happening??',
                 'order' => 3,
                 'is_mandatory' => true,
-                'form_id' => 2,
-                'question_type_id' => 2,
+                'form_id' => 1,
+                'question_type_id' => 4,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
