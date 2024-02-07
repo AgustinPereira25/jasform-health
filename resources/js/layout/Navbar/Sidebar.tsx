@@ -61,10 +61,11 @@ export const Sidebar = ({
     };
 
     return (
-        <div className="flex h-screen grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
-            <div className="flex h-16 shrink-0 p-8">
+        <div className="flex h-screen w-[206px] grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
+            <div className="flex justify-center h-4 p-2 pt-4 object-contain">
                 <img src='/JASForm_Isologo_big_transp_white.png' alt="Logo" className="h-10" />
             </div>
+
             {mockUser && (
                 <nav className="flex flex-1 flex-col ">
                     <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">
