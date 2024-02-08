@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-
 import type { User, UserRoles } from "@/api";
-import { FileUploader } from "@/components";
-import { Button, icons, Input } from "@/ui";
+import { Button, icons, Input, Modal } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
 import { Switch } from "@headlessui/react";
 import { isValidImageUrl } from "@/helpers/helpers";
+import { TextArea } from "@/ui/form/TextArea";
 interface NewProfileForm {
     id?: number;
     firstName?: string;
@@ -20,6 +19,7 @@ interface NewProfileForm {
     subscription?: string;
     roles?: UserRoles[];
     is_active?: boolean;
+    photo?: string;
 }
 interface NewProfileProps {
     initialData: User;
@@ -33,18 +33,12 @@ export const NewProfile: React.FC<NewProfileProps> = ({
     initialData: user = {},
 }) => {
     //TODO: put this in a constants file
-    const SubscriptionPlans = [
-        { id: 1, name: "Free" },
-        { id: 2, name: "Premium" },
-        { id: 3, name: "Enterprise" },
-    ]; // solo name
     const Roles = [
         { id: 1, name: "Admin" },
-        { id: 2, name: "User" },
-        { id: 3, name: "Viewer" },
+        { id: 2, name: "Creator" },
     ]; // el unico q prevalaece con esta structura
 
-    const defaultRole = user.roles ? user.roles[0]?.name : "Viewer";
+    const defaultRole = user.roles ? user.roles[0]?.name : "Creator";
     // For toggles
     const [enabledActive, setEnabledActive] = useState(false);
 
@@ -66,6 +60,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
             subscription: "Free" ?? "",
             role: defaultRole,
             is_active: user?.is_active ?? true,
+            photo: user?.photo ?? "",
         },
     });
     const onSubmit = (data: NewProfileForm) => {
@@ -78,6 +73,26 @@ export const NewProfile: React.FC<NewProfileProps> = ({
         // }
     };
     const navigate = useNavigate();
+
+    const [showDeletionModal, setshowDeletionModal] = useState(false);
+    const handleOpenDeletionModal = () => {
+        setshowDeletionModal(true);
+    };
+    const handleCloseDeletionModal = () => {
+        setshowDeletionModal(false);
+    };
+
+    const [showPasswordModal, setshowPasswordModal] = useState(false);
+    const handleOpenPasswordModal = () => {
+        setshowPasswordModal(true);
+    };
+    const handleClosePasswordModal = () => {
+        setshowPasswordModal(false);
+    };
+    const [passwordInput, setPasswordInput] = useState(false);
+
+
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
@@ -90,7 +105,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                 </div>
                 <div className="flex gap-5">
                     {user.id && (
-                        <Button variant="secondary" onClick={() => console.log("pepe")}>
+                        <Button variant="secondary" onClick={handleOpenDeletionModal}>
                             <icons.TrashIcon className={tw(`h-5 w-5`)} />
                             Delete
                         </Button>
@@ -102,28 +117,19 @@ export const NewProfile: React.FC<NewProfileProps> = ({
             </div>
             <div className="flex gap-6">
                 <div className="w-3/5 shrink-0 rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                    <div className="flex h-36 gap-8 p-3">
+                    <div className="flex h-36 p-3">
                         <div className="flex w-40 shrink-0">
                             <span>Profile Picture</span>
                         </div>
                         <div className="flex shrink-0 overflow-hidden rounded-full">
-                            <div className="relative p-0 ">
+                            <div className="relative p-0">
                                 <img
                                     src={isValidImageUrl(user?.photo ?? '') ? user?.photo : '/Profile-Hello-Smile1b.png'}
                                     alt="user"
                                     className="h-[120px] w-[120px]"
                                 />
-                                <Button
-                                    variant="primary"
-                                    onClick={() => console.log("pepe")}
-                                    className="absolute bottom-0 left-0 right-0 w-full p-0 text-xs"
-                                >
-                                    Edit
-                                </Button>
                             </div>
                         </div>
-                        {/* ToDo: Agregar props como url del endpoint,etc para hacerlo mas generico */}
-                        <FileUploader />
                     </div>
                     <hr className="mx-3" />
                     <div className={tw("flex h-16 p-3", errors.firstName && "pb-5")}>
@@ -179,6 +185,25 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                                 //error={errors.email?.message}
                                 //value={passwordInput}
                                 defaultValue={user?.email}
+                            />
+                        </div>
+                    </div>
+                    <hr className="mx-3" />
+                    <div className={tw("flex h-20 p-3", errors.phone && "pb-5")}>
+                        <div className="flex w-40">
+                            <span>Photo URL</span>
+                        </div>
+                        <div className="flex grow">
+                            <TextArea
+                                className="resize-none"
+                                containerClassName="w-full h-full"
+                                fullHeight
+                                id="photo"
+                                placeholder="Photo URL"
+                                {...register("photo", { required: "Photo is required" })}
+                                // {...register("photo")}
+                                error={errors.photo?.message}
+                                defaultValue={user?.photo}
                             />
                         </div>
                     </div>
@@ -243,7 +268,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                     <div className="flex h-16 p-3">
                         <Button
                             variant="tertiary"
-                        // onClick={() => console.log('pepe')}
+                            onClick={handleOpenPasswordModal}
                         >
                             <icons.KeyIcon />
                             Change Password
@@ -343,20 +368,72 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                     {
                         user.id && (
                             <>
-                                <div className="flex h-16 p-3 ">
+                                {/* <div className="flex h-16 p-3 ">
                                     <Button variant="primary">User&apos;s Dashboard</Button>
-                                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
+                                </div> */}
+                                <hr className="mx-3" /><div className="flex h-16 p-3 ">
                                     <Button variant="primary">User&apos;s Forms</Button>
-                                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                    <Button variant="primary">User&apos;s Bills</Button>
-                                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                    <Button variant="primary">User&apos;s Subscription History</Button>
                                 </div><hr className="mx-3" />
                             </>
                         )
                     }
                 </div>
             </div>
+            <Modal
+                show={showDeletionModal}
+                title="Confirm deletion"
+                description="Are you sure you want to execute a deletion?"
+                onClose={handleCloseDeletionModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <Button
+                        variant="tertiary"
+                        onClick={() => console.log('DELETE CONFIRMED')}
+                    >
+                        Delete
+                    </Button>
+                </div>
+            </Modal>
+            <Modal
+                show={showPasswordModal}
+                title="Update password"
+                description="Complete the form below to update the password."
+                onClose={handleClosePasswordModal}
+            >
+                <>
+                    <div>
+                        <Input
+                            type="password"
+                            id="actualPassword"
+                            label="New Password"
+                            placeholder="Enter Password"
+                            value={passwordInput}
+                        />
+                        <Input
+                            type="password"
+                            id="newPassword"
+                            label="New Password"
+                            placeholder="Enter Password"
+                            value={passwordInput}
+                        />
+                        <Input
+                            type="password"
+                            id="newPasswordConfirm"
+                            label="New Password"
+                            placeholder="Enter Password"
+                            value={passwordInput}
+                        />
+                    </div>
+                    <div className="flex h-16 p-3 m-auto">
+                        <Button
+                            variant="tertiary"
+                            onClick={() => console.log('Update Password CONFIRMED')}
+                        >
+                            Confirm new password
+                        </Button>
+                    </div>
+                </>
+            </Modal>
         </form>
     );
 };

@@ -1,5 +1,5 @@
 #!/bin/bash
-./vendor/bin/sail up -d
+./vendor/bin/sail start -d
 . ~/.nvm/nvm.sh
 nvm use
 npm run dev
