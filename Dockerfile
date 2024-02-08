@@ -4,9 +4,18 @@ ENV SSL_MODE mixed
 
 WORKDIR /var/www/html
 
+RUN ls -lah
+
 RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir /app
+COPY . /app/
+RUN ls -lah /app
+RUN ls -lah /var/www/html
+
 COPY . /var/www/html/
+RUN ls -lah /var/www/html
+
 COPY ./production/certs/cert1.pem /etc/ssl/web/cert1.pem
 COPY ./production/certs/privkey1.pem /etc/ssl/web/privkey1.pem
 COPY ./production/certs/fullchain1.pem /etc/ssl/web/fullchain1.pem
