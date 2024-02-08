@@ -19,3 +19,4 @@ RUN chown -R webuser:webgroup /var/www/html/
 
 EXPOSE 80
 EXPOSE 443
+
