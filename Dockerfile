@@ -8,7 +8,7 @@ RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/list
 
 COPY . /var/www/html/
 COPY ./production/certs/cert1.pem /etc/ssl/web/cert1.pem
-COPY ./production/certs/privkey1.key /etc/ssl/web/privkey1.key
+COPY ./production/certs/privkey1.pem /etc/ssl/web/privkey1.pem
 COPY ./production/certs/fullchain1.pem /etc/ssl/web/fullchain1.pem
 COPY ./production/https.conf /etc/nginx/site-opts.d/https.conf
 
