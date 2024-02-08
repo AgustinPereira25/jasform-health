@@ -1,0 +1,46 @@
+{
+  "family": "jasform-app-task-def-fam",
+  "containerDefinitions": [
+    {
+      "name": "jasform-container1",
+      "image": "819468451541.dkr.ecr.us-west-2.amazonaws.com/jasform-ecr:latest",
+      "cpu": 256,
+      "memory": 512,
+      "portMappings": [
+        {
+          "name": "jasform-container1-443-tcp",
+          "containerPort": 443,
+          "hostPort": 443,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/jasform-app-task-def-fam",
+          "awslogs-region": "us-west-2",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      }
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::819468451541:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::819468451541:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "ARM64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
