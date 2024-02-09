@@ -12,6 +12,7 @@ class GetUserController
 {
     public function __invoke(User $user): JsonResponse
     {
+        sleep(1);
         return responder()
             ->success($user, UserDetailTransformer::class)
             ->respond();

@@ -132,14 +132,8 @@ class UsersSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'name' => 'Editor',
-                'description' => 'Editor tasks',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-            [
-                'name' => 'ReadOnly',
-                'description' => 'Read only tasks',
+                'name' => 'Creator',
+                'description' => 'Creator tasks',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

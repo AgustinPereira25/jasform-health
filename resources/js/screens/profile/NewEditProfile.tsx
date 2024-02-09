@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import type { User, UserRoles } from "@/api";
-import { FileUploader } from "@/components";
-import { Button, icons, Input } from "@/ui";
+import { Button, icons, Input, Modal } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
+import { ROUTES } from "@/router";
 import { Switch } from "@headlessui/react";
 import { isValidImageUrl } from "@/helpers/helpers";
-interface NewProfileForm {
+import { TextArea } from "@/ui/form/TextArea";
+import { DeleteUserConfirm } from "./DeleteUserConfirm";
+interface NewEditProfileForm {
     id?: number;
     firstName?: string;
     lastName?: string;
@@ -20,8 +21,9 @@ interface NewProfileForm {
     subscription?: string;
     roles?: UserRoles[];
     is_active?: boolean;
+    photo?: string;
 }
-interface NewProfileProps {
+interface NewEditProfileProps {
     initialData: User;
 }
 
@@ -29,22 +31,19 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-export const NewProfile: React.FC<NewProfileProps> = ({
+export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
+    const location = useLocation();
+    const pathname = location.pathname;
+
     //TODO: put this in a constants file
-    const SubscriptionPlans = [
-        { id: 1, name: "Free" },
-        { id: 2, name: "Premium" },
-        { id: 3, name: "Enterprise" },
-    ]; // solo name
     const Roles = [
         { id: 1, name: "Admin" },
-        { id: 2, name: "User" },
-        { id: 3, name: "Viewer" },
+        { id: 2, name: "Creator" },
     ]; // el unico q prevalaece con esta structura
 
-    const defaultRole = user.roles ? user.roles[0]?.name : "Viewer";
+    const defaultRole = user.roles ? user.roles[0]?.name : "Creator";
     // For toggles
     const [enabledActive, setEnabledActive] = useState(false);
 
@@ -66,9 +65,10 @@ export const NewProfile: React.FC<NewProfileProps> = ({
             subscription: "Free" ?? "",
             role: defaultRole,
             is_active: user?.is_active ?? true,
+            photo: user?.photo ?? "",
         },
     });
-    const onSubmit = (data: NewProfileForm) => {
+    const onSubmit = (data: NewEditProfileForm) => {
         console.log(data);
         // if (!data.phone) {
         //     setError("phone", {
@@ -78,6 +78,24 @@ export const NewProfile: React.FC<NewProfileProps> = ({
         // }
     };
     const navigate = useNavigate();
+
+    const [showDeletionModal, setshowDeletionModal] = useState(false);
+    const handleOpenDeletionModal = () => {
+        setshowDeletionModal(true);
+    };
+    const handleCloseDeletionModal = () => {
+        setshowDeletionModal(false);
+    };
+
+    const [showPasswordModal, setshowPasswordModal] = useState(false);
+    const handleOpenPasswordModal = () => {
+        setshowPasswordModal(true);
+    };
+    const handleClosePasswordModal = () => {
+        setshowPasswordModal(false);
+    };
+    const [passwordInput, setPasswordInput] = useState(false);
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
@@ -86,15 +104,25 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
                         Return
                     </Button>
-                    <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
+                    {pathname.includes(ROUTES.profile) ? (
+                        <span className="pl-3 text-2xl text-black">{user.id && "My Profile"}</span>
+                    ) : (
+                        <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
+                    )}
+
                 </div>
                 <div className="flex gap-5">
-                    {user.id && (
-                        <Button variant="secondary" onClick={() => console.log("pepe")}>
+                    {user.id && !pathname.includes(ROUTES.profile) && (
+                        <Button variant="secondary" onClick={handleOpenDeletionModal}>
                             <icons.TrashIcon className={tw(`h-5 w-5`)} />
                             Delete
                         </Button>
                     )}
+                    {/* {user.id && pathname.includes(ROUTES.profile) && (
+                        <Button variant="secondary" onClick={() => console.log("Review Terms & Conditions")}>
+                            Review Terms & Conditions
+                        </Button>
+                    )} */}
                     <Button type="submit" variant="primary">
                         Save
                     </Button>
@@ -102,28 +130,19 @@ export const NewProfile: React.FC<NewProfileProps> = ({
             </div>
             <div className="flex gap-6">
                 <div className="w-3/5 shrink-0 rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                    <div className="flex h-36 gap-8 p-3">
+                    <div className="flex h-36 p-3">
                         <div className="flex w-40 shrink-0">
                             <span>Profile Picture</span>
                         </div>
                         <div className="flex shrink-0 overflow-hidden rounded-full">
-                            <div className="relative p-0 ">
+                            <div className="relative p-0">
                                 <img
                                     src={isValidImageUrl(user?.photo ?? '') ? user?.photo : '/Profile-Hello-Smile1b.png'}
                                     alt="user"
                                     className="h-[120px] w-[120px]"
                                 />
-                                <Button
-                                    variant="primary"
-                                    onClick={() => console.log("pepe")}
-                                    className="absolute bottom-0 left-0 right-0 w-full p-0 text-xs"
-                                >
-                                    Edit
-                                </Button>
                             </div>
                         </div>
-                        {/* ToDo: Agregar props como url del endpoint,etc para hacerlo mas generico */}
-                        <FileUploader />
                     </div>
                     <hr className="mx-3" />
                     <div className={tw("flex h-16 p-3", errors.firstName && "pb-5")}>
@@ -179,6 +198,25 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                                 //error={errors.email?.message}
                                 //value={passwordInput}
                                 defaultValue={user?.email}
+                            />
+                        </div>
+                    </div>
+                    <hr className="mx-3" />
+                    <div className={tw("flex h-20 p-3", errors.phone && "pb-5")}>
+                        <div className="flex w-40">
+                            <span>Photo URL</span>
+                        </div>
+                        <div className="flex grow">
+                            <TextArea
+                                className="resize-none"
+                                containerClassName="w-full h-full"
+                                fullHeight
+                                id="photo"
+                                placeholder="Photo URL"
+                                {...register("photo", { required: "Photo is required" })}
+                                // {...register("photo")}
+                                error={errors.photo?.message}
+                                defaultValue={user?.photo}
                             />
                         </div>
                     </div>
@@ -243,7 +281,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                     <div className="flex h-16 p-3">
                         <Button
                             variant="tertiary"
-                        // onClick={() => console.log('pepe')}
+                            onClick={handleOpenPasswordModal}
                         >
                             <icons.KeyIcon />
                             Change Password
@@ -275,8 +313,9 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         </>
                     )}
                 </div>
-                <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                    {/* <div className="flex h-16 p-3">
+                {!pathname.includes(ROUTES.profile) &&
+                    <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
+                        {/* <div className="flex h-16 p-3">
                         <div className="flex w-40 items-center">
                             <span>Subscription Plan</span>
                         </div>
@@ -294,69 +333,118 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         </div>
                     </div>
                      <hr className="mx-3" />*/}
-                    <div className="flex h-16 p-3">
-                        <div className="flex w-40 items-center">
-                            <span>Role</span>
+                        <div className="flex h-16 p-3">
+                            <div className="flex w-40 items-center">
+                                <span>Role</span>
+                            </div>
+                            <div className="flex grow">
+                                <ComboBox
+                                    id="role"
+                                    items={Roles}
+                                    defaultValue={defaultRole}
+                                    {...register("role")}
+                                    onValueChange={(item) => {
+                                        setValue("role", item.name);
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <div className="flex grow">
-                            <ComboBox
-                                id="role"
-                                items={Roles}
-                                defaultValue={defaultRole}
-                                {...register("role")}
-                                onValueChange={(item) => {
-                                    setValue("role", item.name);
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className="flex h-16 p-3 ">
-                        <div className="flex w-40 items-center">
-                            <span>Is the user Active?</span>
-                        </div>
-                        <div className="flex grow">
-                            <Switch.Group
-                                as="div"
-                                className="flex items-center justify-between gap-2"
-                            >
-                                <Switch
-                                    checked={enabledActive}
-                                    onChange={setEnabledActive}
-                                    className={classNames(
-                                        enabledActive ? "bg-[#00519E]" : "bg-gray-200",
-                                        "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
-                                    )}
+                        <hr className="mx-3" />
+                        <div className="flex h-16 p-3 ">
+                            <div className="flex w-40 items-center">
+                                <span>Is the user Active?</span>
+                            </div>
+                            <div className="flex grow">
+                                <Switch.Group
+                                    as="div"
+                                    className="flex items-center justify-between gap-2"
                                 >
-                                    <span
-                                        aria-hidden="true"
+                                    <Switch
+                                        checked={enabledActive}
+                                        onChange={setEnabledActive}
                                         className={classNames(
-                                            enabledActive ? "translate-x-5" : "translate-x-0",
-                                            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                            enabledActive ? "bg-[#00519E]" : "bg-gray-200",
+                                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
                                         )}
-                                    />
-                                </Switch>
-                            </Switch.Group>
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className={classNames(
+                                                enabledActive ? "translate-x-5" : "translate-x-0",
+                                                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                            )}
+                                        />
+                                    </Switch>
+                                </Switch.Group>
+                            </div>
                         </div>
-                    </div>
-                    <hr className="mx-3" />
-                    {
-                        user.id && (
-                            <>
-                                <div className="flex h-16 p-3 ">
+                        <hr className="mx-3" />
+                        {
+                            user.id && (
+                                <>
+                                    {/* <div className="flex h-16 p-3 ">
                                     <Button variant="primary">User&apos;s Dashboard</Button>
-                                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                    <Button variant="primary">User&apos;s Forms</Button>
-                                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                    <Button variant="primary">User&apos;s Bills</Button>
-                                </div><hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                    <Button variant="primary">User&apos;s Subscription History</Button>
-                                </div><hr className="mx-3" />
-                            </>
-                        )
-                    }
-                </div>
+                                </div> */}
+                                    <hr className="mx-3" /><div className="flex h-16 p-3 ">
+                                        <Button variant="primary">User&apos;s Forms</Button>
+                                    </div><hr className="mx-3" />
+                                </>
+                            )
+                        }
+                    </div>
+                }
+
             </div>
+            <Modal
+                show={showDeletionModal}
+                title="Confirm deletion"
+                description="Are you sure you want to execute a deletion?"
+                onClose={handleCloseDeletionModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <DeleteUserConfirm />
+                </div>
+            </Modal>
+            <Modal
+                show={showPasswordModal}
+                title="Update password"
+                description="Complete the form below to update the password."
+                onClose={handleClosePasswordModal}
+            >
+                <>
+                    <div>
+                        <Input
+                            type="password"
+                            id="actualPassword"
+                            label="New Password"
+                            placeholder="Enter Password"
+                            value={passwordInput}
+                        />
+                        <Input
+                            type="password"
+                            id="newPassword"
+                            label="New Password"
+                            placeholder="Enter Password"
+                            value={passwordInput}
+                        />
+                        <Input
+                            type="password"
+                            id="newPasswordConfirm"
+                            label="New Password"
+                            placeholder="Enter Password"
+                            value={passwordInput}
+                        />
+                    </div>
+                    <div className="flex h-16 p-3 m-auto">
+                        <Button
+                            variant="tertiary"
+                            onClick={() => console.log('Update Password CONFIRMED')}
+                        >
+                            Confirm new password
+                        </Button>
+                    </div>
+                </>
+            </Modal>
         </form>
     );
 };
