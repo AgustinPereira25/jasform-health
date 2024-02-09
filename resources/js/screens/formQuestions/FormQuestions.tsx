@@ -29,26 +29,38 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     formQuestions = formQuestions.sort((a, b) => a.order! - b.order!)
     const [questions, setQuestions] = useState(formQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
-    const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
+    const [currentQuestionOrder, setCurrentQuestionOrder] = useState(currentQuestion?.order);
     const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
+    const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>('Check Box');
 
     const handleAddQuestionClick = () => {
-        const getLastQuestionId = Object.values(questions).pop()?.id;
+        const getLastQuestionOrder = Object.values(questions).pop()?.order;
 
-        const lastQuestionId = getLastQuestionId ? getLastQuestionId + 1 : 1;
-        const newElement: IFormQuestion = { id: lastQuestionId };
+        const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
+        const newElement: IFormQuestion = { order: lastQuestionOrder };
         setQuestions([...questions, newElement]);
     };
 
-    const handleQuestionClick = (item: IFormQuestion, idx: number) => {
+    const handleQuestionClick = (item: IFormQuestion, order: number) => {
         setCurrentQuestion(item);
-        setCurrentQuestionIdx(idx);
+        setCurrentQuestionOrder(order);
     }
 
     const QuestionTypeScreen = questionScreens[questionTypeForm];
 
     const handleComboboxChange = (id: keyof typeof questionScreens, name: string) => {
         setQuestionTypeForm(id);
+        switch (id) {
+            case 3:
+                setComboBoxOption('Check Box');
+                break;
+            case 4:
+                setComboBoxOption('Radio Button');
+                break;
+            case 5:
+                setComboBoxOption('Drop Down Combo');
+                break;
+        }
     }
     return (
         <div className='pb-6 h-[90%]'>
@@ -87,14 +99,14 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                             questions.map((item, idx) => {
                                 return (
                                     <div
-                                        id={item.id?.toString()}
-                                        key={item.id}
+                                        id={item.order?.toString()}
+                                        key={item.order}
                                         className='flex relative w-full items-center hover:bg-gray-50'
-                                        onClick={() => handleQuestionClick(item, idx)}
+                                        onClick={() => handleQuestionClick(item, item.order!)}
                                         role='presentation'
                                     >
                                         <div className={tw(`absolute border-l-4 h-[80%] -left-2`,
-                                            item.id === currentQuestion?.id && 'border-l-[#407EC9]'
+                                            item.order === currentQuestion?.order && 'border-l-[#407EC9]'
                                         )}
                                         />
                                         <div className={
@@ -103,14 +115,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                 idx !== 0 && `border-y border-y-gray-200`
                                             )}>
                                             <div className='flex flex-col justify-center pl-3'>
-                                                <span className={tw(`text-xs font-semibold`,
-                                                    item.id === currentQuestion?.id && 'text-[#407EC9]',
-                                                    item.id !== currentQuestion?.id && 'text-[#6B7280]'
+                                                <span className={tw(`text-sm font-semibold`,
+                                                    item.order === currentQuestion?.order && 'text-[#407EC9]',
+                                                    item.order !== currentQuestion?.order && 'text-[#6B7280]'
                                                 )}
                                                 >
-                                                    STEP {idx + 1}
+                                                    Question {item.order}
                                                 </span>
-                                                <span className='text-sm font-medium'>{item.title}</span>
                                             </div>
                                             <div className='flex gap-2 items-center'>
                                                 <icons.TrashIcon className='w-5 h-5' />
@@ -139,11 +150,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                             <div className='h-full'>
                                 <div className='flex justify-between'>
                                     <div className='flex flex-col'>
-                                        <span className={tw(`text-xs font-semibold`, 'text-[#407EC9]')}
-                                        >
-                                            STEP {currentQuestionIdx + 1}
-                                        </span>
-                                        <span className='text-sm font-medium'>{currentQuestion.title}</span>
+                                        <span className='text-sm font-medium'>Question {currentQuestionOrder}</span>
                                     </div>
                                     <div className='flex gap-2 items-center pb-2'>
                                         <span>Question Type</span>
@@ -156,7 +163,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                     </div>
                                 </div>
                                 <hr />
-                                <QuestionTypeScreen text='pepe' nextSteps={questions} />
+                                <QuestionTypeScreen text='pepe' nextSteps={questions} comboBoxOption={comboBoxOption} />
                             </div>
                         )
                     }

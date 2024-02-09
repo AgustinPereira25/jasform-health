@@ -21,6 +21,7 @@ export interface IFormQuestion {
     is_obligatory?:    boolean;
     form_id?:          number;
     question_type_id?: number;
+    question_type_name?: string;
 }
 
 // export const getFormsQuestionsQuery = () => ({
