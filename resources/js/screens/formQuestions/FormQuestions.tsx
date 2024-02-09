@@ -31,6 +31,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [currentQuestionOrder, setCurrentQuestionOrder] = useState(currentQuestion?.order);
     const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
+    const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>('Check Box');
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
@@ -49,6 +50,17 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
     const handleComboboxChange = (id: keyof typeof questionScreens, name: string) => {
         setQuestionTypeForm(id);
+        switch (id) {
+            case 3:
+                setComboBoxOption('Check Box');
+                break;
+            case 4:
+                setComboBoxOption('Radio Button');
+                break;
+            case 5:
+                setComboBoxOption('Drop Down Combo');
+                break;
+        }
     }
     return (
         <div className='pb-6 h-[90%]'>
@@ -151,7 +163,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                     </div>
                                 </div>
                                 <hr />
-                                <QuestionTypeScreen text='pepe' nextSteps={questions} />
+                                <QuestionTypeScreen text='pepe' nextSteps={questions} comboBoxOption={comboBoxOption} />
                             </div>
                         )
                     }

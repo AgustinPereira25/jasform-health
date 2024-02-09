@@ -1,14 +1,24 @@
-import { IFormQuestion } from '@/api';
+import type { IFormQuestion } from '@/api';
 import { Button, Input, icons } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
-import React, { useState } from 'react'
+import { tw } from '@/utils';
+import React, { useEffect, useState } from 'react'
 
-interface SingleRadioScreenProps {
-    nextSteps: IFormQuestion[];
+export type ComboBoxOption = "Check Box" | "Radio Button" | "Drop Down Combo";
+
+interface CheckRadioDDownQuestions {
+    id: number;
+    option_title: string;
+    next_step?: string;
+};
+
+interface CheckRadioDDownScreenProps {
+    nextSteps?: IFormQuestion[];
+    comboBoxOption: ComboBoxOption;
 };
 
 // TODO - Make input text full height (it overflows the container).
-export const SingleRadioScreen: React.FC<SingleRadioScreenProps> = ({ nextSteps = [] }) => {
+export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ nextSteps = [], comboBoxOption }) => {
 
     // TODO - Fetch questions from API
     const formQuestionsTest = [{
@@ -19,24 +29,32 @@ export const SingleRadioScreen: React.FC<SingleRadioScreenProps> = ({ nextSteps 
     { id: 4, option_title: 'Option 4', next_step: 'Next Step 4' }
     ];
 
-    const transformedSteps = nextSteps.map((item) => ({ id: item.order!, name: item.title! }));
-
-    const [questions, setQuestions] = useState(formQuestionsTest);
-    const [newInput, setNewInput] = useState('');
+    const transformedSteps = nextSteps ? nextSteps.map((item) => ({ id: item.order!, name: item.title! })) : [];
     const [newQuestionType, setNewQuestionType] = useState(transformedSteps[0] ?? { id: 0, name: '' });
+
+    const [questions, setQuestions] = useState<CheckRadioDDownQuestions[]>(formQuestionsTest);
+    const [newInput, setNewInput] = useState('');
     const [isInputEmpty, setIsInputEmpty] = useState(false);
 
-    const handleAddRowClick = (input: string, questionType: { id: number, name: string }) => {
-        if (!newInput || !questionType) {
+    const handleAddRowClick = (input: string, questionType: { id: number, name: string }, comboBoxOption: ComboBoxOption) => {
+        if (!newInput) {
             setIsInputEmpty(true);
             return;
         }
-        const getLastQuestionId = Object.values(questions).pop()?.id;
 
+        const getLastQuestionId = Object.values(questions).pop()?.id;
         const lastQuestionId = getLastQuestionId ? getLastQuestionId + 1 : 1;
-        const newElement = { id: lastQuestionId, option_title: input, next_step: questionType.name };
-        setQuestions([...questions, newElement]);
-        setNewInput('');
+        if (comboBoxOption === 'Radio Button') {
+            const newElement = { id: lastQuestionId, option_title: input, next_step: questionType.name };
+            setQuestions([...questions, newElement]);
+            setNewInput('');
+            return;
+        } else {
+            const newElement = { id: lastQuestionId, option_title: input };
+            setQuestions([...questions, newElement]);
+            setNewInput('');
+            return;
+        }
     }
     const handleDeleteRowClick = (id: number) => {
         const newQuestions = questions.filter((item) => item.id !== id);
@@ -47,6 +65,16 @@ export const SingleRadioScreen: React.FC<SingleRadioScreenProps> = ({ nextSteps 
         setNewInput(event.target.value);
         setIsInputEmpty(false);
     }
+
+    useEffect(() => {
+        setNewInput('');
+        setIsInputEmpty(false);
+        setNewQuestionType(transformedSteps[0] ?? { id: 0, name: '' });
+        setQuestions(formQuestionsTest);
+    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        , [comboBoxOption]);
+
     return (
         <div className='flex flex-col pt-3'>
             <div className="flex gap-3">
@@ -65,8 +93,13 @@ export const SingleRadioScreen: React.FC<SingleRadioScreenProps> = ({ nextSteps 
             <hr />
             <div className="flex flex-col py-4">
                 <div className='flex justify-between bg-gray-100 py-3 px-3 border rounded-t-lg border-gray-300 text-gray-500 w-full'>
-                    <span className='w-[53%] text-xs grow'>OPTION TITLE</span>
-                    <span className='w-[33%] text-xs grow'>NEXT STEP</span>
+                    <span className={tw('text-xs grow',
+                        comboBoxOption === 'Radio Button' && 'w-[53%]',
+                        comboBoxOption !== 'Radio Button' && 'w-[86%]',
+                    )}>OPTION TITLE</span>
+                    {comboBoxOption === 'Radio Button' && (
+                        <span className='w-[33%] text-xs grow'>NEXT STEP</span>
+                    )}
                     <span className='w-[13%] text-xs grow'></span>
                 </div>
                 <div className='flex flex-col gap-3 justify-between py-3 px-3 border border-gray-300 text-black w-full'>
@@ -74,8 +107,13 @@ export const SingleRadioScreen: React.FC<SingleRadioScreenProps> = ({ nextSteps 
                         questions.map((item) => {
                             return (
                                 <div key={item.id} className='flex w-full'>
-                                    <span className='w-[53%] text-xs grow'>{item.option_title}</span>
-                                    <span className='w-[33%] text-xs grow'>{item.next_step}</span>
+                                    <span className={tw('text-xs grow',
+                                        comboBoxOption === 'Radio Button' && 'w-[53%]',
+                                        comboBoxOption !== 'Radio Button' && 'w-[86%]',
+                                    )}>{item.option_title}</span>
+                                    {comboBoxOption === 'Radio Button' && (
+                                        <span className='w-[33%] text-xs grow'>{item.next_step}</span>
+                                    )}
                                     <div className='flex justify-center gap-3 w-[13%] grow'>
                                         <icons.TrashIcon className='w-5 h-5' onClick={() => handleDeleteRowClick(item.id)} />
                                         <icons.DocumentDuplicateIcon className='w-5 h-5' />
@@ -99,15 +137,19 @@ export const SingleRadioScreen: React.FC<SingleRadioScreenProps> = ({ nextSteps 
                         containerClassName='h-full'
                         value={newInput}
                     />
-                    <ComboBox
-                        id="questionType"
-                        items={transformedSteps}
-                        defaultValue={transformedSteps[0]?.name}
-                        onValueChange={(item) => setNewQuestionType(item)}
-                    />
+                    {
+                        comboBoxOption === "Radio Button" && (
+                            <ComboBox
+                                id="questionType"
+                                items={transformedSteps}
+                                defaultValue={transformedSteps[0]?.name}
+                                onValueChange={(item) => setNewQuestionType(item)}
+                            />
+                        )
+                    }
                     <Button
                         variant='secondary'
-                        onClick={() => handleAddRowClick(newInput, newQuestionType)}
+                        onClick={() => handleAddRowClick(newInput, newQuestionType, comboBoxOption)}
                     >
                         + Add
                     </Button>

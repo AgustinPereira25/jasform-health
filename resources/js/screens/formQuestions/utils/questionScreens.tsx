@@ -1,4 +1,4 @@
-import { InputFieldScreen, SimpleTextScreen, SingleRadioScreen } from "../components";
+import { InputFieldScreen, SimpleTextScreen, CheckRadioDDownScreen } from "../components";
 
 // { id: 1, name: "Simple Text" },
 // { id: 2, name: "Input Field" },
@@ -13,7 +13,7 @@ import { InputFieldScreen, SimpleTextScreen, SingleRadioScreen } from "../compon
 export const questionScreens = {
     1: SimpleTextScreen,
     2: InputFieldScreen,
-    // 3: MultipleChoiceScreen,
-    4: SingleRadioScreen,
-    // 5: SingleDropDownScreen,
+    3: CheckRadioDDownScreen, // Multiple Choice
+    4: CheckRadioDDownScreen, // Single RadioButton Screen
+    5: CheckRadioDDownScreen, // DropDown screen
 }
