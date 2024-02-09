@@ -4,11 +4,8 @@ ENV SSL_MODE mixed
 
 WORKDIR /var/www/html
 COPY . .
-RUN pwd
-RUN ls -lah
 RUN composer install --optimize-autoloader --no-dev
-
-# RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./production/certs/cert1.pem /etc/ssl/web/cert1.pem
 COPY ./production/certs/privkey1.pem /etc/ssl/web/privkey1.pem
