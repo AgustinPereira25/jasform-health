@@ -2,7 +2,7 @@ import type { User } from "@/api";
 import { getUserQuery } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { NewProfile } from "./NewProfile";
+import { NewEditProfile } from "./NewEditProfile";
 import { icons, Button } from "@/ui";
 import { tw } from "@/utils";
 import UserProfileSkeleton from "@/ui/common/Skeletons/UserProfileSkeleton";
@@ -48,7 +48,7 @@ export const PrepareProfileForm: React.FunctionComponent = () => {
                         iconName="ArchiveBoxXMarkIcon"
                     />
                 </>
-            ) : <NewProfile initialData={user} />
+            ) : <NewEditProfile initialData={user} />
             }
         </div>
     );

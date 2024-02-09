@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import type { User, UserRoles } from "@/api";
 import { Button, icons, Input, Modal } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
+import { ROUTES } from "@/router";
 import { Switch } from "@headlessui/react";
 import { isValidImageUrl } from "@/helpers/helpers";
 import { TextArea } from "@/ui/form/TextArea";
-interface NewProfileForm {
+import { DeleteUserConfirm } from "./DeleteUserConfirm";
+interface NewEditProfileForm {
     id?: number;
     firstName?: string;
     lastName?: string;
@@ -21,7 +23,7 @@ interface NewProfileForm {
     is_active?: boolean;
     photo?: string;
 }
-interface NewProfileProps {
+interface NewEditProfileProps {
     initialData: User;
 }
 
@@ -29,9 +31,12 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-export const NewProfile: React.FC<NewProfileProps> = ({
+export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
+    const location = useLocation();
+    const pathname = location.pathname;
+
     //TODO: put this in a constants file
     const Roles = [
         { id: 1, name: "Admin" },
@@ -63,7 +68,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
             photo: user?.photo ?? "",
         },
     });
-    const onSubmit = (data: NewProfileForm) => {
+    const onSubmit = (data: NewEditProfileForm) => {
         console.log(data);
         // if (!data.phone) {
         //     setError("phone", {
@@ -91,8 +96,6 @@ export const NewProfile: React.FC<NewProfileProps> = ({
     };
     const [passwordInput, setPasswordInput] = useState(false);
 
-
-
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
@@ -101,15 +104,25 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
                         Return
                     </Button>
-                    <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
+                    {pathname.includes(ROUTES.profile) ? (
+                        <span className="pl-3 text-2xl text-black">{user.id && "My Profile"}</span>
+                    ) : (
+                        <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
+                    )}
+
                 </div>
                 <div className="flex gap-5">
-                    {user.id && (
+                    {user.id && !pathname.includes(ROUTES.profile) && (
                         <Button variant="secondary" onClick={handleOpenDeletionModal}>
                             <icons.TrashIcon className={tw(`h-5 w-5`)} />
                             Delete
                         </Button>
                     )}
+                    {/* {user.id && pathname.includes(ROUTES.profile) && (
+                        <Button variant="secondary" onClick={() => console.log("Review Terms & Conditions")}>
+                            Review Terms & Conditions
+                        </Button>
+                    )} */}
                     <Button type="submit" variant="primary">
                         Save
                     </Button>
@@ -300,8 +313,9 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         </>
                     )}
                 </div>
-                <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                    {/* <div className="flex h-16 p-3">
+                {!pathname.includes(ROUTES.profile) &&
+                    <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
+                        {/* <div className="flex h-16 p-3">
                         <div className="flex w-40 items-center">
                             <span>Subscription Plan</span>
                         </div>
@@ -319,65 +333,67 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                         </div>
                     </div>
                      <hr className="mx-3" />*/}
-                    <div className="flex h-16 p-3">
-                        <div className="flex w-40 items-center">
-                            <span>Role</span>
+                        <div className="flex h-16 p-3">
+                            <div className="flex w-40 items-center">
+                                <span>Role</span>
+                            </div>
+                            <div className="flex grow">
+                                <ComboBox
+                                    id="role"
+                                    items={Roles}
+                                    defaultValue={defaultRole}
+                                    {...register("role")}
+                                    onValueChange={(item) => {
+                                        setValue("role", item.name);
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <div className="flex grow">
-                            <ComboBox
-                                id="role"
-                                items={Roles}
-                                defaultValue={defaultRole}
-                                {...register("role")}
-                                onValueChange={(item) => {
-                                    setValue("role", item.name);
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className="flex h-16 p-3 ">
-                        <div className="flex w-40 items-center">
-                            <span>Is the user Active?</span>
-                        </div>
-                        <div className="flex grow">
-                            <Switch.Group
-                                as="div"
-                                className="flex items-center justify-between gap-2"
-                            >
-                                <Switch
-                                    checked={enabledActive}
-                                    onChange={setEnabledActive}
-                                    className={classNames(
-                                        enabledActive ? "bg-[#00519E]" : "bg-gray-200",
-                                        "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
-                                    )}
+                        <hr className="mx-3" />
+                        <div className="flex h-16 p-3 ">
+                            <div className="flex w-40 items-center">
+                                <span>Is the user Active?</span>
+                            </div>
+                            <div className="flex grow">
+                                <Switch.Group
+                                    as="div"
+                                    className="flex items-center justify-between gap-2"
                                 >
-                                    <span
-                                        aria-hidden="true"
+                                    <Switch
+                                        checked={enabledActive}
+                                        onChange={setEnabledActive}
                                         className={classNames(
-                                            enabledActive ? "translate-x-5" : "translate-x-0",
-                                            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                            enabledActive ? "bg-[#00519E]" : "bg-gray-200",
+                                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
                                         )}
-                                    />
-                                </Switch>
-                            </Switch.Group>
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className={classNames(
+                                                enabledActive ? "translate-x-5" : "translate-x-0",
+                                                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                            )}
+                                        />
+                                    </Switch>
+                                </Switch.Group>
+                            </div>
                         </div>
-                    </div>
-                    <hr className="mx-3" />
-                    {
-                        user.id && (
-                            <>
-                                {/* <div className="flex h-16 p-3 ">
+                        <hr className="mx-3" />
+                        {
+                            user.id && (
+                                <>
+                                    {/* <div className="flex h-16 p-3 ">
                                     <Button variant="primary">User&apos;s Dashboard</Button>
                                 </div> */}
-                                <hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                    <Button variant="primary">User&apos;s Forms</Button>
-                                </div><hr className="mx-3" />
-                            </>
-                        )
-                    }
-                </div>
+                                    <hr className="mx-3" /><div className="flex h-16 p-3 ">
+                                        <Button variant="primary">User&apos;s Forms</Button>
+                                    </div><hr className="mx-3" />
+                                </>
+                            )
+                        }
+                    </div>
+                }
+
             </div>
             <Modal
                 show={showDeletionModal}
@@ -386,12 +402,7 @@ export const NewProfile: React.FC<NewProfileProps> = ({
                 onClose={handleCloseDeletionModal}
             >
                 <div className="flex h-16 p-3 m-auto">
-                    <Button
-                        variant="tertiary"
-                        onClick={() => console.log('DELETE CONFIRMED')}
-                    >
-                        Delete
-                    </Button>
+                    <DeleteUserConfirm />
                 </div>
             </Modal>
             <Modal

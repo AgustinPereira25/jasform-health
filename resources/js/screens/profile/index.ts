@@ -1,2 +1,2 @@
-export * from './Profile';
-export * from './NewProfile';
+export * from "./Profile";
+export * from "./NewEditProfile";
