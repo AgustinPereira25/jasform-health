@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function(){
-    return 'Hola mundo - 20240208 - 4:55pm';
+    return 'Hola mundo - 20240208 - 5:45pm';
 });
 
 Route::get('{unknown}', fn () => view('app  '))->where('unknown', '^(?!api).*$');
