@@ -13,7 +13,6 @@ COPY ./production/certs/fullchain1.pem /etc/ssl/web/fullchain1.pem
 COPY ./production/certs/jasform.com.origin.pem /etc/ssl/web/jasform.com.origin.pem
 COPY ./production/certs/jasform.com.origin.key /etc/ssl/web/jasform.com.origin.key
 COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.pem
-# COPY ./production/https.conf /etc/nginx/site-opts.d/https.conf
 
 RUN mv -f /var/www/html/production/.env.prod /var/www/html/.env
 RUN mv /var/www/html/public/build.bk /var/www/html/public/build
