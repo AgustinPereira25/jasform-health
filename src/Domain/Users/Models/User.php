@@ -44,14 +44,12 @@ use Domain\Activity_records\Models\Activity_record;
  * @property string $first_name
  * @property string $last_name
  * @property mixed $photo
- * @property string $phone
  * @property string $position_in_organization
  * @property string $status
  * @property int $organization_id
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOrganizationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoto($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrganization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
@@ -64,6 +62,8 @@ use Domain\Activity_records\Models\Activity_record;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsActive($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
  * @property-read int|null $forms_count
+ * @property string|null $phone
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -80,7 +80,6 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'photo',
-        'phone',
         'position_in_organization',
         'is_active',
         'email',

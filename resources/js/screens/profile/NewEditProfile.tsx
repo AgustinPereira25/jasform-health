@@ -15,7 +15,6 @@ interface NewEditProfileForm {
     firstName?: string;
     lastName?: string;
     email?: string;
-    phone?: string;
     title?: string;
     organization?: string;
     subscription?: string;
@@ -59,7 +58,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             firstName: user?.first_name ?? "",
             lastName: user?.last_name ?? "",
             email: user?.email ?? "",
-            phone: user?.phone ?? "",
             title: user?.position_in_organization ?? "",
             organization: user?.organization_name ?? "",
             subscription: "Free" ?? "",
@@ -155,7 +153,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 fullHeight
                                 type="text"
                                 id="firstName"
-                                placeholder="Enter first name"
+                                placeholder="Enter First Name"
                                 {...register("firstName")}
                                 // error={errors.firstName?.message}
                                 // value={passwordInput}
@@ -166,7 +164,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                     <hr className="mx-3" />
                     <div className={tw("flex h-16 p-3", errors.lastName && "pb-5")}>
                         <div className="flex w-40">
-                            <span>Last name</span>
+                            <span>Last Name</span>
                         </div>
                         <div className="flex grow">
                             <Input
@@ -174,7 +172,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 fullHeight
                                 type="text"
                                 id="lastName"
-                                placeholder="Enter last name"
+                                placeholder="Enter Last Name"
                                 {...register("lastName")}
                                 // error={errors.lname?.message}
                                 //value={passwordInput}
@@ -202,7 +200,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         </div>
                     </div>
                     <hr className="mx-3" />
-                    <div className={tw("flex h-20 p-3", errors.phone && "pb-5")}>
+                    <div className={tw("flex h-20 p-3", errors.photo && "pb-5")}>
                         <div className="flex w-40">
                             <span>Photo URL</span>
                         </div>
@@ -217,25 +215,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 // {...register("photo")}
                                 error={errors.photo?.message}
                                 defaultValue={user?.photo}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-16 p-3", errors.phone && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>Phone Number</span>
-                        </div>
-                        <div className="flex grow">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="phone"
-                                placeholder="Phone Number"
-                                {...register("phone", { required: "Phone is required" })}
-                                // {...register("phone")}
-                                error={errors.phone?.message}
-                                defaultValue={user?.phone}
                             />
                         </div>
                     </div>
@@ -352,7 +331,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         <hr className="mx-3" />
                         <div className="flex h-16 p-3 ">
                             <div className="flex w-40 items-center">
-                                <span>Is the user Active?</span>
+                                <span>Is the User Active?</span>
                             </div>
                             <div className="flex grow">
                                 <Switch.Group
@@ -397,7 +376,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             </div>
             <Modal
                 show={showDeletionModal}
-                title="Confirm deletion"
+                title="Confirm Deletion"
                 description="Are you sure you want to execute a deletion?"
                 onClose={handleCloseDeletionModal}
             >
@@ -407,7 +386,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             </Modal>
             <Modal
                 show={showPasswordModal}
-                title="Update password"
+                title="Update Password"
                 description="Complete the form below to update the password."
                 onClose={handleClosePasswordModal}
             >
@@ -416,22 +395,22 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         <Input
                             type="password"
                             id="actualPassword"
-                            label="New Password"
-                            placeholder="Enter Password"
+                            label="Actual Password*"
+                            placeholder="Enter Actual Password"
                             value={passwordInput}
                         />
                         <Input
                             type="password"
                             id="newPassword"
-                            label="New Password"
-                            placeholder="Enter Password"
+                            label="New Password*"
+                            placeholder="Enter New Password"
                             value={passwordInput}
                         />
                         <Input
                             type="password"
                             id="newPasswordConfirm"
-                            label="New Password"
-                            placeholder="Enter Password"
+                            label="New Password Confirmation*"
+                            placeholder="Enter New Password Confirmation"
                             value={passwordInput}
                         />
                     </div>
@@ -443,7 +422,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 console.log('Update Password CONFIRMED')
                             }}
                         >
-                            Confirm new password
+                            Confirm New Password
                         </Button>
                     </div>
                 </>

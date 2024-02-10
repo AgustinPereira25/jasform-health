@@ -11,7 +11,6 @@ export const Layout = () => {
         first_name: "John",
         last_name: "Doe",
         photo: "https://images.nightcafe.studio//assets/man-in-suit.jpg",
-        phone: "1234",
         position_in_organization: "Gerente",
         is_active: true,
         email: "abcd@fdsfsd.com",
