@@ -16,7 +16,7 @@ class Activity_recordsSeeder extends Seeder
     {
         DB::table('activity_records')->insert([
             [
-                'date_time'=>'2014-8-18 00:00:00',
+                'date_time'=>'2014-8-18 04:15:22',
                 'ip_address'=>'192.168.100.100',
                 'activity_performed'=>'Playing around',
                 'session_duration'=>100,
@@ -28,7 +28,7 @@ class Activity_recordsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'date_time'=>'2018-10-03 00:00:00',
+                'date_time'=>'2018-10-03 10:56:17',
                 'ip_address'=>'10.10.10.10',
                 'activity_performed'=>'Dancing',
                 'session_duration'=>500,
@@ -39,6 +39,6 @@ class Activity_recordsSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
-        ]);    
+        ]);
     }
 }
