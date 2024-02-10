@@ -8,15 +8,15 @@ use App\Forms\Transformers\FormTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Pagination\Paginator;
-
+use Psy\Readline\Hoa\Console;
 
 class ListFormController
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $perPage = $request->get('perPage', 1);
+        $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
-        $isActive = $request->get('isActive', "false");
+        $isActive = $request->get('isActive');
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
@@ -28,6 +28,9 @@ class ListFormController
 
             if ($isActive == "true") {
                 $forms->where('is_active', true);
+            };
+            if ($isActive == "false") {
+                $forms->where('is_active', false);
             };
 
         $forms = $forms->paginate($perPage);
