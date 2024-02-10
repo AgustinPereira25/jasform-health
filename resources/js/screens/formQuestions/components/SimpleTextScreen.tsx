@@ -6,7 +6,7 @@ interface SimpleTextScreenProps {
 };
 // TODO - Make input text full height (it overflows the container).
 export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
-    // console.log(text)
+    console.log(text)
     return (
         <div className='flex flex-col pt-3'>
             <div className="flex gap-3">

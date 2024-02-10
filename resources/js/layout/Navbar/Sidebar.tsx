@@ -22,7 +22,7 @@ const navigation = [
     },
     {
         path: ROUTES.users,
-        label: "Users",
+        label: "System's Users",
         icon: <icons.UsersIcon />,
         role: "",
     },
@@ -103,7 +103,7 @@ export const Sidebar = ({
                     <icons.ArrowLeftOnRectangleIcon className="w-6" />
                     Sign Out
                   </button> */}
-                    <ul className="flex flex-col gap-y-7 overflow-y-auto">
+                    <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
                             .filter((item) => item.role === "")
                             .map((item) => (
@@ -127,7 +127,7 @@ export const Sidebar = ({
                             ))}
                     </ul>
                     <hr className="w-11/12 bg-[#407EC9]" />
-                    <ul className="flex flex-col gap-y-7 overflow-y-auto">
+                    <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
                             .filter((item) => item.role === "all")
                             .map((item) => (
@@ -176,6 +176,7 @@ export const Sidebar = ({
                                 </li>
                             ))}
                     </ul>
+
                 </nav>
             )}
         </div>

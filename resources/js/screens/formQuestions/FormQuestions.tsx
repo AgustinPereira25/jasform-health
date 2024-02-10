@@ -48,7 +48,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
     const QuestionTypeScreen = questionScreens[questionTypeForm];
 
-    const handleComboboxChange = (id: keyof typeof questionScreens, name: string) => {
+    const handleComboboxChange = (id: keyof typeof questionScreens) => {
         setQuestionTypeForm(id);
         switch (id) {
             case 3:
@@ -158,7 +158,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                             id="questionType"
                                             items={questionTypes}
                                             defaultValue={'Simple Text'}
-                                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens, item.name)}
+                                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
                                         />
                                     </div>
                                 </div>
