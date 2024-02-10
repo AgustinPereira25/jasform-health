@@ -17,6 +17,8 @@ class ListFormController
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
         $isActive = $request->get('isActive', 'false');
+        $name = $request->get('form_title', "");
+        $date = $request->get('date', "");
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
@@ -29,6 +31,19 @@ class ListFormController
             if ($isActive == "true") {
                 $forms->where('is_active', true);
             };
+
+        $forms->where(function ($query) use ($name, $date) {
+            if (!empty($name)) {
+                $query->where(function ($query) use ($name) {
+                    $query->where('name', 'like', '%' . $name . '%');
+                });
+            }
+            if (!empty($date)) {
+                $query->where(function ($query) use ($date) {
+                    $query->where('last_modified_date_time', 'like', '%' . $date . '%');
+                });
+            }
+        });
 
         $forms = $forms->paginate($perPage);
 
