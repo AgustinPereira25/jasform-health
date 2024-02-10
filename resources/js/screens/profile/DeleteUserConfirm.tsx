@@ -24,7 +24,7 @@ export const DeleteUserConfirm: React.FunctionComponent = () => {
     });
 
     const handleDelete = () => {
-        deleteUserMutation(id);
+        deleteUserMutation(parseInt(id!));
     }
 
     return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { User, UserRoles } from "@/api";
 import { Button, icons, Input, Modal } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
@@ -94,7 +94,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const handleClosePasswordModal = () => {
         setshowPasswordModal(false);
     };
-    const [passwordInput, setPasswordInput] = useState(false);
+    const [passwordInput, setPasswordInput] = useState("");
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -438,7 +438,10 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                     <div className="flex h-16 p-3 m-auto">
                         <Button
                             variant="tertiary"
-                            onClick={() => console.log('Update Password CONFIRMED')}
+                            onClick={() => {
+                                setPasswordInput("")
+                                console.log('Update Password CONFIRMED')
+                            }}
                         >
                             Confirm new password
                         </Button>

@@ -203,16 +203,16 @@ export const Forms = () => {
                                     <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                         <div className="flex gap-x-3">
                                             <div className="truncate text-sm leading-6 text-black">
-                                                {item?.last_modified_date_time.toString()}
+                                                {item?.last_modified_date_time?.toString()}
                                                 {/* TODO: Apply USA format MM/DD/YYYY HH:MM AM/PM */}
                                             </div>
                                         </div>
                                     </td>
                                     <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                                        {item?.form_questions_count.toString()}
+                                        {item?.form_questions_count?.toString()}
                                     </td>
                                     <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        {item?.form_instances_count.toString()}
+                                        {item?.form_instances_count?.toString()}
                                     </td>
                                     <td className="py-4 pl-0 pr-4 text-sm leading-6 sm:pr-8 lg:pr-20">
                                         <div className="flex items-center gap-x-2 sm:justify-start">
