@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,50 +9,45 @@ import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import { FormDropdown } from "./components";
+import { debounce } from "lodash";
+import Pagination from "@/ui/common/Pagination";
+import { paginatorValues } from "@/constants/pagination";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
 export const Forms = () => {
-    // const { pushToast } = useToastStore();
-    // const queryClient = useQueryClient();
+    const [search, setSearch] = useState({ formTitle: "", date: "" });
+    const [debouncedSearch, setDebouncedSearch] = useState({ formTitle: "", date: "" });
 
-    const { data: forms, isLoading: isLoadingForms } = useQuery({
-        ...getFormsQuery(),
-        // select: (users) =>
-        //   users.map((user, idx) => {
-        //     const selectedItem =
-        //       activityItems[idx % activityItems.length] ?? activityItems[0];
+    const handleDebouncedSearch = useCallback(
+        debounce((query: any) => {
+            setDebouncedSearch(query);
+        }, 500) as (query: any) => void,
+        []
+    );
 
-        //     return {
-        //       ...selectedItem,
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
 
-        //       user: {
-        //         imageUrl: selectedItem.user.imageUrl,
-        //         name: 'name',
-        //         id: user.id,
-        //       },
-        //     };
-        //   }),
-    });
+        setSearch(prevState => {
+            const updatedState = { ...prevState, [id]: value };
+            handleDebouncedSearch(updatedState);
+            return updatedState;
+        });
+    };
 
-    // const { mutate: deleteUserMutation } = useMutation({
-    //   mutationFn: deleteUser.mutation,
-    //   onSuccess: (_, requestedId) => {
-    //     deleteUser.invalidates(queryClient, { userId: requestedId });
-    //     void pushToast({
-    //       type: "success",
-    //       title: "Success",
-    //       message: "User successfully deleted!",
-    //     });
-    //   },
-    //   onError: errorToast,
-    // });
+    const [perPage, setPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const navigateModal = useNavigateModal();
-    // For toggles
     const [enabledActive, setEnabledActive] = useState(false);
+
+    const { data, isLoading: isLoadingForms } = useQuery({
+        ...getFormsQuery(perPage, currentPage, enabledActive, debouncedSearch.formTitle, debouncedSearch.date),
+    });
+    const forms = data?.data;
+    const navigateModal = useNavigateModal();
 
     const FormDropdownOptions: FormDropdownItem[] = [
         { name: "Edit", icon: <icons.PencilIcon /> },
@@ -78,23 +73,20 @@ export const Forms = () => {
                 <div className="flex gap-5">
                     <Input
                         type="search"
-                        id="title"
+                        id="formTitle"
                         label="Title"
                         placeholder="Search by form title"
-                    //{...register("password")}
-                    //error={errors.password?.message}
-                    //value={passwordInput}
-                    //onChange={(e) => { setPasswordInput(e.target.value); }}
+                        className="min-w-[210px]"
+                        value={search.formTitle}
+                        onChange={handleInputChange}
                     />
                     <Input
                         type="date"
                         id="date"
                         label="Date"
-                        placeholder="Search by Daten"
-                    //{...register("password")}
-                    //error={errors.password?.message}
-                    //value={passwordInput}
-                    //onChange={(e) => { setPasswordInput(e.target.value); }}
+                        placeholder="Search by Date"
+                        value={search.date}
+                        onChange={handleInputChange}
                     />
                     <Switch.Group
                         as="div"
@@ -246,6 +238,19 @@ export const Forms = () => {
                             ))}
                         </tbody>
                     </table>
+                    {Object.keys(paginatorValues).includes(perPage.toString()) &&
+                        Number(currentPage) > 0 && (
+                            <Pagination
+                                paginatorValues={paginatorValues}
+                                totalItems={data?.pagination?.total}
+                                itemsPerPage={parseInt(perPage.toString(), 10)}
+                                currentPage={parseInt(currentPage.toString(), 10)}
+                                onPageChange={(newPerPage, newCurrentPage) => {
+                                    setPerPage(newPerPage)
+                                    setCurrentPage(newCurrentPage)
+                                }}
+                            />
+                        )}
                 </div>
             </div>
             <div className="h-[100px]"></div>

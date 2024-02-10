@@ -62,6 +62,36 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 break;
         }
     }
+
+    const handleDeleteClick = (item: IFormQuestion) => {
+        const newQuestions = questions.filter((question) => question.order !== item.order);
+        setQuestions(newQuestions);
+    }
+
+    const handleUpClick = (item: IFormQuestion) => {
+        const index = questions.indexOf(item);
+        if (index > 0) {
+            questions[index]!.order = questions[index]!.order! - 1;
+            questions[index - 1]!.order = questions[index]!.order! + 1;
+            const temp = questions[index]!;
+            questions[index] = questions[index - 1]!;
+            questions[index - 1] = temp;
+            setQuestions([...questions]);
+        }
+    }
+
+    const handleDownClick = (item: IFormQuestion) => {
+        const index = questions.indexOf(item);
+        if (index < questions.length - 1) {
+            questions[index]!.order = questions[index]!.order! + 1;
+            questions[index + 1]!.order = questions[index]!.order! - 1;
+            const temp = questions[index]!;
+            questions[index] = questions[index + 1]!;
+            questions[index + 1] = temp;
+            setQuestions([...questions]);
+        }
+    }
+
     return (
         <div className='pb-6 h-[90%]'>
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
@@ -120,13 +150,14 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                     item.order !== currentQuestion?.order && 'text-[#6B7280]'
                                                 )}
                                                 >
-                                                    Question {item.order}
+                                                    Question {item.order} - {item.title}
                                                 </span>
                                             </div>
                                             <div className='flex gap-2 items-center'>
-                                                <icons.TrashIcon className='w-5 h-5' />
+                                                <icons.TrashIcon className='w-5 h-5' onClick={() => handleDeleteClick(item)} />
                                                 <icons.DocumentDuplicateIcon className='w-5 h-5' />
-                                                <icons.Bars3Icon className='w-5 h-5' />
+                                                <icons.ArrowUpIcon className='w-5 h-5' onClick={() => handleUpClick(item)} />
+                                                <icons.ArrowDownIcon className='w-5 h-5' onClick={() => handleDownClick(item)} />
                                             </div>
                                         </div>
                                     </div>

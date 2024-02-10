@@ -1,8 +1,9 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import type { ServiceResponse } from "./api.types";
-import { privateAPI } from "./axios";
+import { getAuthHeaders, privateAPI } from "./axios";
 import type { User } from "./users";
+import { query_keys } from "@/constants/query_keys";
 
 const DOMAIN = "form";
 const ALL = "all";
@@ -32,12 +33,30 @@ export interface Form {
   form_questions_count?: number;
 }
 
-export const getFormsQuery = () => ({
-  queryKey: [DOMAIN, ALL, "getFormsQuery"],
+export const getFormsQuery = (
+  perPage: number,
+  currentPage: number,
+  isActive: boolean,
+  formTitle: string,
+  date: string,
+) => ({
+  queryKey: [DOMAIN, ALL, query_keys.FORMS_LIST, perPage, currentPage, isActive, formTitle, date],
   queryFn: async () => {
-    const response = await privateAPI.get<ServiceResponse<Form[]>>("/forms");
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    const response = await privateAPI.get<ServiceResponse<Form[]>>("forms", 
+    {
+      params: {
+        per_page: perPage,
+        page: currentPage,
+        isActive,
+        form_title: formTitle,
+        date,
+      },
+      headers: getAuthHeaders(),
+    });
     // console.log(response)
-    return response.data.data;
+    return response.data;
   },
 });
 

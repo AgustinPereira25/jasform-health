@@ -16,7 +16,7 @@ class ListFormController
     {
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
-        $isActive = $request->get('isActive');
+        $isActive = $request->get('isActive', 'false');
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
@@ -28,9 +28,6 @@ class ListFormController
 
             if ($isActive == "true") {
                 $forms->where('is_active', true);
-            };
-            if ($isActive == "false") {
-                $forms->where('is_active', false);
             };
 
         $forms = $forms->paginate($perPage);
