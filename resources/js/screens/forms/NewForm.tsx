@@ -17,7 +17,6 @@ function classNames(...classes: string[]) {
 
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
 export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
-
     const navigate = useNavigate();
 
     const {
@@ -61,22 +60,45 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         };
     }, []);
 
+    // const handleClickOutside = (event: MouseEvent) => {
+    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //     if (primaryWrapperRef.current && (!primaryWrapperRef.current.contains(event.target) && !primaryPickerRef.current!.contains(event.target))) {
+    //         setShowPrimaryColorPicker(false);
+    //     }
+    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //     if (secondaryWrapperRef.current && secondaryPickerRef.current && (!secondaryWrapperRef.current.contains(event.target as Node) && !secondaryPickerRef.current.contains(event.target as Node))) {
+    //         setShowSecondaryColorPicker(false);
+    //     }
+    // };
+
+
+    // const primaryWrapperRef = useRef<HTMLDivElement | null>(null);
+    // const secondaryWrapperRef = useRef<HTMLDivElement | null>(null);
+    const primaryWrapperRef = useRef<HTMLButtonElement | null>(null);
+    const secondaryWrapperRef = useRef<HTMLButtonElement | null>(null);
+
+    const primaryPickerRef = useRef<HTMLDivElement | null>(null);
+    const secondaryPickerRef = useRef<HTMLDivElement | null>(null);
+
     const handleClickOutside = (event: MouseEvent) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if (primaryWrapperRef.current && (!primaryWrapperRef.current.contains(event.target) && !primaryPickerRef.current!.contains(event.target))) {
-            setShowPrimaryColorPicker(false);
+        if (primaryWrapperRef.current && primaryPickerRef.current) {
+            if (!primaryWrapperRef.current.contains(event.target as Node) && !primaryPickerRef.current.contains(event.target as Node)) {
+                setShowPrimaryColorPicker(false);
+            }
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        if (secondaryWrapperRef.current && secondaryPickerRef.current && (!secondaryWrapperRef.current.contains(event.target as Node) && !secondaryPickerRef.current.contains(event.target as Node))) {
-            setShowSecondaryColorPicker(false);
+
+        if (secondaryWrapperRef.current && secondaryPickerRef.current) {
+            if (!secondaryWrapperRef.current.contains(event.target as Node) && !secondaryPickerRef.current.contains(event.target as Node)) {
+                setShowSecondaryColorPicker(false);
+            }
         }
     };
 
-    const primaryWrapperRef = useRef(null);
-    const secondaryWrapperRef = useRef(null);
+    // const primaryWrapperRef = useRef(null);
+    // const secondaryWrapperRef = useRef(null);
 
-    const primaryPickerRef = useRef(null);
-    const secondaryPickerRef = useRef(null);
+    // const primaryPickerRef = useRef(null);
+    // const secondaryPickerRef = useRef(null);
 
     // For toggles
     const [enabledPublishStatus, setEnabledPublishStatus] = useState(false);
