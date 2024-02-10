@@ -4,7 +4,7 @@ import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
 import { icons } from "@/ui";
 import { tw } from "@/utils";
-import { LogOutLogo, JASForm_Isologo_big_transp_white } from "./components";
+import { LogOutLogo } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
 
 const navigation = [

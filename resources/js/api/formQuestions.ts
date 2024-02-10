@@ -2,26 +2,27 @@
 
 import type { ServiceResponse } from "./api.types";
 import { privateAPI } from "./axios";
+
 // import type { User } from "./users";
 
 const DOMAIN = "form";
-const ALL = "all";
+// const ALL = "all";
 
 export interface IFormQuestions {
-    status: number;
-    success: boolean;
-    data: IFormQuestion[];
+  status: number;
+  success: boolean;
+  data: IFormQuestion[];
 }
 
 export interface IFormQuestion {
-    id?:               number;
-    title?:            string;
-    text?:             string;
-    order?:            number;
-    is_obligatory?:    boolean;
-    form_id?:          number;
-    question_type_id?: number;
-    question_type_name?: string;
+  id?: number;
+  title?: string;
+  text?: string;
+  order?: number;
+  is_obligatory?: boolean;
+  form_id?: number;
+  question_type_id?: number;
+  question_type_name?: string;
 }
 
 // export const getFormsQuestionsQuery = () => ({
@@ -34,13 +35,13 @@ export interface IFormQuestion {
 // });
 
 export const getFormQuestionsQuery = (formId: IFormQuestion["id"]) => ({
-    queryKey: [DOMAIN, formId, "getFormQuery"],
-    queryFn: async () => {
-        const response = await privateAPI.get<ServiceResponse<IFormQuestion[]>>(
-            `/form_questions/byFormId/${formId}`,
-        );
-        return response.data.data;
-    },
+  queryKey: [DOMAIN, formId, "getFormQuery"],
+  queryFn: async () => {
+    const response = await privateAPI.get<ServiceResponse<IFormQuestion[]>>(
+      `/form_questions/byFormId/${formId}`,
+    );
+    return response.data.data;
+  },
 });
 
 // interface CreateUserParams {

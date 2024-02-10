@@ -39,7 +39,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             logo: form.logo ?? '',
             apiURL: form.api_url ?? '',
             publicCode: form.public_code ?? '',
-            publishState: form.status ?? false,
+            publishState: form.is_active ?? false,
             // anonAnswers: form.anonymous_answers ?? false,
             // mandatoryInitialData: form.mandatory_initial_data ?? false,
         },

@@ -5,7 +5,7 @@ import { NewEditProfile } from "./NewEditProfile";
 export const Profile = () => {
     const { user } = useUserStore();
     return (
-        <NewEditProfile initialData={user} />
+        <NewEditProfile initialData={user!} />
     )
     // const defaultRole = user!.roles?.length === 0 ? 'Admin': user!.roles![0]!.name;
 };
