@@ -20,7 +20,6 @@ class StoreUserAction
             'first_name' => $userDto->getFirstName(),
             'last_name' => $userDto->getLastName(),
             'photo' => $userDto->getPhoto(),
-            'phone' => $userDto->getPhone(),
             'position_in_organization' => $userDto->getPosition(),
             'is_active' => $userDto->getIsActive(),
             'email' => $userDto->getEmail(),

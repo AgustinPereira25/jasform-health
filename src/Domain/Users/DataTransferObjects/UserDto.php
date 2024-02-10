@@ -10,7 +10,6 @@ class UserDto
         private readonly string $first_name,
         private readonly string $last_name,
         private readonly string $photo,
-        private readonly string $phone,
         private readonly string $position_in_organization,
         private readonly string $is_active,
         private readonly string $email,
@@ -32,11 +31,6 @@ class UserDto
     public function getPhoto(): string
     {
         return $this->photo;
-    }
-
-    public function getPhone(): string
-    {
-        return $this->phone;
     }
 
     public function getPosition(): string

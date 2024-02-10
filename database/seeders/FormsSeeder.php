@@ -143,7 +143,7 @@ class FormsSeeder extends Seeder
 
         DB::table('form_questions')->insert([
             [
-                'title' => 'Question 1',
+                'title' => 'F1-Question A',
                 'text' => 'How are you?',
                 'order' => 1,
                 'is_mandatory' => true,
@@ -153,8 +153,18 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Question 1',
+                'title' => 'F1-Question B',
                 'text' => 'What is happening?',
+                'order' => 2,
+                'is_mandatory' => true,
+                'form_id' => 1,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F2-Question A',
+                'text' => 'What is happening??',
                 'order' => 1,
                 'is_mandatory' => true,
                 'form_id' => 2,
@@ -163,35 +173,25 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Question 2',
+                'title' => 'F2-Question B',
                 'text' => 'What is happening??',
                 'order' => 2,
                 'is_mandatory' => true,
                 'form_id' => 2,
-                'question_type_id' => 2,
+                'question_type_id' => 4,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Question 2',
-                'text' => 'What is happening??',
-                'order' => 2,
-                'is_mandatory' => true,
-                'form_id' => 1,
-                'question_type_id' => 2,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ],
-            [
-                'title' => 'Question 3',
+                'title' => 'F1-Question C',
                 'text' => 'What is happening??',
                 'order' => 3,
                 'is_mandatory' => true,
                 'form_id' => 1,
-                'question_type_id' => 4,
+                'question_type_id' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
-            ]
+            ],
         ]);
 
         DB::table('question_options')->insert([

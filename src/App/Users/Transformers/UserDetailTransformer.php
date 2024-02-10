@@ -15,7 +15,6 @@ class UserDetailTransformer extends UserListTransformer
 
         $extraAttributes = [
             'photo' => (string) $user->photo,
-            'phone' => (string) $user->phone,
         ];
 
         return array_merge($userArray, $extraAttributes);

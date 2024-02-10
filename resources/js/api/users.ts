@@ -24,7 +24,6 @@ export interface User {
   first_name?: string;
   last_name?: string;
   photo?: string;
-  phone?: string;
   position_in_organization?: string;
   is_active?: boolean;
   email?: string;
