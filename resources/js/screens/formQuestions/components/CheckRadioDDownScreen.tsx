@@ -8,8 +8,9 @@ export type ComboBoxOption = "Check Box" | "Radio Button" | "Drop Down Combo";
 
 interface CheckRadioDDownQuestions {
     id: number;
-    option_title: string;
-    next_step?: string;
+    order: number;
+    title: string;
+    next_question?: string;
 };
 
 interface CheckRadioDDownScreenProps {
@@ -22,11 +23,11 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
 
     // TODO - Fetch questions from API
     const formQuestionsTest = [{
-        id: 1, option_title: 'Option 1',
-        next_step: 'Next Step 1'
-    }, { id: 2, option_title: 'Option 2', next_step: 'Next Step 2' }
-        , { id: 3, option_title: 'Option 3', next_step: 'Next Step 3' },
-    { id: 4, option_title: 'Option 4', next_step: 'Next Step 4' }
+        id: 2, order: 1, title: 'Option 1',
+        next_question: 'Next Step 1'
+    }, { id: 1, order: 2, title: 'Option 2', next_question: 'Next Step 2' }
+        , { id: 3, order: 3, title: 'Option 3', next_question: 'Next Step 3' },
+    { id: 4, order: 4, title: 'Option 4', next_question: 'Next Step 4' }
     ];
 
     const transformedSteps = nextSteps ? nextSteps.map((item) => ({ id: item.order!, name: item.title! })) : [];
@@ -42,15 +43,17 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
             return;
         }
 
+        const getLastQuestionOrder = Object.values(questions).pop()?.order;
+        const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
         const getLastQuestionId = Object.values(questions).pop()?.id;
         const lastQuestionId = getLastQuestionId ? getLastQuestionId + 1 : 1;
         if (comboBoxOption === 'Radio Button') {
-            const newElement = { id: lastQuestionId, option_title: input, next_step: questionType.name };
+            const newElement = { id: lastQuestionId, order: lastQuestionOrder, title: input, next_question: questionType.name };
             setQuestions([...questions, newElement]);
             setNewInput('');
             return;
         } else {
-            const newElement = { id: lastQuestionId, option_title: input };
+            const newElement = { id: lastQuestionId, order: lastQuestionOrder, title: input };
             setQuestions([...questions, newElement]);
             setNewInput('');
             return;
@@ -64,6 +67,30 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
     const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewInput(event.target.value);
         setIsInputEmpty(false);
+    }
+
+    const handleUpClick = (item: CheckRadioDDownQuestions) => {
+        const index = questions.indexOf(item);
+        if (index > 0) {
+            questions[index]!.order = questions[index]!.order - 1;
+            questions[index - 1]!.order = questions[index]!.order + 1;
+            const temp = questions[index]!;
+            questions[index] = questions[index - 1]!;
+            questions[index - 1] = temp;
+            setQuestions([...questions]);
+        }
+    }
+
+    const handleDownClick = (item: CheckRadioDDownQuestions) => {
+        const index = questions.indexOf(item);
+        if (index < questions.length - 1) {
+            questions[index]!.order = questions[index]!.order + 1;
+            questions[index + 1]!.order = questions[index]!.order - 1;
+            const temp = questions[index]!;
+            questions[index] = questions[index + 1]!;
+            questions[index + 1] = temp;
+            setQuestions([...questions]);
+        }
     }
 
     useEffect(() => {
@@ -102,22 +129,23 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
                     )}
                     <span className='w-[13%] text-xs grow'></span>
                 </div>
-                <div className='flex flex-col gap-3 justify-between py-3 px-3 border border-gray-300 text-black w-full'>
+                <div className='flex flex-col gap-3 justify-between border border-gray-300 text-black w-full'>
                     {
                         questions.map((item) => {
                             return (
-                                <div key={item.id} className='flex w-full'>
+                                <div key={item.id} className='flex w-full hover:bg-gray-200 py-3 px-3'>
                                     <span className={tw('text-xs grow',
                                         comboBoxOption === 'Radio Button' && 'w-[53%]',
                                         comboBoxOption !== 'Radio Button' && 'w-[86%]',
-                                    )}>{item.option_title}</span>
+                                    )}>{item.title}</span>
                                     {comboBoxOption === 'Radio Button' && (
-                                        <span className='w-[33%] text-xs grow'>{item.next_step}</span>
+                                        <span className='w-[33%] text-xs grow'>{item.next_question}</span>
                                     )}
                                     <div className='flex justify-center gap-3 w-[13%] grow'>
                                         <icons.TrashIcon className='w-5 h-5' onClick={() => handleDeleteRowClick(item.id)} />
                                         <icons.DocumentDuplicateIcon className='w-5 h-5' />
-                                        <icons.ArrowsUpDownIcon className='w-5 h-5' />
+                                        <icons.ArrowUpIcon className='w-5 h-5' onClick={() => handleUpClick(item)} />
+                                        <icons.ArrowDownIcon className='w-5 h-5' onClick={() => handleDownClick(item)} />
                                     </div>
                                 </div>
                             )
