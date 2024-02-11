@@ -3,6 +3,7 @@ export const ROUTES = {
   login: "/login",
   home: "/home",
   users: "/users",
+  myForms: "/my-forms",
   forms: "/forms",
   profile: "/profile",
   editUser: "/users/:id",
