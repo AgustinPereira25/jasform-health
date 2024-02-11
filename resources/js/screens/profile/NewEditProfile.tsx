@@ -89,7 +89,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
-    console.log("user", user);
+    // console.log("user", user);
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -435,9 +435,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                         onValueChange={(item) => {
                                             setValue("role", item.name);
                                         }}
-                                    // onChange={(value) => {
-                                    //     setValue("role", value);
-                                    // }}
+                                        onChange={(e) => {
+                                            setValue("role", e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
