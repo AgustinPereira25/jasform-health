@@ -10,10 +10,6 @@ use App\Roles\Transformers\RoleTransformer;
 
 class UserTransformer extends Transformer
 {
-    protected $load = [
-        'roles' => RoleTransformer::class,
-    ];
-
     public function transform(User $user): array
     {
         return [
@@ -27,6 +23,9 @@ class UserTransformer extends Transformer
             'organization_id' => (int) $user->organization_id,
             'organization_name' => $user->organization->name,
             'organization_description' => $user->organization->description,
+            'role_id' => (int) $user->role_id,
+            'role_name' => $user->role->name,
+            'role_description' => $user->role->description,
         ];
     }
 }

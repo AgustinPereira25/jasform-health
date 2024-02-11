@@ -27,14 +27,14 @@ class ListUserController
         });
 
         $users = QueryBuilder::for(User::class)
-            ->with(['organization', 'roles']);
+            ->with(['organization', 'role']);
 
         if ($isActive == "true") {
             $users->where('is_active', true);
         }
 
         if ($isAdmin == "true") {
-            $users->whereHas('roles', function ($query) {
+            $users->whereHas('role', function ($query) {
                 $query->where('name', 'Admin');
             });
         }
@@ -72,6 +72,7 @@ class ListUserController
         //         });
         // }
 
+        $users->orderBy('first_name');
 
         $users = $users->paginate($perPage);
 

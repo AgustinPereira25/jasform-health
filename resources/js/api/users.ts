@@ -29,7 +29,7 @@ export interface User {
   email?: string;
   organization_id?: string;
   organization_name?: string;
-  roles?: UserRoles[];
+  role_name?: string;
   total_forms?: number;
   active_forms?: number;
   inactive_forms?: number;
@@ -83,22 +83,22 @@ export const getUserQuery = (userId: User["id"]) => ({
   },
 });
 
-interface CreateUserParams {
-  name: string;
-  email: string;
+export interface CreateUserParams extends User {
   password: string;
   passwordConfirmation: string;
 }
 
 export const createUser = {
   mutation: async (params: CreateUserParams) => {
-    const { passwordConfirmation, ...rest } = params;
+    console.log("createUser-api-params:", params);
+    const { passwordConfirmation, is_active, ...rest } = params;
     const response = await privateAPI.post<ServiceResponse<User>>("/users", {
       ...rest,
+      is_active: is_active ? "1" : "0",
       password_confirmation: passwordConfirmation,
     });
-
-    return response.data.data;
+    console.log("createUser-api-response:", response);
+    return response;
   },
   invalidates: (queryClient: QueryClient) => {
     void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
@@ -117,3 +117,14 @@ export const deleteUser = {
     void queryClient.invalidateQueries({ queryKey: [DOMAIN, userId] });
   },
 };
+
+export interface IHttpResponseError extends Error {
+  response?: {
+    data?: {
+      message?: string;
+      error?: {
+        fields?: Record<string, any[]>;
+      };
+    };
+  };
+}

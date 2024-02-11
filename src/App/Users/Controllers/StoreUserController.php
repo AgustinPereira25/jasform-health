@@ -8,15 +8,62 @@ use App\Users\Request\StoreUserRequest;
 use App\Users\Transformers\UserTransformer;
 use Domain\Users\Actions\StoreUserAction;
 use Illuminate\Http\JsonResponse;
+use Domain\Organizations\Models\Organization;
+use Domain\Roles\Models\Role;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Log;
 
 class StoreUserController
 {
     public function __invoke(StoreUserRequest $request, StoreUserAction $storeUserAction): JsonResponse
     {
-        $user = $storeUserAction->execute($request->toDto());
+        Log::info('####################################################################################################################################################################');
+        Log::info('**********========> Request data: ', $request->all());
+
+        $organizationName = $request->input(StoreUserRequest::ORGANIZATION_NAME);
+        $organization = Organization::firstOrCreate(
+            ['name' => $organizationName],
+            ['description' => $organizationName]
+        );
+        $request->merge([StoreUserRequest::ORGANIZATION_ID => $organization->id]);
+
+        // $roleName = $request->input(StoreUserRequest::ROLE_NAME);
+        // $role = Role::where('name', $roleName)->first();
+        // if ($role === null) {
+        //     throw new \InvalidArgumentException("The role '$roleName' does not exist.");
+        // }
+        // $request->merge([StoreUserRequest::ROLE_ID => $role->id]);
+
+
+
+        $roleName = $request->input(StoreUserRequest::ROLE_NAME);
+        $role = Role::where('name', $roleName)->first();
+        if (!$role) {
+            $errorMessage = "The role '$roleName' does not exist.";
+            Log::error($errorMessage);
+            throw new \RuntimeException($errorMessage);
+        }
+        $request->merge([StoreUserRequest::ROLE_ID => $role->id]);
+
+        $user = null;
+
+        DB::transaction(function () use ($request, $storeUserAction, &$user) {
+            try {
+                $user = $storeUserAction->execute($request->toDto());
+            } catch (QueryException $e) {
+                if ($e->getCode() == 23000) {
+                    $errorMessage = 'An account with this email already exists.';
+                    Log::error($errorMessage);
+                    throw new \InvalidArgumentException($errorMessage);
+                }
+                throw $e;
+            }
+        });
 
         return responder()
-            ->success($user, UserTransformer::class)
+            ->success($user->refresh(), UserTransformer::class)
             ->respond(JsonResponse::HTTP_CREATED);
     }
 }

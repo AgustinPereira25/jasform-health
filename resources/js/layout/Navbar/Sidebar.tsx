@@ -12,37 +12,37 @@ const navigation = [
     //     path: ROUTES.home,
     //     label: "Dashboard",
     //     icon: <icons.DashboardIcon />,
-    //     role: "admin",
+    //     role_name: "admin",
     // },
     {
         path: ROUTES.forms,
         label: "My Forms",
         icon: <icons.MyFormsIcon />,
-        role: "admin",
+        role_name: "admin",
     },
     {
         path: ROUTES.users,
         label: "System's Users",
         icon: <icons.UsersIcon />,
-        role: "",
+        role_name: "admin",
     },
     {
         path: "#",
         label: "System's Forms",
         icon: <icons.SystemsFormsIcon />,
-        role: "",
+        role_name: "",
     },
     // {
     //     path: "#",
     //     label: "System's Billing",
     //     icon: <icons.SystemsBillingIcon />,
-    //     role: "",
+    //     role_name: "",
     // },
     {
         path: "/profile",
-        label: "View profile",
+        label: "View Profile",
         icon: <LogOutLogo />,
-        role: "all",
+        role_name: "all",
     },
 ] as const;
 
@@ -71,8 +71,8 @@ export const Sidebar = ({
                     <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">
                         {navigation
                             .filter((item) =>
-                                item.role.includes(
-                                    mockUser.roles![0]?.name.toLowerCase() ?? ""
+                                item.role_name.includes(
+                                    mockUser.role_name?.toLowerCase() ?? ""
                                 )
                             )
                             .map((item) => (
@@ -105,7 +105,7 @@ export const Sidebar = ({
                   </button> */}
                     <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
-                            .filter((item) => item.role === "")
+                            .filter((item) => item.role_name === "")
                             .map((item) => (
                                 <li
                                     key={item.label}
@@ -129,7 +129,7 @@ export const Sidebar = ({
                     <hr className="w-11/12 bg-[#407EC9]" />
                     <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
-                            .filter((item) => item.role === "all")
+                            .filter((item) => item.role_name === "all")
                             .map((item) => (
                                 <li
                                     key={item.label}
@@ -145,7 +145,7 @@ export const Sidebar = ({
                                     >
                                         <img
                                             referrerPolicy="no-referrer"
-                                            className="h-8 w-8 rounded-full bg-gray-800"
+                                            className="-ml-1 h-8 w-8 rounded-full bg-gray-800"
                                             src={
                                                 isValidImageUrl(mockUser?.photo ?? "")
                                                     ? mockUser?.photo

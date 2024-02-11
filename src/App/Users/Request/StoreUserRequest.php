@@ -17,7 +17,10 @@ class StoreUserRequest extends FormRequest
     public const IS_ACTIVE = 'is_active';
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
-    public const ORGANIZATION = 'organization_id';
+    public const ORGANIZATION_ID = 'organization_id';
+    public const ORGANIZATION_NAME = 'organization_name';
+    public const ROLE_ID = 'role_id';
+    public const ROLE_NAME = 'role_name';
 
     public function rules(): array
     {
@@ -26,6 +29,8 @@ class StoreUserRequest extends FormRequest
             self::LAST_NAME => ['required'],
             self::EMAIL => ['required', 'email:strict'],
             self::PASSWORD => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
+            self::ORGANIZATION_NAME => ['required', 'string'],
+            self::ROLE_NAME => ['required', 'string'],
         ];
     }
 
@@ -39,7 +44,8 @@ class StoreUserRequest extends FormRequest
             is_active: $this->string(self::IS_ACTIVE)->toString(),
             email: $this->string(self::EMAIL)->toString(),
             password: $this->string(self::PASSWORD)->toString(),
-            organization_id: $this->string(self::ORGANIZATION)->toString(),
+            organization_id: $this->string(self::ORGANIZATION_ID)->toString(),
+            role_id: $this->string(self::ROLE_ID)->toString(),
         );
     }
 }

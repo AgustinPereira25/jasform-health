@@ -15,6 +15,7 @@ class UserDto
         private readonly string $email,
         private readonly string $password,
         private readonly string $organization_id,
+        private readonly string $role_id,
     ) {
     }
 
@@ -56,5 +57,10 @@ class UserDto
     public function getOrganization(): string
     {
         return $this->organization_id;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role_id;
     }
 }
