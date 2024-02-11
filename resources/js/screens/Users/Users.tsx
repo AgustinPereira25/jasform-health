@@ -67,7 +67,7 @@ export const Users = () => {
                         type="search"
                         id="nameEmail"
                         label="Name/Email"
-                        placeholder="Search by name or email"
+                        placeholder="Search by Name or Email"
                         className="min-w-[210px]"
                         value={search.nameEmail}
                         onChange={handleInputChange}
@@ -76,7 +76,7 @@ export const Users = () => {
                         type="search"
                         id="positionOrg"
                         label="Position/Organization"
-                        placeholder="Search by position or organization"
+                        placeholder="Search by Position or Organization"
                         className="min-w-[270px]"
                         value={search.positionOrg}
                         onChange={handleInputChange}
@@ -255,9 +255,9 @@ export const Users = () => {
                                             </div>
                                         </td>
                                         <td className="hidden py-4 pl-0 pr-4 text-left text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                            {item.roles?.length === 0
+                                            {item.role_name
                                                 ? "No role"
-                                                : item.roles![0]!.name}
+                                                : item.role_name}
                                         </td>
                                         <td className="flex justify-end py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             <a href={`/users/${item.id}`} className="flex justify-end">

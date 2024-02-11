@@ -25,6 +25,7 @@ class StoreUserAction
             'email' => $userDto->getEmail(),
             'password' => $this->hasher->make($userDto->getPassword()),
             'organization_id' => $userDto->getOrganization(),
+            'role_id' => $userDto->getRole(),
         ]);
     }
 }

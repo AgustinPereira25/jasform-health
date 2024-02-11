@@ -10,10 +10,6 @@ use App\Roles\Transformers\RoleTransformer;
 
 class UserListTransformer extends Transformer
 {
-    protected $load = [
-        'roles' => RoleTransformer::class,
-    ];
-
     public function transform(User $user): array
     {
         $totalForms = $user->forms->count();
@@ -29,6 +25,7 @@ class UserListTransformer extends Transformer
             'is_active' => (bool) $user->is_active,
             'email' => (string) $user->email,
             'organization_name' => $user->organization->name,
+            'role_name' => $user->role->name,
             'total_forms' => $totalForms,
             'active_forms' => $activeForms,
             'inactive_forms' => $inactiveForms,

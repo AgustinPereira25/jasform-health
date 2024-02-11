@@ -11,18 +11,12 @@ export const Layout = () => {
         first_name: "John",
         last_name: "Doe",
         photo: "https://images.nightcafe.studio//assets/man-in-suit.jpg",
-        position_in_organization: "Gerente",
+        position_in_organization: "Manager",
         is_active: true,
-        email: "abcd@fdsfsd.com",
+        email: "jdoe@medicall.com",
         organization_id: "1",
-        organization_name: "Organization",
-        roles: [
-            {
-                "id": 1,
-                "name": "Admin",
-                "description": "Admin tasks"
-            }
-        ]
+        organization_name: "MediCall",
+        role_name: "Admin",
     };
 
     const { setUser } = useUserStore();

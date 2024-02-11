@@ -3,7 +3,7 @@
 namespace Domain\Roles\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Users\Models\User;
 
 /**
@@ -35,8 +35,8 @@ class Role extends Model
         'description',
     ];
 
-    public function users()
+    public function users(): HasMany
     {
-        return $this->belongsToMany(User::class, 'user_role', 'role_id', 'user_id');
+        return $this->hasMany(User::class);
     }
 }

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { User, UserRoles } from "@/api";
+import type { CreateUserParams, IHttpResponseError, User } from "@/api";
 import { Button, icons, Input, Modal } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
@@ -10,16 +10,24 @@ import { Switch } from "@headlessui/react";
 import { isValidImageUrl } from "@/helpers/helpers";
 import { TextArea } from "@/ui/form/TextArea";
 import { DeleteUserConfirm } from "./DeleteUserConfirm";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { createUser } from "@/api";
+import { handleAxiosFieldErrors } from "@/utils";
+
+
 interface NewEditProfileForm {
     id?: number;
     firstName?: string;
     lastName?: string;
     email?: string;
-    title?: string;
+    positionInOrganization?: string;
     organization?: string;
     subscription?: string;
-    roles?: UserRoles[];
-    is_active?: boolean;
+    role?: string;
+    isActive?: boolean;
     photo?: string;
 }
 interface NewEditProfileProps {
@@ -30,9 +38,58 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
+const userSchema = z
+    .object({
+        firstName: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Name must contain more than two letters" }
+        ),
+        lastName: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Last Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Last name must contain more than two letters" }
+        ),
+        email: z
+            .string()
+            .min(1, { message: "Email is required" })
+            .email({ message: "Invalid email" }),
+        photo: z.string()
+            .optional()
+            .refine(photo => photo === undefined || photo === '' || /([/|.|\w|\s|-])*\.(jpeg|jpg|webp|png)$/.test(photo), {
+                message: "Invalid image URL"
+            }),
+        organization: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Organization Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Organization name must contain more than two letters" }
+        ),
+        positionInOrganization: z.string().optional(),
+        role: z.string(),
+        isActive: z.boolean(),
+        // password: z
+        //     .string()
+        //     .trim()
+        //     .min(8, { message: "Password needs at least 8 characters" }),
+        // passwordConfirmation: z.string().trim(),
+    })
+// .refine((data) => data.password === data.passwordConfirmation, {
+//     message: "Passwords must match",
+//     path: ["passwordConfirmation"],
+// });
+type UserFormValues = z.infer<typeof userSchema>;
+
+
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
+    console.log("user", user);
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -40,34 +97,84 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const Roles = [
         { id: 1, name: "Admin" },
         { id: 2, name: "Creator" },
-    ]; // el unico q prevalaece con esta structura
+    ]; // TODO: el unico q prevalaece con esta structura
 
-    const defaultRole = user.roles ? user.roles[0]?.name : "Creator";
+    const defaultRole: string = user.role_name ?? Roles[1]!.name;
     // For toggles
-    const [enabledActive, setEnabledActive] = useState(false);
+    const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
+    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "sdf2fdsf#Fdfswe" : "");
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
-        // setError,
-    } = useForm({
+        setError,
+    } = useForm<UserFormValues>({
+        resolver: zodResolver(userSchema),
+        //TODO: limpiar campos default
         defaultValues: {
-            id: user.id ?? 0,
             firstName: user?.first_name ?? "",
             lastName: user?.last_name ?? "",
             email: user?.email ?? "",
-            title: user?.position_in_organization ?? "",
+            positionInOrganization: user?.position_in_organization ?? "",
             organization: user?.organization_name ?? "",
-            subscription: "Free" ?? "",
-            role: defaultRole,
-            is_active: user?.is_active ?? true,
+            role: user?.role_name ?? defaultRole,
+            isActive: user?.is_active ?? true,
             photo: user?.photo ?? "",
         },
     });
+
+    const queryClient = useQueryClient();
+
+    const { mutate: createUserMutation, isPending: isPendingCreateUserMutation } =
+        useMutation({
+            mutationFn: createUser.mutation,
+            onSuccess: (data) => {
+                createUser.invalidates(queryClient);
+                toast.success(`User "${data.data.data.first_name}" successfully created!`);
+                navigate(ROUTES.users);
+            },
+            onError: (err: IHttpResponseError) => {
+                console.log("err::", err)
+                if (err?.response?.data?.message) {
+                    toast.error(err?.response.data.message);
+                } else if (err?.response?.data?.error?.fields) {
+                    const errors = err?.response.data.error.fields;
+                    Object.entries(errors).forEach(([_, valArray]) => {
+                        toast.error(`${valArray[0]}`);
+                    });
+                } else {
+                    toast.error("There was an error trying to create this user. Please try again later.");
+                }
+                handleAxiosFieldErrors(err, setError);
+            },
+        });
+    console.log("isPendingCreateUserMutation:", isPendingCreateUserMutation)
+
     const onSubmit = (data: NewEditProfileForm) => {
-        console.log(data);
+        console.log("onSubmit-data", data);
+        console.log("onSubmit-passwordInput:", passwordInput);
+        if (pathname.includes(ROUTES.newUser)) {
+            console.log("if (pathname.includes(ROUTES.newUser)) ");
+            const user_CreateUserParams: CreateUserParams = {
+                first_name: data.firstName,
+                last_name: data.lastName,
+                photo: data.photo,
+                position_in_organization: data.positionInOrganization,
+                is_active: data.isActive,
+                email: data.email,
+                organization_name: data.organization,
+                role_name: data.role,
+                password: passwordInput,
+                passwordConfirmation: passwordInput
+            }
+            createUserMutation(user_CreateUserParams);
+        } else {
+
+            console.log("else (pathname.includes(ROUTES.newUser)) ");
+        }
+
         // if (!data.phone) {
         //     setError("phone", {
         //         type: "manual",
@@ -92,209 +199,212 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const handleClosePasswordModal = () => {
         setshowPasswordModal(false);
     };
-    const [passwordInput, setPasswordInput] = useState("");
+
+    useEffect(() => {
+        console.log("errors:", errors);
+    }, [errors]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
-                <div className="flex items-center gap-1">
-                    <Button variant="secondary" onClick={() => navigate(-1)}>
-                        <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
-                        Return
-                    </Button>
-                    {pathname.includes(ROUTES.profile) ? (
-                        <span className="pl-3 text-2xl text-black">{user.id && "My Profile"}</span>
-                    ) : (
-                        <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
-                    )}
-
-                </div>
-                <div className="flex gap-5">
-                    {user.id && !pathname.includes(ROUTES.profile) && (
-                        <Button variant="secondary" onClick={handleOpenDeletionModal}>
-                            <icons.TrashIcon className={tw(`h-5 w-5`)} />
-                            Delete
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
+                    <div className="flex items-center gap-1">
+                        <Button variant="secondary" onClick={() => navigate(-1)}>
+                            <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
+                            Return
                         </Button>
-                    )}
-                    {/* {user.id && pathname.includes(ROUTES.profile) && (
+                        {pathname.includes(ROUTES.profile) ? (
+                            <span className="pl-3 text-2xl text-black">{user.id && "My Profile"}</span>
+                        ) : (
+                            <span className="pl-3 text-2xl text-black">{user.id ? `Edit ${user?.first_name}'s Information` : 'New User Information'}</span>
+                        )}
+                    </div>
+                    <div className="flex gap-5">
+                        {user.id && !pathname.includes(ROUTES.profile) && (
+                            <Button variant="secondary" onClick={handleOpenDeletionModal}>
+                                <icons.TrashIcon className={tw(`h-5 w-5`)} />
+                                Delete
+                            </Button>
+                        )}
+                        {/* {user.id && pathname.includes(ROUTES.profile) && (
                         <Button variant="secondary" onClick={() => console.log("Review Terms & Conditions")}>
                             Review Terms & Conditions
                         </Button>
                     )} */}
-                    <Button type="submit" variant="primary">
-                        Save
-                    </Button>
+                        <Button type="submit" variant="primary">
+                            Save
+                        </Button>
+                    </div>
                 </div>
-            </div>
-            <div className="flex gap-6">
-                <div className="w-3/5 shrink-0 rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                    <div className="flex h-36 p-3">
-                        <div className="flex w-40 shrink-0">
-                            <span>Profile Picture</span>
+                <div className="flex gap-6">
+                    <div className="w-3/5 shrink-0 rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
+                        <div className="flex h-36 p-3">
+                            <div className="flex w-40 shrink-0">
+                                <span>Profile Photo</span>
+                            </div>
+                            <div className="flex shrink-0 overflow-hidden rounded-full">
+                                <div className="relative p-0">
+                                    <img
+                                        src={isValidImageUrl(user?.photo ?? '') ? user?.photo : '/Profile-Hello-Smile1b.png'}
+                                        alt="user"
+                                        className="h-[120px] w-[120px]"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex shrink-0 overflow-hidden rounded-full">
-                            <div className="relative p-0">
-                                <img
-                                    src={isValidImageUrl(user?.photo ?? '') ? user?.photo : '/Profile-Hello-Smile1b.png'}
-                                    alt="user"
-                                    className="h-[120px] w-[120px]"
+                        <hr className="mx-3" />
+                        <div className={tw("flex h-16 p-3", errors.firstName && "pb-5")}>
+                            <div className="flex w-40">
+                                <span>First Name*</span>
+                            </div>
+                            <div className="flex grow">
+                                <Input
+                                    containerClassName="w-full"
+                                    fullHeight
+                                    type="text"
+                                    id="firstName"
+                                    placeholder="Enter First Name"
+                                    {...register("firstName")}
+                                    error={errors.firstName?.message}
+                                    // value={passwordInput}
+                                    defaultValue={user?.first_name}
                                 />
                             </div>
                         </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-16 p-3", errors.firstName && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>First Name</span>
-                        </div>
-                        <div className="flex grow">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="firstName"
-                                placeholder="Enter First Name"
-                                {...register("firstName")}
-                                // error={errors.firstName?.message}
-                                // value={passwordInput}
-                                defaultValue={user?.first_name}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-16 p-3", errors.lastName && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>Last Name</span>
-                        </div>
-                        <div className="flex grow">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="lastName"
-                                placeholder="Enter Last Name"
-                                {...register("lastName")}
-                                // error={errors.lname?.message}
-                                //value={passwordInput}
-                                defaultValue={user?.last_name}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-16 p-3", errors.email && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>Email Address</span>
-                        </div>
-                        <div className="flex grow">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="email"
-                                placeholder="Enter Email address"
-                                {...register("email")}
-                                //error={errors.email?.message}
-                                //value={passwordInput}
-                                defaultValue={user?.email}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-20 p-3", errors.photo && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>Photo URL</span>
-                        </div>
-                        <div className="flex grow">
-                            <TextArea
-                                className="resize-none"
-                                containerClassName="w-full h-full"
-                                fullHeight
-                                id="photo"
-                                placeholder="Photo URL"
-                                {...register("photo", { required: "Photo is required" })}
-                                // {...register("photo")}
-                                error={errors.photo?.message}
-                                defaultValue={user?.photo}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-16 p-3", errors.title && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>Title</span>
-                        </div>
-                        <div className="flex grow">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="title"
-                                placeholder="Title"
-                                {...register("title")}
-                                //error={errors.title?.message}
-                                //value={passwordInput}
-                                defaultValue={user?.position_in_organization}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className={tw("flex h-16 p-3", errors.organization && "pb-5")}>
-                        <div className="flex w-40">
-                            <span>Organization</span>
-                        </div>
-                        <div className="flex grow">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="organization"
-                                placeholder="Organization"
-                                {...register("organization")}
-                                // error={errors.organization?.message}
-                                // value={passwordInput}
-                                defaultValue={user?.organization_name}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
-                    <div className="flex h-16 p-3">
-                        <Button
-                            variant="tertiary"
-                            onClick={handleOpenPasswordModal}
-                        >
-                            <icons.KeyIcon />
-                            Change Password
-                        </Button>
-                    </div>
-                    <hr className="mx-3" />
-                    {user.id && (
-                        <>
-                            <div className="flex h-16 p-3">
-                                <div className="flex w-32 flex-col">
-                                    <span className="text-[#008001]">Active Forms:</span>
-                                    <span className="text-[#CD3533]">Inactive Forms:</span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span>{user?.active_forms}</span>
-                                    <span>{user?.inactive_forms}</span>
-                                </div>
+                        <hr className="mx-3" />
+                        <div className={tw("flex h-16 p-3", errors.lastName && "pb-5")}>
+                            <div className="flex w-40">
+                                <span>Last Name*</span>
                             </div>
-                            <hr className="mx-3" />
-                            <div className="flex h-16 p-3">
-                                <div className="flex w-32">
-                                    <span>Total Forms:</span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span>{user?.total_forms}</span>
-                                </div>
+                            <div className="flex grow">
+                                <Input
+                                    containerClassName="w-full"
+                                    fullHeight
+                                    type="text"
+                                    id="lastName"
+                                    placeholder="Enter Last Name"
+                                    {...register("lastName")}
+                                    error={errors.lastName?.message}
+                                    //value={passwordInput}
+                                    defaultValue={user?.last_name}
+                                />
                             </div>
-                            <hr className="mx-3" />
-                        </>
-                    )}
-                </div>
-                {!pathname.includes(ROUTES.profile) &&
-                    <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
-                        {/* <div className="flex h-16 p-3">
+                        </div>
+                        <hr className="mx-3" />
+                        <div className={tw("flex h-16 p-3", errors.email && "pb-5")}>
+                            <div className="flex w-40">
+                                <span>Email Address*</span>
+                            </div>
+                            <div className="flex grow">
+                                <Input
+                                    containerClassName="w-full"
+                                    fullHeight
+                                    type="text"
+                                    id="email"
+                                    placeholder="Enter Email address"
+                                    {...register("email")}
+                                    error={errors.email?.message}
+                                    //value={passwordInput}
+                                    defaultValue={user?.email}
+                                />
+                            </div>
+                        </div>
+                        <hr className="mx-3" />
+                        <div className={tw("flex h-20 p-3", errors.photo && "pb-5")}>
+                            <div className="flex w-40">
+                                <span>Photo URL</span>
+                            </div>
+                            <div className="flex grow">
+                                <TextArea
+                                    className="resize-none"
+                                    containerClassName="w-full h-full"
+                                    fullHeight
+                                    id="photo"
+                                    placeholder="Photo URL"
+                                    // {...register("photo", { required: "Photo is required" })}
+                                    {...register("photo")}
+                                    error={errors.photo?.message}
+                                    defaultValue={user?.photo}
+                                />
+                            </div>
+                        </div>
+                        <hr className="mx-3" />
+                        <div className={tw("flex h-16 p-3", errors.organization && "pb-5")}>
+                            <div className="flex w-40">
+                                <span>Organization*</span>
+                            </div>
+                            <div className="flex grow">
+                                <Input
+                                    containerClassName="w-full"
+                                    fullHeight
+                                    type="text"
+                                    id="organization"
+                                    placeholder="Organization"
+                                    {...register("organization")}
+                                    error={errors.organization?.message}
+                                    // value={passwordInput}
+                                    defaultValue={user?.organization_name}
+                                />
+                            </div>
+                        </div>
+                        <hr className="mx-3" />
+                        <div className={tw("flex h-16 p-3", errors.positionInOrganization && "pb-5")}>
+                            <div className="flex w-40">
+                                <span>Position</span>
+                            </div>
+                            <div className="flex grow">
+                                <Input
+                                    containerClassName="w-full"
+                                    fullHeight
+                                    type="text"
+                                    id="positionInOrganization"
+                                    placeholder="Position in Organization"
+                                    {...register("positionInOrganization")}
+                                    error={errors.positionInOrganization?.message}
+                                    //value={passwordInput}
+                                    defaultValue={user?.position_in_organization}
+                                />
+                            </div>
+                        </div>
+                        <hr className="mx-3" />
+                        <div className="flex h-16 p-3">
+                            <Button
+                                variant="tertiary"
+                                onClick={handleOpenPasswordModal}
+                            >
+                                <icons.KeyIcon />
+                                Change Password
+                            </Button>
+                        </div>
+                        <hr className="mx-3" />
+                        {user.id && (
+                            <>
+                                <div className="flex h-16 p-3">
+                                    <div className="flex w-32 flex-col">
+                                        <span className="text-[#008001]">Active Forms:</span>
+                                        <span className="text-[#CD3533]">Inactive Forms:</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span>{user?.active_forms}</span>
+                                        <span>{user?.inactive_forms}</span>
+                                    </div>
+                                </div>
+                                <hr className="mx-3" />
+                                <div className="flex h-16 p-3">
+                                    <div className="flex w-32">
+                                        <span>Total Forms:</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span>{user?.total_forms}</span>
+                                    </div>
+                                </div>
+                                <hr className="mx-3" />
+                            </>
+                        )}
+                    </div>
+                    {!pathname.includes(ROUTES.profile) &&
+                        <div className="w-full rounded-xl border-[1px] bg-white px-6 pb-2 pt-4 shadow-lg">
+                            {/* <div className="flex h-16 p-3">
                         <div className="flex w-40 items-center">
                             <span>Subscription Plan</span>
                         </div>
@@ -312,121 +422,141 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         </div>
                     </div>
                      <hr className="mx-3" />*/}
-                        <div className="flex h-16 p-3">
-                            <div className="flex w-40 items-center">
-                                <span>Role</span>
+                            <div className="flex h-16 p-3">
+                                <div className="flex w-40 items-center">
+                                    <span>Role</span>
+                                </div>
+                                <div className="flex grow">
+                                    <ComboBox
+                                        id="role"
+                                        items={Roles}
+                                        defaultValue={defaultRole}
+                                        {...register("role")}
+                                        onValueChange={(item) => {
+                                            setValue("role", item.name);
+                                        }}
+                                    // onChange={(value) => {
+                                    //     setValue("role", value);
+                                    // }}
+                                    />
+                                </div>
                             </div>
-                            <div className="flex grow">
-                                <ComboBox
-                                    id="role"
-                                    items={Roles}
-                                    defaultValue={defaultRole}
-                                    {...register("role")}
-                                    onValueChange={(item) => {
-                                        setValue("role", item.name);
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <hr className="mx-3" />
-                        <div className="flex h-16 p-3 ">
-                            <div className="flex w-40 items-center">
-                                <span>Is the User Active?</span>
-                            </div>
-                            <div className="flex grow">
-                                <Switch.Group
-                                    as="div"
-                                    className="flex items-center justify-between gap-2"
-                                >
-                                    <Switch
-                                        checked={enabledActive}
-                                        onChange={setEnabledActive}
-                                        className={classNames(
-                                            enabledActive ? "bg-[#00519E]" : "bg-gray-200",
-                                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
-                                        )}
+                            <hr className="mx-3" />
+                            <div className="flex h-16 p-3 ">
+                                <div className="flex w-40 items-center">
+                                    <span>Is the User Active?</span>
+                                </div>
+                                <div className="flex grow">
+                                    <Switch.Group
+                                        as="div"
+                                        className="flex items-center justify-between gap-2"
                                     >
-                                        <span
-                                            aria-hidden="true"
+                                        <Switch
+                                            id="isActive"
+                                            {...register("isActive")}
+                                            checked={enabledActive}
+                                            // onChange={setEnabledActive}
+                                            onChange={(checked) => {
+                                                setEnabledActive(checked);
+                                                setValue("isActive", checked);
+                                            }}
                                             className={classNames(
-                                                enabledActive ? "translate-x-5" : "translate-x-0",
-                                                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                                enabledActive ? "bg-[#00519E]" : "bg-gray-200",
+                                                "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
                                             )}
-                                        />
-                                    </Switch>
-                                </Switch.Group>
+                                        >
+                                            <span
+                                                aria-hidden="true"
+                                                className={classNames(
+                                                    enabledActive ? "translate-x-5" : "translate-x-0",
+                                                    "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                                )}
+                                            />
+                                        </Switch>
+                                    </Switch.Group>
+                                </div>
                             </div>
-                        </div>
-                        <hr className="mx-3" />
-                        {
-                            user.id && (
-                                <>
-                                    {/* <div className="flex h-16 p-3 ">
+                            <hr className="mx-3" />
+                            {
+                                user.id && (
+                                    <>
+                                        {/* <div className="flex h-16 p-3 ">
                                     <Button variant="primary">User&apos;s Dashboard</Button>
                                 </div> */}
-                                    <hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                        <Button variant="primary">User&apos;s Forms</Button>
-                                    </div><hr className="mx-3" />
-                                </>
-                            )
-                        }
-                    </div>
-                }
+                                        <hr className="mx-3" /><div className="flex h-16 p-3 ">
+                                            <Button variant="primary">User&apos;s Forms</Button>
+                                        </div><hr className="mx-3" />
+                                    </>
+                                )
+                            }
+                        </div>
+                    }
 
-            </div>
-            <Modal
-                show={showDeletionModal}
-                title="Confirm Deletion"
-                description="Are you sure you want to execute a deletion?"
-                onClose={handleCloseDeletionModal}
-            >
-                <div className="flex h-16 p-3 m-auto">
-                    <DeleteUserConfirm />
                 </div>
-            </Modal>
-            <Modal
-                show={showPasswordModal}
-                title="Update Password"
-                description="Complete the form below to update the password."
-                onClose={handleClosePasswordModal}
-            >
-                <>
-                    <div>
-                        <Input
-                            type="password"
-                            id="actualPassword"
-                            label="Actual Password*"
-                            placeholder="Enter Actual Password"
-                            value={passwordInput}
-                        />
-                        <Input
-                            type="password"
-                            id="newPassword"
-                            label="New Password*"
-                            placeholder="Enter New Password"
-                            value={passwordInput}
-                        />
-                        <Input
-                            type="password"
-                            id="newPasswordConfirm"
-                            label="New Password Confirmation*"
-                            placeholder="Enter New Password Confirmation"
-                            value={passwordInput}
-                        />
-                    </div>
+                <Modal
+                    show={showDeletionModal}
+                    title="Confirm Deletion"
+                    description="Are you sure you want to execute a deletion?"
+                    onClose={handleCloseDeletionModal}
+                >
                     <div className="flex h-16 p-3 m-auto">
-                        <Button
-                            variant="tertiary"
-                            onClick={() => {
-                                setPasswordInput("")
-                                console.log('Update Password CONFIRMED')
-                            }}
-                        >
-                            Confirm New Password
-                        </Button>
+                        <DeleteUserConfirm />
                     </div>
-                </>
-            </Modal>
-        </form>
+                </Modal>
+                <Modal
+                    show={showPasswordModal}
+                    title="Update Password"
+                    description="Complete the form below to update the password."
+                    onClose={handleClosePasswordModal}
+                >
+                    <>
+                        <div>
+                            <Input
+                                type="password"
+                                id="actualPassword"
+                                label="Actual Password*"
+                                placeholder="Enter Actual Password"
+                                value={passwordInput}
+                                defaultValue={passwordInput}
+                                onChange={e => setPasswordInput(e.target.value)}
+                            />
+                            <Input
+                                type="password"
+                                id="newPassword"
+                                label="New Password*"
+                                placeholder="Enter New Password"
+                                value={passwordInput}
+                                defaultValue={passwordInput}
+                                onChange={e => setPasswordInput(e.target.value)}
+                            // {...register("password")}
+                            // error={errors.password?.message}
+                            />
+                            <Input
+                                type="password"
+                                id="newPasswordConfirmation"
+                                label="New Password Confirmation*"
+                                placeholder="Enter New Password Confirmation"
+                                value={passwordInput}
+                                defaultValue={passwordInput}
+                                onChange={e => setPasswordInput(e.target.value)}
+                            // {...register("passwordConfirmation")}
+                            // error={errors.passwordConfirmation?.message}
+                            />
+                        </div>
+                        <div className="flex h-16 p-3 m-auto">
+                            <Button
+                                variant="tertiary"
+                                onClick={() => {
+                                    setPasswordInput("")
+                                    console.log('Update Password CONFIRMED')
+                                }}
+                            >
+                                Confirm New Password
+                            </Button>
+                        </div>
+                    </>
+                </Modal>
+            </form>
+        </>
     );
 };
