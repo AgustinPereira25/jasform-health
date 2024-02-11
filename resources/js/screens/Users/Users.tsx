@@ -257,8 +257,7 @@ export const Users = () => {
                                         <td className="hidden py-4 pl-0 pr-4 text-left text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             {
                                                 item.role_name
-                                                    ? item.role_name
-                                                    : "No role"}
+                                                ?? "No role"}
                                         </td>
                                         <td className="flex justify-end py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             <a href={`/users/${item.id}`} className="flex justify-end">
