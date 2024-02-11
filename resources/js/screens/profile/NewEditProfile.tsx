@@ -14,7 +14,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { createUser } from "@/api";
+import { createUser, updateUser } from "@/api";
 import { handleAxiosFieldErrors } from "@/utils";
 
 
@@ -102,7 +102,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const defaultRole: string = user.role_name ?? Roles[1]!.name;
     // For toggles
     const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
-    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "sdf2fdsf#Fdfswe" : "");
+    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "JASForm12345" : "");
 
     const {
         register,
@@ -145,34 +145,63 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         toast.error(`${valArray[0]}`);
                     });
                 } else {
-                    toast.error("There was an error trying to create this user. Please try again later.");
+                    toast.error("There was an error trying to create the user. Please try again later.");
                 }
                 handleAxiosFieldErrors(err, setError);
             },
         });
     console.log("isPendingCreateUserMutation:", isPendingCreateUserMutation)
 
+    const { mutate: updateUserMutation, isPending: isPendingUpdateUserMutation } =
+        useMutation({
+            mutationFn: updateUser.mutation,
+            onSuccess: (data) => {
+                updateUser.invalidates(queryClient);
+                toast.success(`User "${data.data.data.first_name}" successfully updated!`);
+                navigate(ROUTES.users);
+            },
+            onError: (err: IHttpResponseError) => {
+                console.log("err::", err)
+                if (err?.response?.data?.message) {
+                    toast.error(err?.response.data.message);
+                } else if (err?.response?.data?.error?.fields) {
+                    const errors = err?.response.data.error.fields;
+                    Object.entries(errors).forEach(([_, valArray]) => {
+                        toast.error(`${valArray[0]}`);
+                    });
+                } else {
+                    toast.error("There was an error trying to update the user. Please try again later.");
+                }
+                handleAxiosFieldErrors(err, setError);
+            },
+        });
+    console.log("isPendingUpdateUserMutation:", isPendingUpdateUserMutation)
+
     const onSubmit = (data: NewEditProfileForm) => {
         console.log("onSubmit-data", data);
         console.log("onSubmit-passwordInput:", passwordInput);
+
+        const user_CreateUserParams: CreateUserParams = {
+            id: user.id,
+            first_name: data.firstName,
+            last_name: data.lastName,
+            photo: data.photo,
+            position_in_organization: data.positionInOrganization,
+            is_active: data.isActive,
+            email: data.email,
+            organization_name: data.organization,
+            role_name: data.role,
+            password: passwordInput === "" ? "JASForm12345" : passwordInput,
+            passwordConfirmation: passwordInput
+        }
+        console.log("onSubmit-user_CreateUserParams:", user_CreateUserParams);
+
         if (pathname.includes(ROUTES.newUser)) {
             console.log("if (pathname.includes(ROUTES.newUser)) ");
-            const user_CreateUserParams: CreateUserParams = {
-                first_name: data.firstName,
-                last_name: data.lastName,
-                photo: data.photo,
-                position_in_organization: data.positionInOrganization,
-                is_active: data.isActive,
-                email: data.email,
-                organization_name: data.organization,
-                role_name: data.role,
-                password: passwordInput,
-                passwordConfirmation: passwordInput
-            }
             createUserMutation(user_CreateUserParams);
         } else {
-
             console.log("else (pathname.includes(ROUTES.newUser)) ");
+            updateUserMutation(user_CreateUserParams);
         }
 
         // if (!data.phone) {
@@ -306,6 +335,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     error={errors.email?.message}
                                     //value={passwordInput}
                                     defaultValue={user?.email}
+                                    disabled={Boolean(user.id) && !pathname.includes(ROUTES.newUser)}
                                 />
                             </div>
                         </div>

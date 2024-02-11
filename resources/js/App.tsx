@@ -32,7 +32,7 @@ createRoot(document.getElementById("app")!).render(
             <ToastContainer
                 position="top-center"
                 theme="colored"
-                style={{ width: "25%" }}
+                style={{ width: "30%" }}
             />
         </QueryClientProvider>
     </React.StrictMode>,
