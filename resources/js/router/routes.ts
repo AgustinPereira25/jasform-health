@@ -11,6 +11,9 @@ export const ROUTES = {
   newForm: "/forms/new",
   editForm: "/forms/:id",
   questionsForm: "/forms/:id/questions",
+  // Issue Form Routes
+  issueFormHome: "/issue-form",
+  issueForm: "/issue-form/:id",
   notFound: "*",
 } as const;
 
