@@ -10,12 +10,12 @@ import { isValidImageUrl } from "@/helpers/helpers";
 const navigation = [
     // {
     //     path: ROUTES.home,
-    //     label: "Dashboard",
+    //     label: "My Dashboard",
     //     icon: <icons.DashboardIcon />,
-    //     role_name: "admin",
+    //     role_name: "creator",
     // },
     {
-        path: ROUTES.forms,
+        path: ROUTES.myForms,
         label: "My Forms",
         icon: <icons.MyFormsIcon />,
         role_name: "admin",
@@ -24,10 +24,10 @@ const navigation = [
         path: ROUTES.users,
         label: "System's Users",
         icon: <icons.UsersIcon />,
-        role_name: "admin",
+        role_name: "",
     },
     {
-        path: "#",
+        path: ROUTES.forms,
         label: "System's Forms",
         icon: <icons.SystemsFormsIcon />,
         role_name: "",
@@ -36,7 +36,7 @@ const navigation = [
     //     path: "#",
     //     label: "System's Billing",
     //     icon: <icons.SystemsBillingIcon />,
-    //     role_name: "",
+    //     role_name: "admin",
     // },
     {
         path: "/profile",

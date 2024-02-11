@@ -4,6 +4,7 @@ use App\Users\Controllers\DeleteUserController;
 use App\Users\Controllers\GetUserController;
 use App\Users\Controllers\ListUserController;
 use App\Users\Controllers\StoreUserController;
+use App\Users\Controllers\UpdateUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Activity_records\Controllers\ListActivity_recordController;
@@ -73,6 +74,7 @@ Route::prefix('users')
         Route::get('/', ListUserController::class);
         Route::get('/{user}', GetUserController::class);
         Route::post('/', StoreUserController::class);
+        Route::put('/', UpdateUserController::class);
         Route::delete('/{user}', DeleteUserController::class);
     });
 
