@@ -47,23 +47,25 @@ use Domain\Activity_records\Models\Activity_record;
  * @property string $position_in_organization
  * @property string $status
  * @property int $organization_id
+ * @property int $role_id
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOrganizationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoto($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrganization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @property-read Organization $organization
+ * @property-read Role $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity_record> $activity_records
  * @property-read int|null $activity_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
- * @property-read int|null $roles_count
  * @property int $is_active
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsActive($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property string|null $phone
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -85,6 +87,7 @@ class User extends Authenticatable
         'email',
         'password',
         'organization_id',
+        'role_id',
     ];
 
     /**
@@ -112,9 +115,9 @@ class User extends Authenticatable
         return $this->belongsTo(Organization::class);
     }
 
-    public function roles()
+    public function role(): BelongsTo
     {
-        return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+        return $this->belongsTo(Role::class);
     }
 
     public function forms()
@@ -126,4 +129,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Activity_record::class);
     }
+
+    // public function assignRole(int $roleId)
+    // {
+    //     $this->role_id = $roleId;
+    //     $this->save();
+    // }
+
+    // public function removeRole()
+    // {
+    //     $this->role_id = null;
+    //     $this->save();
+    // }
+
+    // public function assignOrganization(int $organizationId)
+    // {
+    //     $this->organization_id = $organizationId;
+    //     $this->save();
+    // }
+
+    // public function removeOrganization()
+    // {
+    //     $this->organization_id = null;
+    //     $this->save();
+    // }
 }
