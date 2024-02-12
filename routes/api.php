@@ -69,7 +69,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 |--------------------------------------------------------------------------
 */
 Route::prefix('users')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListUserController::class);
         Route::get('/{user}', GetUserController::class);
@@ -79,7 +79,7 @@ Route::prefix('users')
     });
 
 Route::prefix('forms')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListFormController::class);
         Route::get('/byUserId/{user}', ListForm_byUserIdController::class);
@@ -89,7 +89,7 @@ Route::prefix('forms')
     });
 
 Route::prefix('activity_records')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListActivity_recordController::class);
         Route::get('/{activity_record}', GetActivity_recordController::class);
@@ -98,7 +98,7 @@ Route::prefix('activity_records')
     });
 
 Route::prefix('completer_users')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListCompleter_userController::class);
         Route::get('/{completer_user}', GetCompleter_userController::class);
@@ -107,7 +107,7 @@ Route::prefix('completer_users')
     });
 
 Route::prefix('form_instances')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListForm_instanceController::class);
         Route::get('/byFormId/{form}', ListForm_instance_byFormIdController::class);
@@ -117,7 +117,7 @@ Route::prefix('form_instances')
     });
 
 Route::prefix('form_questions')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListForm_questionController::class);
         Route::get('/byFormId/{form}', ListForm_question_byFormIdController::class);
@@ -127,7 +127,7 @@ Route::prefix('form_questions')
     });
 
 Route::prefix('organizations')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListOrganizationController::class);
         Route::get('/{organization}', GetOrganizationController::class);
@@ -136,7 +136,7 @@ Route::prefix('organizations')
     });
 
 Route::prefix('question_options')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListQuestion_optionController::class);
         Route::get('/byQuestionId/{form_question}', ListQuestion_option_byQuestionIdController::class);
@@ -146,7 +146,7 @@ Route::prefix('question_options')
     });
 
 Route::prefix('question_types')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListQuestion_typeController::class);
         Route::get('/{question_type}', GetQuestion_typeController::class);
@@ -155,7 +155,7 @@ Route::prefix('question_types')
     });
 
 Route::prefix('roles')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListRoleController::class);
         Route::get('/{role}', GetRoleController::class);
