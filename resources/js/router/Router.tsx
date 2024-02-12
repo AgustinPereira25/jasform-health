@@ -15,7 +15,7 @@ import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 import { PrepareQuestionsForm } from "@/screens/formQuestions";
 import { DeleteUserConfirm } from "@/screens/profile/DeleteUserConfirm";
 import { IssueFormHome } from "@/screens/issueForm";
-import { ChckRadioDDownIssueFrm, InputFieldIssueFrm, SimpleTxtIssueFrm } from "@/screens/issueForm/components";
+import { ChckRadioDDownIssueFrm, FinalStepIssueFrm, InputFieldIssueFrm, SimpleTxtIssueFrm } from "@/screens/issueForm/components";
 
 export const Router = () => {
     const location = useLocation();
@@ -99,7 +99,7 @@ export const Router = () => {
 
                 {/* Issue Form Routes */}
                 <Route element={<IssueFormLayout />}>
-                    <Route element={<ChckRadioDDownIssueFrm questiontypeId={5} />} path={ROUTES.issueFormHome} />
+                    <Route element={<FinalStepIssueFrm />} path={ROUTES.issueFormHome} />
                 </Route>
                 <Route element={<IssueFormLayout />}>
                     <Route element={<IssueFormLayout />} path={ROUTES.issueForm} />
