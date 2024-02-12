@@ -89,7 +89,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
-    // console.log("user", user);
+    console.log("user:", user);
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -203,13 +203,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             console.log("else (pathname.includes(ROUTES.newUser)) ");
             updateUserMutation(user_CreateUserParams);
         }
-
-        // if (!data.phone) {
-        //     setError("phone", {
-        //         type: "manual",
-        //         message: "error!!!",
-        //     },{shouldFocus: true})
-        // }
     };
     const navigate = useNavigate();
 

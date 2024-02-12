@@ -74,6 +74,7 @@ export const getUsersQuery = (
 
 export const getUserQuery = (userId: User["id"]) => ({
   queryKey: [DOMAIN, userId, "getUserQuery"],
+  //   queryKey: [DOMAIN, userId, "getUserQuery"],
   queryFn: async () => {
     const response = await privateAPI.get<ServiceResponse<User>>(
       `/users/${userId}`,
