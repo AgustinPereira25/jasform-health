@@ -48,7 +48,7 @@ export const PrepareProfileForm: React.FunctionComponent = () => {
                         iconName="ArchiveBoxXMarkIcon"
                     />
                 </>
-            ) : user && <NewEditProfile initialData={user} />
+            ) : <NewEditProfile initialData={user} />
             }
         </div>
     );
