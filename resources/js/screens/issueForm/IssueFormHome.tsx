@@ -3,7 +3,7 @@ import { Button, Input, icons } from '@/ui';
 export const IssueFormHome = () => {
     return (
         <div className="w-[35%] bg-white p-8 rounded-lg">
-            <div className="flex flex-col justify-center items-center gap-6 pb-6">
+            <div className="flex flex-col justify-center items-center gap-5 pb-6">
                 <img src={'/LogoIpsum.svg'} alt="cardiology" />
                 <span className='text-2xl font-medium text-[#407EC9]'>Welcome to Cardiology Form</span>
                 <div className='p-4 border border-gray-300 rounded-lg'>
@@ -14,7 +14,7 @@ export const IssueFormHome = () => {
             <form
             // onSubmit={(e) => { void handleSubmit((value) => logUserMutation(value))(e); }}
             >
-                <div className="grid gap-3">
+                <div className="grid">
                     {/* <div> */}
                     <Input
                         type="text"

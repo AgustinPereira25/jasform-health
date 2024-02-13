@@ -1,5 +1,4 @@
 import { Button } from '@/ui'
-import React from 'react'
 
 export const FinalStepIssueFrm = () => {
     return (
