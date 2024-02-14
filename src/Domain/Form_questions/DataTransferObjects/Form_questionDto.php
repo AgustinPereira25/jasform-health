@@ -10,7 +10,7 @@ class Form_questionDto
         private readonly string $title,
         private readonly string $text,
         private readonly string $order,
-        private readonly string $is_obligatory,
+        private readonly string $is_mandatory,
         private readonly string $form_id,
         private readonly string $question_type_id,
     ) {
@@ -31,9 +31,9 @@ class Form_questionDto
         return $this->order;
     }
 
-    public function getIsObligatory(): string
+    public function getIsMandatory(): string
     {
-        return $this->is_obligatory;
+        return $this->is_mandatory;
     }
 
     public function getFormId(): string
