@@ -17,7 +17,7 @@ use Domain\Question_options\Models\Question_option;
  * @property string $text
  * @property int $order
  * @property string $next_question
- * @property int $obligatory
+ * @property int $mandatory
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $form_id
@@ -29,7 +29,7 @@ use Domain\Question_options\Models\Question_option;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereNextQuestion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereObligatory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereMandatory($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereQuestionTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereText($value)
@@ -39,8 +39,8 @@ use Domain\Question_options\Models\Question_option;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Question_option> $question_options
  * @property-read int|null $question_options_count
  * @property-read Question_type $question_type
- * @property int $is_obligatory
- * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsObligatory($value)
+ * @property int $is_mandatory
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsMandatory($value)
  * @property int $is_mandatory
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsMandatory($value)
  * @mixin \Eloquent
@@ -52,7 +52,7 @@ class Form_question extends Model
         'title',
         'text',
         'order',
-        'is_obligatory',
+        'is_mandatory',
         'form_id',
         'question_type_id',
     ];
