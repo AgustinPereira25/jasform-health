@@ -15,6 +15,11 @@ use App\Completer_users\Controllers\ListCompleter_userController;
 use App\Completer_users\Controllers\GetCompleter_userController;
 use App\Completer_users\Controllers\StoreCompleter_userController;
 use App\Completer_users\Controllers\DeleteCompleter_userController;
+use App\Completed_questions\Controllers\ListCompleted_questionController;
+use App\Completed_questions\Controllers\ListCompleted_question_byFormInstanceIdController;
+use App\Completed_questions\Controllers\GetCompleted_questionController;
+use App\Completed_questions\Controllers\StoreCompleted_questionController;
+use App\Completed_questions\Controllers\DeleteCompleted_questionController;
 use App\Form_instances\Controllers\ListForm_instanceController;
 use App\Form_instances\Controllers\ListForm_instance_byFormIdController;
 use App\Form_instances\Controllers\GetForm_instanceController;
@@ -106,6 +111,16 @@ Route::prefix('completer_users')
         Route::delete('/{completer_user}', DeleteCompleter_userController::class);
     });
 
+Route::prefix('completed_questions')
+    ->middleware(['sanitize_input'])
+    ->group(static function () {
+        Route::get('/', ListCompleted_questionController::class);
+        Route::get('/byFormInstanceId/{formInstance}', ListCompleted_question_byFormInstanceIdController::class);
+        Route::get('/{completed_question}', GetCompleted_questionController::class);
+        Route::post('/', StoreCompleted_questionController::class);
+        Route::delete('/{completed_question}', DeleteCompleted_questionController::class);
+    });
+
 Route::prefix('form_instances')
     ->middleware(['sanitize_input'])
     ->group(static function () {
@@ -115,6 +130,7 @@ Route::prefix('form_instances')
         Route::post('/', StoreForm_instanceController::class);
         Route::delete('/{form_instance}', DeleteForm_instanceController::class);
     });
+
 
 Route::prefix('form_questions')
     ->middleware(['sanitize_input'])
