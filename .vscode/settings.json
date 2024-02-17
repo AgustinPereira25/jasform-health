@@ -13,4 +13,12 @@
     },
     "editor.gotoLocation.multipleDefinitions": "goto",
     "files.trimTrailingWhitespace": true,
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.tsx$",
+                "cmd": "perl -i -pe 's/\\b\\s{2,}\\b/ /g' ${file}"
+            },
+        ]
+    }
 }
