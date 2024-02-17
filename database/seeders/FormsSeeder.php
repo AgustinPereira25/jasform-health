@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use Illuminate\Support\Str;
 
 class FormsSeeder extends Seeder
 {
@@ -216,6 +216,49 @@ class FormsSeeder extends Seeder
                 'title' => 'Option 1',
                 'next_question' => 2,
                 'form_question_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+        ]);
+
+        DB::table('completed_questions')->insert([
+            [
+                'title' => 'F1-Question A',
+                'answer' => Str::random(10),
+                'form_instance_id' => 1,
+                'question_type_id' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F1-Question B',
+                'answer' => Str::random(10),
+                'form_instance_id' => 1,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F2-Question A',
+                'answer' => Str::random(10),
+                'form_instance_id' => 2,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F2-Question B',
+                'answer' => Str::random(10),
+                'form_instance_id' => 2,
+                'question_type_id' => 4,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F1-Question C',
+                'answer' => Str::random(10),
+                'form_instance_id' => 1,
+                'question_type_id' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],

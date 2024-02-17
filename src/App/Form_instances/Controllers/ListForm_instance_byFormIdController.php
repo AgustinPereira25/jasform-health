@@ -14,6 +14,7 @@ class ListForm_instance_byFormIdController
     {
         $form_instances = QueryBuilder::for(Form_instance::class)
             ->where('form_id', $formId)
+            ->withCount('completed_questions')
             ->get();
 
         return responder()
