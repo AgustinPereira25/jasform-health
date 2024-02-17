@@ -1,4 +1,5 @@
 import React from "react";
+
 import type { paginatorValues } from "../../constants/pagination"
 import { icons } from "./Icons";
 

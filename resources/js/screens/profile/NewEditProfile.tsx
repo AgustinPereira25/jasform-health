@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { CreateUserParams, IHttpResponseError, User } from "@/api";
-import { Button, icons, Input, Modal } from "@/ui";
-import ComboBox from "@/ui/form/Combobox";
-import { tw } from "@/utils";
-import { ROUTES } from "@/router";
 import { Switch } from "@headlessui/react";
-import { isValidImageUrl } from "@/helpers/helpers";
-import { TextArea } from "@/ui/form/TextArea";
-import { DeleteUserConfirm } from "./DeleteUserConfirm";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { z } from "zod";
+
+import type { CreateUserParams, IHttpResponseError, User } from "@/api";
+import { Button, icons, Input, Modal, LoadingOverlay } from "@/ui";
+import ComboBox from "@/ui/form/Combobox";
+import { tw } from "@/utils";
+import { ROUTES } from "@/router";
+import { isValidImageUrl } from "@/helpers/helpers";
 import { createUser, updateUser } from "@/api";
 import { handleAxiosFieldErrors } from "@/utils";
-
+import { TextArea } from "@/ui/form/TextArea";
+import { DeleteUserConfirm } from "./DeleteUserConfirm";
 
 interface NewEditProfileForm {
     id?: number;
@@ -85,11 +85,9 @@ const userSchema = z
 // });
 type UserFormValues = z.infer<typeof userSchema>;
 
-
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
-    console.log("user:", user);
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -136,7 +134,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                 navigate(ROUTES.users);
             },
             onError: (err: IHttpResponseError) => {
-                console.log("err::", err)
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
                 } else if (err?.response?.data?.error?.fields) {
@@ -150,7 +147,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                 handleAxiosFieldErrors(err, setError);
             },
         });
-    console.log("isPendingCreateUserMutation:", isPendingCreateUserMutation)
 
     const { mutate: updateUserMutation, isPending: isPendingUpdateUserMutation } =
         useMutation({
@@ -161,7 +157,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                 navigate(ROUTES.users);
             },
             onError: (err: IHttpResponseError) => {
-                console.log("err::", err)
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
                 } else if (err?.response?.data?.error?.fields) {
@@ -175,12 +170,8 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                 handleAxiosFieldErrors(err, setError);
             },
         });
-    console.log("isPendingUpdateUserMutation:", isPendingUpdateUserMutation)
 
     const onSubmit = (data: NewEditProfileForm) => {
-        console.log("onSubmit-data", data);
-        console.log("onSubmit-passwordInput:", passwordInput);
-
         const user_CreateUserParams: CreateUserParams = {
             id: user.id,
             first_name: data.firstName,
@@ -194,13 +185,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             password: passwordInput === "" ? "JASForm12345" : passwordInput,
             passwordConfirmation: passwordInput
         }
-        console.log("onSubmit-user_CreateUserParams:", user_CreateUserParams);
-
         if (pathname.includes(ROUTES.newUser)) {
-            console.log("if (pathname.includes(ROUTES.newUser)) ");
             createUserMutation(user_CreateUserParams);
         } else {
-            console.log("else (pathname.includes(ROUTES.newUser)) ");
             updateUserMutation(user_CreateUserParams);
         }
     };
@@ -222,12 +209,11 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
         setshowPasswordModal(false);
     };
 
-    useEffect(() => {
-        console.log("errors:", errors);
-    }, [errors]);
-
     return (
         <>
+            {(isPendingCreateUserMutation || isPendingUpdateUserMutation) && (
+                <LoadingOverlay />
+            )}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
                     <div className="flex items-center gap-1">
@@ -571,6 +557,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 variant="tertiary"
                                 onClick={() => {
                                     setPasswordInput("")
+                                    //TODO: Finished this
                                     console.log('Update Password CONFIRMED')
                                 }}
                             >

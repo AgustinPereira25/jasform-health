@@ -14,16 +14,11 @@ use Domain\Roles\Models\Role;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Log;
-
 class UpdateUserController
 {
     public function __invoke(UpdateUserRequest $request, UpdateUserAction $updateUserAction): JsonResponse
     {
-        Log::info('**********========> Updating User: ' . $request->id);
-        Log::info('**********========> Updating User', ['id' => $request->id]);
-        Log::info('**********========> Updating request: ' . $request);
-
+        sleep(1);
         $idString = (string)$request->id;
 
         $organizationName = $request->input(UpdateUserRequest::ORGANIZATION_NAME);
@@ -37,7 +32,6 @@ class UpdateUserController
         $role = Role::where('name', $roleName)->first();
         if (!$role) {
             $errorMessage = "The role '$roleName' does not exist.";
-            Log::error($errorMessage);
             throw new \RuntimeException($errorMessage);
         }
         $request->merge([UpdateUserRequest::ROLE_ID => $role->id]);
@@ -53,8 +47,6 @@ class UpdateUserController
 
         return responder()
             ->success($updatedUser->refresh(), UserTransformer::class)
-            //TODO: mejorar esto para reconocer en el front que fue correcto
-            // ->withMeta(['message' => 'User was updated successfully.'])
             ->respond(JsonResponse::HTTP_OK);
     }
 }
