@@ -59,7 +59,7 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
-                <Menu.Button className=" inline-flex">
+                <Menu.Button className="inline-flex">
                     <icons.ThreeDotsIcon />
                     {/* <icons.EllipsisHorizontalIcon /> */}
                 </Menu.Button>

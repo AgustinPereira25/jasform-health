@@ -2,8 +2,9 @@ import { useState, useCallback } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { paginatorValues } from "../../constants/pagination";
 import { debounce } from 'lodash';
+
+import { paginatorValues } from "../../constants/pagination";
 import { getUsersQuery } from "@/api";
 import { ROUTES } from "@/router";
 import { Button, icons, Input } from "@/ui";

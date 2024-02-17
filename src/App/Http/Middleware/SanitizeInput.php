@@ -18,10 +18,6 @@ class SanitizeInput
      */
     public function handle(Request $request, Closure $next): Response
     {
-        \Log::info('SanitizeInput middleware applied');
-        \Log::info('SanitizeInput middleware applied - request: ' . json_encode($request->all()));
-        \Log::info('SanitizeInput middleware applied - next: ' . json_encode($next));
-
         $input = $request->all();
 
         array_walk_recursive($input, function (&$input) {

@@ -6,9 +6,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+
 import { env } from "./env";
 import { Router } from "./router";
-// import { Toasts } from "./ui";
 
 import "../css/app.css";
 import "./bootstrap";

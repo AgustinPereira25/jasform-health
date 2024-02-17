@@ -13,15 +13,11 @@ use Domain\Roles\Models\Role;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Log;
-
 class StoreUserController
 {
     public function __invoke(StoreUserRequest $request, StoreUserAction $storeUserAction): JsonResponse
     {
-        Log::info('####################################################################################################################################################################');
-        Log::info('**********========> Request data: ', $request->all());
-
+        sleep(1);
         $organizationName = $request->input(StoreUserRequest::ORGANIZATION_NAME);
         $organization = Organization::firstOrCreate(
             ['name' => $organizationName],
@@ -29,20 +25,10 @@ class StoreUserController
         );
         $request->merge([StoreUserRequest::ORGANIZATION_ID => $organization->id]);
 
-        // $roleName = $request->input(StoreUserRequest::ROLE_NAME);
-        // $role = Role::where('name', $roleName)->first();
-        // if ($role === null) {
-        //     throw new \InvalidArgumentException("The role '$roleName' does not exist.");
-        // }
-        // $request->merge([StoreUserRequest::ROLE_ID => $role->id]);
-
-
-
         $roleName = $request->input(StoreUserRequest::ROLE_NAME);
         $role = Role::where('name', $roleName)->first();
         if (!$role) {
             $errorMessage = "The role '$roleName' does not exist.";
-            Log::error($errorMessage);
             throw new \RuntimeException($errorMessage);
         }
         $request->merge([StoreUserRequest::ROLE_ID => $role->id]);
@@ -55,7 +41,6 @@ class StoreUserController
             } catch (QueryException $e) {
                 if ($e->getCode() == 23000) {
                     $errorMessage = 'An account with this email already exists.';
-                    Log::error($errorMessage);
                     throw new \InvalidArgumentException($errorMessage);
                 }
                 throw $e;

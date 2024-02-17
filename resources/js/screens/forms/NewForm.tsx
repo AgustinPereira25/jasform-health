@@ -133,7 +133,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                 <div className='flex gap-5'>
                     <Button
                         variant="secondary"
-                        onClick={() => console.log('pepe')}
+                        onClick={() => console.log('DeleteForm')}
                     >
                         <icons.TrashIcon className={tw(`w-5 h-5`)} />
                         Delete
