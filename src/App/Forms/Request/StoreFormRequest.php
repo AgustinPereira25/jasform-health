@@ -21,8 +21,8 @@ class StoreFormRequest extends FormRequest
     public const ROUNDED_STYLE = 'rounded_style';
     public const API_URL = 'api_url';
     public const IS_ACTIVE = 'is_active';
-    public const IS_ANONYMOUS_USER_ANSWERS = 'is_anonymous_user_answers';
-    public const IS_REQUEST_MANDATORY_INITIAL_DATA = 'is_request_mandatory_initial_data';
+    public const IS_USER_RESPONSES_LINKED = 'is_user_responses_linked';
+    public const IS_INITIAL_DATA_REQUIRED = 'is_initial_data_required';
     public const PUBLIC_CODE = 'public_code';
     public const USER_ID = 'user_id';
 
@@ -34,8 +34,8 @@ class StoreFormRequest extends FormRequest
             self::FINAL_TEXT,
             self::CREATION_DATE_TIME,
             self::IS_ACTIVE => ['required'],
-            self::IS_ANONYMOUS_USER_ANSWERS => ['required'],
-            self::IS_REQUEST_MANDATORY_INITIAL_DATA => ['required'],
+            self::IS_USER_RESPONSES_LINKED => ['required'],
+            self::IS_INITIAL_DATA_REQUIRED => ['required'],
             self::PUBLIC_CODE => ['unique:forms,public_code'],
             self::USER_ID => ['required'],
         ];
@@ -58,8 +58,8 @@ class StoreFormRequest extends FormRequest
             rounded_style: $this->string(self::ROUNDED_STYLE)->toString(),
             api_url: $this->string(self::API_URL)->toString(),
             is_active: $this->string(self::IS_ACTIVE)->toString(),
-            is_anonymous_user_answers: $this->string(self::IS_ANONYMOUS_USER_ANSWERS)->toString(),
-            is_request_mandatory_initial_data: $this->string(self::IS_REQUEST_MANDATORY_INITIAL_DATA)->toString(),
+            is_user_responses_linked: $this->string(self::IS_USER_RESPONSES_LINKED)->toString(),
+            is_initial_data_required: $this->string(self::IS_INITIAL_DATA_REQUIRED)->toString(),
             public_code: $this->string(self::PUBLIC_CODE)->toString(),
             user_id: $this->string(self::USER_ID)->toString(),
         );

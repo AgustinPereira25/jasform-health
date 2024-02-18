@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('rounded_style')->nullable();
             $table->string('api_url')->nullable();
             $table->boolean('is_active');
-            $table->boolean('is_anonymous_user_answers');
-            $table->boolean('is_request_mandatory_initial_data');
+            $table->boolean('is_user_responses_linked');
+            $table->boolean('is_initial_data_required');
             $table->string('public_code')->unique();
             $table->timestamps();
 

@@ -3,7 +3,7 @@
 namespace Domain\Completer_users\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Domain\Form_instances\Models\Form_instance;
 
 /**
@@ -28,6 +28,7 @@ use Domain\Form_instances\Models\Form_instance;
  * @property-read int|null $form_instances_count
  * @property string $code
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereCode($value)
+ * @property-read Form_instance|null $form_instance
  * @mixin \Eloquent
  */
 class Completer_user extends Model
@@ -39,8 +40,8 @@ class Completer_user extends Model
         'code',
     ];
 
-    public function form_instances(): HasMany
+    public function form_instance(): HasOne
     {
-        return $this->hasMany(Form_instance::class);
+        return $this->hasOne(Form_instance::class);
     }
 }
