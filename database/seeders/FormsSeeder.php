@@ -19,6 +19,7 @@ class FormsSeeder extends Seeder
             [
                 'name' => 'Form 1',
                 'welcome_text' => 'Welcome to form 1',
+                'final_text' => 'Closing the form 1',
                 'description' => 'This is the form 1',
                 'creation_date_time' => '2024-01-11 12:56:19',
                 'last_modified_date_time' => '2024-01-12 05:44:08',
@@ -38,6 +39,7 @@ class FormsSeeder extends Seeder
             [
                 'name' => 'Form 2',
                 'welcome_text' => 'Welcome to form 2',
+                'final_text' => 'Closing the form 2',
                 'description' => 'This is the form 2',
                 'creation_date_time' => '2024-01-05 03:06:51',
                 'last_modified_date_time' => '2024-01-07 11:40:53',

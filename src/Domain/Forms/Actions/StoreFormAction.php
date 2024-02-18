@@ -19,6 +19,7 @@ class StoreFormAction
         return Form::create([
             'name' => $formDto->getName(),
             'welcome_text' => $formDto->getWelcomeText(),
+            'final_text' => $formDto->getFinalText(),
             'description' => $formDto->getDescription(),
             'creation_date_time' => $formDto->getCreationDateTime(),
             'last_modified_date_time' => $formDto->getLastModifiedDateTime(),

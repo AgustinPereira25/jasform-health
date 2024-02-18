@@ -16,6 +16,7 @@ class FormTransformer extends Transformer
             'id' => (int) $form->id,
             'name' => (string) $form->name,
             'welcome_text' => (string) $form->welcome_text,
+            'final_text' => (string) $form->final_text,
             'description' => (string) $form->description,
             'creation_date_time' => Carbon::parse($form->creation_date_time)->format('Y-m-d H:i:s'),
             'last_modified_date_time' => Carbon::parse($form->last_modified_date_time)->format('Y-m-d H:i:s'),

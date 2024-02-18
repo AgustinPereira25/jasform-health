@@ -13,6 +13,7 @@ use Domain\Form_questions\Models\Form_question;
  * @property int $id
  * @property string $name
  * @property string $welcome_text
+ * @property string $final_text
  * @property string $description
  * @property string $creation_date_time
  * @property mixed $logo
@@ -59,6 +60,7 @@ use Domain\Form_questions\Models\Form_question;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsAnonymousUserAnswers($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsRequestMandatoryInitialData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereLastModifiedDateTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereFinalText($value)
  * @mixin \Eloquent
  */
 class Form extends Model
@@ -66,6 +68,7 @@ class Form extends Model
     protected $fillable = [
         'name',
         'welcome_text',
+        'final_text',
         'description',
         'creation_date_time',
         'last_modified_date_time',

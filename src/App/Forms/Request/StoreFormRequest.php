@@ -11,6 +11,7 @@ class StoreFormRequest extends FormRequest
 {
     public const NAME = 'name';
     public const WELCOME_TEXT = 'welcome_text';
+    public const FINAL_TEXT = 'final_text';
     public const DESCRIPTION = 'description';
     public const CREATION_DATE_TIME = 'creation_date_time';
     public const LAST_MODIFIED_DATE_TIME = 'last_modified_date_time';
@@ -30,6 +31,7 @@ class StoreFormRequest extends FormRequest
         return [
             self::NAME => ['required'],
             self::WELCOME_TEXT => ['required'],
+            self::FINAL_TEXT,
             self::CREATION_DATE_TIME,
             self::IS_ACTIVE => ['required'],
             self::IS_ANONYMOUS_USER_ANSWERS => ['required'],
@@ -46,6 +48,7 @@ class StoreFormRequest extends FormRequest
         return new FormDto(
             name: $this->string(self::NAME)->toString(),
             welcome_text: $this->string(self::WELCOME_TEXT)->toString(),
+            final_text: $this->string(self::FINAL_TEXT)->toString(),
             description: $this->string(self::DESCRIPTION)->toString(),
             creation_date_time: $this->string(self::CREATION_DATE_TIME)->toString(),
             last_modified_date_time: $this->string(self::LAST_MODIFIED_DATE_TIME)->toString(),

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Input, icons } from '@/ui'
-import { FileUploader } from '@/components'
 import { useForm } from 'react-hook-form'
-import { tw } from '@/utils'
-import type { Form } from '@/api'
 import { Switch } from '@headlessui/react'
 import { HexColorPicker } from 'react-colorful'
 import { useNavigate } from 'react-router-dom'
+
+import { Button, Input, icons } from '@/ui'
+import { FileUploader } from '@/components'
+import { tw } from '@/utils'
+import type { Form } from '@/api'
 
 interface NewFormProps {
     initialData: Form;
@@ -31,6 +32,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             id: form.id ?? 0,
             name: form.name ?? '',
             welcomeTxt: form.welcome_text ?? '',
+            finalTxt: form.final_text ?? '',
             description: form.description ?? '',
             pcolor: form.primary_color ?? '',
             scolor: form.secondary_color ?? '',
@@ -70,7 +72,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     //         setShowSecondaryColorPicker(false);
     //     }
     // };
-
 
     // const primaryWrapperRef = useRef<HTMLDivElement | null>(null);
     // const secondaryWrapperRef = useRef<HTMLDivElement | null>(null);
@@ -113,7 +114,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
-                <div className='flex gap-1 items-center'>
+                <div className="flex gap-1 items-center">
                     <Button
                         variant="secondary"
                         onClick={() => navigate(-1)}
@@ -126,11 +127,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                     </span>
                     {
                         form.id && (
-                            <span className='text-2xl text-gray-500 italic'>- Form Code: {form.id}</span>
+                            <span className="text-2xl text-gray-500 italic">- Form Code: {form.id}</span>
                         )
                     }
                 </div>
-                <div className='flex gap-5'>
+                <div className="flex gap-5">
                     <Button
                         variant="secondary"
                         onClick={() => console.log('DeleteForm')}
@@ -150,18 +151,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         )
                     }
                     <Button
-                        type='submit'
+                        type="submit"
                         variant="primary"
                     >
                         Save
                     </Button>
                 </div>
             </div>
-            <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full'>
+            <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
                 <div className="flex gap-6 shrink-0">
-                    <div className='shrink-0'>
-                        <div className='flex gap-8 p-3 h-36'>
-                            <div className='flex shrink-0 w-40'>
+                    <div className="shrink-0">
+                        <div className="flex gap-8 p-3 h-36">
+                            <div className="flex shrink-0 w-40">
                                 <span>Logo</span>
                             </div>
                             {/* <div className="flex shrink-0 rounded-full overflow-hidden">
@@ -183,18 +184,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             {/* ToDo: Agregar props como url del endpoint,etc para hacerlo mas generico */}
                             <FileUploader />
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.name && 'pb-5'
                         )}
                         >
-                            <div className='flex w-40'>
+                            <div className="flex w-40">
                                 <span>Name*</span>
                             </div>
                             <div className="flex grow">
                                 <Input
-                                    containerClassName='w-full'
+                                    containerClassName="w-full"
                                     fullHeight
                                     type="text"
                                     id="name"
@@ -206,18 +207,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 />
                             </div>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.welcomeTxt && 'pb-5'
                         )}
                         >
-                            <div className='flex w-40'>
+                            <div className="flex w-40">
                                 <span>Welcome Text*</span>
                             </div>
                             <div className="flex grow">
                                 <Input
-                                    containerClassName='w-full'
+                                    containerClassName="w-full"
                                     fullHeight
                                     type="text"
                                     id="welcomeTxt"
@@ -229,18 +230,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 />
                             </div>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.description && 'pb-5'
                         )}
                         >
-                            <div className='flex w-40'>
+                            <div className="flex w-40">
                                 <span>Description*</span>
                             </div>
                             <div className="flex grow">
                                 <Input
-                                    containerClassName='w-full'
+                                    containerClassName="w-full"
                                     fullHeight
                                     type="text"
                                     id="description"
@@ -252,18 +253,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 />
                             </div>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.pcolor && 'pb-5'
                         )}
                         >
-                            <div className='flex w-40'>
+                            <div className="flex w-40">
                                 <span>Primary Color</span>
                             </div>
                             <div className="flex grow gap-2">
                                 <Input
-                                    containerClassName='w-full'
+                                    containerClassName="w-full"
                                     fullHeight
                                     type="text"
                                     id="pcolor"
@@ -284,24 +285,24 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
                                 </Button>
                                 {showPrimaryColorPicker && (
-                                    <div ref={primaryPickerRef} className='z-[1] absolute left-1/2 top-[30%]'>
+                                    <div ref={primaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
                                         <HexColorPicker color={primaryColor} onChange={setPrimaryColor} />
                                     </div>
                                 )}
                             </div>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.scolor && 'pb-5'
                         )}
                         >
-                            <div className='flex w-40'>
+                            <div className="flex w-40">
                                 <span>Secondary Color</span>
                             </div>
                             <div className="flex grow gap-2">
                                 <Input
-                                    containerClassName='w-full'
+                                    containerClassName="w-full"
                                     fullHeight
                                     type="text"
                                     id="scolor"
@@ -322,24 +323,24 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
                                 </Button>
                                 {showSecondaryColorPicker && (
-                                    <div ref={secondaryPickerRef} className='z-[1] absolute left-1/2 top-[30%]'>
+                                    <div ref={secondaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
                                         <HexColorPicker color={secondaryColor} onChange={setSecondaryColor} />
                                     </div>
                                 )}
                             </div>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.borderRadius && 'pb-5'
                         )}
                         >
-                            <div className='flex w-40'>
+                            <div className="flex w-40">
                                 <span>Border Radius</span>
                             </div>
                             <div className="flex grow">
                                 <Input
-                                    containerClassName='w-full'
+                                    containerClassName="w-full"
                                     fullHeight
                                     type="text"
                                     id="borderRadius"
@@ -351,12 +352,12 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 />
                             </div>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                     </div>
                     <div className="w-full">
-                        <div className='flex p-3 h-16 items-center justify-between'>
+                        <div className="flex p-3 h-16 items-center justify-between">
                             <span>Form&apos;s Publish State</span>
-                            <div className='flex gap-3 pl-3'>
+                            <div className="flex gap-3 pl-3">
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
                                         {...register("publishState")}
@@ -379,10 +380,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <span className={classNames(enabledPublishStatus ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledPublishStatus ? 'Active' : 'Inactive'}</span>
                             </div>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 items-center justify-between'>
+                        <hr className="mx-3" />
+                        <div className="flex p-3 h-16 items-center justify-between">
                             <span>Anonymous user&apos;s answers</span>
-                            <div className='flex gap-3 pl-3'>
+                            <div className="flex gap-3 pl-3">
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
                                         // {...register("anonAnswers")}
@@ -405,10 +406,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
                             </div>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 items-center justify-between'>
+                        <hr className="mx-3" />
+                        <div className="flex p-3 h-16 items-center justify-between">
                             <span>Request mandatory initial data</span>
-                            <div className='flex gap-3 pl-3'>
+                            <div className="flex gap-3 pl-3">
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
                                         // {...register("mandatoryInitialData")}
@@ -431,50 +432,50 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
                             </div>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex px-3 h-16 items-center justify-between'>
+                        <hr className="mx-3" />
+                        <div className="flex px-3 h-16 items-center justify-between">
                             <span>Creation Date: 15/01/2024 03:45PM</span>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex px-3 h-16 items-center justify-between'>
+                        <hr className="mx-3" />
+                        <div className="flex px-3 h-16 items-center justify-between">
                             <span>Last Modified Date: 15/01/2024 03:45PM</span>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex px-3 h-16 items-center justify-between'>
+                        <hr className="mx-3" />
+                        <div className="flex px-3 h-16 items-center justify-between">
                             <span>Instances: 100</span>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex px-3 h-16 items-center justify-between'>
+                        <hr className="mx-3" />
+                        <div className="flex px-3 h-16 items-center justify-between">
                             <span>Questions: 10</span>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 '>
+                        <hr className="mx-3" />
+                        <div className="flex p-3 h-16 ">
                             <Button
-                                variant='primary'
+                                variant="primary"
                             >
                                 <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
                                 Get Embedded Windows Code (iFrame)
                             </Button>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 '>
+                        <hr className="mx-3" />
+                        <div className="flex p-3 h-16 ">
                             <Button
-                                variant='primary'
+                                variant="primary"
                             >
                                 <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
                                 Get Public Link with Code to Share
                             </Button>
                         </div>
-                        <hr className='mx-3' />
-                        <div className='flex p-3 h-16 '>
+                        <hr className="mx-3" />
+                        <div className="flex p-3 h-16 ">
                             <Button
-                                variant='primary'
+                                variant="primary"
                             >
                                 <icons.EyeIcon className={tw(`w-5 h-5`)} />
                                 Preview the Form
                             </Button>
                         </div>
-                        <hr className='mx-3' />
+                        <hr className="mx-3" />
                     </div>
                 </div>
                 <div className={tw(
@@ -482,12 +483,12 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                     errors.apiURL && 'pb-5'
                 )}
                 >
-                    <div className='flex shrink-0 w-40'>
+                    <div className="flex shrink-0 w-40">
                         <span>API URL (callback)</span>
                     </div>
                     <div className="flex w-full">
                         <Input
-                            containerClassName='w-full'
+                            containerClassName="w-full"
                             fullHeight
                             type="text"
                             id="apiURL"
@@ -499,7 +500,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         />
                     </div>
                 </div>
-                <hr className='mx-3' />
+                <hr className="mx-3" />
             </div>
         </form>
     )

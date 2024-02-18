@@ -10,10 +10,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListForm_byPublicCodeController
 {
-    public function __invoke(Request $request, $userId): JsonResponse
+    public function __invoke(Request $request, $publicCode): JsonResponse
     {
         $forms = QueryBuilder::for(Form::class)
-            ->where('user_id', $userId)
+            ->where('public_code', $publicCode)
             ->withCount('form_instances')
             ->withCount('form_questions')
             ->get();

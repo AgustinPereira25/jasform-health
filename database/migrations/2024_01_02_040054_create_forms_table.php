@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('welcome_text');
+            $table->string('final_text')->nullable();;
             $table->string('description')->nullable();
             $table->dateTime('creation_date_time');
             $table->dateTime('last_modified_date_time')->nullable();
