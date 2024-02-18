@@ -9,6 +9,7 @@ class FormDto
     public function __construct(
         private readonly string $name,
         private readonly string $welcome_text,
+        private readonly string $final_text,
         private readonly string $description,
         private string $creation_date_time,
         private string $last_modified_date_time,
@@ -33,6 +34,11 @@ class FormDto
     public function getWelcomeText(): string
     {
         return $this->welcome_text;
+    }
+
+    public function getFinalText(): string
+    {
+        return $this->final_text;
     }
 
     public function getDescription(): string
