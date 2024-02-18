@@ -111,8 +111,6 @@ class FormsSeeder extends Seeder
         DB::table('form_instances')->insert([
             [
                 'initial_date_time' => '2024-01-09 01:05:32',
-                'is_completed' => true,
-                'completed_questions' => 10,
                 'final_date_time' => '2024-01-10 05:41:22',
                 'form_id' => 1,
                 'completer_user_id' => 1,
@@ -121,8 +119,6 @@ class FormsSeeder extends Seeder
             ],
             [
                 'initial_date_time' => '2024-01-10 04:11:45',
-                'is_completed' => true,
-                'completed_questions' => 2,
                 'final_date_time' => '2024-01-11 06:10:23',
                 'form_id' => 2,
                 'completer_user_id' => 2,
@@ -131,8 +127,6 @@ class FormsSeeder extends Seeder
             ],
             [
                 'initial_date_time' => '2024-01-10 00:44:10',
-                'is_completed' => true,
-                'completed_questions' => 2,
                 'final_date_time' => '2024-01-11 02:55:05',
                 'form_id' => 2,
                 'completer_user_id' => 2,
