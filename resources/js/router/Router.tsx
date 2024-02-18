@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import type { Location } from "react-router-dom";
 
-import { Layout } from "@/layout";
+import { Layout, FormInstanceLayout } from "@/layout";
 import { Home, NotFound, Users } from "@/screens";
 import { Login } from "@/screens/login/Login";
 import { ModalRouter } from "./ModalRouter";
@@ -14,6 +14,7 @@ import { PrepareProfileForm } from "@/screens/profile/PrepareProfileForm";
 import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 import { PrepareQuestionsForm } from "@/screens/formQuestions";
 import { DeleteUserConfirm } from "@/screens/profile/DeleteUserConfirm";
+import { FormInstance } from "@/screens/formInstance";
 
 export const Router = () => {
     const location = useLocation();
@@ -94,6 +95,11 @@ export const Router = () => {
                     <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />
                 </Route>
                 {/* </Route> */}
+
+                {/* FormInstanceLayout Routes */}
+                <Route element={<FormInstanceLayout />}>
+                    <Route element={<FormInstance />} path={ROUTES.instanceForm} />
+                </Route>
             </Routes>
 
             {/* MODALS ROUTES */}
