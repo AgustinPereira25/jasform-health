@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use Illuminate\Support\Str;
 
 class FormsSeeder extends Seeder
 {
@@ -19,6 +19,7 @@ class FormsSeeder extends Seeder
             [
                 'name' => 'Form 1',
                 'welcome_text' => 'Welcome to form 1',
+                'final_text' => 'Closing the form 1',
                 'description' => 'This is the form 1',
                 'creation_date_time' => '2024-01-11 12:56:19',
                 'last_modified_date_time' => '2024-01-12 05:44:08',
@@ -28,8 +29,8 @@ class FormsSeeder extends Seeder
                 'rounded_style' => 'Yes',
                 'api_url' => '',
                 'is_active' => true,
-                'is_anonymous_user_answers' => true,
-                'is_request_mandatory_initial_data' => true,
+                'is_user_responses_linked' => true,
+                'is_initial_data_required' => true,
                 'public_code' => '100',
                 'user_id' => 1,
                 'created_at' => Carbon::now(),
@@ -38,6 +39,7 @@ class FormsSeeder extends Seeder
             [
                 'name' => 'Form 2',
                 'welcome_text' => 'Welcome to form 2',
+                'final_text' => 'Closing the form 2',
                 'description' => 'This is the form 2',
                 'creation_date_time' => '2024-01-05 03:06:51',
                 'last_modified_date_time' => '2024-01-07 11:40:53',
@@ -47,8 +49,8 @@ class FormsSeeder extends Seeder
                 'rounded_style' => 'No',
                 'api_url' => '',
                 'is_active' => false,
-                'is_anonymous_user_answers' => true,
-                'is_request_mandatory_initial_data' => true,
+                'is_user_responses_linked' => true,
+                'is_initial_data_required' => true,
                 'public_code' => '200',
                 'user_id' => 2,
                 'created_at' => Carbon::now(),
@@ -111,8 +113,6 @@ class FormsSeeder extends Seeder
         DB::table('form_instances')->insert([
             [
                 'initial_date_time' => '2024-01-09 01:05:32',
-                'is_completed' => true,
-                'completed_questions' => 10,
                 'final_date_time' => '2024-01-10 05:41:22',
                 'form_id' => 1,
                 'completer_user_id' => 1,
@@ -121,8 +121,6 @@ class FormsSeeder extends Seeder
             ],
             [
                 'initial_date_time' => '2024-01-10 04:11:45',
-                'is_completed' => true,
-                'completed_questions' => 2,
                 'final_date_time' => '2024-01-11 06:10:23',
                 'form_id' => 2,
                 'completer_user_id' => 2,
@@ -131,8 +129,6 @@ class FormsSeeder extends Seeder
             ],
             [
                 'initial_date_time' => '2024-01-10 00:44:10',
-                'is_completed' => true,
-                'completed_questions' => 2,
                 'final_date_time' => '2024-01-11 02:55:05',
                 'form_id' => 2,
                 'completer_user_id' => 2,
@@ -216,6 +212,49 @@ class FormsSeeder extends Seeder
                 'title' => 'Option 1',
                 'next_question' => 2,
                 'form_question_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+        ]);
+
+        DB::table('completed_questions')->insert([
+            [
+                'title' => 'F1-Question A',
+                'answer' => Str::random(10),
+                'form_instance_id' => 1,
+                'question_type_id' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F1-Question B',
+                'answer' => Str::random(10),
+                'form_instance_id' => 1,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F2-Question A',
+                'answer' => Str::random(10),
+                'form_instance_id' => 2,
+                'question_type_id' => 2,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F2-Question B',
+                'answer' => Str::random(10),
+                'form_instance_id' => 2,
+                'question_type_id' => 4,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'title' => 'F1-Question C',
+                'answer' => Str::random(10),
+                'form_instance_id' => 1,
+                'question_type_id' => 2,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],

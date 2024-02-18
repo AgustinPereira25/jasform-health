@@ -2,8 +2,9 @@ import { useState, useCallback } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { paginatorValues } from "../../constants/pagination";
 import { debounce } from 'lodash';
+
+import { paginatorValues } from "../../constants/pagination";
 import { getUsersQuery } from "@/api";
 import { ROUTES } from "@/router";
 import { Button, icons, Input } from "@/ui";
@@ -13,7 +14,7 @@ import Pagination from "@/ui/common/Pagination";
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
-
+import { truncateText } from "@/helpers/helpers";
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
@@ -221,10 +222,10 @@ export const Users = () => {
                                                 />
                                                 <div className="flex flex-col">
                                                     <div className="truncate text-sm leading-6 text-black">
-                                                        {item.first_name} {item.last_name}
+                                                        {truncateText(item.first_name + " " + item.last_name, 30)}
                                                     </div>
                                                     <div className="truncate text-sm leading-6 text-gray-500">
-                                                        {item.email}
+                                                        {truncateText(item.email!, 30)}
                                                     </div>
                                                 </div>
                                             </div>
@@ -233,10 +234,10 @@ export const Users = () => {
                                             <div className="flex gap-x-3">
                                                 <div className="flex flex-col">
                                                     <div className="truncate text-sm leading-6 text-black">
-                                                        {item.position_in_organization}
+                                                        {truncateText(item.position_in_organization ?? "", 30)}
                                                     </div>
                                                     <div className="truncate text-sm leading-6 text-gray-500">
-                                                        {item.organization_name}
+                                                        {truncateText(item.organization_name!, 30)}
                                                     </div>
                                                 </div>
                                             </div>

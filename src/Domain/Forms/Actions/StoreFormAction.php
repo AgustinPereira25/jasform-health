@@ -19,6 +19,7 @@ class StoreFormAction
         return Form::create([
             'name' => $formDto->getName(),
             'welcome_text' => $formDto->getWelcomeText(),
+            'final_text' => $formDto->getFinalText(),
             'description' => $formDto->getDescription(),
             'creation_date_time' => $formDto->getCreationDateTime(),
             'last_modified_date_time' => $formDto->getLastModifiedDateTime(),
@@ -28,8 +29,8 @@ class StoreFormAction
             'rounded_style' => $formDto->getRoundedStyle(),
             'api_url' => $formDto->getApiUrl(),
             'is_active' => $formDto->getIsActive(),
-            'is_anonymous_user_answers' => $formDto->getIsAnonymousUserAnswers(),
-            'is_request_mandatory_initial_data' => $formDto->getIsRequestMandatoryInitialData(),
+            'is_user_responses_linked' => $formDto->getIsUserResponsesLinked(),
+            'is_initial_data_required' => $formDto->getIsInitialDataRequired(),
             'public_code' => $formDto->getPublicCode(),
             'user_id' => $formDto->getUserId(),
         ]);

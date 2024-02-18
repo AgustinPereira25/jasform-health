@@ -20,7 +20,7 @@ class StoreForm_questionAction
             'title' => $form_questionDto->getTitle(),
             'text' => $form_questionDto->getText(),
             'order' => $form_questionDto->getOrder(),
-            'is_obligatory' => $form_questionDto->getIsObligatory(),
+            'is_mandatory' => $form_questionDto->getIsMandatory(),
             'form_id' => $form_questionDto->getFormId(),
             'question_type_id' => $form_questionDto->getQuestionTypeId(),
         ]);

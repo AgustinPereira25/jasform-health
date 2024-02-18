@@ -13,6 +13,7 @@ use Domain\Form_questions\Models\Form_question;
  * @property int $id
  * @property string $name
  * @property string $welcome_text
+ * @property string $final_text
  * @property string $description
  * @property string $creation_date_time
  * @property mixed $logo
@@ -53,20 +54,22 @@ use Domain\Form_questions\Models\Form_question;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserId($value)
  * @property string $last_modified_date_time
  * @property int $is_active
- * @property int $is_anonymous_user_answers
- * @property int $is_request_mandatory_initial_data
+ * @property int $is_user_responses_linked
+ * @property int $is_initial_data_required
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsAnonymousUserAnswers($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsUserResponsesLinked($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsRequestMandatoryInitialData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereLastModifiedDateTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereFinalText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsInitialDataRequired($value)
  * @mixin \Eloquent
  */
 class Form extends Model
 {
-
     protected $fillable = [
         'name',
         'welcome_text',
+        'final_text',
         'description',
         'creation_date_time',
         'last_modified_date_time',
@@ -76,8 +79,8 @@ class Form extends Model
         'rounded_style',
         'api_url',
         'is_active',
-        'is_anonymous_user_answers',
-        'is_request_mandatory_initial_data',
+        'is_user_responses_linked',
+        'is_initial_data_required',
         'public_code',
         'user_id',
     ];

@@ -74,6 +74,7 @@ export const getUsersQuery = (
 
 export const getUserQuery = (userId: User["id"]) => ({
   queryKey: [DOMAIN, userId, "getUserQuery"],
+  //   queryKey: [DOMAIN, userId, "getUserQuery"],
   queryFn: async () => {
     const response = await privateAPI.get<ServiceResponse<User>>(
       `/users/${userId}`,
@@ -90,14 +91,27 @@ export interface CreateUserParams extends User {
 
 export const createUser = {
   mutation: async (params: CreateUserParams) => {
-    console.log("createUser-api-params:", params);
     const { passwordConfirmation, is_active, ...rest } = params;
     const response = await privateAPI.post<ServiceResponse<User>>("/users", {
       ...rest,
       is_active: is_active ? "1" : "0",
       password_confirmation: passwordConfirmation,
     });
-    console.log("createUser-api-response:", response);
+    return response;
+  },
+  invalidates: (queryClient: QueryClient) => {
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
+  },
+};
+
+export const updateUser = {
+  mutation: async (params: CreateUserParams) => {
+    const { passwordConfirmation, is_active, ...rest } = params;
+    const response = await privateAPI.put<ServiceResponse<User>>("/users", {
+      ...rest,
+      is_active: is_active ? "1" : "0",
+      password_confirmation: passwordConfirmation,
+    });
     return response;
   },
   invalidates: (queryClient: QueryClient) => {

@@ -10,6 +10,8 @@ class GetForm_instanceController
 {
     public function __invoke(Form_instance $form_instance): JsonResponse
     {
+        $form_instance->loadCount('completed_questions');
+
         return responder()
             ->success($form_instance, Form_instanceTransformer::class)
             ->respond();

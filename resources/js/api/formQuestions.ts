@@ -19,7 +19,7 @@ export interface IFormQuestion {
   title?: string;
   text?: string;
   order?: number;
-  is_obligatory?: boolean;
+  is_mandatory?: boolean;
   form_id?: number;
   question_type_id?: number;
   question_type_name?: string;

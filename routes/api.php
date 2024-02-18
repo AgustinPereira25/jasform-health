@@ -4,6 +4,7 @@ use App\Users\Controllers\DeleteUserController;
 use App\Users\Controllers\GetUserController;
 use App\Users\Controllers\ListUserController;
 use App\Users\Controllers\StoreUserController;
+use App\Users\Controllers\UpdateUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Activity_records\Controllers\ListActivity_recordController;
@@ -14,6 +15,11 @@ use App\Completer_users\Controllers\ListCompleter_userController;
 use App\Completer_users\Controllers\GetCompleter_userController;
 use App\Completer_users\Controllers\StoreCompleter_userController;
 use App\Completer_users\Controllers\DeleteCompleter_userController;
+use App\Completed_questions\Controllers\ListCompleted_questionController;
+use App\Completed_questions\Controllers\ListCompleted_question_byFormInstanceIdController;
+use App\Completed_questions\Controllers\GetCompleted_questionController;
+use App\Completed_questions\Controllers\StoreCompleted_questionController;
+use App\Completed_questions\Controllers\DeleteCompleted_questionController;
 use App\Form_instances\Controllers\ListForm_instanceController;
 use App\Form_instances\Controllers\ListForm_instance_byFormIdController;
 use App\Form_instances\Controllers\GetForm_instanceController;
@@ -26,6 +32,7 @@ use App\Form_questions\Controllers\StoreForm_questionController;
 use App\Form_questions\Controllers\DeleteForm_questionController;
 use App\Forms\Controllers\ListFormController;
 use App\Forms\Controllers\ListForm_byUserIdController;
+use App\Forms\Controllers\ListForm_byPublicCodeController;
 use App\Forms\Controllers\GetFormController;
 use App\Forms\Controllers\StoreFormController;
 use App\Forms\Controllers\DeleteFormController;
@@ -68,26 +75,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 |--------------------------------------------------------------------------
 */
 Route::prefix('users')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListUserController::class);
         Route::get('/{user}', GetUserController::class);
         Route::post('/', StoreUserController::class);
+        Route::put('/', UpdateUserController::class);
         Route::delete('/{user}', DeleteUserController::class);
     });
 
 Route::prefix('forms')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListFormController::class);
         Route::get('/byUserId/{user}', ListForm_byUserIdController::class);
+        Route::get('/byPublicCode/{publicCode}', ListForm_byPublicCodeController::class);
         Route::get('/{form}', GetFormController::class);
         Route::post('/', StoreFormController::class);
         Route::delete('/{form}', DeleteFormController::class);
     });
 
 Route::prefix('activity_records')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListActivity_recordController::class);
         Route::get('/{activity_record}', GetActivity_recordController::class);
@@ -96,7 +105,7 @@ Route::prefix('activity_records')
     });
 
 Route::prefix('completer_users')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListCompleter_userController::class);
         Route::get('/{completer_user}', GetCompleter_userController::class);
@@ -104,8 +113,18 @@ Route::prefix('completer_users')
         Route::delete('/{completer_user}', DeleteCompleter_userController::class);
     });
 
+Route::prefix('completed_questions')
+    ->middleware(['sanitize_input'])
+    ->group(static function () {
+        Route::get('/', ListCompleted_questionController::class);
+        Route::get('/byFormInstanceId/{formInstance}', ListCompleted_question_byFormInstanceIdController::class);
+        Route::get('/{completed_question}', GetCompleted_questionController::class);
+        Route::post('/', StoreCompleted_questionController::class);
+        Route::delete('/{completed_question}', DeleteCompleted_questionController::class);
+    });
+
 Route::prefix('form_instances')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListForm_instanceController::class);
         Route::get('/byFormId/{form}', ListForm_instance_byFormIdController::class);
@@ -114,8 +133,9 @@ Route::prefix('form_instances')
         Route::delete('/{form_instance}', DeleteForm_instanceController::class);
     });
 
+
 Route::prefix('form_questions')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListForm_questionController::class);
         Route::get('/byFormId/{form}', ListForm_question_byFormIdController::class);
@@ -125,7 +145,7 @@ Route::prefix('form_questions')
     });
 
 Route::prefix('organizations')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListOrganizationController::class);
         Route::get('/{organization}', GetOrganizationController::class);
@@ -134,7 +154,7 @@ Route::prefix('organizations')
     });
 
 Route::prefix('question_options')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListQuestion_optionController::class);
         Route::get('/byQuestionId/{form_question}', ListQuestion_option_byQuestionIdController::class);
@@ -144,7 +164,7 @@ Route::prefix('question_options')
     });
 
 Route::prefix('question_types')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListQuestion_typeController::class);
         Route::get('/{question_type}', GetQuestion_typeController::class);
@@ -153,7 +173,7 @@ Route::prefix('question_types')
     });
 
 Route::prefix('roles')
-    ->middleware([])
+    ->middleware(['sanitize_input'])
     ->group(static function () {
         Route::get('/', ListRoleController::class);
         Route::get('/{role}', GetRoleController::class);

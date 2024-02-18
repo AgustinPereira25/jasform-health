@@ -1,10 +1,11 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
 import { ROUTES } from "@/router";
 import { deleteUser } from "@/api";
 import { Button } from "@/ui";
-import { toast } from "react-toastify";
 
 export const DeleteUserConfirm: React.FunctionComponent = () => {
     const navigate = useNavigate();

@@ -15,11 +15,14 @@ class Form_instanceTransformer extends Transformer
         return [
             'id' => (int) $form_instance->id,
             'initial_date_time' => Carbon::parse($form_instance->initial_date_time)->format('Y-m-d H:i:s'),
-            'is_completed' => (bool) $form_instance->is_completed,
-            'completed_questions' => (int) $form_instance->completed_questions,
             'final_date_time' => Carbon::parse($form_instance->final_date_time)->format('Y-m-d H:i:s'),
             'form_id' => (int) $form_instance->form_id,
             'completer_user_id' => (int) $form_instance->completer_user_id,
+            'completer_user_first_name' => (string) $form_instance->completer_user->first_name,
+            'completer_user_last_name' => (string) $form_instance->completer_user->last_name,
+            'completer_user_email' => (string) $form_instance->completer_user->email,
+            'completer_user_code' => (string) $form_instance->completer_user->code,
+            'completed_questions_count' => (int) $form_instance->completed_questions_count,
         ];
     }
 }
