@@ -16,6 +16,7 @@ class ListForm_byPublicCodeController
             ->where('public_code', $publicCode)
             ->withCount('form_instances')
             ->withCount('form_questions')
+            ->with(['form_questions', 'form_questions.question_options'])
             ->get();
 
         return responder()

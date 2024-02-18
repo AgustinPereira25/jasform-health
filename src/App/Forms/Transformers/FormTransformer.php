@@ -7,11 +7,16 @@ namespace App\Forms\Transformers;
 use Domain\Forms\Models\Form;
 use Flugg\Responder\Transformers\Transformer;
 use Carbon\Carbon;
+use App\Form_questions\Transformers\Form_questionTransformer;
+use App\Question_options\Transformers\Question_optionTransformer;
 
 class FormTransformer extends Transformer
 {
     public function transform(Form $form): array
     {
+        $formQuestionTransformer = new Form_questionTransformer;
+        $questionOptionTransformer = new Question_optionTransformer;
+
         return [
             'id' => (int) $form->id,
             'name' => (string) $form->name,
@@ -32,6 +37,14 @@ class FormTransformer extends Transformer
             'user_id' => (int) $form->user_id,
             'form_instances_count' => (int) $form->form_instances_count,
             'form_questions_count' => (int) $form->form_questions_count,
+            'form_questions' => $form->form_questions->transform(function ($formQuestion) use ($formQuestionTransformer, $questionOptionTransformer) {
+                $formQuestionData = $formQuestionTransformer->transform($formQuestion);
+                $formQuestionData['question_options'] = $formQuestion->question_options->transform(function ($questionOption) use ($questionOptionTransformer) {
+                    return $questionOptionTransformer->transform($questionOption);
+                });
+
+                return $formQuestionData;
+            }),
         ];
     }
 }
