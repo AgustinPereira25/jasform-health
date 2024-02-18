@@ -10,8 +10,8 @@ class FormDto
         private readonly string $name,
         private readonly string $welcome_text,
         private readonly string $description,
-        private readonly string $creation_date_time,
-        private readonly string $last_modified_date_time,
+        private string $creation_date_time,
+        private string $last_modified_date_time,
         private readonly string $logo,
         private readonly string $primary_color,
         private readonly string $secondary_color,
@@ -20,7 +20,7 @@ class FormDto
         private readonly string $is_active,
         private readonly string $is_anonymous_user_answers,
         private readonly string $is_request_mandatory_initial_data,
-        private readonly string $public_code,
+        private string $public_code,
         private readonly string $user_id,
     ) {
     }
@@ -79,7 +79,7 @@ class FormDto
     {
         return $this->is_active;
     }
-    
+
     public function getIsAnonymousUserAnswers(): string
     {
         return $this->is_anonymous_user_answers;
@@ -97,5 +97,26 @@ class FormDto
     public function getUserId(): string
     {
         return $this->user_id;
+    }
+
+    public function withPublicCode(string $publicCode): self
+    {
+        $clone = clone $this;
+        $clone->public_code = $publicCode;
+        return $clone;
+    }
+
+    public function withCreationDateTime(string $creationDateTime): self
+    {
+        $clone = clone $this;
+        $clone->creation_date_time = $creationDateTime;
+        return $clone;
+    }
+
+    public function withLastModifiedDateTime(string $lastModifiedDateTime): self
+    {
+        $clone = clone $this;
+        $clone->last_modified_date_time = $lastModifiedDateTime;
+        return $clone;
     }
 }

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->boolean('is_active');
             $table->boolean('is_anonymous_user_answers');
             $table->boolean('is_request_mandatory_initial_data');
-            $table->string('public_code');
+            $table->string('public_code')->unique();
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');
