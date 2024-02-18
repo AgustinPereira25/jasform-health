@@ -8,6 +8,7 @@ use App\Form_instances\Transformers\Form_instanceTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
 
 class ListForm_instanceController
 {
@@ -21,6 +22,7 @@ class ListForm_instanceController
         });
 
         $form_instances = QueryBuilder::for(Form_instance::class)
+            ->with(['completer_user', 'completed_questions'])
             ->withCount('completed_questions')
             ->paginate($perPage);
 

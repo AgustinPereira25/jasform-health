@@ -4,7 +4,6 @@ namespace Domain\Form_instances\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Domain\Forms\Models\Form;
 use Domain\Completer_users\Models\Completer_user;
@@ -55,9 +54,9 @@ class Form_instance extends Model
         return $this->belongsTo(Form::class);
     }
 
-    public function completer_user(): HasOne
+    public function completer_user(): BelongsTo
     {
-        return $this->hasOne(Completer_user::class);
+        return $this->belongsTo(Completer_user::class);
     }
 
     public function completed_questions(): HasMany
