@@ -27,8 +27,8 @@ export interface Form {
   rounded_style?: string;
   api_url?: string;
   is_active?: boolean;
-  is_anonymous_user_answers?: boolean;
-  is_request_mandatory_initial_data?: boolean;
+  is_user_responses_linked?: boolean;
+  is_initial_data_required?: boolean;
   public_code?: string;
   user_id?: number;
   form_instances_count?: number;

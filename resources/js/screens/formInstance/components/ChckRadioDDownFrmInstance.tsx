@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { Button, Input } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
 import type { InstanceProps } from './FormInstanceScreens';
-import type { CompletedQuestion } from '@/stores/useFormInstance';
+import type { CompletedQuestion, CompleterUserAnswerCheckedOption } from '@/stores/useFormInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
-import type { Question } from '@/api';
+import type { Question, QuestionsOption } from '@/api';
 
 export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -13,6 +13,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     const questiontypeId = currentScreen.questionType;
     const [error, setError] = useState<string>('');
     const [answerInput, setAnswerInput] = useState<string>('');
+    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>([]);
 
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
     if (questiontypeId === 5) {
@@ -40,10 +41,49 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }
+        else { // Checkbox
+            console.log('checkedAnswers', checkedAnswers);
+            console.log('obligatory', currentQuestionInfo.is_obligatory);
+            console.log('checkedAnswers.length', checkedAnswers.length);
+            if (currentQuestionInfo.is_obligatory && checkedAnswers.length === 0) {
+                setError('Answer is mandatory');
+            }
+            else {
+                const answer: CompletedQuestion = {
+                    id: currentQuestionInfo.id,
+                    title: currentQuestionInfo.title,
+                    completer_user_answer: "",
+                    order: currentQuestionInfo.order,
+                    is_obligatory: currentQuestionInfo.is_obligatory,
+                    question_type_id: currentQuestionInfo.question_type_id,
+                    question_type_name: currentQuestionInfo.question_type_name,
+                    completer_user_answer_checked_options: checkedAnswers,
+                };
+                useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
+                const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
+            }
+        }
     }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setAnswerInput(value);
+        const { value, checked } = e.target;
+
+        if (questiontypeId === 3) { //CheckBox
+            // id:               number;
+            // order:            number;
+            // title:            string;
+            // next_question:    number;
+            // form_question_id: number;
+            const option: QuestionsOption = currentQuestionInfo.questions_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
+            if (checked) {
+                setError('');
+                setCheckedAnswers([...checkedAnswers, { id: option.id, order: option.order, title: option.title, next_question: option.next_question, form_question_id: option.form_question_id }]);
+            } else {
+                setCheckedAnswers(checkedAnswers.filter((answer) => answer.order !== Number(value)));
+            }
+        } else {
+            setAnswerInput(value);
+        }
     }
     const handleGoBackClick = () => {
         const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
@@ -58,45 +98,23 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     {
                         questiontypeId === 3 ? (
                             <>
-                                <div className='flex items-center gap-3'>
-                                    <Input
-                                        compact
-                                        type="checkbox"
-                                        name="answer"
-                                        id="chck-radio-answer-checkbox-1"
-                                        value={'Answer 1'}
-                                    />
-                                    <label htmlFor="chck-radio-answer-checkbox-1">Answer 1</label>
-                                </div>
-                                <div className='flex items-center gap-3'>
-                                    <Input
-                                        compact
-                                        type="checkbox"
-                                        name="answer"
-                                        id="chck-radio-answer-checkbox-2"
-                                        value={'Answer 2'}
-                                    />
-                                    <label htmlFor="chck-radio-answer-checkbox-2">Answer 2</label>
-                                </div>
-                                <div className='flex items-center gap-3'>
-                                    <Input
-                                        compact
-                                        type="checkbox"
-                                        name="answer"
-                                        id="chck-radio-answer-checkbox-3"
-                                        value={'Answer 3'}
-                                    />
-                                    <label htmlFor="chck-radio-answer-checkbox-3">Answer 3</label>
-                                </div>
-                                <div className='flex items-center gap-3'>
-                                    <Input
-                                        compact
-                                        type="checkbox"
-                                        name="answer"
-                                        id="chck-radio-answer-checkbox-4"
-                                        value={'Answer 4'}
-                                    />
-                                    <label htmlFor="chck-radio-answer-checkbox-4">Answer 4</label>
+                                {
+                                    currentQuestionInfo.questions_options?.map((option) => (
+                                        <div key={option.order} className='flex items-center gap-3'>
+                                            <Input
+                                                compact
+                                                type="checkbox"
+                                                name={option.title}
+                                                id={`chck-radio-answer-checkbox-${option.id}`}
+                                                value={option.order}
+                                                onChange={handleChange}
+                                            />
+                                            <label htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
+                                        </div>
+                                    ))
+                                }
+                                <div className='flex items-center justify-center h-10'>
+                                    {error && (<span className='text-red-500'>{error}</span>)}
                                 </div>
                             </>
                         ) : questiontypeId === 4 ? (

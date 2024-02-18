@@ -1,9 +1,10 @@
 import { Button } from '@/ui'
 import type { InstanceProps } from '.'
-// import { useFormInstance } from '@/stores/useFormInstance';
+import { useFormInstance } from '@/stores/useFormInstance';
 
 export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
-    // const currentState = useFormInstance.getState().formInstance!;
+    const currentState = useFormInstance.getState().formInstance!;
+    console.log(currentState);
 
     const handleGoBackClick = () => {
         const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;

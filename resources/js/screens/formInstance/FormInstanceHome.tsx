@@ -14,7 +14,7 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
 
     const handleHomeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (formInstanceInfo.is_request_mandatory_initial_data) {
+        if (formInstanceInfo.is_initial_data_required) {
             let firstNameError = '';
             let lastNameError = '';
             let emailError = '';

@@ -38,8 +38,8 @@ export const FormInstance: React.FunctionComponent = () => {
         rounded_style: "Yes",
         api_url: "",
         is_active: true,
-        is_anonymous_user_answers: true,
-        is_request_mandatory_initial_data: true,
+        is_user_responses_linked: true,
+        is_initial_data_required: true,
         public_code: "100",
         user_id: 1,
         form_instances_count: 1,
@@ -117,7 +117,40 @@ export const FormInstance: React.FunctionComponent = () => {
                 form_id: 1,
                 question_type_id: 2,
                 question_type_name: "Input Field"
-            }
+            },
+            {
+                id: 6,
+                title: "F2-Checkbox",
+                text: "What is Checkbox??",
+                order: 6,
+                is_obligatory: true,
+                form_id: 1,
+                question_type_id: 3,
+                question_type_name: "Multiple Choice - Check Box",
+                questions_options: [
+                    {
+                        id: 1,
+                        order: 1,
+                        title: "Check Mock 1",
+                        next_question: 1,
+                        form_question_id: 1
+                    },
+                    {
+                        id: 2,
+                        order: 2,
+                        title: "Check Mock 2",
+                        next_question: 1,
+                        form_question_id: 1
+                    },
+                    {
+                        id: 3,
+                        order: 3,
+                        title: "Check Mock 3",
+                        next_question: 2,
+                        form_question_id: 2
+                    }
+                ]
+            },
         ]
     };
     // useEffect(() => {
