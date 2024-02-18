@@ -20,7 +20,7 @@ class StoreForm_instanceRequest extends FormRequest
             self::INITIAL_DATE_TIME => ['required'],
             self::FINAL_DATE_TIME => ['required'],
             self::FORM_ID => ['required'],
-            self::COMPLETER_USER_ID => ['required'],
+            self::COMPLETER_USER_ID => [],
         ];
     }
 
