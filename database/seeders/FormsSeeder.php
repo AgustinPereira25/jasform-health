@@ -131,7 +131,7 @@ class FormsSeeder extends Seeder
                 'initial_date_time' => '2024-01-10 00:44:10',
                 'final_date_time' => '2024-01-11 02:55:05',
                 'form_id' => 2,
-                'completer_user_id' => 2,
+                'completer_user_id' => NULL,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
