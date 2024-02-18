@@ -32,7 +32,6 @@ use Domain\Completed_questions\Models\Completed_question;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Completed_question> $completed_questions
  * @property-read int|null $completed_questions_count
  * @property string $initial_date_time
- * @property int $is_completed
  * @property string $final_date_time
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereCompletedQuestions($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereFinalDateTime($value)
@@ -45,7 +44,6 @@ class Form_instance extends Model
 
     protected $fillable = [
         'initial_date_time',
-        'is_completed',
         'final_date_time',
         'form_id',
         'completer_user_id',

@@ -8,7 +8,6 @@ class Form_instanceDto
 {
     public function __construct(
         private readonly string $initial_date_time,
-        private readonly string $is_completed,
         private readonly string $final_date_time,
         private readonly string $form_id,
         private readonly string $completer_user_id,
@@ -18,11 +17,6 @@ class Form_instanceDto
     public function getInitialDateTime(): string
     {
         return $this->initial_date_time;
-    }
-
-    public function getIsCompleted(): string
-    {
-        return $this->is_completed;
     }
 
     public function getFinalDateTime(): string
