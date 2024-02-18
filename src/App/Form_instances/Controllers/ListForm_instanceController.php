@@ -21,9 +21,8 @@ class ListForm_instanceController
         });
 
         $form_instances = QueryBuilder::for(Form_instance::class)
-            ->get();
-
-        $form_instances = $form_instances->paginate($perPage);
+            ->withCount('completed_questions')
+            ->paginate($perPage);
 
         return responder()
             ->success($form_instances, Form_instanceTransformer::class)

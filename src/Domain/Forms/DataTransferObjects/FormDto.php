@@ -19,8 +19,8 @@ class FormDto
         private readonly string $rounded_style,
         private readonly string $api_url,
         private readonly string $is_active,
-        private readonly string $is_anonymous_user_answers,
-        private readonly string $is_request_mandatory_initial_data,
+        private readonly string $is_user_responses_linked,
+        private readonly string $is_initial_data_required,
         private string $public_code,
         private readonly string $user_id,
     ) {
@@ -86,13 +86,13 @@ class FormDto
         return $this->is_active;
     }
 
-    public function getIsAnonymousUserAnswers(): string
+    public function getIsUserResponsesLinked(): string
     {
-        return $this->is_anonymous_user_answers;
+        return $this->is_user_responses_linked;
     }
-    public function getIsRequestMandatoryInitialData(): string
+    public function getIsInitialDataRequired(): string
     {
-        return $this->is_request_mandatory_initial_data;
+        return $this->is_initial_data_required;
     }
 
     public function getPublicCode(): string

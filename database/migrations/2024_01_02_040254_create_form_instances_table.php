@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->unsignedBigInteger('completer_user_id')->nullable();
+            $table->unsignedBigInteger('completer_user_id')->unique()->nullable();
             $table->foreign('completer_user_id')->references('id')->on('completer_users')->cascadeOnUpdate()->nullOnDelete();
         });
     }
