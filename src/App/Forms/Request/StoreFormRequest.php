@@ -17,7 +17,7 @@ class StoreFormRequest extends FormRequest
     public const LOGO = 'logo';
     public const PRIMARY_COLOR = 'primary_color';
     public const SECONDARY_COLOR = 'secondary_color';
-    public const ROUNDED_STYLE = 'rounded_style'; 
+    public const ROUNDED_STYLE = 'rounded_style';
     public const API_URL = 'api_url';
     public const IS_ACTIVE = 'is_active';
     public const IS_ANONYMOUS_USER_ANSWERS = 'is_anonymous_user_answers';
@@ -30,13 +30,15 @@ class StoreFormRequest extends FormRequest
         return [
             self::NAME => ['required'],
             self::WELCOME_TEXT => ['required'],
-            self::CREATION_DATE_TIME => ['required'],
+            self::CREATION_DATE_TIME,
             self::IS_ACTIVE => ['required'],
             self::IS_ANONYMOUS_USER_ANSWERS => ['required'],
             self::IS_REQUEST_MANDATORY_INITIAL_DATA => ['required'],
-            self::PUBLIC_CODE => ['required'],
+            self::PUBLIC_CODE => ['unique:forms,public_code'],
             self::USER_ID => ['required'],
         ];
+
+        //TODO: For update form we have to use sth like: self::PUBLIC_CODE => ['required', Rule::unique('forms', 'public_code')->ignore($this->form)],
     }
 
     public function toDto(): FormDto

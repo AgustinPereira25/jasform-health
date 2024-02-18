@@ -63,7 +63,6 @@ use Domain\Form_questions\Models\Form_question;
  */
 class Form extends Model
 {
-
     protected $fillable = [
         'name',
         'welcome_text',
