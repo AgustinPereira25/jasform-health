@@ -13,7 +13,7 @@ use Domain\Form_questions\Models\Form_question;
  * @property int $order
  * @property string $name
  * @property string $description
- * @property string $next_question
+ * @property int $next_question
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $form_question_id

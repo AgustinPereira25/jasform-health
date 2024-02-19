@@ -14,7 +14,7 @@ class Activity_recordDto
         private readonly string $activity_result,
         private readonly string $login_type,
         private readonly string $device_info,
-        private readonly string $user_id,
+        private readonly int $user_id,
     ) {
     }
 
@@ -53,7 +53,7 @@ class Activity_recordDto
         return $this->device_info;
     }
 
-    public function getUserId(): string
+    public function getUserId(): int
     {
         return $this->user_id;
     }

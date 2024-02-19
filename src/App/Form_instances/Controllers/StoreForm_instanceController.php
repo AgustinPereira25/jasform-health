@@ -5,61 +5,81 @@ namespace App\Form_instances\Controllers;
 use App\Form_instances\Request\StoreForm_instanceRequest;
 use App\Form_instances\Transformers\Form_instanceTransformer;
 use Domain\Form_instances\Actions\StoreForm_instanceAction;
+use Domain\Completer_users\Actions\StoreCompleter_userAction;
+use Domain\Completed_questions\Actions\StoreCompleted_questionAction;
+use Domain\Completer_users\DataTransferObjects\Completer_userDto;
+use Domain\Form_instances\DataTransferObjects\Form_instanceDto;
+use Domain\Completed_questions\DataTransferObjects\Completed_questionDto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class StoreForm_instanceController
 {
-    public function __invoke(StoreForm_instanceRequest $request, StoreForm_instanceAction $storeForm_instanceAction): JsonResponse
-    {
+    public function __invoke(
+        StoreForm_instanceRequest $request,
+        StoreForm_instanceAction $storeForm_instanceAction,
+        StoreCompleter_userAction $storeCompleter_userAction,
+        StoreCompleted_questionAction $storeCompleted_questionAction
+    ): JsonResponse {
         Log::info('Invoked StoreForm_instanceController');
         Log::info('*********StoreForm_instanceRequest::', $request->all());
 
-        // Acceder a los valores del request
-        $formId = $request->input('form_id');
-        $completerUserName = $request->input('completer_user_name');
-        $completerUserLastName = $request->input('completer_user_last_name');
-        $completerUserEmail = $request->input('completer_user_email');
-        $auxCode = $request->input('aux_code');
-        $initialDateTime = $request->input('initial_date_time');
-        $finalDateTime = $request->input('final_date_time');
-        $completedQuestions = $request->input('completed_questions');
+        if ($request->filled('completer_user_email') && $request->filled('completer_user_name') && $request->filled('completer_user_last_name')) {
+            $completerUserDto = new Completer_userDto(
+                email: $request->input('completer_user_email'),
+                first_name: $request->input('completer_user_name'),
+                last_name: $request->input('completer_user_last_name'),
+                code: $request->input('aux_code', null)
+            );
 
-        Log::info('======>Form ID:', [$formId]);
-        Log::info('Completer User Name:', [$completerUserName]);
-        Log::info('Completer User Last Name:', [$completerUserLastName]);
-        Log::info('Completer User Email:', [$completerUserEmail]);
-        Log::info('Aux Code:', [$auxCode]);
-        Log::info('Initial Date Time:', [$initialDateTime]);
-        Log::info('Final Date Time:', [$finalDateTime]);
-
-        // Iterar sobre las preguntas completadas y loggear la información
-        foreach ($completedQuestions as $question) {
-            Log::info('====== Questions answer by user');
-            Log::info('======>----> Question ID:', [$question['id']]);
-            Log::info('======>----> Question Title:', [$question['title']]);
-            Log::info('======>----> Completer User Answer:', [$question['completer_user_answer']]);
-            // ... puedes continuar con el resto de los campos de la pregunta
-
-            // Si la pregunta tiene opciones de respuesta marcadas, también puedes iterar sobre ellas
-            if (isset($question['completer_user_answer_checked_options'])) {
-                Log::info('-------- Sub Options Checked by user');
-
-                foreach ($question['completer_user_answer_checked_options'] as $option) {
-                    Log::info('======>---->.....>Checked Option ID:', [$option['id']]);
-                    // ... puedes continuar con el resto de los campos de la opción marcada
-                }
+            try {
+                $completerUser = $storeCompleter_userAction->execute($completerUserDto);
+                $completerUserId = $completerUser->id;
+            } catch (\Exception $e) {
+                Log::error('Error creating Completer User:', [$e->getMessage()]);
+                return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
+        } else {
+            $completerUserId = null;
         }
 
+        $formInstanceDto = new Form_instanceDto(
+            initial_date_time: $request->input('initial_date_time'),
+            final_date_time: $request->input('final_date_time'),
+            form_id: intval($request->input('form_id')),
+            completer_user_id: $completerUserId,
+        );
 
+        try {
+            $formInstance = $storeForm_instanceAction->execute($formInstanceDto);
+        } catch (\Exception $e) {
+            Log::error('Error creating Form Instance:', [$e->getMessage()]);
+            return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-
-
-        $form_instance = $storeForm_instanceAction->execute($request->toDto());
+        try {
+            $completedQuestions = $request->input('completed_questions');
+            foreach ($completedQuestions as $question) {
+                if (isset($question['completer_user_answer_checked_options'])) {
+                    $answer = json_encode($question['completer_user_answer_checked_options']);
+                } else {
+                    $answer = $question['completer_user_answer'];
+                }
+                $completedQuestionDto = new Completed_questionDto(
+                    title: $question['title'],
+                    answer: $answer,
+                    form_instance_id: $formInstance->id,
+                    question_type_id: $question['question_type_id'],
+                );
+                $storeCompleted_questionAction->execute($completedQuestionDto);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error creating Completed Questions:', [$e->getMessage()]);
+            return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return responder()
-            ->success($form_instance, Form_instanceTransformer::class)
+            ->success($formInstance, Form_instanceTransformer::class)
             ->respond(JsonResponse::HTTP_CREATED);
     }
 }

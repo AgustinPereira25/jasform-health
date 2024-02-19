@@ -10,7 +10,7 @@ class Completer_userDto
         private readonly string $email,
         private readonly string $first_name,
         private readonly string $last_name,
-        private readonly string $code,
+        private readonly string|null $code,
     ) {
     }
 
@@ -29,7 +29,7 @@ class Completer_userDto
         return $this->last_name;
     }
 
-    public function getCode(): string
+    public function getCode(): string | null
     {
         return $this->code;
     }

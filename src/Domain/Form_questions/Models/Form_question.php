@@ -16,7 +16,7 @@ use Domain\Question_options\Models\Question_option;
  * @property string $title
  * @property string $text
  * @property int $order
- * @property string $next_question
+ * @property int $next_question
  * @property int $mandatory
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

@@ -9,8 +9,8 @@ class Completed_questionDto
     public function __construct(
         private readonly string $title,
         private readonly string $answer,
-        private readonly string $form_instance_id,
-        private readonly string $question_type_id,
+        private readonly int $form_instance_id,
+        private readonly int $question_type_id,
     ) {
     }
 
@@ -24,12 +24,12 @@ class Completed_questionDto
         return $this->answer;
     }
 
-    public function getFormInstanceId(): string
+    public function getFormInstanceId(): int
     {
         return $this->form_instance_id;
     }
 
-    public function getQuestionTypeId(): string
+    public function getQuestionTypeId(): int
     {
         return $this->question_type_id;
     }

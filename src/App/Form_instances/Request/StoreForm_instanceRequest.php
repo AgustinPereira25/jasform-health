@@ -29,8 +29,8 @@ class StoreForm_instanceRequest extends FormRequest
         return new Form_instanceDto(
             initial_date_time: $this->string(self::INITIAL_DATE_TIME)->toString(),
             final_date_time: $this->string(self::FINAL_DATE_TIME)->toString(),
-            form_id: $this->string(self::FORM_ID)->toString(),
-            completer_user_id: $this->string(self::COMPLETER_USER_ID)->toString(),
+            form_id: intval($this->input(self::FORM_ID)),
+            completer_user_id: intval($this->input(self::COMPLETER_USER_ID)),
         );
     }
 }

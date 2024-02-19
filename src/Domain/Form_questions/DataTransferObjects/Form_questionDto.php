@@ -9,10 +9,10 @@ class Form_questionDto
     public function __construct(
         private readonly string $title,
         private readonly string $text,
-        private readonly string $order,
-        private readonly string $is_mandatory,
-        private readonly string $form_id,
-        private readonly string $question_type_id,
+        private readonly int $order,
+        private readonly int $is_mandatory,
+        private readonly int $form_id,
+        private readonly int $question_type_id,
     ) {
     }
 
@@ -26,22 +26,22 @@ class Form_questionDto
         return $this->text;
     }
 
-    public function getOrder(): string
+    public function getOrder(): int
     {
         return $this->order;
     }
 
-    public function getIsMandatory(): string
+    public function getIsMandatory(): int
     {
         return $this->is_mandatory;
     }
 
-    public function getFormId(): string
+    public function getFormId(): int
     {
         return $this->form_id;
     }
 
-    public function getQuestionTypeId(): string
+    public function getQuestionTypeId(): int
     {
         return $this->question_type_id;
     }
