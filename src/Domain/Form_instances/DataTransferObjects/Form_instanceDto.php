@@ -9,8 +9,8 @@ class Form_instanceDto
     public function __construct(
         private readonly string $initial_date_time,
         private readonly string $final_date_time,
-        private readonly string $form_id,
-        private readonly string $completer_user_id,
+        private readonly int $form_id,
+        private readonly int | null $completer_user_id,
     ) {
     }
 
@@ -24,12 +24,12 @@ class Form_instanceDto
         return $this->final_date_time;
     }
 
-    public function getFormId(): string
+    public function getFormId(): int
     {
         return $this->form_id;
     }
 
-    public function getCompleterUserId(): string
+    public function getCompleterUserId(): int | null
     {
         return $this->completer_user_id;
     }

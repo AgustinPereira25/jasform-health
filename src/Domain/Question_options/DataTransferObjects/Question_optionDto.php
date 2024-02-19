@@ -9,11 +9,11 @@ class Question_optionDto
     public function __construct(
         private readonly string $order,
         private readonly string $title,
-        private readonly string $next_question,
-        private readonly string $form_question_id,
+        private readonly int $next_question,
+        private readonly int $form_question_id,
     ) {
     }
-    
+
     public function getOrder(): string
     {
         return $this->order;
@@ -24,12 +24,12 @@ class Question_optionDto
         return $this->title;
     }
 
-    public function getNextQuestion(): string
+    public function getNextQuestion(): int
     {
         return $this->next_question;
     }
 
-    public function getFormQuestionId(): string
+    public function getFormQuestionId(): int
     {
         return $this->form_question_id;
     }
