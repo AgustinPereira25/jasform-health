@@ -12,6 +12,12 @@ export const ROUTES = {
   newForm: "/forms/new",
   editForm: "/forms/:id",
   questionsForm: "/forms/:id/questions",
+<<<<<<< Updated upstream
+=======
+  // instance Form Routes
+  instanceFormHome: "/instance-form",
+  instanceForm: "/instance-form/:publicCode",
+>>>>>>> Stashed changes
   notFound: "*",
 } as const;
 

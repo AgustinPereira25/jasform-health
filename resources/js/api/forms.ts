@@ -1,7 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
-
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 import type { User } from "./users";
@@ -80,6 +79,30 @@ export const getFormQuery = (formId: Form["id"]) => ({
     return response.data.data;
   },
 });
+
+// export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => ({
+//   queryKey: [DOMAIN, public_code, "getFormByPublicCodeQuery"],
+//   queryFn: async () => {
+//     console.log("getFormByPublicCodeQuery", public_code)
+//     const response = await privateAPI.get<ServiceResponse<Form>>(
+//       `/forms/byPublicCode/${public_code}`,
+//     );
+//     return response.data.data;
+//   },
+// });
+
+export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => {
+  return {
+    queryKey: [DOMAIN, public_code, "getFormByPublicCodeQuery"],
+    queryFn: async () => {
+      console.log("getFormByPublicCodeQuery", public_code)
+      const response = await privateAPI.get<ServiceResponse<Form>>(
+        `/forms/byPublicCode/${public_code}`,
+      );
+      return response.data.data;
+    }
+  }
+};
 
 interface CreateUserParams {
   name: string;

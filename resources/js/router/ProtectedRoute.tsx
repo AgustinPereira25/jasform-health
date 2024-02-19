@@ -8,7 +8,7 @@ import { ROUTES } from "./routes";
 type UserState = "loggedOut" | "standard" | "admin";
 
 // No sacar esto sino no anda mas el router.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const HOME = {
   loggedOut: ROUTES.login,
   admin: ROUTES.users,

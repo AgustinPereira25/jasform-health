@@ -88,7 +88,6 @@ export const Router = () => {
                     <Route element={<DeleteUserConfirm />} path={ROUTES.deleteUser} />
                 </Route>
 
-
                 {/* <Route element={<ProtectedRoute expected="admin" />}> */}
                 <Route element={<Layout />}>
                     <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />

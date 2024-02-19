@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
+import { debounce } from "lodash";
 
 import { getFormsQuery } from "@/api";
 import { MODAL_ROUTES } from "@/router";
@@ -9,7 +10,6 @@ import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import { FormDropdown } from "./components";
-import { debounce } from "lodash";
 import Pagination from "@/ui/common/Pagination";
 import { paginatorValues } from "@/constants/pagination";
 

@@ -1,0 +1,125 @@
+import { useState } from 'react';
+
+import { Button, Input, icons } from '@/ui';
+import type { InstanceProps } from './components';
+import { useFormInstance } from '@/stores/useFormInstance';
+
+export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
+    const currentState = useFormInstance.getState().formInstance!;
+
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+
+    const [errors, setErrors] = useState<{ firstName: string, lastName: string, email: string }>({ firstName: '', lastName: '', email: '' });
+
+    const handleHomeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (formInstanceInfo.is_initial_data_required) {
+            let firstNameError = '';
+            let lastNameError = '';
+            let emailError = '';
+
+            if (firstName === '') {
+                firstNameError = 'First Name is mandatory';
+            }
+            if (lastName === '') {
+                lastNameError = 'Last Name is mandatory';
+            }
+            if (email === '') {
+                emailError = 'Email Address is mandatory';
+            }
+            setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
+        }
+        if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
+            useFormInstance.setState({ formInstance: { ...currentState, completer_user_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
+            const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
+            setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
+        }
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        switch (id) {
+            case 'first_name':
+                setErrors({ ...errors, firstName: '' });
+                setFirstName(value);
+                break;
+            case 'last_name':
+                setErrors({ ...errors, lastName: '' });
+                setLastName(value);
+                break;
+            case 'email':
+                setErrors({ ...errors, email: '' });
+                setEmail(value);
+                break;
+            default:
+                break;
+        }
+    }
+    return (
+        <div className="bg-white p-8 rounded-lg w-[35%]">
+            <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
+                <img src={'/LogoIpsum.svg'} alt="cardiology" />
+                <span className="text-2xl font-medium text-[#407EC9]">{formInstanceInfo.welcome_text}</span>
+                <div className="p-4 border border-gray-300 rounded-lg w-full">
+                    <span className="italic">{formInstanceInfo.description}</span>
+                </div>
+            </div>
+            <form
+                onSubmit={handleHomeSubmit}
+            >
+                <div className="grid">
+                    {/* <div> */}
+                    <Input
+                        type="text"
+                        id="first_name"
+                        label="First Name"
+                        placeholder="First Name"
+                        error={errors.firstName}
+                        value={firstName}
+                        onChange={handleChange}
+                    />
+                    {/* </div> */}
+                    {/* <div> */}
+                    <Input
+                        type="text"
+                        id="last_name"
+                        label="Last Name"
+                        placeholder="Last Name"
+                        error={errors.lastName}
+                        value={lastName}
+                        onChange={handleChange}
+                    />
+                    {/* </div> */}
+                    {/* <div> */}
+                    <Input
+                        id="email"
+                        label="Email Address"
+                        placeholder="Email@email.com"
+                        error={errors.email}
+                        value={email}
+                        onChange={handleChange}
+                    />
+                    {/* </div> */}
+                    <div className="pb-8">
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            className="flex w-full"
+                        // disabled={!isDirty || isPendingLogUserMutation}
+                        >
+                            {/* {isPendingLogUserMutation ? (
+                  <icons.SpinnerIcon className="h-5 w-5" />
+                ) : (
+                  "Log in"
+                )} */}
+                            Complete the form
+                            <icons.ArrowRightIcon className="h-5 w-5" />
+                        </Button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    )
+}

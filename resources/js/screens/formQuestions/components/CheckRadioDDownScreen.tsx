@@ -1,8 +1,9 @@
+import React, { useEffect, useState } from 'react'
+
 import type { IFormQuestion } from '@/api';
 import { Button, Input, icons } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
 import { tw } from '@/utils';
-import React, { useEffect, useState } from 'react'
 
 export type ComboBoxOption = "Check Box" | "Radio Button" | "Drop Down Combo";
 
@@ -103,9 +104,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
         , [comboBoxOption]);
 
     return (
-        <div className='flex flex-col pt-3'>
+        <div className="flex flex-col pt-3">
             <div className="flex gap-3">
-                <span className='shrink-0'>Question to show</span>
+                <span className="shrink-0">Question to show</span>
                 <Input
                     containerClassName="w-full"
                     // fullHeight
@@ -119,33 +120,33 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
             </div>
             <hr />
             <div className="flex flex-col py-4">
-                <div className='flex justify-between bg-gray-100 py-3 px-3 border rounded-t-lg border-gray-300 text-gray-500 w-full'>
+                <div className="flex justify-between bg-gray-100 py-3 px-3 border rounded-t-lg border-gray-300 text-gray-500 w-full">
                     <span className={tw('text-xs grow',
                         comboBoxOption === 'Radio Button' && 'w-[53%]',
                         comboBoxOption !== 'Radio Button' && 'w-[86%]',
                     )}>OPTION TITLE</span>
                     {comboBoxOption === 'Radio Button' && (
-                        <span className='w-[33%] text-xs grow'>NEXT STEP</span>
+                        <span className="w-[33%] text-xs grow">NEXT STEP</span>
                     )}
-                    <span className='w-[13%] text-xs grow'></span>
+                    <span className="w-[13%] text-xs grow"></span>
                 </div>
-                <div className='flex flex-col gap-3 justify-between border border-gray-300 text-black w-full'>
+                <div className="flex flex-col gap-3 justify-between border border-gray-300 text-black w-full">
                     {
                         questions.map((item) => {
                             return (
-                                <div key={item.id} className='flex w-full hover:bg-gray-200 py-3 px-3'>
+                                <div key={item.id} className="flex w-full hover:bg-gray-200 py-3 px-3">
                                     <span className={tw('text-xs grow',
                                         comboBoxOption === 'Radio Button' && 'w-[53%]',
                                         comboBoxOption !== 'Radio Button' && 'w-[86%]',
                                     )}>{item.title}</span>
                                     {comboBoxOption === 'Radio Button' && (
-                                        <span className='w-[33%] text-xs grow'>{item.next_question}</span>
+                                        <span className="w-[33%] text-xs grow">{item.next_question}</span>
                                     )}
-                                    <div className='flex justify-center gap-3 w-[13%] grow'>
-                                        <icons.TrashIcon className='w-5 h-5' onClick={() => handleDeleteRowClick(item.id)} />
-                                        <icons.DocumentDuplicateIcon className='w-5 h-5' />
-                                        <icons.ArrowUpIcon className='w-5 h-5' onClick={() => handleUpClick(item)} />
-                                        <icons.ArrowDownIcon className='w-5 h-5' onClick={() => handleDownClick(item)} />
+                                    <div className="flex justify-center gap-3 w-[13%] grow">
+                                        <icons.TrashIcon className="w-5 h-5" onClick={() => handleDeleteRowClick(item.id)} />
+                                        <icons.DocumentDuplicateIcon className="w-5 h-5" />
+                                        <icons.ArrowUpIcon className="w-5 h-5" onClick={() => handleUpClick(item)} />
+                                        <icons.ArrowDownIcon className="w-5 h-5" onClick={() => handleDownClick(item)} />
                                     </div>
                                 </div>
                             )
@@ -153,7 +154,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
                         )
                     }
                 </div>
-                <div className='flex items-center justify-center gap-4 py-3 px-3 text-black w-full h-16'>
+                <div className="flex items-center justify-center gap-4 py-3 px-3 text-black w-full h-16">
                     <span>Add New Option</span>
                     <Input
                         type="text"
@@ -162,7 +163,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
                         compact
                         onChange={(e) => handleInputOnChange(e)}
                         error={isInputEmpty && 'This field is required'}
-                        containerClassName='h-full'
+                        containerClassName="h-full"
                         value={newInput}
                     />
                     {
@@ -176,7 +177,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ ne
                         )
                     }
                     <Button
-                        variant='secondary'
+                        variant="secondary"
                         onClick={() => handleAddRowClick(newInput, newQuestionType, comboBoxOption)}
                     >
                         + Add
