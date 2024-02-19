@@ -30,7 +30,7 @@ export const ResponsiveSidebar = () => {
                     <span className="sr-only">Open sidebar</span>
                     <icons.Bars3Icon className="h-5 w-5" aria-hidden="true" />
                 </button>
-                <img src='/JASForm_Isologo_for_small_transp 2.png' alt="Logo" className="h-10" />
+                <img src="/JASForm_Isologo_for_small_transp 2.png" alt="Logo" className="h-10" />
             </div>
         </>
     );

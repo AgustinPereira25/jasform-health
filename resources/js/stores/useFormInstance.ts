@@ -3,12 +3,11 @@ import { create } from "zustand";
 //TODO - move this interface to the correct location
 export interface CompletedForm {
     form_id:                  number;
-    public_code:              string;
     final_date_time:          Date;
     completer_user_name:      string;
     completer_user_last_name: string;
     completer_user_email:     string;
-    aux_code:                 string;
+    public_code:              string;
     completed_questions:      CompletedQuestion[];
 }
 
@@ -32,7 +31,6 @@ export interface CompleterUserAnswerCheckedOption {
     next_question:    number;
     form_question_id: number;
 }
-
 
 export interface FormInstanceState {
   formInstance: CompletedForm | null;

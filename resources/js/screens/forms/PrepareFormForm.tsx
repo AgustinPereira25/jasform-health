@@ -1,6 +1,8 @@
-import { Form, getFormQuery } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+
+import type { Form} from "@/api";
+import { getFormQuery } from "@/api";
 import { NewForm } from "./NewForm";
 import { icons } from "@/ui";
 

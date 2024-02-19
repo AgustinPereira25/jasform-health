@@ -1,7 +1,8 @@
+import { useState } from 'react';
+
 import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import { useFormInstance } from '@/stores/useFormInstance';
-import { useState } from 'react';
 
 export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -60,9 +61,9 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         <div className="bg-white p-8 rounded-lg w-[35%]">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
                 <img src={'/LogoIpsum.svg'} alt="cardiology" />
-                <span className='text-2xl font-medium text-[#407EC9]'>{formInstanceInfo.welcome_text}</span>
-                <div className='p-4 border border-gray-300 rounded-lg w-full'>
-                    <span className='italic'>{formInstanceInfo.description}</span>
+                <span className="text-2xl font-medium text-[#407EC9]">{formInstanceInfo.welcome_text}</span>
+                <div className="p-4 border border-gray-300 rounded-lg w-full">
+                    <span className="italic">{formInstanceInfo.description}</span>
                 </div>
             </div>
             <form
