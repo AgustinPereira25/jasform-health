@@ -8,19 +8,23 @@ use App\Forms\Transformers\FormTransformer;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ListForm_byPublicCodeController
+class GetForm_byPublicCodeController
 {
     public function __invoke(Request $request, $publicCode): JsonResponse
     {
-        $forms = QueryBuilder::for(Form::class)
+        $form = QueryBuilder::for(Form::class)
             ->where('public_code', $publicCode)
             ->withCount('form_instances')
             ->withCount('form_questions')
             ->with(['form_questions', 'form_questions.question_options'])
-            ->get();
+            ->first();
+
+        if (!$form) {
+            return responder()->error('Form not found')->respond(404);
+        }
 
         return responder()
-            ->success($forms, FormTransformer::class)
+            ->success($form, FormTransformer::class)
             ->respond();
     }
 }
