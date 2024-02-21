@@ -17,7 +17,6 @@ class StoreMultipleForm_question_and_optionsController
     // public function __invoke(StoreMultipleForm_questionAndOptionsRequest $request, StoreForm_questionAction $storeForm_questionAction): JsonResponse
     public function __invoke(StoreMultipleForm_questionAndOptionsRequest $request): JsonResponse
     {
-        Log::info('***StoreMultipleForm_question_and_optionsController');
         $form = Form::find($request->form_id);
 
         if (!$form) {
@@ -31,9 +30,6 @@ class StoreMultipleForm_question_and_optionsController
                 if (!$questionType) {
                     throw new \Exception("Question type not found for question index: $questionKey");
                 }
-
-                Log::info('Question data: ', $questionData);
-
                 $question = new Form_question($questionData);
                 $question->question_type()->associate($questionType);
                 $form->form_questions()->save($question);
