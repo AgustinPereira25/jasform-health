@@ -44,7 +44,7 @@ use Domain\Activity_records\Models\Activity_record;
  * @property string $first_name
  * @property string $last_name
  * @property mixed $photo
- * @property string $position_in_organization
+ * @property string $position_in_org
  * @property string $status
  * @property int $organization_id
  * @property int $role_id
@@ -66,6 +66,7 @@ use Domain\Activity_records\Models\Activity_record;
  * @property string|null $phone
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrg($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -82,7 +83,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'photo',
-        'position_in_organization',
+        'position_in_org',
         'is_active',
         'email',
         'password',

@@ -49,7 +49,7 @@ class ListUserController
             }
             if (!empty($positionOrOrganization)) {
                 $query->where(function ($query) use ($positionOrOrganization) {
-                    $query->where('position_in_organization', 'like', '%' . $positionOrOrganization . '%')
+                    $query->where('position_in_org', 'like', '%' . $positionOrOrganization . '%')
                         ->orWhereHas('organization', function ($query) use ($positionOrOrganization) {
                             $query->where('name', 'like', '%' . $positionOrOrganization . '%');
                         });
@@ -66,7 +66,7 @@ class ListUserController
         // }
 
         // if (!empty($positionOrOrganization)) {
-        //     $users->where('position_in_organization', 'like', '%' . $positionOrOrganization . '%')
+        //     $users->where('position_in_org', 'like', '%' . $positionOrOrganization . '%')
         //         ->orWhereHas('organization', function ($query) use ($positionOrOrganization) {
         //             $query->where('name', 'like', '%' . $positionOrOrganization . '%');
         //         });

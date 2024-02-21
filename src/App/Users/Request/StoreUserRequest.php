@@ -13,7 +13,7 @@ class StoreUserRequest extends FormRequest
     public const FIRST_NAME = 'first_name';
     public const LAST_NAME = 'last_name';
     public const PHOTO = 'photo';
-    public const POSITION = 'position_in_organization';
+    public const POSITION = 'position_in_org';
     public const IS_ACTIVE = 'is_active';
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
@@ -40,7 +40,7 @@ class StoreUserRequest extends FormRequest
             first_name: $this->string(self::FIRST_NAME)->toString(),
             last_name: $this->string(self::LAST_NAME)->toString(),
             photo: $this->string(self::PHOTO)->toString(),
-            position_in_organization: $this->string(self::POSITION)->toString(),
+            position_in_org: $this->string(self::POSITION)->toString(),
             is_active: $this->string(self::IS_ACTIVE)->toString(),
             email: $this->string(self::EMAIL)->toString(),
             password: $this->string(self::PASSWORD)->toString(),

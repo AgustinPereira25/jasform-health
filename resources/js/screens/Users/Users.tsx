@@ -234,7 +234,7 @@ export const Users = () => {
                                             <div className="flex gap-x-3">
                                                 <div className="flex flex-col">
                                                     <div className="truncate text-sm leading-6 text-black">
-                                                        {truncateText(item.position_in_organization ?? "", 30)}
+                                                        {truncateText(item.position_in_org ?? "", 30)}
                                                     </div>
                                                     <div className="truncate text-sm leading-6 text-gray-500">
                                                         {truncateText(item.organization_name!, 30)}
