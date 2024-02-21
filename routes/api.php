@@ -29,6 +29,7 @@ use App\Form_questions\Controllers\ListForm_questionController;
 use App\Form_questions\Controllers\ListForm_question_byFormIdController;
 use App\Form_questions\Controllers\GetForm_questionController;
 use App\Form_questions\Controllers\StoreForm_questionController;
+use App\Form_questions\Controllers\StoreMultipleForm_question_and_optionsController;
 use App\Form_questions\Controllers\DeleteForm_questionController;
 use App\Forms\Controllers\ListFormController;
 use App\Forms\Controllers\ListForm_byUserIdController;
@@ -141,6 +142,7 @@ Route::prefix('form_questions')
         Route::get('/byFormId/{form}', ListForm_question_byFormIdController::class);
         Route::get('/{form_question}', GetForm_questionController::class);
         Route::post('/', StoreForm_questionController::class);
+        Route::post('/store_multiple_questions_with_options/', StoreMultipleForm_question_and_optionsController::class);
         Route::delete('/{form_question}', DeleteForm_questionController::class);
     });
 

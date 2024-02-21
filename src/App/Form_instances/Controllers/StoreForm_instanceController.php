@@ -11,7 +11,6 @@ use Domain\Completer_users\DataTransferObjects\Completer_userDto;
 use Domain\Form_instances\DataTransferObjects\Form_instanceDto;
 use Domain\Completed_questions\DataTransferObjects\Completed_questionDto;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class StoreForm_instanceController
 {
@@ -21,9 +20,6 @@ class StoreForm_instanceController
         StoreCompleter_userAction $storeCompleter_userAction,
         StoreCompleted_questionAction $storeCompleted_questionAction
     ): JsonResponse {
-        Log::info('Invoked StoreForm_instanceController');
-        Log::info('*********StoreForm_instanceRequest::', $request->all());
-
         if ($request->filled('completer_user_email') && $request->filled('completer_user_name') && $request->filled('completer_user_last_name')) {
             $completerUserDto = new Completer_userDto(
                 email: $request->input('completer_user_email'),
@@ -36,7 +32,6 @@ class StoreForm_instanceController
                 $completerUser = $storeCompleter_userAction->execute($completerUserDto);
                 $completerUserId = $completerUser->id;
             } catch (\Exception $e) {
-                Log::error('Error creating Completer User:', [$e->getMessage()]);
                 return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         } else {
@@ -53,7 +48,6 @@ class StoreForm_instanceController
         try {
             $formInstance = $storeForm_instanceAction->execute($formInstanceDto);
         } catch (\Exception $e) {
-            Log::error('Error creating Form Instance:', [$e->getMessage()]);
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
@@ -74,7 +68,6 @@ class StoreForm_instanceController
                 $storeCompleted_questionAction->execute($completedQuestionDto);
             }
         } catch (\Exception $e) {
-            Log::error('Error creating Completed Questions:', [$e->getMessage()]);
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 

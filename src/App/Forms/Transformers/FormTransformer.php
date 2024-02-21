@@ -35,8 +35,8 @@ class FormTransformer extends Transformer
             'is_initial_data_required' => (bool) $form->is_initial_data_required,
             'public_code' => (string) $form->public_code,
             'user_id' => (int) $form->user_id,
-            'form_instances_count' => (int) $form->form_instances_count,
-            'form_questions_count' => (int) $form->form_questions_count,
+            'form_instances_count' => $form->form_instances()->count(),
+            'form_questions_count' => $form->form_questions()->count(),
             'form_questions' => $form->form_questions->transform(function ($formQuestion) use ($formQuestionTransformer, $questionOptionTransformer) {
                 $formQuestionData = $formQuestionTransformer->transform($formQuestion);
                 $formQuestionData['question_options'] = $formQuestion->question_options->transform(function ($questionOption) use ($questionOptionTransformer) {
