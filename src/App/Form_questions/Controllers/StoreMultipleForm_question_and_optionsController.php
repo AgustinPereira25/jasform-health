@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Log;
 
 class StoreMultipleForm_question_and_optionsController
 {
-    // public function __invoke(StoreMultipleForm_questionAndOptionsRequest $request, StoreForm_questionAction $storeForm_questionAction): JsonResponse
     public function __invoke(StoreMultipleForm_questionAndOptionsRequest $request): JsonResponse
     {
         $form = Form::find($request->form_id);
@@ -22,6 +21,11 @@ class StoreMultipleForm_question_and_optionsController
         if (!$form) {
             return responder()->error("Form not found")->respond(JsonResponse::HTTP_NOT_FOUND);
         }
+
+        foreach ($form->form_questions as $question) {
+            $question->question_options()->delete();
+        }
+        $form->form_questions()->delete();
 
         try {
             foreach ($request->form_questions as $questionKey => $questionData) {

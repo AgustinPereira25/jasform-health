@@ -11,13 +11,6 @@ use Illuminate\Validation\Rules\Password;
 
 class StoreMultipleForm_questionAndOptionsRequest extends FormRequest
 {
-    public const TITLE = 'title';
-    public const TEXT = 'text';
-    public const ORDER = 'order';
-    public const IS_MANDATORY = 'is_mandatory';
-    public const FORM_ID = 'form_id';
-    public const QUESTION_TYPE_ID = 'question_type_id';
-
     public function rules(): array
     {
         return [
