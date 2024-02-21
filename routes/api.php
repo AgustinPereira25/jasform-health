@@ -143,8 +143,6 @@ Route::prefix('form_questions')
         Route::get('/{form_question}', GetForm_questionController::class);
         Route::post('/', StoreForm_questionController::class);
         Route::post('/store_multiple_questions_with_options/', StoreMultipleForm_question_and_optionsController::class);
-        Route::post('/multiple/', StoreMultipleForm_question_and_optionsController::class);
-
         Route::delete('/{form_question}', DeleteForm_questionController::class);
     });
 

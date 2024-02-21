@@ -2,7 +2,7 @@
 
 namespace App\Form_questions\Controllers;
 
-use App\Form_questions\Request\StoreForm_questionRequest;
+use App\Form_questions\Request\StoreMultipleForm_questionAndOptionsRequest;
 use App\Forms\Transformers\FormTransformer;
 use Domain\Form_questions\Actions\StoreForm_questionAction;
 use Domain\Forms\Models\Form;
@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Log;
 
 class StoreMultipleForm_question_and_optionsController
 {
-    // public function __invoke(StoreForm_questionRequest $request, StoreForm_questionAction $storeForm_questionAction): JsonResponse
-    public function __invoke(StoreForm_questionRequest $request): JsonResponse
+    // public function __invoke(StoreMultipleForm_questionAndOptionsRequest $request, StoreForm_questionAction $storeForm_questionAction): JsonResponse
+    public function __invoke(StoreMultipleForm_questionAndOptionsRequest $request): JsonResponse
     {
         Log::info('***StoreMultipleForm_question_and_optionsController');
         $form = Form::find($request->form_id);
