@@ -5,6 +5,7 @@ namespace App\Form_instances\Controllers;
 use App\Form_instances\Request\StoreForm_instanceRequest;
 use App\Form_instances\Transformers\Form_instanceTransformer;
 use Domain\Form_instances\Actions\StoreForm_instanceAction;
+use Domain\Forms\Models\Form;
 use Domain\Completer_users\Actions\StoreCompleter_userAction;
 use Domain\Completed_questions\Actions\StoreCompleted_questionAction;
 use Domain\Completer_users\DataTransferObjects\Completer_userDto;
@@ -18,7 +19,8 @@ class StoreForm_instanceController
         StoreForm_instanceRequest $request,
         StoreForm_instanceAction $storeForm_instanceAction,
         StoreCompleter_userAction $storeCompleter_userAction,
-        StoreCompleted_questionAction $storeCompleted_questionAction
+        StoreCompleted_questionAction $storeCompleted_questionAction,
+        Form $formModel
     ): JsonResponse {
         if ($request->filled('completer_user_email') && $request->filled('completer_user_name') && $request->filled('completer_user_last_name')) {
             $completerUserDto = new Completer_userDto(
@@ -38,10 +40,23 @@ class StoreForm_instanceController
             $completerUserId = null;
         }
 
+        $formId = intval($request->input('form_id'));
+        try {
+            $formModel->findOrFail($formId);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return responder()
+                ->error()
+                ->data([
+                    'code' => 'FORM_NOT_FOUND',
+                    'message' => 'The form with the id ' . $formId . ' could not be found'
+                ])
+                ->respond(JsonResponse::HTTP_BAD_REQUEST);
+        }
+
         $formInstanceDto = new Form_instanceDto(
             initial_date_time: $request->input('initial_date_time'),
             final_date_time: $request->input('final_date_time'),
-            form_id: intval($request->input('form_id')),
+            form_id: $formId,
             completer_user_id: $completerUserId,
         );
 
