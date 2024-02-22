@@ -5,7 +5,7 @@ import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
 
-export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
+export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
     if (!currentState) {
         const initialFormData: CompletedForm = {
@@ -47,6 +47,7 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
         }

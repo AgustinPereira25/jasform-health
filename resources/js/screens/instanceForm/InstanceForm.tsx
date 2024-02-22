@@ -10,7 +10,7 @@ export interface FormInstanceFlow {
     questionType: number,
     currentQuestionOrder: number
 };
-export const FormInstance: React.FunctionComponent = () => {
+export const InstanceForm: React.FunctionComponent = () => {
     const { publicCode } = useParams(); // publicCode is the form public code to emit.
 
     const { data: formInstanceData, isLoading, isFetching } = useQuery({

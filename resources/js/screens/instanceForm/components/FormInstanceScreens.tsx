@@ -6,12 +6,12 @@
  */
 
 import type { Form } from "@/api";
-import { FormInstanceHome } from "../FormInstanceHome";
+import { FormInstanceHome } from "../InstanceFormHome";
 import { ChckRadioDDownFrmInstance } from "./ChckRadioDDownFrmInstance";
 import { FinalStepFrmInstance } from "./FinalStepFrmInstance";
 import { InputFieldFrmInstance } from "./InputFieldFrmInstance";
 import { SimpleTxtFrmInstance } from "./SimpleTxtFrmInstance";
-import type { FormInstanceFlow } from "../FormInstance";
+import type { FormInstanceFlow } from "../InstanceForm";
 
 export interface InstanceProps {
     formInstanceInfo: Form;
