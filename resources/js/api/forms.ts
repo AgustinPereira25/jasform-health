@@ -34,7 +34,7 @@ export interface Form {
   user_id?: number;
   form_instances_count?: number;
   form_questions_count?: number;
-  questions?: Question[];
+  form_questions?: Question[];
 }
 
 export interface Question {
@@ -103,29 +103,15 @@ export const getFormQuery = (formId: Form["id"]) => ({
   },
 });
 
-// export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => ({
-//   queryKey: [DOMAIN, public_code, "getFormByPublicCodeQuery"],
-//   queryFn: async () => {
-//     console.log("getFormByPublicCodeQuery", public_code)
-//     const response = await privateAPI.get<ServiceResponse<Form>>(
-//       `/forms/byPublicCode/${public_code}`,
-//     );
-//     return response.data.data;
-//   },
-// });
-
-export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => {
-  return {
-    queryKey: [DOMAIN, public_code, "getFormByPublicCodeQuery"],
-    queryFn: async () => {
-      console.log("getFormByPublicCodeQuery", public_code)
-      const response = await privateAPI.get<ServiceResponse<Form>>(
-        `/forms/byPublicCode/${public_code}`,
-      );
-      return response.data.data;
-    }
-  }
-};
+export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => ({
+  queryKey: [DOMAIN, public_code, "getFormByPublicCodeQuery"],
+  queryFn: async () => {
+    const response = await privateAPI.get<ServiceResponse<Form[]>>(
+      `/forms/byPublicCode/${public_code}`,
+    );
+    return response.data.data;
+  },
+});
 
 interface CreateUserParams {
   name: string;

@@ -2,11 +2,25 @@ import { useState } from 'react';
 
 import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
+import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
 
 export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
-
+    if (!currentState) {
+        const initialFormData: CompletedForm = {
+            form_id: formInstanceInfo.id!,
+            initial_date_time: new Date,
+            completer_user_name: "",
+            completer_user_last_name: "",
+            completer_user_email: "",
+            public_code: formInstanceInfo.public_code!,
+            completed_questions: [],
+        };
+        useFormInstance.setState({
+            formInstance: initialFormData,
+        })
+    }
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -33,7 +47,7 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
-            const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
+            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
         }
     }
@@ -57,6 +71,7 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 break;
         }
     }
+
     return (
         <div className="bg-white p-8 rounded-lg w-[35%]">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
