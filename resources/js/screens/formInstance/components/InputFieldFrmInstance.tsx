@@ -12,11 +12,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     const [error, setError] = useState<string>('');
     const [answerInput, setAnswerInput] = useState<string>('');
 
-<<<<<<< HEAD
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
-=======
-    const currentQuestionInfo: Question = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
->>>>>>> develop
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (currentQuestionInfo.is_obligatory && !answerInput) {
@@ -33,11 +29,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                 question_type_name: currentQuestionInfo.question_type_name,
             };
             useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-<<<<<<< HEAD
             const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
-=======
-            const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
->>>>>>> develop
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
         }
     }
@@ -46,11 +38,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
         setAnswerInput(value);
     }
     const handleGoBackClick = () => {
-<<<<<<< HEAD
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
-=======
-        const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
->>>>>>> develop
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
