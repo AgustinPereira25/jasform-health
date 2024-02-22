@@ -20,7 +20,7 @@ class StoreUserAction
             'first_name' => $userDto->getFirstName(),
             'last_name' => $userDto->getLastName(),
             'photo' => $userDto->getPhoto(),
-            'position_in_organization' => $userDto->getPosition(),
+            'position_in_org' => $userDto->getPosition(),
             'is_active' => $userDto->getIsActive(),
             'email' => $userDto->getEmail(),
             'password' => $this->hasher->make($userDto->getPassword()),

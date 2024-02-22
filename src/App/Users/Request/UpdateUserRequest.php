@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
     public const FIRST_NAME = 'first_name';
     public const LAST_NAME = 'last_name';
     public const PHOTO = 'photo';
-    public const POSITION = 'position_in_organization';
+    public const POSITION = 'position_in_org';
     public const IS_ACTIVE = 'is_active';
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
@@ -42,7 +42,7 @@ class UpdateUserRequest extends FormRequest
             first_name: $this[self::FIRST_NAME],
             last_name: $this[self::LAST_NAME],
             photo: $this[self::PHOTO] ? $this[self::PHOTO] : '',
-            position_in_organization: $this[self::POSITION] ? $this[self::POSITION] : '',
+            position_in_org: $this[self::POSITION] ? $this[self::POSITION] : '',
             is_active: $this[self::IS_ACTIVE],
             email: $this[self::EMAIL],
             password: $this[self::PASSWORD],

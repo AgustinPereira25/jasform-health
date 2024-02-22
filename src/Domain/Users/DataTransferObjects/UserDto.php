@@ -10,7 +10,7 @@ class UserDto
         private readonly string $first_name,
         private readonly string $last_name,
         private readonly string $photo,
-        private readonly string $position_in_organization,
+        private readonly string $position_in_org,
         private readonly string $is_active,
         private readonly string $email,
         private readonly string $password,
@@ -36,7 +36,7 @@ class UserDto
 
     public function getPosition(): string
     {
-        return $this->position_in_organization;
+        return $this->position_in_org;
     }
 
     public function getIsActive(): string

@@ -21,7 +21,7 @@ class UserListTransformer extends Transformer
             'first_name' => (string) $user->first_name,
             'last_name' => (string) $user->last_name,
             'photo' => (string) $user->photo,
-            'position_in_organization' => (string) $user->position_in_organization,
+            'position_in_org' => (string) $user->position_in_org,
             'is_active' => (bool) $user->is_active,
             'email' => (string) $user->email,
             'organization_name' => $user->organization->name,

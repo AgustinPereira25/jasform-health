@@ -115,7 +115,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             firstName: user?.first_name ?? "",
             lastName: user?.last_name ?? "",
             email: user?.email ?? "",
-            positionInOrganization: user?.position_in_organization ?? "",
+            position_in_org: user?.position_in_org ?? "",
             organization: user?.organization_name ?? "",
             role: user?.role_name ?? defaultRole,
             isActive: user?.is_active ?? true,
@@ -177,7 +177,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             first_name: data.firstName,
             last_name: data.lastName,
             photo: data.photo,
-            position_in_organization: data.positionInOrganization,
+            position_in_org: data.position_in_org,
             is_active: data.isActive,
             email: data.email,
             organization_name: data.organization,
@@ -371,7 +371,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     {...register("positionInOrganization")}
                                     error={errors.positionInOrganization?.message}
                                     //value={passwordInput}
-                                    defaultValue={user?.position_in_organization}
+                                    defaultValue={user?.position_in_org}
                                 />
                             </div>
                         </div>

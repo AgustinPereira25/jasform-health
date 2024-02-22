@@ -11,7 +11,7 @@ class UserDtoUpdate
         private readonly string $first_name,
         private readonly string $last_name,
         private readonly ?string $photo,
-        private readonly ?string $position_in_organization,
+        private readonly ?string $position_in_org,
         private readonly string $is_active,
         private readonly string $email,
         private readonly string $password,
@@ -27,7 +27,7 @@ class UserDtoUpdate
             'first_name' => $this->getFirstName(),
             'last_name' => $this->getLastName(),
             'photo' => $this->getPhoto(),
-            'position_in_organization' => $this->getPosition(),
+            'position_in_org' => $this->getPosition(),
             'is_active' => $this->getIsActive(),
             'email' => $this->getEmail(),
             'password' => $this->getPassword(),
@@ -58,7 +58,7 @@ class UserDtoUpdate
 
     public function getPosition(): string
     {
-        return $this->position_in_organization;
+        return $this->position_in_org;
     }
 
     public function getIsActive(): string
