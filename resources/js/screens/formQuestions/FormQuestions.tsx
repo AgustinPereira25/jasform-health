@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import { Button, icons } from '@/ui'
 import { tw } from '@/utils'
 import type { IFormQuestion } from '@/api'
-import { useNavigate, useParams } from 'react-router-dom'
 import ComboBox from '@/ui/form/Combobox'
 import { questionScreens } from './utils'
 
@@ -93,9 +94,9 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     }
 
     return (
-        <div className='pb-6 h-[90%]'>
+        <div className="pb-6 h-[90%]">
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
-                <div className='flex gap-1 items-center'>
+                <div className="flex gap-1 items-center">
                     <Button
                         variant="secondary"
                         onClick={() => navigate(-1)}
@@ -108,13 +109,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </span>
                     {
                         formId && (
-                            <span className='text-2xl text-gray-500 italic'>- Form Code: {formId}</span>
+                            <span className="text-2xl text-gray-500 italic">- Form Code: {formId}</span>
                         )
                     }
                 </div>
-                <div className='flex gap-5'>
+                <div className="flex gap-5">
                     <Button
-                        type='submit'
+                        type="submit"
                         variant="primary"
                     >
                         Save
@@ -122,7 +123,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 </div>
             </div>
             <div className="flex gap-3 w-full h-full">
-                <div className='bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%]'>
+                <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%]">
                     <span>Content</span>
                     <div className="flex flex-col items-center">
                         {
@@ -131,9 +132,9 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                     <div
                                         id={item.order?.toString()}
                                         key={item.order}
-                                        className='flex relative w-full items-center hover:bg-gray-50'
+                                        className="flex relative w-full items-center hover:bg-gray-50"
                                         onClick={() => handleQuestionClick(item, item.order!)}
-                                        role='presentation'
+                                        role="presentation"
                                     >
                                         <div className={tw(`absolute border-l-4 h-[80%] -left-2`,
                                             item.order === currentQuestion?.order && 'border-l-[#407EC9]'
@@ -144,7 +145,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                 idx === 0 && `border-t border-t-gray-200`,
                                                 idx !== 0 && `border-y border-y-gray-200`
                                             )}>
-                                            <div className='flex flex-col justify-center pl-3'>
+                                            <div className="flex flex-col justify-center pl-3">
                                                 <span className={tw(`text-sm font-semibold`,
                                                     item.order === currentQuestion?.order && 'text-[#407EC9]',
                                                     item.order !== currentQuestion?.order && 'text-[#6B7280]'
@@ -153,20 +154,20 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                     Question {item.order} - {item.title}
                                                 </span>
                                             </div>
-                                            <div className='flex gap-2 items-center'>
-                                                <icons.TrashIcon className='w-5 h-5' onClick={() => handleDeleteClick(item)} />
-                                                <icons.DocumentDuplicateIcon className='w-5 h-5' />
-                                                <icons.ArrowUpIcon className='w-5 h-5' onClick={() => handleUpClick(item)} />
-                                                <icons.ArrowDownIcon className='w-5 h-5' onClick={() => handleDownClick(item)} />
+                                            <div className="flex gap-2 items-center">
+                                                <icons.TrashIcon className="w-5 h-5" onClick={() => handleDeleteClick(item)} />
+                                                <icons.DocumentDuplicateIcon className="w-5 h-5" />
+                                                <icons.ArrowUpIcon className="w-5 h-5" onClick={() => handleUpClick(item)} />
+                                                <icons.ArrowDownIcon className="w-5 h-5" onClick={() => handleDownClick(item)} />
                                             </div>
                                         </div>
                                     </div>
                                 )
                             })
                         }
-                        <div className='pt-2'>
+                        <div className="pt-2">
                             <Button
-                                variant='secondary'
+                                variant="secondary"
                                 onClick={handleAddQuestionClick}
                             >
                                 + Add Question
@@ -175,15 +176,15 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </div>
                 </div>
                 {/* TODO - Make this html a component */}
-                <div className='bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]'>
+                <div className="bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]">
                     {
                         currentQuestion && (
-                            <div className='h-full'>
-                                <div className='flex justify-between'>
-                                    <div className='flex flex-col'>
-                                        <span className='text-sm font-medium'>Question {currentQuestionOrder}</span>
+                            <div className="h-full">
+                                <div className="flex justify-between">
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
                                     </div>
-                                    <div className='flex gap-2 items-center pb-2'>
+                                    <div className="flex gap-2 items-center pb-2">
                                         <span>Question Type</span>
                                         <ComboBox
                                             id="questionType"
@@ -194,7 +195,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                     </div>
                                 </div>
                                 <hr />
-                                <QuestionTypeScreen text='pepe' nextSteps={questions} comboBoxOption={comboBoxOption} />
+                                <QuestionTypeScreen text="pepe" nextSteps={questions} comboBoxOption={comboBoxOption} />
                             </div>
                         )
                     }

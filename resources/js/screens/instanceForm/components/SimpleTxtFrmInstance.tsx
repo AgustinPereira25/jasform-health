@@ -1,15 +1,17 @@
-import { CompletedQuestion, useFormInstance } from '@/stores/useFormInstance';
-import { Button, Input } from '@/ui'
 import React, { useState } from 'react'
-import { InstanceProps } from './FormInstanceScreens';
-import { Question } from '@/api';
+
+import type { CompletedQuestion } from '@/api/formInstance';
+import { useFormInstance } from '@/stores/useFormInstance';
+import { Button, Input } from '@/ui'
+import type { InstanceProps } from './FormInstanceScreens';
+import type { Question } from '@/api';
 
 export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
     const [error, setError] = useState<string>('');
     const [answerInput, setAnswerInput] = useState<string>('');
 
-    const currentQuestionInfo: Question = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
+    const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -27,7 +29,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                 question_type_name: currentQuestionInfo.question_type_name,
             };
             useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-            const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
         }
     }
@@ -36,26 +38,26 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         setAnswerInput(value);
     }
     const handleGoBackClick = () => {
-        const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
+        const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id='simple-txt-container-form-div' className='bg-gray-300 p-7 border rounded-xl'>
+        <div id="simple-txt-container-form-div" className="bg-gray-300 p-7 border rounded-xl">
             <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
-            <form id='simple-txt-container-form-form' className='flex flex-col justify-between h-full' onSubmit={handleSubmit}>
-                <div className='flex flex-col pt-6 pb-20 gap-4'>
+            <form id="simple-txt-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
+                <div className="flex flex-col pt-6 pb-20 gap-4">
                     <Input
                         type="text"
                         name="answer"
                         id="simple-txt-answer"
-                        placeholder='Tu Respuesta'
+                        placeholder="Tu Respuesta"
                         error={error && error}
                         value={answerInput}
                         onChange={handleChange}
                     />
                 </div>
-                <div className='flex justify-between'>
-                    <Button variant='secondary' type="button" id="goBack-answer-btn" onClick={handleGoBackClick}>Atrás</Button>
+                <div className="flex justify-between">
+                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick}>Atrás</Button>
                     <Button type="submit" id="submit-answer-btn">Siguiente</Button>
                 </div>
             </form>

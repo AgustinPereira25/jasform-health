@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
+
 import { Button, Input } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
 import type { InstanceProps } from './FormInstanceScreens';
-import type { CompletedQuestion, CompleterUserAnswerCheckedOption } from '@/stores/useFormInstance';
+import type { CompletedQuestion, CompleterUserAnswerCheckedOption } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { Question, QuestionsOption } from '@/api';
 
 export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
-    const currentQuestionInfo: Question = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
+    const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
 
     const questiontypeId = currentScreen.questionType;
     const [error, setError] = useState<string>('');
@@ -37,7 +38,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }
@@ -60,7 +61,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     completer_user_answer_checked_options: checkedAnswers,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }
@@ -86,21 +87,21 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         }
     }
     const handleGoBackClick = () => {
-        const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
+        const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id='chck-radio-container-form-div' className='bg-gray-300 p-6 border rounded-xl'>
+        <div id="chck-radio-container-form-div" className="bg-gray-300 p-6 border rounded-xl">
             <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
-            <form id='chck-radio-container-form-form' className='flex flex-col justify-between h-full' onSubmit={handleSubmit}>
-                <div className='flex flex-col pt-6 pb-20 gap-4'>
+            <form id="chck-radio-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
+                <div className="flex flex-col pt-6 pb-20 gap-4">
 
                     {
                         questiontypeId === 3 ? (
                             <>
                                 {
                                     currentQuestionInfo.questions_options?.map((option) => (
-                                        <div key={option.order} className='flex items-center gap-3'>
+                                        <div key={option.order} className="flex items-center gap-3">
                                             <Input
                                                 compact
                                                 type="checkbox"
@@ -113,15 +114,15 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                         </div>
                                     ))
                                 }
-                                <div className='flex items-center justify-center h-10'>
-                                    {error && (<span className='text-red-500'>{error}</span>)}
+                                <div className="flex items-center justify-center h-10">
+                                    {error && (<span className="text-red-500">{error}</span>)}
                                 </div>
                             </>
                         ) : questiontypeId === 4 ? (
                             <>
                                 {
                                     currentQuestionInfo.questions_options?.map((option) => (
-                                        <div key={option.order} className='flex items-center gap-3'>
+                                        <div key={option.order} className="flex items-center gap-3">
                                             <Input
                                                 compact
                                                 type="radio"
@@ -147,8 +148,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         )
                     }
                 </div>
-                <div className='flex justify-between'>
-                    <Button variant='secondary' type="button" id="goBack-answer-btn" onClick={handleGoBackClick}>Atrás</Button>
+                <div className="flex justify-between">
+                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick}>Atrás</Button>
                     <Button type="submit" id="submit-answer-btn">Siguiente</Button>
                 </div>
             </form>

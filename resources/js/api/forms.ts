@@ -1,7 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
-
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 import type { User } from "./users";
@@ -35,7 +34,7 @@ export interface Form {
   user_id?: number;
   form_instances_count?: number;
   form_questions_count?: number;
-  questions?: Question[];
+  form_questions?: Question[];
 }
 
 export interface Question {
@@ -100,6 +99,16 @@ export const getFormQuery = (formId: Form["id"]) => ({
       `/forms/${formId}`,
     );
 
+    return response.data.data;
+  },
+});
+
+export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => ({
+  queryKey: [DOMAIN, public_code, "getFormByPublicCodeQuery"],
+  queryFn: async () => {
+    const response = await privateAPI.get<ServiceResponse<Form[]>>(
+      `/forms/byPublicCode/${public_code}`,
+    );
     return response.data.data;
   },
 });

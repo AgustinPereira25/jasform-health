@@ -1,11 +1,26 @@
-import { Button, Input, icons } from '@/ui';
-import type { InstanceProps } from './components';
-import { useFormInstance } from '@/stores/useFormInstance';
 import { useState } from 'react';
 
-export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
-    const currentState = useFormInstance.getState().formInstance!;
+import { Button, Input, icons } from '@/ui';
+import type { InstanceProps } from './components';
+import type { CompletedForm } from '@/api/formInstance';
+import { useFormInstance } from '@/stores/useFormInstance';
 
+export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
+    const currentState = useFormInstance.getState().formInstance!;
+    if (!currentState) {
+        const initialFormData: CompletedForm = {
+            form_id: formInstanceInfo.id!,
+            initial_date_time: new Date,
+            completer_user_name: "",
+            completer_user_last_name: "",
+            completer_user_email: "",
+            public_code: formInstanceInfo.public_code!,
+            completed_questions: [],
+        };
+        useFormInstance.setState({
+            formInstance: initialFormData,
+        })
+    }
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -32,7 +47,8 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
-            const nextQuestionType: number = formInstanceInfo.questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
         }
     }
@@ -56,13 +72,14 @@ export const FormInstanceHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 break;
         }
     }
+
     return (
         <div className="bg-white p-8 rounded-lg w-[35%]">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
                 <img src={'/LogoIpsum.svg'} alt="cardiology" />
-                <span className='text-2xl font-medium text-[#407EC9]'>{formInstanceInfo.welcome_text}</span>
-                <div className='p-4 border border-gray-300 rounded-lg w-full'>
-                    <span className='italic'>{formInstanceInfo.description}</span>
+                <span className="text-2xl font-medium text-[#407EC9]">{formInstanceInfo.welcome_text}</span>
+                <div className="p-4 border border-gray-300 rounded-lg w-full">
+                    <span className="italic">{formInstanceInfo.description}</span>
                 </div>
             </div>
             <form

@@ -14,7 +14,7 @@ import { PrepareProfileForm } from "@/screens/profile/PrepareProfileForm";
 import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 import { PrepareQuestionsForm } from "@/screens/formQuestions";
 import { DeleteUserConfirm } from "@/screens/profile/DeleteUserConfirm";
-import { FormInstance } from "@/screens/formInstance";
+import { InstanceForm } from "@/screens/instanceForm";
 
 export const Router = () => {
     const location = useLocation();
@@ -89,7 +89,6 @@ export const Router = () => {
                     <Route element={<DeleteUserConfirm />} path={ROUTES.deleteUser} />
                 </Route>
 
-
                 {/* <Route element={<ProtectedRoute expected="admin" />}> */}
                 <Route element={<Layout />}>
                     <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />
@@ -98,7 +97,7 @@ export const Router = () => {
 
                 {/* FormInstanceLayout Routes */}
                 <Route element={<FormInstanceLayout />}>
-                    <Route element={<FormInstance />} path={ROUTES.instanceForm} />
+                    <Route element={<InstanceForm />} path={ROUTES.instanceForm} />
                 </Route>
             </Routes>
 
