@@ -16,11 +16,9 @@ export const ROUTES = {
   instanceFormHome: "/instance-form",
   instanceForm: "/instance-form/:publicCode",
   notFound: "*",
-  //FormInstance (list, create, update, delete formInstances to submit)
-  formInstances: "/form-instance/:publicCode",
-  formInstanceList: "/form-instance",
-  formInstanceCreate: "/form-instance/new",
-
+  //FormInstance (List and show completed questions by FormID)
+  formInstances: "/form-instance/:formId",
+  completedQuestionsList: "/form-instance/:formId/completed_questions",
 } as const;
 
 export const MODAL_ROUTES = {
