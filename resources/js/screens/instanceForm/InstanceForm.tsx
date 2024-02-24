@@ -25,13 +25,9 @@ export const InstanceForm: React.FunctionComponent = () => {
     return (
         <div className="w-full">
             {isLoading || isFetching ? (
-                <tr className="h-full items-center">
-                    <td colSpan={5}>
-                        <div className="flex justify-center p-9">
-                            <icons.SpinnerIcon />
-                        </div>
-                    </td>
-                </tr>
+                <div className="flex h-full items-center justify-center">
+                    <icons.SpinnerIcon />
+                </div>
             ) : (
                 <div className="flex items-center justify-center w-full">
                     <FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData!} />
