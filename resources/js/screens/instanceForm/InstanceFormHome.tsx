@@ -80,7 +80,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
                 <img src={'/LogoIpsum.svg'} alt="cardiology" />
                 <span className="text-2xl font-medium text-[#407EC9]">{formInstanceInfo.welcome_text}</span>
-                <div className="p-4 border border-gray-300 rounded-lg w-full">
+                <div className="p-4 w-full">
                     <span className="italic">{formInstanceInfo.description}</span>
                 </div>
             </div>

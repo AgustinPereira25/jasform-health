@@ -84,7 +84,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             {(isPendingCreateFormInstanceMutation || isPendingCreateFormInstanceMutation) && (
                 <LoadingOverlay />
             )}
-            <div id="final-step-container-form-div" className="bg-gray-300 p-10 border rounded-xl flex flex-col justify-between items-center max-w-screen-sm h-full max-h-[430px] gap-7">
+            <div id="final-step-container-form-div" className="bg-white p-10 border rounded-xl flex flex-col justify-between items-center max-w-screen-sm h-full max-h-[430px] gap-7">
                 <span className="text-3xl font-semibold">A punto de enviar el formulario</span>
                 <div className="flex flex-col gap-5 w-[70%]">
                     <span className="text-xl font-light text break-words">Tus respuestas serán enviadas a tu centro de salud pertinente.</span>
