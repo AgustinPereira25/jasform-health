@@ -17,6 +17,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             completed_questions_count: 0,
             public_code: formInstanceInfo.public_code!,
             completed_questions: [],
+            api_url: formInstanceInfo.api_url ?? '',
         };
         useFormInstance.setState({
             formInstance: initialFormData,
