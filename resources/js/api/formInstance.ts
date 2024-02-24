@@ -1,9 +1,8 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
-
 import type { ServiceResponse } from "./api.types";
-import { getAuthHeaders, privateAPI } from "./axios";
+import { getAuthHeaders, privateAPI, urlAPI } from "./axios";
 
 export interface CompletedForm {
   form_id: number;
@@ -49,6 +48,28 @@ export const createFormInstance = {
       "/form_instances",
       {
         ...body,
+      },
+    );
+    console.log("response:", { response });
+    return response.data.data;
+  },
+  invalidates: (queryClient: QueryClient) => {
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
+  },
+};
+
+export interface FormInstanceURL {
+  url: string;
+  body: CompletedForm;
+}
+export const sendExternalEndpoint = {
+  mutation: async (info: FormInstanceURL) => {
+    console.log("body:", info.body);
+    console.log("url:", info.url);
+    const response = await urlAPI.post<ServiceResponse<CompletedForm>>(
+      info.url,
+      {
+        ...info.body,
       },
     );
     console.log("response:", { response });

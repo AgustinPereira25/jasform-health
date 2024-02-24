@@ -13,6 +13,7 @@ const baseConfig = {
 
 export const publicAPI = axios.create(baseConfig);
 export const privateAPI = axios.create(baseConfig);
+export const urlAPI = axios.create();
 
 privateAPI.interceptors.request.use(privateRequest);
 privateAPI.interceptors.response.use((response) => response, errorResponse);
