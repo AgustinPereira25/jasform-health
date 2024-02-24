@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import type { CompletedQuestion } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
@@ -9,7 +9,12 @@ import type { Question } from '@/api';
 export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
     const [error, setError] = useState<string>('');
-    const [answerInput, setAnswerInput] = useState<string>(currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '');
+    const savedAnswer = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
+    const [answerInput, setAnswerInput] = useState<string>(savedAnswer);
+
+    useEffect(() => {
+        setAnswerInput(savedAnswer);
+    }, [savedAnswer]);
 
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
