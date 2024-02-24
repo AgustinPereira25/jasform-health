@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { Button, Input } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
@@ -13,8 +13,24 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     const questiontypeId = currentScreen.questionType;
     const [error, setError] = useState<string>('');
-    const [answerInput, setAnswerInput] = useState<string>('');
-    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>([]);
+
+    const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
+    const [answerInput, setAnswerInput] = useState<string>(savedAnswerInput);
+
+    // TODO - Test this useMemo
+    // const savedAnswerCheckedOptions = useMemo(
+    //     () => currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [],
+    //     [currentState, currentScreen.currentQuestionOrder]
+    //   );
+
+    // TODO - Test persistence of multiple answers for checkbox
+    const savedAnswerCheckedOptions = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [];
+    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
+
+    useEffect(() => {
+        setAnswerInput(savedAnswerInput);
+        setCheckedAnswers(savedAnswerCheckedOptions);
+    }, [savedAnswerInput, savedAnswerCheckedOptions]);
 
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
     if (questiontypeId === 5) {
