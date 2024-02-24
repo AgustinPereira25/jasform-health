@@ -23,7 +23,7 @@ interface NewEditProfileForm {
     firstName?: string;
     lastName?: string;
     email?: string;
-    positionInOrganization?: string;
+    position_in_org?: string;
     organization?: string;
     subscription?: string;
     role?: string;
@@ -70,7 +70,7 @@ const userSchema = z
             name => name.trim().length >= 2,
             { message: "Organization name must contain more than two letters" }
         ),
-        positionInOrganization: z.string().optional(),
+        position_in_org: z.string().optional(),
         role: z.string(),
         isActive: z.boolean(),
         // password: z
@@ -357,7 +357,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                             </div>
                         </div>
                         <hr className="mx-3" />
-                        <div className={tw("flex h-16 p-3", errors.positionInOrganization && "pb-5")}>
+                        <div className={tw("flex h-16 p-3", errors.position_in_org && "pb-5")}>
                             <div className="flex w-40">
                                 <span>Position</span>
                             </div>
@@ -366,10 +366,10 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     containerClassName="w-full"
                                     fullHeight
                                     type="text"
-                                    id="positionInOrganization"
+                                    id="position_in_org"
                                     placeholder="Position in Organization"
-                                    {...register("positionInOrganization")}
-                                    error={errors.positionInOrganization?.message}
+                                    {...register("position_in_org")}
+                                    error={errors.position_in_org?.message}
                                     //value={passwordInput}
                                     defaultValue={user?.position_in_org}
                                 />
