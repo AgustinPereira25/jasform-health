@@ -18,7 +18,7 @@ export const ROUTES = {
   notFound: "*",
   //FormInstance (List and show completed questions by FormID)
   formInstances: "/form-instance/:formId",
-  completedQuestionsList: "/form-instance/:formId/completed_questions",
+  completedQuestionsList: "/form-instance/:formId/completed-questions",
 } as const;
 
 export const MODAL_ROUTES = {

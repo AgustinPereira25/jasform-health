@@ -8,6 +8,7 @@ import { tw } from '@/utils'
 import { paginatorValues } from '@/constants/pagination'
 import Pagination from '@/ui/common/Pagination'
 import { getFormInstancesQuery } from '@/api/formInstance'
+import { useCompletedQuestions } from '@/stores'
 
 export const FormInstance: React.FC = () => {
     const { formId } = useParams();
@@ -20,8 +21,11 @@ export const FormInstance: React.FC = () => {
     const [debouncedSearch, setDebouncedSearch] = useState({ nameEmailCode: "", submitted_start_date: "", submitted_end_date: "" });
 
     const handleDebouncedSearch = useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         debounce((query: any) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             setDebouncedSearch(query);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, 500) as (query: any) => void,
         []
     );
@@ -41,9 +45,16 @@ export const FormInstance: React.FC = () => {
     });
     const forms = data?.data;
 
+    const handleGoCompletedQuestions = (idx: number) => {
+        useCompletedQuestions.setState({
+            completedQuestions: forms![idx]!.completed_questions,
+        });
+        navigate(`/form-instance/${formId}/completed-questions`);
+    };
+
     return (
-        <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
-            <div className="flex gap-1 items-center">
+        <div className="bg-white flex flex-col items-center justify-between px-2 pb-4 text-base font-semibold leading-7 w-full gap-5">
+            <div className="flex gap-1 items-center w-full">
                 <Button
                     variant="secondary"
                     onClick={() => navigate(-1)}
@@ -60,7 +71,7 @@ export const FormInstance: React.FC = () => {
                     )
                 }
             </div>
-            <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
+            <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg w-full">
                 <div className="flex gap-5">
                     <Input
                         type="search"
@@ -109,19 +120,19 @@ export const FormInstance: React.FC = () => {
                                     scope="col"
                                     className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
                                 >
-                                    LAST MODIFIED DATE
+                                    AUX USER CODE
                                 </th>
                                 <th
                                     scope="col"
                                     className="py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:pr-8 sm:text-left lg:pr-20"
                                 >
-                                    # QUESTIONS
+                                    SUBMITTED DATE
                                 </th>
                                 <th
                                     scope="col"
                                     className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
                                 >
-                                    # INSTANCES
+                                    # QUESTIONS
                                 </th>
                                 <th
                                     scope="col"
@@ -139,33 +150,30 @@ export const FormInstance: React.FC = () => {
                                     </td>
                                 </tr>
                             )}
-                            {forms?.map((item) => (
+                            {forms?.map((item, idx) => (
                                 <tr key={item.public_code}>
                                     <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                         <div className="flex items-center gap-x-4">
                                             <div className="truncate text-sm leading-6 text-black">
-                                                {item.name}
+                                                {`${item.completer_user_first_name} ${item.completer_user_last_name}`}
                                             </div>
                                         </div>
                                     </td>
                                     <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                         <div className="flex gap-x-3">
                                             <div className="truncate text-sm leading-6 text-black">
-                                                {item?.last_modified_date_time?.toString()}
-                                                {/* TODO: Apply USA format MM/DD/YYYY HH:MM AM/PM */}
+                                                {item?.public_code}
                                             </div>
                                         </div>
                                     </td>
                                     <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                                        {item?.form_questions_count?.toString()}
+                                        {item.final_date_time?.toString()}
                                     </td>
                                     <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        {item?.form_instances_count?.toString()}
+                                        {item?.completed_questions_count}
                                     </td>
                                     <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        <Button onClick={() => console.log('click')}>
-                                            <icons.ArrowRightIcon className={tw(`w-5 h-5`)} />
-                                        </Button>
+                                        <icons.ChevronRightIcon className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
                                     </td>
                                 </tr>
                             ))}

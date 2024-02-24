@@ -5,14 +5,15 @@ import { getAuthHeaders, privateAPI } from "./axios";
 import { query_keys } from "@/constants/query_keys";
 
 export interface CompletedForm {
-    form_id:                  number;
+    form_id:                   number;
     initial_date_time:         Date;
     final_date_time?:          Date;
-    completer_user_name:      string;
-    completer_user_last_name: string;
-    completer_user_email:     string;
-    public_code:              string;
-    completed_questions:      CompletedQuestion[];
+    completer_user_first_name: string;
+    completer_user_last_name:  string;
+    completer_user_email:      string;
+    public_code:               string;
+    completed_questions_count: number,
+    completed_questions:       CompletedQuestion[];
 }
 
 export interface CompletedQuestion {

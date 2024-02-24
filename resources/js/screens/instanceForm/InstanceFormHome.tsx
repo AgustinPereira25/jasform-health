@@ -11,9 +11,10 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         const initialFormData: CompletedForm = {
             form_id: formInstanceInfo.id!,
             initial_date_time: new Date,
-            completer_user_name: "",
+            completer_user_first_name: "",
             completer_user_last_name: "",
             completer_user_email: "",
+            completed_questions_count: 0,
             public_code: formInstanceInfo.public_code!,
             completed_questions: [],
         };
@@ -46,8 +47,8 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
-            useFormInstance.setState({ formInstance: { ...currentState, completer_user_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            useFormInstance.setState({ formInstance: { ...currentState, completer_user_first_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
+
             const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
         }
