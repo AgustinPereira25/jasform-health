@@ -467,14 +467,19 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </Button>
                         </div>
                         <hr className="mx-3" />
-                        <div className="flex p-3 h-16 ">
-                            <Button
-                                variant="primary"
-                            >
-                                <icons.EyeIcon className={tw(`w-5 h-5`)} />
-                                Preview the Form
-                            </Button>
-                        </div>
+                        {
+                            form.id && (
+                                <div className="flex p-3 h-16 ">
+                                    <Button
+                                        variant="primary"
+                                        onClick={() => { navigate(`/form-instance/${form.id}`) }}
+                                    >
+                                        <icons.EyeIcon className={tw(`w-5 h-5`)} />
+                                        View form&apos;s instances
+                                    </Button>
+                                </div>
+                            )
+                        }
                         <hr className="mx-3" />
                     </div>
                 </div>

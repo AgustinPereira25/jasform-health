@@ -14,7 +14,7 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
     const navigate = useNavigate();
 
     const handleFinishClick = () => {
-        useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date } });
+        useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
         currentState = useFormInstance.getState().formInstance!;
         console.log(currentState);
         createFormInstanceMutation(currentState);

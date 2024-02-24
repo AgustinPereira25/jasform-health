@@ -1,17 +1,19 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import type { ServiceResponse } from "./api.types";
-import { privateAPI } from "./axios";
+import { getAuthHeaders, privateAPI } from "./axios";
+import { query_keys } from "@/constants/query_keys";
 
 export interface CompletedForm {
-    form_id:                  number;
+    form_id:                   number;
     initial_date_time:         Date;
     final_date_time?:          Date;
-    completer_user_name:      string;
-    completer_user_last_name: string;
-    completer_user_email:     string;
-    public_code:              string;
-    completed_questions:      CompletedQuestion[];
+    completer_user_first_name: string;
+    completer_user_last_name:  string;
+    completer_user_email:      string;
+    public_code:               string;
+    completed_questions_count: number,
+    completed_questions:       CompletedQuestion[];
 }
 
 export interface CompletedQuestion {
@@ -51,3 +53,36 @@ export const createFormInstance = {
       void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
     },
   };
+
+  export const getFormInstancesQuery = (
+    perPage: number,
+    currentPage: number,
+    formId: string,
+    nameEmailCode: string,
+    submitted_start_date: string,
+    submitted_end_date: string,
+  ) => ({
+    queryKey: [
+      DOMAIN,
+      ALL,
+      query_keys.FORM_INSTANCES_LIST,
+      perPage,
+      currentPage,
+      nameEmailCode,
+      submitted_start_date,
+      submitted_end_date,
+    ],
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 700));
+
+      const response = await privateAPI.get<ServiceResponse<CompletedForm[]>>(`form_instances/byFormId/${formId}`, {
+        params: {
+          perPage: perPage,
+          currentPage: currentPage,
+        },
+        headers: getAuthHeaders(),
+      });
+      // console.log(response)
+      return response.data;
+    },
+  });

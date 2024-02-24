@@ -15,6 +15,7 @@ import { PrepareFormForm } from "@/screens/forms/PrepareFormForm";
 import { PrepareQuestionsForm } from "@/screens/formQuestions";
 import { DeleteUserConfirm } from "@/screens/profile/DeleteUserConfirm";
 import { InstanceForm } from "@/screens/instanceForm";
+import { CompletedQuestions, FormInstance } from "@/screens/formInstance";
 
 export const Router = () => {
     const location = useLocation();
@@ -92,6 +93,18 @@ export const Router = () => {
                 {/* <Route element={<ProtectedRoute expected="admin" />}> */}
                 <Route element={<Layout />}>
                     <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />
+                </Route>
+                {/* </Route> */}
+
+                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+                <Route element={<Layout />}>
+                    <Route element={<FormInstance />} path={ROUTES.formInstances} />
+                </Route>
+                {/* </Route> */}
+
+                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+                <Route element={<Layout />}>
+                    <Route element={<CompletedQuestions />} path={ROUTES.completedQuestionsList} />
                 </Route>
                 {/* </Route> */}
 
