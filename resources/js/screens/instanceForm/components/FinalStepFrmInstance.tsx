@@ -29,10 +29,10 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
     const { mutate: createFormInstanceMutation, isPending: isPendingCreateFormInstanceMutation } =
         useMutation({
             mutationFn: createFormInstance.mutation,
-            onSuccess: (data) => {
+            onSuccess: () => {
                 createFormInstance.invalidates(queryClient);
-                toast.success(`Form with public code "${data.public_code}" successfully sent!`);
-                navigate(ROUTES.home);
+                toast.success(`Form successfully sent!`);
+                // navigate(ROUTES.home);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -43,7 +43,7 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                         toast.error(`${valArray[0]}`);
                     });
                 } else {
-                    toast.error("There was an error trying to create the user. Please try again later.");
+                    toast.error("There was an error. Please try again later.");
                 }
             },
         });

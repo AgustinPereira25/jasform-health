@@ -21,7 +21,7 @@ class StoreCompleter_userRequest extends FormRequest
             self::FIRST_NAME => ['required'],
             self::LAST_NAME => ['required'],
             self::EMAIL => ['required', 'email:strict'],
-            self::CODE => ['required'],
+            self::CODE => [],
         ];
     }
 
