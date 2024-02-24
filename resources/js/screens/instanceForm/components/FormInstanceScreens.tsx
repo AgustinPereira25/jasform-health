@@ -6,7 +6,7 @@
  */
 
 import type { Form } from "@/api";
-import { FormInstanceHome } from "../InstanceFormHome";
+import { InstanceFormHome } from "../InstanceFormHome";
 import { ChckRadioDDownFrmInstance } from "./ChckRadioDDownFrmInstance";
 import { FinalStepFrmInstance } from "./FinalStepFrmInstance";
 import { InputFieldFrmInstance } from "./InputFieldFrmInstance";
@@ -20,7 +20,7 @@ export interface InstanceProps {
 };
 
 export const FormInstanceScreens = {
-    0: FormInstanceHome, // 0: IssueFormHome, (First Step screen)
+    0: InstanceFormHome, // 0: IssueFormHome, (First Step screen)
     1: SimpleTxtFrmInstance, // 1: SimpleTextScreen,
     2: InputFieldFrmInstance, // 2: InputFieldScreen,
     3: ChckRadioDDownFrmInstance, // 3: CheckRadioDDownScreen, // Multiple Choice

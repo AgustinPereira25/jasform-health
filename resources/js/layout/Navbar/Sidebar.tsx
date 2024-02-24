@@ -8,12 +8,12 @@ import { LogOutLogo } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
 
 const navigation = [
-    // {
-    //     path: ROUTES.home,
-    //     label: "My Dashboard",
-    //     icon: <icons.DashboardIcon />,
-    //     role_name: "creator",
-    // },
+    {
+        path: ROUTES.home,
+        label: "My Dashboard",
+        icon: <icons.DashboardIcon />,
+        role_name: "admin",
+    },
     {
         path: ROUTES.myForms,
         label: "My Forms",
