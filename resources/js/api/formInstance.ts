@@ -15,6 +15,7 @@ export interface CompletedForm {
   public_code: string;
   completed_questions_count: number;
   completed_questions: CompletedQuestion[];
+  api_url?: string;
 }
 
 export interface CompletedQuestion {
