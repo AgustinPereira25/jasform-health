@@ -15,6 +15,7 @@ export const ROUTES = {
   // instance Form Routes
   instanceFormHome: "/instance-form",
   instanceForm: "/instance-form/:publicCode",
+  instanceFormFinished: "/instance-form/:publicCode/finished",
   notFound: "*",
   //FormInstance (List and show completed questions by FormID)
   formInstances: "/form-instance/:formId",
