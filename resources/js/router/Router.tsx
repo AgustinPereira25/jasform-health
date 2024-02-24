@@ -16,6 +16,7 @@ import { PrepareQuestionsForm } from "@/screens/formQuestions";
 import { DeleteUserConfirm } from "@/screens/profile/DeleteUserConfirm";
 import { InstanceForm } from "@/screens/instanceForm";
 import { CompletedQuestions, FormInstance } from "@/screens/formInstance";
+import { FinalStepFrmInstance } from "@/screens/instanceForm/components";
 
 export const Router = () => {
     const location = useLocation();
@@ -111,6 +112,10 @@ export const Router = () => {
                 {/* FormInstanceLayout Routes */}
                 <Route element={<FormInstanceLayout />}>
                     <Route element={<InstanceForm />} path={ROUTES.instanceForm} />
+                </Route>
+
+                <Route element={<FormInstanceLayout />}>
+                    <Route element={<FinalStepFrmInstance />} path={ROUTES.instanceFormFinished} />
                 </Route>
             </Routes>
 

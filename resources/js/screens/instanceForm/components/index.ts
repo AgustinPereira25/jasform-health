@@ -3,3 +3,4 @@ export * from './InputFieldFrmInstance';
 export * from './SimpleTxtFrmInstance';
 export * from './ChckRadioDDownFrmInstance';
 export * from './FinalStepFrmInstance';
+export * from './ConfirmationStepFrmInstance';

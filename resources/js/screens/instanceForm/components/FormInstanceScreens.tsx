@@ -8,7 +8,7 @@
 import type { Form } from "@/api";
 import { InstanceFormHome } from "../InstanceFormHome";
 import { ChckRadioDDownFrmInstance } from "./ChckRadioDDownFrmInstance";
-import { FinalStepFrmInstance } from "./FinalStepFrmInstance";
+import { ConfirmationStepFrmInstance } from "./ConfirmationStepFrmInstance";
 import { InputFieldFrmInstance } from "./InputFieldFrmInstance";
 import { SimpleTxtFrmInstance } from "./SimpleTxtFrmInstance";
 import type { FormInstanceFlow } from "../InstanceForm";
@@ -26,5 +26,5 @@ export const FormInstanceScreens = {
     3: ChckRadioDDownFrmInstance, // 3: CheckRadioDDownScreen, // Multiple Choice
     4: ChckRadioDDownFrmInstance, // 4: CheckRadioDDownScreen, // Single RadioButton Screen
     5: ChckRadioDDownFrmInstance, // 5: CheckRadioDDownScreen, // DropDown screen
-    6: FinalStepFrmInstance // 6 : Final Step screen.
+    6: ConfirmationStepFrmInstance // 6 : Final Step screen.
 }

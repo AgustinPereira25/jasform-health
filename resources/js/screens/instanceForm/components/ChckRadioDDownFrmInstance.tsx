@@ -91,7 +91,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id="chck-radio-container-form-div" className="bg-gray-300 p-6 border rounded-xl">
+        <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl">
             <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
             <form id="chck-radio-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
                 <div className="flex flex-col pt-6 pb-20 gap-4">
