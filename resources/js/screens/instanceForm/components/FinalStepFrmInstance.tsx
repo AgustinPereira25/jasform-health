@@ -6,7 +6,8 @@ import { Button, LoadingOverlay } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
-import { createFormInstance } from '@/api/formInstance';
+import type { FormInstanceURL } from '@/api/formInstance';
+import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
 import { ROUTES } from '@/router';
 
 export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
@@ -21,7 +22,11 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         if (currentState.api_url) {
             console.log("currentState.api_url:", currentState.api_url)
             //TODO: crear otro use mutate y enviar la data al endpint de la url.
-            // sendExternalEndpointMutation(currentState);
+            const currentURLAndBody: FormInstanceURL = {
+                url: currentState.api_url,
+                body: currentState,
+            }
+            sendExternalEndpointMutation(currentURLAndBody);
         }
     }
 
@@ -53,6 +58,27 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
             },
         });
 
+    const { mutate: sendExternalEndpointMutation } =
+        useMutation({
+            mutationFn: sendExternalEndpoint.mutation,
+            onSuccess: () => {
+                sendExternalEndpoint.invalidates(queryClient);
+                toast.success(`Form successfully sent!`);
+                navigate(ROUTES.home);
+            },
+            onError: (err: IHttpResponseError) => {
+                if (err?.response?.data?.message) {
+                    toast.error(err?.response.data.message);
+                } else if (err?.response?.data?.error?.fields) {
+                    const errors = err?.response.data.error.fields;
+                    Object.entries(errors).forEach(([_, valArray]) => {
+                        toast.error(`${valArray[0]}`);
+                    });
+                } else {
+                    toast.error("There was an error. Please try again later.");
+                }
+            },
+        });
     return (
         <>
             {(isPendingCreateFormInstanceMutation || isPendingCreateFormInstanceMutation) && (
