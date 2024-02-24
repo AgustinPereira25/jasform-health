@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
@@ -6,6 +7,9 @@ import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
+    const [searchParams] = useSearchParams();
+    const aux_code = searchParams.get('aux_code');
+
     const currentState = useFormInstance.getState().formInstance!;
     if (!currentState) {
         const initialFormData: CompletedForm = {
@@ -18,7 +22,9 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             public_code: formInstanceInfo.public_code!,
             completed_questions: [],
             api_url: formInstanceInfo.api_url ?? '',
+            aux_code: aux_code ?? '',
         };
+        console.log("initialFormData:", { initialFormData });
         useFormInstance.setState({
             formInstance: initialFormData,
         })
