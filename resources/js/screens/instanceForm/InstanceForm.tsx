@@ -34,7 +34,7 @@ export const InstanceForm: React.FunctionComponent = () => {
                 </tr>
             ) : (
                 <div className="flex items-center justify-center w-full">
-                    <FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData![0]!} />
+                    <FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData!} />
                 </div>
             )}
         </div>
