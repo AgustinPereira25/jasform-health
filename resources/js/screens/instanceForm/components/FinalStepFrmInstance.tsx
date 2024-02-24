@@ -16,8 +16,13 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
     const handleFinishClick = () => {
         useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
         currentState = useFormInstance.getState().formInstance!;
-        console.log(currentState);
+        console.log("currentState:", currentState);
         createFormInstanceMutation(currentState);
+        if (currentState.api_url) {
+            console.log("currentState.api_url:", currentState.api_url)
+            //TODO: crear otro use mutate y enviar la data al endpint de la url.
+            // sendExternalEndpointMutation(currentState);
+        }
     }
 
     const handleGoBackClick = () => {
@@ -29,9 +34,9 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
     const { mutate: createFormInstanceMutation, isPending: isPendingCreateFormInstanceMutation } =
         useMutation({
             mutationFn: createFormInstance.mutation,
-            onSuccess: (data) => {
+            onSuccess: () => {
                 createFormInstance.invalidates(queryClient);
-                toast.success(`Form with public code "${data.public_code}" successfully sent!`);
+                toast.success(`Form successfully sent!`);
                 navigate(ROUTES.home);
             },
             onError: (err: IHttpResponseError) => {
@@ -43,10 +48,11 @@ export const FinalStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                         toast.error(`${valArray[0]}`);
                     });
                 } else {
-                    toast.error("There was an error trying to create the user. Please try again later.");
+                    toast.error("There was an error. Please try again later.");
                 }
             },
         });
+
     return (
         <>
             {(isPendingCreateFormInstanceMutation || isPendingCreateFormInstanceMutation) && (

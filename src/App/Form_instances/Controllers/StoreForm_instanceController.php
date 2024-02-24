@@ -12,6 +12,7 @@ use Domain\Completer_users\DataTransferObjects\Completer_userDto;
 use Domain\Form_instances\DataTransferObjects\Form_instanceDto;
 use Domain\Completed_questions\DataTransferObjects\Completed_questionDto;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class StoreForm_instanceController
 {
@@ -22,10 +23,39 @@ class StoreForm_instanceController
         StoreCompleted_questionAction $storeCompleted_questionAction,
         Form $formModel
     ): JsonResponse {
-        if ($request->filled('completer_user_email') && $request->filled('completer_user_name') && $request->filled('completer_user_last_name')) {
+        Log::info('####################################################################################################################################################################');
+
+        Log::info('===StoreForm_instanceController=====> Request data: ', $request->all());
+        Log::info('completer_user_email: ' . $request->input('completer_user_email'));
+        Log::info('completer_user_first_name: ' . $request->input('completer_user_first_name'));
+        Log::info('completer_user_last_name: ' . $request->input('completer_user_last_name'));
+        Log::info('aux_code: ' . $request->input('aux_code'));
+        Log::info('form_id: ' . $request->input('form_id'));
+
+
+        $initial_date_time = new \DateTime($request->input('initial_date_time'));
+        $formattedInitial_date_time = $initial_date_time->format('Y-m-d H:i:s');
+        $final_date_time = new \DateTime($request->input('final_date_time'));
+        $formattedFinal_date_time = $final_date_time->format('Y-m-d H:i:s');
+        Log::info('formattedInitial_date_time: ' . $formattedInitial_date_time);
+        Log::info('formattedFinal_date_time: ' . $formattedFinal_date_time);
+        // Log::info('initial_date_time: ' . $request->input('initial_date_time'));
+        // Log::info('final_date_time: ' . $request->input('final_date_time'));
+
+
+        $completedQuestions = $request->input('completed_questions');
+        foreach ($completedQuestions as $index => $question) {
+            Log::info('-----------------');
+            Log::info('-----------------completed_questions[' . $index . '][title]: ' . $question['title']);
+            Log::info('-----------------completed_questions[' . $index . '][completer_user_answer]: ' . $question['completer_user_answer']);
+            // Log::info('-----------------completed_questions[' . $index . '][completer_user_answer_checked_options]: ' . json_encode($question['completer_user_answer_checked_options']));
+            Log::info('-----------------completed_questions[' . $index . '][question_type_id]: ' . $question['question_type_id']);
+        }
+
+        if ($request->filled('completer_user_email') && $request->filled('completer_user_first_name') && $request->filled('completer_user_last_name')) {
             $completerUserDto = new Completer_userDto(
                 email: $request->input('completer_user_email'),
-                first_name: $request->input('completer_user_name'),
+                first_name: $request->input('completer_user_first_name'),
                 last_name: $request->input('completer_user_last_name'),
                 code: $request->input('aux_code', null)
             );
@@ -54,17 +84,24 @@ class StoreForm_instanceController
         }
 
         $formInstanceDto = new Form_instanceDto(
-            initial_date_time: $request->input('initial_date_time'),
-            final_date_time: $request->input('final_date_time'),
+            initial_date_time: $formattedInitial_date_time,
+            final_date_time: $formattedFinal_date_time,
             form_id: $formId,
             completer_user_id: $completerUserId,
         );
+        Log::info('1*************');
 
         try {
+            Log::info('2*************');
             $formInstance = $storeForm_instanceAction->execute($formInstanceDto);
+            Log::info('3*************');
         } catch (\Exception $e) {
+            Log::info('4*************');
+            Log::error($e->getMessage());
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+        Log::info('5*************');
+
 
         try {
             $completedQuestions = $request->input('completed_questions');
