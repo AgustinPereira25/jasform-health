@@ -10,7 +10,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     const currentState = useFormInstance.getState().formInstance!;
 
     const [error, setError] = useState<string>('');
-    const [answerInput, setAnswerInput] = useState<string>('');
+    const [answerInput, setAnswerInput] = useState<string>(currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '');
 
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -13,8 +13,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     const questiontypeId = currentScreen.questionType;
     const [error, setError] = useState<string>('');
-    const [answerInput, setAnswerInput] = useState<string>('');
-    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>([]);
+    const [answerInput, setAnswerInput] = useState<string>(currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '');
+    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? []);
 
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
     if (questiontypeId === 5) {
