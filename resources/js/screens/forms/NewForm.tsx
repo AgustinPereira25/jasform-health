@@ -5,7 +5,6 @@ import { HexColorPicker } from 'react-colorful'
 import { useNavigate } from 'react-router-dom'
 
 import { Button, Input, icons } from '@/ui'
-import { FileUploader } from '@/components'
 import { tw } from '@/utils'
 import type { Form } from '@/api'
 
@@ -16,6 +15,7 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
+// TODO - delete fileUploader file.
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
 export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     const navigate = useNavigate();
@@ -41,8 +41,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             apiURL: form.api_url ?? '',
             publicCode: form.public_code ?? '',
             publishState: form.is_active ?? false,
-            // anonAnswers: form.anonymous_answers ?? false,
-            // mandatoryInitialData: form.mandatory_initial_data ?? false,
+            enabledInitialData: form.is_initial_data_required ?? false,
+            enabledLinkResponsesUser: form.is_user_responses_linked ?? false,
         },
     });
 
@@ -95,15 +95,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         }
     };
 
-    // const primaryWrapperRef = useRef(null);
-    // const secondaryWrapperRef = useRef(null);
-
-    // const primaryPickerRef = useRef(null);
-    // const secondaryPickerRef = useRef(null);
-
     // For toggles
-    const [enabledPublishStatus, setEnabledPublishStatus] = useState(false);
-    const [enabledEncUnlData, setEnabledEncUnlData] = useState(false);
+    const [enabledPublishStatus, setEnabledPublishStatus] = useState(form.is_active ?? false);
+    const [enabledLinkResponsesUser, setEnabledLinkResponsesUser] = useState(form.is_user_responses_linked ?? false);
+    const [enabledInitialData, setEnabledInitialData] = useState(form.is_initial_data_required ?? false);
+
     // For color picker
     const [primaryColor, setPrimaryColor] = useState("#aabbcc"); //TODO- Put the default color from the form if it exists
     const [secondaryColor, setSecondaryColor] = useState("#aabbcc"); //TODO- Put the default color from the form if it exists
@@ -161,30 +157,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
                 <div className="flex gap-6 shrink-0">
                     <div className="shrink-0">
-                        <div className="flex gap-8 p-3 h-36">
-                            <div className="flex shrink-0 w-40">
-                                <span>Logo</span>
-                            </div>
-                            {/* <div className="flex shrink-0 rounded-full overflow-hidden">
-                                    <div className='relative p-0 '>
-                                        <img
-                                            src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                            alt="user"
-                                            className='h-[120px] w-[120px]'
-                                        />
-                                        <Button
-                                            variant="primary"
-                                            onClick={() => console.log('pepe')}
-                                            className='text-xs absolute bottom-0 right-0 left-0 w-full p-0'
-                                        >
-                                            Edit
-                                        </Button>
-                                    </div>
-                                </div> */}
-                            {/* ToDo: Agregar props como url del endpoint,etc para hacerlo mas generico */}
-                            <FileUploader />
-                        </div>
-                        <hr className="mx-3" />
                         <div className={tw(
                             'flex p-3 h-16',
                             errors.name && 'pb-5'
@@ -250,6 +222,29 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     //error={errors.email?.message}
                                     //value={passwordInput}
                                     defaultValue={''}
+                                />
+                            </div>
+                        </div>
+                        <hr className="mx-3" />
+                        <div className={tw(
+                            'flex p-3 h-16',
+                            errors.logo && 'pb-5'
+                        )}
+                        >
+                            <div className="flex w-40">
+                                <span>Logo URL</span>
+                            </div>
+                            <div className="flex grow">
+                                <Input
+                                    containerClassName="w-full"
+                                    fullHeight
+                                    type="text"
+                                    id="logo"
+                                    placeholder="Enter Logo URL"
+                                    {...register("logo")}
+                                    // error={errors.firstName?.message}
+                                    // value={passwordInput}
+                                    defaultValue={form?.logo}
                                 />
                             </div>
                         </div>
@@ -382,54 +377,54 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         </div>
                         <hr className="mx-3" />
                         <div className="flex p-3 h-16 items-center justify-between">
-                            <span>Anonymous user&apos;s answers</span>
+                            <span>Link Responses with user</span>
                             <div className="flex gap-3 pl-3">
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
                                         // {...register("anonAnswers")}
-                                        checked={enabledEncUnlData}
-                                        onChange={setEnabledEncUnlData}
+                                        checked={enabledLinkResponsesUser}
+                                        onChange={setEnabledLinkResponsesUser}
                                         className={classNames(
-                                            enabledEncUnlData ? 'bg-[#065F46]' : 'bg-gray-200',
+                                            enabledLinkResponsesUser ? 'bg-[#065F46]' : 'bg-gray-200',
                                             'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
                                         )}
                                     >
                                         <span
                                             aria-hidden="true"
                                             className={classNames(
-                                                enabledEncUnlData ? 'translate-x-5' : 'translate-x-0',
+                                                enabledLinkResponsesUser ? 'translate-x-5' : 'translate-x-0',
                                                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
                                             )}
                                         />
                                     </Switch>
                                 </Switch.Group>
-                                <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
+                                <span className={classNames(enabledLinkResponsesUser ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledLinkResponsesUser ? 'Active' : 'Inactive'}</span>
                             </div>
                         </div>
                         <hr className="mx-3" />
                         <div className="flex p-3 h-16 items-center justify-between">
-                            <span>Request mandatory initial data</span>
+                            <span>Initial data required</span>
                             <div className="flex gap-3 pl-3">
                                 <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                     <Switch
                                         // {...register("mandatoryInitialData")}
-                                        checked={enabledEncUnlData}
-                                        onChange={setEnabledEncUnlData}
+                                        checked={enabledInitialData}
+                                        onChange={setEnabledInitialData}
                                         className={classNames(
-                                            enabledEncUnlData ? 'bg-[#065F46]' : 'bg-gray-200',
+                                            enabledInitialData ? 'bg-[#065F46]' : 'bg-gray-200',
                                             'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
                                         )}
                                     >
                                         <span
                                             aria-hidden="true"
                                             className={classNames(
-                                                enabledEncUnlData ? 'translate-x-5' : 'translate-x-0',
+                                                enabledInitialData ? 'translate-x-5' : 'translate-x-0',
                                                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
                                             )}
                                         />
                                     </Switch>
                                 </Switch.Group>
-                                <span className={classNames(enabledEncUnlData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledEncUnlData ? 'Active' : 'Inactive'}</span>
+                                <span className={classNames(enabledInitialData ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledInitialData ? 'Active' : 'Inactive'}</span>
                             </div>
                         </div>
                         <hr className="mx-3" />

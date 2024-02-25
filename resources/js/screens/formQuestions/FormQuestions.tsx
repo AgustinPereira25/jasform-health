@@ -99,7 +99,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 <div className="flex gap-1 items-center">
                     <Button
                         variant="secondary"
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate(`/forms/${formId}`)}
                     >
                         <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
                         Return
