@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Users\Request;
 
 use Domain\Users\DataTransferObjects\UserDtoUpdate;
+use Domain\Users\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
