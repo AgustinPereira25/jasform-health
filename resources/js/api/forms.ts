@@ -46,7 +46,7 @@ export interface Question {
   form_id: number;
   question_type_id: number;
   question_type_name: string;
-  questions_options?: QuestionsOption[];
+  question_options?: QuestionsOption[];
 }
 
 export interface QuestionsOption {

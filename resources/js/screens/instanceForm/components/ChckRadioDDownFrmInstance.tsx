@@ -17,24 +17,29 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswerInput);
 
-    // TODO - Test this useMemo
-    // const savedAnswerCheckedOptions = useMemo(
-    //     () => currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [],
-    //     [currentState, currentScreen.currentQuestionOrder]
-    //   );
-
-    // TODO - Test persistence of multiple answers for checkbox
-    const savedAnswerCheckedOptions = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [];
-    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
-
     useEffect(() => {
         setAnswerInput(savedAnswerInput);
-        setCheckedAnswers(savedAnswerCheckedOptions);
-    }, [savedAnswerInput, savedAnswerCheckedOptions]);
+    }, [savedAnswerInput, currentScreen.currentQuestionOrder]);
 
+    // TODO - Test this useMemo
+    const savedAnswerCheckedOptions = useMemo(
+        () => currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [],
+        [currentScreen.currentQuestionOrder]
+    );
+
+    // TODO - Test persistence of multiple answers for checkbox
+    // const savedAnswerCheckedOptions = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [];
+    const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
+
+    // useEffect(() => {
+    //     setCheckedAnswers(savedAnswerCheckedOptions);
+    // }, [currentScreen.currentQuestionOrder]);
+    console.log('savedAnswerCheckedOptions', savedAnswerCheckedOptions)
+    console.log('currentState.completed_questions', currentState.completed_questions);
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
+
     if (questiontypeId === 5) {
-        const items = currentQuestionInfo.questions_options?.map((option) => ({ id: option.id, name: option.title })) ?? [];
+        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id, name: option.title })) ?? [];
         setComboBoxItems(items);
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -76,7 +81,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                     completer_user_answer_checked_options: checkedAnswers,
                 };
-                useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
+                // Check if there is an answer for the current question
+                const updatedState = currentState.completed_questions.filter((question) => question.order !== currentScreen.currentQuestionOrder);
+                useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...updatedState, answer] } });
                 const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
@@ -91,7 +98,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             // title:            string;
             // next_question:    number;
             // form_question_id: number;
-            const option: QuestionsOption = currentQuestionInfo.questions_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
+            const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
             if (checked) {
                 setError('');
                 setCheckedAnswers([...checkedAnswers, { id: option.id, order: option.order, title: option.title, next_question: option.next_question, form_question_id: option.form_question_id }]);
@@ -106,6 +113,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
+
     return (
         <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl">
             <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
@@ -116,7 +124,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         questiontypeId === 3 ? (
                             <>
                                 {
-                                    currentQuestionInfo.questions_options?.map((option) => (
+                                    currentQuestionInfo.question_options?.map((option) => (
                                         <div key={option.order} className="flex items-center gap-3">
                                             <Input
                                                 compact
@@ -125,6 +133,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                                 id={`chck-radio-answer-checkbox-${option.id}`}
                                                 value={option.order}
                                                 onChange={handleChange}
+                                                checked={checkedAnswers.some((answer) => answer.order === option.order)}
                                             />
                                             <label htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
                                         </div>
@@ -137,7 +146,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         ) : questiontypeId === 4 ? (
                             <>
                                 {
-                                    currentQuestionInfo.questions_options?.map((option) => (
+                                    currentQuestionInfo.question_options?.map((option) => (
                                         <div key={option.order} className="flex items-center gap-3">
                                             <Input
                                                 compact
@@ -169,7 +178,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         backgroundColor: formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
+                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
                         // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                     }}
                     >
@@ -182,8 +191,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                             backgroundColor: formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
-                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
                         }}
                     >
                         Siguiente

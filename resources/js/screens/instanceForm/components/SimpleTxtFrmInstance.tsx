@@ -8,13 +8,15 @@ import type { Question } from '@/api';
 
 export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
+
     const [error, setError] = useState<string>('');
+
     const savedAnswer = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswer);
 
     useEffect(() => {
         setAnswerInput(savedAnswer);
-    }, [savedAnswer]);
+    }, [savedAnswer, currentScreen.currentQuestionOrder]);
 
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +68,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                         backgroundColor: formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
+                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
                         // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                     }}
                     >
@@ -79,8 +81,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                             backgroundColor: formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
-                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
                         }}
                     >
                         Siguiente
