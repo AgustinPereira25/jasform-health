@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Switch } from '@headlessui/react'
 
 import { Button, icons } from '@/ui'
 import { tw } from '@/utils'
@@ -9,6 +10,9 @@ import { questionScreens } from './utils'
 
 interface FormQuestionsProps {
     initialData: IFormQuestion[];
+}
+function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(' ')
 }
 
 // TODO - Finish this implementation by seeing figma and replying the design with the components.
@@ -33,6 +37,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [currentQuestionOrder, setCurrentQuestionOrder] = useState(currentQuestion?.order);
     const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
     const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>('Check Box');
+    const [enabledIsMandatory, setEnabledIsMandatory] = useState(false);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
@@ -179,7 +184,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 <div className="bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]">
                     {
                         currentQuestion && (
-                            <div className="h-full">
+                            <div className="h-full flex flex-col justify-between">
                                 <div className="flex justify-between">
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
@@ -196,6 +201,30 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                 </div>
                                 <hr />
                                 <QuestionTypeScreen text="pepe" nextSteps={questions} comboBoxOption={comboBoxOption} />
+                                <div className="flex gap-3 pb-5 pl-2">
+                                    <div className="flex w-40 items-center">
+                                        <span>Mandatory Question</span>
+                                    </div>
+                                    <Switch.Group as="div" className="flex items-center justify-between gap-2">
+                                        <Switch
+                                            checked={enabledIsMandatory}
+                                            onChange={setEnabledIsMandatory}
+                                            className={classNames(
+                                                enabledIsMandatory ? 'bg-[#065F46]' : 'bg-gray-200',
+                                                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
+                                            )}
+                                        >
+                                            <span
+                                                aria-hidden="true"
+                                                className={classNames(
+                                                    enabledIsMandatory ? 'translate-x-5' : 'translate-x-0',
+                                                    'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                                )}
+                                            />
+                                        </Switch>
+                                    </Switch.Group>
+                                    <span className={classNames(enabledIsMandatory ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledIsMandatory ? 'Active' : 'Inactive'}</span>
+                                </div>
                             </div>
                         )
                     }
