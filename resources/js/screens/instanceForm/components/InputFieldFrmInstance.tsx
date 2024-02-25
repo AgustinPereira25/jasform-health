@@ -16,7 +16,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
 
     useEffect(() => {
         setAnswerInput(savedAnswer);
-    }, [savedAnswer]);
+    }, [savedAnswer, currentScreen.currentQuestionOrder]);
 
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,7 +67,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                         backgroundColor: formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
+                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
                         // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                     }}
                     >
@@ -80,8 +80,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                             backgroundColor: formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
-                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
                         }}
                     >
                         Siguiente
