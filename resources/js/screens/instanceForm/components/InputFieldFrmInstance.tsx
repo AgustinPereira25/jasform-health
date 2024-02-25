@@ -63,8 +63,29 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                     />
                 </div>
                 <div className="flex justify-between">
-                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick}>Atrás</Button>
-                    <Button type="submit" id="submit-answer-btn">Siguiente</Button>
+                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
+                        backgroundColor: formInstanceInfo.secondary_color,
+                        border: formInstanceInfo.rounded_style ? 1 : 'none',
+                        borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                        // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
+                        // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                    }}
+                    >
+                        Atrás
+                    </Button>
+                    <Button
+                        type="submit"
+                        id="submit-answer-btn"
+                        style={{
+                            backgroundColor: formInstanceInfo.primary_color,
+                            border: formInstanceInfo.rounded_style ? 1 : 'none',
+                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                            // color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
+                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                        }}
+                    >
+                        Siguiente
+                    </Button>
                 </div>
             </form>
         </div>
