@@ -17,6 +17,7 @@ class UpdateFormAction
 
     public function execute(FormDtoUpdate $formDtoUpdate, Form $form): Form
     {
+        $formDtoUpdate = $formDtoUpdate->withCreationDateTime($form->creation_date_time);
         $formDtoUpdate = $formDtoUpdate->withLastModifiedDateTime(Carbon::now()->toDateTimeString());
 
         $form->update($formDtoUpdate->toArray());
