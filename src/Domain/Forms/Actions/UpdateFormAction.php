@@ -8,6 +8,7 @@ use Domain\Forms\DataTransferObjects\FormDtoUpdate;
 use Domain\Forms\Models\Form;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class UpdateFormAction
 {
@@ -17,6 +18,7 @@ class UpdateFormAction
 
     public function execute(FormDtoUpdate $formDtoUpdate, Form $form): Form
     {
+        $formDtoUpdate = $formDtoUpdate->withCreationDateTime($form->creation_date_time);
         $formDtoUpdate = $formDtoUpdate->withLastModifiedDateTime(Carbon::now()->toDateTimeString());
 
         $form->update($formDtoUpdate->toArray());
