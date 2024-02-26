@@ -92,10 +92,28 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                 </div>
                 <div className="flex flex-col gap-7 items-center">
                     <div>
-                        <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn">Finalizar y Enviar</Button>
+                        <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
+                            style={{
+                                backgroundColor: formInstanceInfo.primary_color,
+                                border: formInstanceInfo.rounded_style ? 1 : 'none',
+                                borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            }}
+                        >
+                            Finalizar y Enviar
+                        </Button>
                     </div>
                     <div>
-                        <Button variant="secondary" type="button" id="final-step-goBack-answer-btn" className="italic" onClick={handleGoBackClick}>Volver</Button>
+                        <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
+                            backgroundColor: formInstanceInfo.secondary_color,
+                            border: formInstanceInfo.rounded_style ? 1 : 'none',
+                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                            color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                        }}
+                        >
+                            Volver
+                        </Button>
                     </div>
                 </div>
             </div>

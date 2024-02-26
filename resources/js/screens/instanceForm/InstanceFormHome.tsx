@@ -80,12 +80,14 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 break;
         }
     }
-
+    console.log(`${formInstanceInfo.logo}`)
     return (
         <div className="bg-white p-8 rounded-lg w-[35%]">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
-                <img src={'/LogoIpsum.svg'} alt="cardiology" />
-                <span className="text-2xl font-medium text-[#407EC9]">{formInstanceInfo.welcome_text}</span>
+                <img className="object-contain" src={formInstanceInfo.logo} alt="cardiology" />
+                <span className="text-2xl font-medium" style={{
+                    color: formInstanceInfo.primary_color ?? '#407EC9',
+                }}>{formInstanceInfo.welcome_text}</span>
                 <div className="p-4 w-full">
                     <span className="italic">{formInstanceInfo.description}</span>
                 </div>
@@ -131,13 +133,13 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                             type="submit"
                             variant="primary"
                             className="flex w-full"
-                        // disabled={!isDirty || isPendingLogUserMutation}
+                            style={{
+                                backgroundColor: formInstanceInfo.primary_color,
+                                border: formInstanceInfo.rounded_style ? 1 : 'none',
+                                borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            }}
                         >
-                            {/* {isPendingLogUserMutation ? (
-                  <icons.SpinnerIcon className="h-5 w-5" />
-                ) : (
-                  "Log in"
-                )} */}
                             Complete the form
                             <icons.ArrowRightIcon className="h-5 w-5" />
                         </Button>

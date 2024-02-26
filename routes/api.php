@@ -36,6 +36,7 @@ use App\Forms\Controllers\ListForm_byUserIdController;
 use App\Forms\Controllers\GetForm_byPublicCodeController;
 use App\Forms\Controllers\GetFormController;
 use App\Forms\Controllers\StoreFormController;
+use App\Forms\Controllers\UpdateFormController;
 use App\Forms\Controllers\DeleteFormController;
 use App\Organizations\Controllers\ListOrganizationController;
 use App\Organizations\Controllers\GetOrganizationController;
@@ -93,6 +94,7 @@ Route::prefix('forms')
         Route::get('/byPublicCode/{publicCode}', GetForm_byPublicCodeController::class);
         Route::get('/{form}', GetFormController::class);
         Route::post('/', StoreFormController::class);
+        Route::put('/', UpdateFormController::class);
         Route::delete('/{form}', DeleteFormController::class);
     });
 
