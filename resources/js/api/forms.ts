@@ -3,7 +3,6 @@ import type { QueryClient } from "@tanstack/react-query";
 import { query_keys } from "@/constants/query_keys";
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
-import type { User } from "./users";
 
 const DOMAIN = "form";
 const ALL = "all";
@@ -20,7 +19,7 @@ export interface Form {
   welcome_text?: string;
   final_text?: string;
   description?: string;
-  creation_date_time?: Date;
+  creation_date_time?: string;
   last_modified_date_time?: Date;
   logo?: string;
   primary_color?: string;
@@ -113,19 +112,27 @@ export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => ({
   },
 });
 
-interface CreateUserParams {
-  name: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
+export type CreateFormParams = Form
 
 export const createForm = {
-  mutation: async (params: CreateUserParams) => {
-    const { passwordConfirmation, ...rest } = params;
-    const response = await privateAPI.post<ServiceResponse<User>>("/users", {
-      ...rest,
-      password_confirmation: passwordConfirmation,
+  mutation: async (params: CreateFormParams) => {
+    const { ...rest } = params;
+    const response = await privateAPI.post<ServiceResponse<Form>>("/forms", {
+      ...rest
+    });
+
+    return response.data.data;
+  },
+  invalidates: (queryClient: QueryClient) => {
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
+  },
+};
+
+export const updateForm = {
+  mutation: async (params: CreateFormParams) => {
+    const { ...rest } = params;
+    const response = await privateAPI.put<ServiceResponse<Form>>("/forms", {
+      ...rest
     });
 
     return response.data.data;
@@ -136,14 +143,14 @@ export const createForm = {
 };
 
 export const deleteForm = {
-  mutation: async (userId: User["id"]) => {
-    await privateAPI.delete(`/users/${userId}`);
+  mutation: async (formId: Form["id"]) => {
+    await privateAPI.delete(`/forms/${formId}`);
   },
   invalidates: (
     queryClient: QueryClient,
-    { userId }: { userId: User["id"] },
+    { formId }: { formId: Form["id"] },
   ) => {
     void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
-    void queryClient.invalidateQueries({ queryKey: [DOMAIN, userId] });
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, formId] });
   },
 };

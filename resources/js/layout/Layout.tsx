@@ -8,7 +8,7 @@ import { useUserStore } from "@/stores";
 export const Layout = () => {
     //TODO - Quit this mock user when we finish log in screen.
     const mockUser: User = {
-        id: 1,
+        id: 2,
         first_name: "John",
         last_name: "Doe",
         photo: "https://images.nightcafe.studio//assets/man-in-suit.jpg",
