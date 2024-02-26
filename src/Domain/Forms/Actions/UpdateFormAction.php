@@ -8,7 +8,6 @@ use Domain\Forms\DataTransferObjects\FormDtoUpdate;
 use Domain\Forms\Models\Form;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class UpdateFormAction
 {

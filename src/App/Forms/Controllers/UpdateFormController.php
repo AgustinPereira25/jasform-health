@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Domain\Forms\Models\Form;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class UpdateFormController
 {
