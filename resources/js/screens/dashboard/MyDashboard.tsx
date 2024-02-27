@@ -22,10 +22,12 @@ export const MyDashboard = () => {
 
     const { data: statsData, isFetching: isFetchingDashboard, error: isErrorDashboard } = useQuery({
         ...getUserDashboard(userId),
+        refetchOnWindowFocus: false,
     });
 
     const { data: formData, isFetching: isFetchingForms, error: isErrorForms } = useQuery({
         ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString()),
+        refetchOnWindowFocus: false,
     });
 
     const forms = formData?.data;
