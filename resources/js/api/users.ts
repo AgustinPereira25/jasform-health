@@ -79,7 +79,29 @@ export const getUserQuery = (userId: User["id"]) => ({
     const response = await privateAPI.get<ServiceResponse<User>>(
       `/users/${userId}`,
     );
+    return response.data.data;
+  },
+});
 
+export interface DashboardData {
+  total_forms: number;
+  total_form_instances: number;
+  total_form_questions: number;
+  total_completer_users: number;
+}
+
+export interface DashboardResponse {
+  status: number;
+  success: boolean;
+  data: DashboardData;
+}
+
+export const getUserDashboard = (userId: User["id"]) => ({
+  queryKey: [DOMAIN, userId, "getUserDashboard"],
+  queryFn: async () => {
+    const response = await privateAPI.get<DashboardResponse>(
+      `/users/getDashboard/${userId}`,
+    );
     return response.data.data;
   },
 });

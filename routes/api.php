@@ -2,11 +2,13 @@
 
 use App\Users\Controllers\DeleteUserController;
 use App\Users\Controllers\GetUserController;
+use App\Users\Controllers\GetUserDashboardController;
 use App\Users\Controllers\ListUserController;
 use App\Users\Controllers\StoreUserController;
 use App\Users\Controllers\UpdateUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Activity_records\Controllers\ListActivity_recordController;
 use App\Activity_records\Controllers\GetActivity_recordController;
 use App\Activity_records\Controllers\StoreActivity_recordController;
@@ -73,25 +75,43 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| Users Routes
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::prefix('forms')
+    ->middleware(['sanitize_input'])
+    ->group(static function () {
+        Route::get('/byPublicCode/{publicCode}', GetForm_byPublicCodeController::class);
+    });
+Route::prefix('form_instances')
+    ->middleware(['sanitize_input'])
+    ->group(static function () {
+        Route::post('/', StoreForm_instanceController::class);
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Private Routes
 |--------------------------------------------------------------------------
 */
 Route::prefix('users')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListUserController::class);
         Route::get('/{user}', GetUserController::class);
+        Route::get('/getDashboard/{user}', GetUserDashboardController::class);
         Route::post('/', StoreUserController::class);
         Route::put('/', UpdateUserController::class);
         Route::delete('/{user}', DeleteUserController::class);
     });
 
 Route::prefix('forms')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListFormController::class);
         Route::get('/byUserId/{user}', ListForm_byUserIdController::class);
-        Route::get('/byPublicCode/{publicCode}', GetForm_byPublicCodeController::class);
         Route::get('/{form}', GetFormController::class);
         Route::post('/', StoreFormController::class);
         Route::put('/', UpdateFormController::class);
@@ -99,7 +119,7 @@ Route::prefix('forms')
     });
 
 Route::prefix('activity_records')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListActivity_recordController::class);
         Route::get('/{activity_record}', GetActivity_recordController::class);
@@ -108,7 +128,7 @@ Route::prefix('activity_records')
     });
 
 Route::prefix('completer_users')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListCompleter_userController::class);
         Route::get('/{completer_user}', GetCompleter_userController::class);
@@ -117,7 +137,7 @@ Route::prefix('completer_users')
     });
 
 Route::prefix('completed_questions')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListCompleted_questionController::class);
         Route::get('/byFormInstanceId/{formInstance}', ListCompleted_question_byFormInstanceIdController::class);
@@ -127,18 +147,18 @@ Route::prefix('completed_questions')
     });
 
 Route::prefix('form_instances')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListForm_instanceController::class);
         Route::get('/byFormId/{form}', ListForm_instance_byFormIdController::class);
         Route::get('/{form_instance}', GetForm_instanceController::class);
-        Route::post('/', StoreForm_instanceController::class);
         Route::delete('/{form_instance}', DeleteForm_instanceController::class);
     });
 
 
+
 Route::prefix('form_questions')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListForm_questionController::class);
         Route::get('/byFormId/{form}', ListForm_question_byFormIdController::class);
@@ -149,7 +169,7 @@ Route::prefix('form_questions')
     });
 
 Route::prefix('organizations')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListOrganizationController::class);
         Route::get('/{organization}', GetOrganizationController::class);
@@ -158,7 +178,7 @@ Route::prefix('organizations')
     });
 
 Route::prefix('question_options')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListQuestion_optionController::class);
         Route::get('/byQuestionId/{form_question}', ListQuestion_option_byQuestionIdController::class);
@@ -168,7 +188,7 @@ Route::prefix('question_options')
     });
 
 Route::prefix('question_types')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListQuestion_typeController::class);
         Route::get('/{question_type}', GetQuestion_typeController::class);
@@ -177,7 +197,7 @@ Route::prefix('question_types')
     });
 
 Route::prefix('roles')
-    ->middleware(['sanitize_input'])
+    ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListRoleController::class);
         Route::get('/{role}', GetRoleController::class);

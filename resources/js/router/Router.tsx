@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import type { Location } from "react-router-dom";
 
 import { Layout, FormInstanceLayout } from "@/layout";
-import { Home, NotFound, Users } from "@/screens";
+import { NotFound, Users } from "@/screens";
 import { Login } from "@/screens/login/Login";
 import { ModalRouter } from "./ModalRouter";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -17,6 +17,7 @@ import { DeleteUserConfirm } from "@/screens/profile/DeleteUserConfirm";
 import { InstanceForm } from "@/screens/instanceForm";
 import { CompletedQuestions, FormInstance } from "@/screens/formInstance";
 import { FinalStepFrmInstance } from "@/screens/instanceForm/components";
+import { MyDashboard } from "@/screens/dashboard";
 
 export const Router = () => {
     const location = useLocation();
@@ -38,7 +39,7 @@ export const Router = () => {
                 <Route element={<Layout />}>
                     <Route element={<Navigate to={ROUTES.home} />} path={ROUTES.base} />
 
-                    <Route element={<Home />} path={ROUTES.home} />
+                    {/* <Route element={<Home />} path={ROUTES.home} /> */}
 
                     <Route path={ROUTES.notFound} element={<NotFound />} />
                 </Route>
@@ -55,7 +56,12 @@ export const Router = () => {
                     <Route element={<Forms />} path={ROUTES.forms} />
                 </Route>
                 {/* </Route> */}
-
+                <Route element={<Layout />}>
+                    <Route element={<Forms />} path={ROUTES.myForms} />
+                </Route>
+                <Route element={<Layout />}>
+                    <Route element={<MyDashboard />} path={ROUTES.myDashboard} />
+                </Route>
                 {/* <Route element={<ProtectedRoute expected="admin" />}> */}
                 <Route element={<Layout />}>
                     <Route element={<PrepareFormForm />} path={ROUTES.newForm} />

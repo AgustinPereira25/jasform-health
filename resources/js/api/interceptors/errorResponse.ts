@@ -1,6 +1,7 @@
 import type { AxiosError } from "axios";
 
 import { useUserStore } from "@/stores";
+
 import { privateAPI } from "../axios";
 import { memoizedRefreshToken } from "./refreshToken";
 
