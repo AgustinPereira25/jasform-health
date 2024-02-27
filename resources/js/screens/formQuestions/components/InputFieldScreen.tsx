@@ -9,7 +9,7 @@ interface InputTextScreenProps {
     setQuestions: (questions: Question[]) => void;
 };
 
-export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuestion, formQuestions }) => {
+export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions }) => {
     // console.log(currentQuestion);
     // console.log(formQuestions)
     const [questionToShow, setQuestionToShow] = useState(currentQuestion.title ?? '');
@@ -19,6 +19,26 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
         setQuestionToShow(currentQuestion.title ?? '');
         setTextToShow(currentQuestion.text ?? '');
     }, [currentQuestion.title, currentQuestion.text]);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = event.target;
+        if (id === 'question_to_show') {
+            setQuestionToShow(value);
+        } else if (id === 'text_to_show') {
+            setTextToShow(value);
+        }
+        // Update the formQuestions general state
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.id === currentQuestion.id) {
+                return {
+                    ...question,
+                    [id]: value,
+                };
+            }
+            return question;
+        });
+        setQuestions(updatedQuestions ?? []);
+    }
 
     return (
         <div className="flex flex-col py-4">
@@ -31,7 +51,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
                     id="question_to_show"
                     placeholder="Question to Show"
                     value={questionToShow}
-                    onChange={(event) => setQuestionToShow(event.target.value)}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />
@@ -45,7 +65,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
                     placeholder="Text to Show"
                     // error={errors.firstName?.message}
                     value={textToShow}
-                    onChange={(event) => setTextToShow(event.target.value)}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />

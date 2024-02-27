@@ -26,7 +26,7 @@ const ComboBox = forwardRef(
         ref: ForwardedRef<HTMLInputElement>
     ) => {
         const defaultItem: Item = items.find(item => item.name.toUpperCase() === defaultValue?.toUpperCase())!;
-
+        console.log('defaultItem', defaultItem)
         const [selectedItem, setSelectedItem] = useState(defaultItem);
 
         useEffect(() => {

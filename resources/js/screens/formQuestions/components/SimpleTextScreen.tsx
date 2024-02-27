@@ -9,7 +9,7 @@ interface SimpleTextScreenProps {
     setQuestions: (questions: Question[]) => void;
 };
 // TODO - Make input text full height (it overflows the container).
-export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuestion, formQuestions }) => {
+export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions }) => {
     // console.log(currentQuestion);
     // console.log(formQuestions);
     const [title, setTitle] = React.useState(currentQuestion.title ?? '');
@@ -20,6 +20,25 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
         setTextToShow(currentQuestion.text ?? '');
     }, [currentQuestion.title, currentQuestion.text]);
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = event.target;
+        if (id === 'title') {
+            setTitle(value);
+        } else if (id === 'text_to_show') {
+            setTextToShow(value);
+        }
+        // Update the formQuestions general state
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.id === currentQuestion.id) {
+                return {
+                    ...question,
+                    [id]: value,
+                };
+            }
+            return question;
+        });
+        setQuestions(updatedQuestions ?? []);
+    }
 
     return (
         <div className="flex flex-col py-4">
@@ -33,7 +52,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
                     placeholder="Title"
                     // value={passwordInput}
                     value={title}
-                    onChange={(event) => setTitle(event.target.value)}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />
@@ -46,7 +65,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
                     id="text_to_show"
                     placeholder="Text to Show"
                     value={textToShow}
-                    onChange={(event) => setTextToShow(event.target.value)}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />

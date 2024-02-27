@@ -35,11 +35,11 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     const [questionsOption, setQuestionsOption] = useState<QuestionsOption[]>(currentFormQuestionOptionsList ?? []);
     const [newInput, setNewInput] = useState('');
     const [isInputEmpty, setIsInputEmpty] = useState(false);
+    const [questionToShow, setQuestionToShow] = useState(currentFormQuestion?.title ?? '');
 
     // useEffect(() => {
-    //     setQuestionToShow(currentQuestion.title ?? '');
-    //     setTextToShow(currentQuestion.text ?? '');
-    // }, [currentQuestion.title, currentQuestion.text]);
+    //     setQuestionToShow(currentFormQuestion!.title ?? '');
+    // }, [currentQuestionOrder]);
 
     const handleAddRowClick = (input: string, comboBoxOption: ComboBoxOption) => {
         if (!newInput) {
@@ -56,17 +56,48 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             const newElement: QuestionsOption = { id: lastQuestionId, order: lastQuestionOrder, title: input, next_question: lastQuestionOrder, next_question_name: "Mock" };
             setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
-            return;
+            // Update the formQuestions general state
+            const updatedQuestions = formQuestions?.map((question) => {
+                if (question.order === currentQuestionOrder) {
+                    return {
+                        ...question,
+                        question_options: [...questionsOption, newElement],
+                    };
+                }
+                return question;
+            });
+            setQuestions(updatedQuestions ?? []);
         } else {
             const newElement = { id: lastQuestionId, order: lastQuestionOrder, title: input };
             setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
-            return;
+            // Update the formQuestions general state
+            const updatedQuestions = formQuestions?.map((question) => {
+                if (question.order === currentQuestionOrder) {
+                    return {
+                        ...question,
+                        question_options: [...questionsOption, newElement],
+                    };
+                }
+                return question;
+            });
+            setQuestions(updatedQuestions ?? []);
         }
     }
     const handleDeleteRowClick = (id: number) => {
         const newQuestions = questionsOption.filter((item) => item.id !== id);
         setQuestionsOption(newQuestions);
+        // Update the formQuestions general state
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.order === currentQuestionOrder) {
+                return {
+                    ...question,
+                    question_options: [...newQuestions],
+                };
+            }
+            return question;
+        });
+        setQuestions(updatedQuestions ?? []);
     }
 
     const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +114,17 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             questionsOption[index] = questionsOption[index - 1]!;
             questionsOption[index - 1] = temp;
             setQuestionsOption([...questionsOption]);
+            // Update the formQuestions general state
+            const updatedQuestions = formQuestions?.map((question) => {
+                if (question.order === currentQuestionOrder) {
+                    return {
+                        ...question,
+                        question_options: [...questionsOption],
+                    };
+                }
+                return question;
+            });
+            setQuestions(updatedQuestions ?? []);
         }
     }
 
@@ -95,6 +137,17 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             questionsOption[index] = questionsOption[index + 1]!;
             questionsOption[index + 1] = temp;
             setQuestionsOption([...questionsOption]);
+            // Update the formQuestions general state
+            const updatedQuestions = formQuestions?.map((question) => {
+                if (question.order === currentQuestionOrder) {
+                    return {
+                        ...question,
+                        question_options: [...questionsOption],
+                    };
+                }
+                return question;
+            });
+            setQuestions(updatedQuestions ?? []);
         }
     }
 
@@ -107,6 +160,34 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         // eslint-disable-next-line react-hooks/exhaustive-deps
         , [comboBoxOption]);
 
+    const handleComboBoxChange = (value: { id: number, name: string }) => {
+        setNewQuestionType(value);
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.order === currentQuestionOrder) {
+                return {
+                    ...question,
+                    question_type_id: value.id,
+                    question_type_name: value.name,
+                };
+            }
+            return question;
+        });
+        setQuestions(updatedQuestions ?? []);
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setQuestionToShow(event.target.value);
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.order === currentQuestionOrder) {
+                return {
+                    ...question,
+                    title: event.target.value,
+                };
+            }
+            return question;
+        });
+        setQuestions(updatedQuestions ?? []);
+    }
     return (
         <div className="flex flex-col pt-3">
             <div className="flex gap-3">
@@ -117,9 +198,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                     type="text"
                     id="question_to_show"
                     placeholder="Question to Show"
-                // error={errors.firstName?.message}
-                // value={passwordInput}
-                // defaultValue={user?.first_name}
+                    // error={errors.firstName?.message}
+                    value={questionToShow}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />
@@ -176,7 +257,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                                 id="questionType"
                                 items={transformedSteps}
                                 defaultValue={newQuestionType.name}
-                                onValueChange={(item) => setNewQuestionType(item)}
+                                onValueChange={(item) => handleComboBoxChange(item)}
                             />
                         )
                     }

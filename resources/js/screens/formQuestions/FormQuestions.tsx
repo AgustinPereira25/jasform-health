@@ -195,7 +195,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         <ComboBox
                                             id="questionType"
                                             items={questionTypes}
-                                            defaultValue={currentQuestion.question_type_name}
+                                            defaultValue={questionTypes.find((item) => item.id === questionTypeForm)?.name}
                                             onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
                                         />
                                     </div>
