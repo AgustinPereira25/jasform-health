@@ -1,15 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Input } from '@/ui'
+import type { Question } from '@/api';
 
 interface SimpleTextScreenProps {
-    text: string;
+    currentQuestion: Question;
+    formQuestions?: Question[];
+    setQuestions: (questions: Question[]) => void;
 };
 // TODO - Make input text full height (it overflows the container).
-export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
-    console.log(text)
+export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuestion, formQuestions }) => {
+    // console.log(currentQuestion);
+    // console.log(formQuestions);
+    const [title, setTitle] = React.useState(currentQuestion.title ?? '');
+    const [textToShow, setTextToShow] = React.useState(currentQuestion.text ?? '');
+
+    useEffect(() => {
+        setTitle(currentQuestion.title ?? '');
+        setTextToShow(currentQuestion.text ?? '');
+    }, [currentQuestion.title, currentQuestion.text]);
+
+
     return (
-        <div className="flex flex-col pt-3">
+        <div className="flex flex-col py-4">
             <div className="flex gap-3">
                 <span className="shrink-0">Title</span>
                 <Input
@@ -18,9 +31,9 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
                     type="text"
                     id="title"
                     placeholder="Title"
-                // error={errors.firstName?.message}
-                // value={passwordInput}
-                // defaultValue={user?.first_name}
+                    // value={passwordInput}
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
                 />
             </div>
             <hr />
@@ -32,9 +45,8 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
                     type="text"
                     id="text_to_show"
                     placeholder="Text to Show"
-                // error={errors.firstName?.message}
-                // value={passwordInput}
-                // defaultValue={user?.first_name}
+                    value={textToShow}
+                    onChange={(event) => setTextToShow(event.target.value)}
                 />
             </div>
             <hr />

@@ -4,12 +4,12 @@ import { Switch } from '@headlessui/react'
 
 import { Button, icons } from '@/ui'
 import { tw } from '@/utils'
-import type { IFormQuestion } from '@/api'
+import type { Question } from '@/api'
 import ComboBox from '@/ui/form/Combobox'
 import { questionScreens } from './utils'
 
 interface FormQuestionsProps {
-    initialData: IFormQuestion[];
+    initialData: Question[];
 }
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -31,25 +31,26 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const navigate = useNavigate();
 
     // TODO - Order is undefined?
-    formQuestions = formQuestions.sort((a, b) => a.order! - b.order!)
+    formQuestions = formQuestions.sort((a, b) => a.order - b.order);
+
     const [questions, setQuestions] = useState(formQuestions);
     const [currentQuestion, setCurrentQuestion] = useState(questions[0]);
     const [currentQuestionOrder, setCurrentQuestionOrder] = useState(currentQuestion?.order);
-    const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(1);
+    const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(currentQuestion?.question_type_id as keyof typeof questionScreens ?? 1);
     const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>('Check Box');
-    const [enabledIsMandatory, setEnabledIsMandatory] = useState(false);
+    const [enabledIsMandatory, setEnabledIsMandatory] = useState(currentQuestion?.is_mandatory ?? false);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
-
         const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
-        const newElement: IFormQuestion = { order: lastQuestionOrder };
+        const newElement: Question = { form_id: Number(formId), text: '', title: '', question_type_id: 1, question_type_name: 'Simple Text', is_mandatory: false, order: lastQuestionOrder };
         setQuestions([...questions, newElement]);
     };
 
-    const handleQuestionClick = (item: IFormQuestion, order: number) => {
+    const handleQuestionClick = (item: Question, order: number) => {
         setCurrentQuestion(item);
         setCurrentQuestionOrder(order);
+        setQuestionTypeForm(item.question_type_id as keyof typeof questionScreens);
     }
 
     const QuestionTypeScreen = questionScreens[questionTypeForm];
@@ -69,16 +70,16 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     }
 
-    const handleDeleteClick = (item: IFormQuestion) => {
+    const handleDeleteClick = (item: Question) => {
         const newQuestions = questions.filter((question) => question.order !== item.order);
         setQuestions(newQuestions);
     }
 
-    const handleUpClick = (item: IFormQuestion) => {
+    const handleUpClick = (item: Question) => {
         const index = questions.indexOf(item);
         if (index > 0) {
-            questions[index]!.order = questions[index]!.order! - 1;
-            questions[index - 1]!.order = questions[index]!.order! + 1;
+            questions[index]!.order = questions[index]!.order - 1;
+            questions[index - 1]!.order = questions[index]!.order + 1;
             const temp = questions[index]!;
             questions[index] = questions[index - 1]!;
             questions[index - 1] = temp;
@@ -86,11 +87,11 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     }
 
-    const handleDownClick = (item: IFormQuestion) => {
+    const handleDownClick = (item: Question) => {
         const index = questions.indexOf(item);
         if (index < questions.length - 1) {
-            questions[index]!.order = questions[index]!.order! + 1;
-            questions[index + 1]!.order = questions[index]!.order! - 1;
+            questions[index]!.order = questions[index]!.order + 1;
+            questions[index + 1]!.order = questions[index]!.order - 1;
             const temp = questions[index]!;
             questions[index] = questions[index + 1]!;
             questions[index + 1] = temp;
@@ -138,7 +139,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         id={item.order?.toString()}
                                         key={item.order}
                                         className="flex relative w-full items-center hover:bg-gray-50"
-                                        onClick={() => handleQuestionClick(item, item.order!)}
+                                        onClick={() => handleQuestionClick(item, item.order)}
                                         role="presentation"
                                     >
                                         <div className={tw(`absolute border-l-4 h-[80%] -left-2`,
@@ -184,7 +185,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 <div className="bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]">
                     {
                         currentQuestion && (
-                            <div className="h-full flex flex-col justify-between">
+                            <div className="h-full flex flex-col">
                                 <div className="flex justify-between">
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
@@ -194,13 +195,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         <ComboBox
                                             id="questionType"
                                             items={questionTypes}
-                                            defaultValue={'Simple Text'}
+                                            defaultValue={currentQuestion.question_type_name}
                                             onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
                                         />
                                     </div>
                                 </div>
                                 <hr />
-                                <QuestionTypeScreen text="pepe" nextSteps={questions} comboBoxOption={comboBoxOption} />
+                                <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
                                 <div className="flex gap-3 pb-5 pl-2">
                                     <div className="flex w-40 items-center">
                                         <span>Mandatory Question</span>

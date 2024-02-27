@@ -187,11 +187,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             user_id: userId,
         }
         console.log(form_CreateFormParams)
-        // if (pathname.includes(ROUTES.newForm)) {
-        //     createFormMutation(form_CreateFormParams);
-        // } else {
-        //     updateFormMutation(form_CreateFormParams);
-        // }
+        if (pathname.includes(ROUTES.newForm)) {
+            createFormMutation(form_CreateFormParams);
+        } else {
+            updateFormMutation(form_CreateFormParams);
+        }
     };
     useEffect(() => {
         document.addEventListener("click", handleClickOutside, false);
@@ -315,7 +315,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="name"
                                         placeholder="Enter Form Name"
                                         {...register("name")}
-                                        // error={errors.firstName?.message}
+                                        error={errors.name?.message}
                                         // value={passwordInput}
                                         defaultValue={form?.name}
                                     />
@@ -338,7 +338,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="welcomeTxt"
                                         placeholder="Enter Welcome Text"
                                         {...register("welcomeTxt")}
-                                        // error={errors.welcomeTxt?.message}
+                                        error={errors.welcomeTxt?.message}
                                         //value={passwordInput}
                                         defaultValue={''}
                                     />
@@ -361,7 +361,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="description"
                                         placeholder="Enter Description"
                                         {...register("description")}
-                                        //error={errors.email?.message}
+                                        error={errors.description?.message}
                                         //value={passwordInput}
                                         defaultValue={''}
                                     />
@@ -384,7 +384,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="logo"
                                         placeholder="Enter Logo URL"
                                         {...register("logo")}
-                                        // error={errors.firstName?.message}
+                                        error={errors.logo?.message}
                                         // value={passwordInput}
                                         defaultValue={form?.logo}
                                     />
@@ -407,7 +407,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="finalTxt"
                                         placeholder="Enter Final Text"
                                         {...register("finalTxt")}
-                                        // error={errors.firstName?.message}
+                                        error={errors.finalTxt?.message}
                                         // value={passwordInput}
                                         defaultValue={form?.final_text}
                                     />
@@ -446,7 +446,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     </Button>
                                     {showPrimaryColorPicker && (
                                         <div ref={primaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
-                                            <HexColorPicker color={primaryColor} onChange={setPrimaryColor} />
+                                            <HexColorPicker color={primaryColor} onChange={(primaryColor) => {
+                                                setPrimaryColor(primaryColor);
+                                                setValue("pcolor", primaryColor);
+                                            }} />
                                         </div>
                                     )}
                                 </div>
@@ -468,7 +471,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="scolor"
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
-                                        // {...register("pcolor")}
                                         // error={errors.pcolor?.message}
                                         // defaultValue={''}
                                         value={secondaryColor}
@@ -484,7 +486,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     </Button>
                                     {showSecondaryColorPicker && (
                                         <div ref={secondaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
-                                            <HexColorPicker color={secondaryColor} onChange={setSecondaryColor} />
+                                            <HexColorPicker color={secondaryColor} onChange={(secondaryColor) => {
+                                                setSecondaryColor(secondaryColor);
+                                                setValue("scolor", secondaryColor);
+                                            }} />
                                         </div>
                                     )}
                                 </div>
@@ -578,9 +583,12 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <div className="flex gap-3 pl-3">
                                     <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                         <Switch
-                                            // {...register("mandatoryInitialData")}
+                                            {...register("enabledInitialData")}
                                             checked={enabledInitialData}
-                                            onChange={setEnabledInitialData}
+                                            onChange={(checked) => {
+                                                setEnabledInitialData(checked);
+                                                setValue("enabledInitialData", checked);
+                                            }}
                                             className={classNames(
                                                 enabledInitialData ? 'bg-[#065F46]' : 'bg-gray-200',
                                                 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'

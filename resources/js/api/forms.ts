@@ -37,11 +37,11 @@ export interface Form {
 }
 
 export interface Question {
-  id: number;
+  id?: number;
   title: string;
   text: string;
   order: number;
-  is_obligatory: boolean;
+  is_mandatory: boolean;
   form_id: number;
   question_type_id: number;
   question_type_name: string;
@@ -49,11 +49,12 @@ export interface Question {
 }
 
 export interface QuestionsOption {
-  id: number;
+  id?: number;
   order: number;
   title: string;
-  next_question: number;
-  form_question_id: number;
+  next_question?: number;
+  next_question_name?: string;
+  form_question_id?: number;
 }
 
 export const getFormsQuery = (
@@ -116,9 +117,12 @@ export type CreateFormParams = Form
 
 export const createForm = {
   mutation: async (params: CreateFormParams) => {
-    const { ...rest } = params;
+    const { is_active, is_initial_data_required, is_user_responses_linked, ...rest } = params;
     const response = await privateAPI.post<ServiceResponse<Form>>("/forms", {
-      ...rest
+      ...rest,
+      is_active: is_active ? "1" : "0",
+      is_initial_data_required: is_initial_data_required ? "1" : "0",
+      is_user_responses_linked: is_user_responses_linked ? "1" : "0",
     });
 
     return response.data.data;
@@ -130,9 +134,12 @@ export const createForm = {
 
 export const updateForm = {
   mutation: async (params: CreateFormParams) => {
-    const { ...rest } = params;
+    const { is_active, is_initial_data_required, is_user_responses_linked, ...rest } = params;
     const response = await privateAPI.put<ServiceResponse<Form>>("/forms", {
-      ...rest
+      ...rest,
+      is_active: is_active ? "1" : "0",
+      is_initial_data_required: is_initial_data_required ? "1" : "0",
+      is_user_responses_linked: is_user_responses_linked ? "1" : "0",
     });
 
     return response.data.data;

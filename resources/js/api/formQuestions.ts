@@ -2,6 +2,7 @@
 
 import type { ServiceResponse } from "./api.types";
 import { privateAPI } from "./axios";
+import type { Question } from "./forms";
 
 // import type { User } from "./users";
 
@@ -25,19 +26,10 @@ export interface IFormQuestion {
   question_type_name?: string;
 }
 
-// export const getFormsQuestionsQuery = () => ({
-//     queryKey: [DOMAIN, ALL, "getFormsQuery"],
-//     queryFn: async () => {
-//         const response = await privateAPI.get<ServiceResponse<FormQuestion[]>>("/form_questions");
-//         // console.log(response)
-//         return response.data.data;
-//     },
-// });
-
-export const getFormQuestionsQuery = (formId: IFormQuestion["id"]) => ({
-  queryKey: [DOMAIN, formId, "getFormQuery"],
+export const getFormQuestionsQuery = (formId: Question["form_id"]) => ({
+  queryKey: [DOMAIN, formId, "getFormQuestionsQuery"],
   queryFn: async () => {
-    const response = await privateAPI.get<ServiceResponse<IFormQuestion[]>>(
+    const response = await privateAPI.get<ServiceResponse<Question[]>>(
       `/form_questions/byFormId/${formId}`,
     );
     return response.data.data;

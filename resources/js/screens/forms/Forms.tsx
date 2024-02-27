@@ -2,9 +2,10 @@ import { useCallback, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 import { getFormsQuery } from "@/api";
-import { MODAL_ROUTES } from "@/router";
+import { ROUTES } from "@/router";
 import { useNavigateModal } from "@/router/useNavigateModal";
 import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
@@ -18,6 +19,8 @@ function classNames(...classes: string[]) {
 }
 
 export const Forms = () => {
+    const navigate = useNavigate();
+
     const [search, setSearch] = useState({ formTitle: "", date: "" });
     const [debouncedSearch, setDebouncedSearch] = useState({ formTitle: "", date: "" });
 
@@ -62,7 +65,7 @@ export const Forms = () => {
                     Forms
                     <Button
                         variant="primary"
-                        onClick={() => navigateModal(MODAL_ROUTES.userForm)}
+                        onClick={() => navigate(ROUTES.newForm)}
                     >
                         <icons.PlusIcon className={tw(`h-5 w-5`)} />
                         Create Form
