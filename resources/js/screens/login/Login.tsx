@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 import { loginMutation } from "./loginAuth";
-import { Button, Input, LoadingOverlay } from "@/ui";
+import { Button, Input, LoadingOverlay, BackgroundGradientAnimation } from "@/ui";
 import HomeTextAndImage from "@/components/HomeTextAndImage";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
@@ -104,7 +104,7 @@ export const Login = () => {
     };
 
     return (
-        <>
+        <BackgroundGradientAnimation>
             {(isPendingLoginUserMutation) && (
                 <LoadingOverlay />
             )}
@@ -167,7 +167,6 @@ export const Login = () => {
                 </div>
 
             </div>
-        </>
-
+        </BackgroundGradientAnimation>
     );
 };

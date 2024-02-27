@@ -32,8 +32,9 @@ export const Router = () => {
             <Routes location={previousLocation ?? location}>
                 <Route element={<ProtectedRoute expected="loggedOut" />}>
                     <Route element={<Login />} path={ROUTES.login} />
+                    <Route element={<Logout />} path={ROUTES.logout} />
+
                 </Route>
-                <Route element={<Logout />} path={ROUTES.logout} />
                 {/* PRIVATE ONLY ROUTES */}
                 {/* Acá es cuando el usuario ya entró entonces mostramos una Layout (seria el menu lateral azul y demas) */}
                 {/* <Route element={<ProtectedRoute expected={["admin", "standard"]} />}> */}
@@ -43,6 +44,7 @@ export const Router = () => {
                     {/* <Route element={<Home />} path={ROUTES.home} /> */}
 
                     <Route path={ROUTES.notFound} element={<NotFound />} />
+
                 </Route>
                 {/* </Route> */}
 

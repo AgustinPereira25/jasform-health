@@ -11,5 +11,5 @@ export const Logout = () => {
     setUser(null);
     setToken(null);
     navigate(ROUTES.login);
-
+    return null;
 };
