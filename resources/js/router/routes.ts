@@ -2,6 +2,7 @@ export const ROUTES = {
   base: "/",
   myDashboard: "/home",
   login: "/login",
+  logout: "/logout",
   home: "/home",
   users: "/users",
   myForms: "/my-forms",

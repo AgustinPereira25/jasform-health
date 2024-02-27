@@ -4,6 +4,7 @@ import type { Location } from "react-router-dom";
 import { Layout, FormInstanceLayout } from "@/layout";
 import { NotFound, Users } from "@/screens";
 import { Login } from "@/screens/login/Login";
+import { Logout } from "@/screens/login/Logout";
 import { ModalRouter } from "./ModalRouter";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
@@ -32,7 +33,7 @@ export const Router = () => {
                 <Route element={<ProtectedRoute expected="loggedOut" />}>
                     <Route element={<Login />} path={ROUTES.login} />
                 </Route>
-
+                <Route element={<Logout />} path={ROUTES.logout} />
                 {/* PRIVATE ONLY ROUTES */}
                 {/* Acá es cuando el usuario ya entró entonces mostramos una Layout (seria el menu lateral azul y demas) */}
                 {/* <Route element={<ProtectedRoute expected={["admin", "standard"]} />}> */}
