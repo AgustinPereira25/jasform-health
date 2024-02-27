@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Switch } from '@headlessui/react'
 
@@ -38,7 +38,12 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [currentQuestionOrder, setCurrentQuestionOrder] = useState(currentQuestion?.order);
     const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(currentQuestion?.question_type_id as keyof typeof questionScreens ?? 1);
     const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>('Check Box');
+    console.log(currentQuestion?.is_mandatory);
     const [enabledIsMandatory, setEnabledIsMandatory] = useState(currentQuestion?.is_mandatory ?? false);
+
+    useEffect(() => {
+        setEnabledIsMandatory(currentQuestion?.is_mandatory ?? false);
+    }, [currentQuestion?.is_mandatory]);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
@@ -99,6 +104,10 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     }
 
+    const handleSaveClick = () => {
+        console.log(questions);
+    }
+
     return (
         <div className="pb-6 h-[90%]">
             <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
@@ -121,8 +130,9 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 </div>
                 <div className="flex gap-5">
                     <Button
-                        type="submit"
+                        type="button"
                         variant="primary"
+                        onClick={handleSaveClick}
                     >
                         Save
                     </Button>

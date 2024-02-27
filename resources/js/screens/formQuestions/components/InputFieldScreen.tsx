@@ -22,9 +22,9 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        if (id === 'question_to_show') {
+        if (id === 'title') {
             setQuestionToShow(value);
-        } else if (id === 'text_to_show') {
+        } else if (id === 'text') {
             setTextToShow(value);
         }
         // Update the formQuestions general state
@@ -32,6 +32,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
             if (question.id === currentQuestion.id) {
                 return {
                     ...question,
+                    question_options: [],
                     [id]: value,
                 };
             }
@@ -48,7 +49,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
                     containerClassName="w-full"
                     // fullHeight
                     type="text"
-                    id="question_to_show"
+                    id="title"
                     placeholder="Question to Show"
                     value={questionToShow}
                     onChange={(event) => handleChange(event)}
@@ -61,7 +62,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
                     containerClassName="w-full"
                     fullHeight
                     type="text"
-                    id="text_to_show"
+                    id="text"
                     placeholder="Text to Show"
                     // error={errors.firstName?.message}
                     value={textToShow}

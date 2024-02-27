@@ -33,22 +33,22 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
 
     if (questiontypeId === 5) {
-        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id, name: option.title })) ?? [];
+        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
         setComboBoxItems(items);
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (questiontypeId !== 3) { // Dropdown and Radio
-            if (currentQuestionInfo.is_obligatory && !answerInput) {
+            if (currentQuestionInfo.is_mandatory && !answerInput) {
                 setError('Answer is mandatory');
             }
             if (!error) {
                 const answer: CompletedQuestion = {
-                    id: currentQuestionInfo.id,
+                    id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
                     completer_user_answer: answerInput,
                     order: currentQuestionInfo.order,
-                    is_obligatory: currentQuestionInfo.is_obligatory,
+                    is_mandatory: currentQuestionInfo.is_mandatory,
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
@@ -59,18 +59,18 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         }
         else { // Checkbox
             console.log('checkedAnswers', checkedAnswers);
-            console.log('obligatory', currentQuestionInfo.is_obligatory);
+            console.log('mandatory', currentQuestionInfo.is_mandatory);
             console.log('checkedAnswers.length', checkedAnswers.length);
-            if (currentQuestionInfo.is_obligatory && checkedAnswers.length === 0) {
+            if (currentQuestionInfo.is_mandatory && checkedAnswers.length === 0) {
                 setError('Answer is mandatory');
             }
             else {
                 const answer: CompletedQuestion = {
-                    id: currentQuestionInfo.id,
+                    id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
                     completer_user_answer: "",
                     order: currentQuestionInfo.order,
-                    is_obligatory: currentQuestionInfo.is_obligatory,
+                    is_mandatory: currentQuestionInfo.is_mandatory,
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                     completer_user_answer_checked_options: checkedAnswers,
@@ -95,7 +95,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
             if (checked) {
                 setError('');
-                setCheckedAnswers([...checkedAnswers, { id: option.id, order: option.order, title: option.title, next_question: option.next_question, form_question_id: option.form_question_id }]);
+                setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question!, form_question_id: option.form_question_id! }]);
             } else {
                 setCheckedAnswers(checkedAnswers.filter((answer) => answer.order !== Number(value)));
             }

@@ -24,7 +24,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
         const { id, value } = event.target;
         if (id === 'title') {
             setTitle(value);
-        } else if (id === 'text_to_show') {
+        } else if (id === 'text') {
             setTextToShow(value);
         }
         // Update the formQuestions general state
@@ -32,6 +32,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
             if (question.id === currentQuestion.id) {
                 return {
                     ...question,
+                    question_options: [],
                     [id]: value,
                 };
             }
@@ -62,7 +63,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
                     containerClassName="w-full"
                     fullHeight
                     type="text"
-                    id="text_to_show"
+                    id="text"
                     placeholder="Text to Show"
                     value={textToShow}
                     onChange={(event) => handleChange(event)}

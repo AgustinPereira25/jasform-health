@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 import { getFormsQuery } from "@/api";
 import { ROUTES } from "@/router";
-import { useNavigateModal } from "@/router/useNavigateModal";
 import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
@@ -50,7 +49,6 @@ export const Forms = () => {
         ...getFormsQuery(perPage, currentPage, enabledActive, debouncedSearch.formTitle, debouncedSearch.date),
     });
     const forms = data?.data;
-    const navigateModal = useNavigateModal();
 
     const FormDropdownOptions: FormDropdownItem[] = [
         { name: "Edit", icon: <icons.PencilIcon /> },

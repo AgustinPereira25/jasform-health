@@ -24,7 +24,7 @@ export interface CompletedQuestion {
   completer_user_answer: string;
   text?: string;
   order: number;
-  is_obligatory: boolean;
+  is_mandatory: boolean;
   question_type_id: number;
   question_type_name: string;
   form_id?: number;
