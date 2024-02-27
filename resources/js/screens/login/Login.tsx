@@ -108,7 +108,9 @@ export const Login = () => {
             {(isPendingLoginUserMutation) && (
                 <LoadingOverlay />
             )}
-            <div className="flex h-screen grow items-center justify-center gap-9 bg-gradient-to-r from-[#407EC9] to-[#00519E] px-6 py-12 lg:px-8">
+            <div
+                className="z-50 flex h-screen grow items-center justify-center gap-9 bg-gradient-to-r from-secondary to-primary px-6 py-12 lg:px-8"
+            >
                 <HomeTextAndImage />
                 <div className="bg-white p-8 rounded-lg">
                     <div className="flex justify-center">
@@ -162,7 +164,7 @@ export const Login = () => {
                     </form>
                     <div className="pb-2">
                         <span className="text-sm">Don&apos;t have a JASForm Account? </span>
-                        <button className="font-semibold text-sm">Register now</button>
+                        <button className="font-semibold text-blue-600 text-sm">Register now</button>
                     </div>
                 </div>
 

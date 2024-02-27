@@ -4,14 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
 export const BackgroundGradientAnimation = ({
-    gradientBackgroundStart = "rgb(108, 0, 162)",
-    gradientBackgroundEnd = "rgb(0, 17, 82)",
-    firstColor = "18, 113, 255",
-    secondColor = "40, 116, 252",
-    thirdColor = "100, 220, 255",
-    fourthColor = "56, 40, 181",
-    fifthColor = "10, 132, 128",
-    pointerColor = "140, 100, 255",
+    // gradientBackgroundStart = "rgb(108, 0, 162)", // hex #6C00A2 - Dark Violet
+    // gradientBackgroundEnd = "rgb(0, 17, 82)", // hex #001152 - Dark Blue
+    gradientBackgroundStart = "rgb(0, 17, 82)", // hex #001152 - Dark Blue
+    gradientBackgroundEnd = "rgb(108, 0, 162)", // hex #6C00A2 - Dark Violet
+    firstColor = "18, 113, 255", // hex #1271FF - Blue
+    secondColor = "40, 116, 252", // hex #2874FC - Light Blue
+    thirdColor = "100, 220, 255", // hex #64DCFF - Sky Blue
+    fourthColor = "56, 40, 181", // hex #3828B5 - Indigo
+    fifthColor = "10, 132, 128", // hex #0A8480 - Teal
+    pointerColor = "140, 100, 255", // hex #8C64FF - Lavender
+    // pointerColor = "100, 220, 255", // hex #64DCFF - Sky Blue
     size = "80%",
     blendingValue = "hard-light",
     children,
@@ -107,8 +110,8 @@ export const BackgroundGradientAnimation = ({
                     </filter>
                 </defs>
             </svg>
-            <div className={cn("", className)}>{children}</div>
-            <div className="gradients-container [filter:url(#blurMe)_blur(40px)] h-full w-full">
+            <div className={cn("z-10", className)}>{children}</div>
+            <div className="z-0 gradients-container [filter:url(#blurMe)_blur(40px)] h-full w-full">
                 <div
                     className={cn(
                         `absolute [background:radial-gradient(circle_at_center,_var(--first-color)_0,_var(--first-color)_50%)_no-repeat]`,
@@ -160,7 +163,7 @@ export const BackgroundGradientAnimation = ({
                         ref={interactiveRef}
                         onMouseMove={handleMouseMove}
                         className={cn(
-                            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_50%)_no-repeat]`,
+                            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_30%)_no-repeat]`,
                             `[mix-blend-mode:var(--blending-value)] w-full h-full -top-1/2 -left-1/2`,
                             `opacity-70`
                         )}
