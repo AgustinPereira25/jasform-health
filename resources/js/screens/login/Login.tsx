@@ -82,7 +82,7 @@ export const Login = () => {
                 setUser(data.data.user);
                 setToken(data.data.accessToken);
                 toast.success('Login successfully!', {
-                    autoClose: 1000
+                    autoClose: 2000
                 });
                 // navigate(ROUTES.base);
                 navigate(ROUTES.myDashboard);
