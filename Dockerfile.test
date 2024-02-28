@@ -1,6 +1,7 @@
 FROM serversideup/php:8.2-fpm-nginx
 
 ENV SSL_MODE mixed
+ENV AUTORUN_LARAVEL_MIGRATION=true
 
 WORKDIR /var/www/html
 COPY . .
@@ -17,6 +18,7 @@ COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.p
 RUN mv -f /var/www/html/production/.env.test /var/www/html/.env
 RUN cp /var/www/html/production/test.html /var/www/html/
 RUN chown -R webuser:webgroup /var/www/html/
+
 
 EXPOSE 80
 EXPOSE 443
