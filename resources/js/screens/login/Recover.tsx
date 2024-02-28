@@ -69,8 +69,8 @@ export const Recover = () => {
             >
                 <HomeTextAndImage />
                 <div className="bg-white p-8 rounded-lg z-90 ">
-                    <div className="flex justify-center">
-                        <h2 className="text-2xl font-medium text-gray-900">Recover Password</h2>
+                    <div className="flex justify-center mb-6">
+                        <h2 className="text-2xl font-medium text-primary">Recover Password</h2>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="grid gap-3">

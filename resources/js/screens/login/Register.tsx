@@ -81,8 +81,8 @@ export const Register = () => {
             >
                 <HomeTextAndImage />
                 <div className="bg-white p-8 rounded-lg z-90 ">
-                    <div className="flex justify-center">
-                        <h2 className="text-2xl font-medium text-gray-900">Create Account</h2>
+                    <div className="flex justify-center mb-6">
+                        <h2 className="text-2xl font-medium text-primary">Create Account</h2>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="grid gap-3">
