@@ -11,6 +11,7 @@ import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
 import DashboardCardsSkeleton from "@/ui/common/Skeletons/DashboardCardsSkeleton";
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
+import CountUpStats from "./CountUpStats";
 
 const enabledActive = 1;
 const perPage = 3;
@@ -74,22 +75,31 @@ export const MyDashboard = () => {
             ) : !statsData ? (
                 <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
             ) : (
-
-                <div className="rounded-xl border-[1px] p-2 pt-4 mb-5 shadow-lg">
-                    <h1 className="flex items-center justify-between px-2 pb-7 text-2xl font-semibold leading-7 text-primary ">
+                <div className="p-2 pt-4 mb-5">
+                    <h1 className="flex items-center justify-between px-2 pb-2 text-2xl font-semibold leading-7 text-primary ">
                         Stats
                     </h1>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 px-10 pb-5">
-                        {Object.entries(statsData).map(([key, value]) => (
-                            <div
-                                key={key}
-                                className="relative flex flex-col items-center justify-center rounded-xl border-[1px] bg-[#F9FAFB] border-gray-100 px-6 py-5 shadow-sm text-center"
-                            >
-                                <span className="absolute inset-0" aria-hidden="true" />
-                                <p className="text-sm font-medium text-gray-500 capitalize">{key.replace(/_/g, " ")}</p>
-                                <p className="truncate text-2xl font-bold text-black">{value}</p>
-                            </div>
-                        ))}
+                    <div className="rounded-xl flex justify-center py-5 p-14 cursor-default">
+                        {Object.entries(statsData).map(([key, value], index) => {
+                            const colors = ['bg-green-700', 'bg-red-700', 'bg-yellow-600', 'bg-purple-900'];
+                            const colorClass = colors[index % colors.length];
+                            return (
+                                <div className="rounded-xl container mx-auto cursor-default" key={key}>
+                                    <div className="cursor-default w-72 bg-white max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg transition duration-500 transform hover:scale-100">
+
+                                        <div className={`h-20 flex items-center justify-between ${colorClass}`}>
+                                            <p className="mr-0 text-white text-lg pl-5 capitalize">{key.replace(/_/g, " ")}</p>
+                                        </div>
+                                        <div className="flex justify-between pt-6 px-5 mb-2 text-sm text-gray-600">
+                                            <p>TOTAL</p>
+                                        </div>
+                                        <p className="py-4 text-3xl ml-5">
+                                            <CountUpStats value={value} />
+                                        </p>
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
 
@@ -107,7 +117,7 @@ export const MyDashboard = () => {
                 <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
                     <div className="bg-white">
                         <h1 className="flex items-center justify-between px-2 pb-7 text-2xl font-semibold leading-7 text-primary">
-                            My last active forms
+                            My latest active forms
                         </h1>
                     </div>
                     <div className="rounded-sm border-[1px] border-gray-300">
@@ -233,7 +243,8 @@ export const MyDashboard = () => {
                             variant="primary"
                             onClick={() => navigate(ROUTES.myForms)}
                         >
-                            View more Forms
+                            View all my forms
+                            <icons.ChevronRightIcon className="h-6 w-6 text-white" />
                         </Button>
                     </div>
                 </div >
