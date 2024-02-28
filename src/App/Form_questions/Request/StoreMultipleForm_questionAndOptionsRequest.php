@@ -15,7 +15,7 @@ class StoreMultipleForm_questionAndOptionsRequest extends FormRequest
     {
         return [
             'form_id' => ['required'],
-            'form_questions' => ['required', 'array'],
+            'form_questions' => ['array'],
             'form_questions.*.title' => ['required'],
             'form_questions.*.text' => ['required'],
             'form_questions.*.order' => ['required'],
