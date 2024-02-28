@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import { useUserStore } from "@/stores";
 import { getFormsQuery, getUserDashboard } from "@/api";
@@ -16,7 +17,12 @@ const perPage = 3;
 const currentPage = 1;
 export const MyDashboard = () => {
     const navigate = useNavigate();
-    const { user } = useUserStore();
+    const { user, token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
     console.log("user", user);
     const userId = user?.id;
 

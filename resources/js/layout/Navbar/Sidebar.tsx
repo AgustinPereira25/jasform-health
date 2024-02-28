@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
@@ -52,6 +52,14 @@ export const Sidebar = ({
 }: {
     onCloseSidebar?: () => void;
 }) => {
+    const navigate = useNavigate();
+    const { token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
     const { pathname: currentPath } = useLocation();
     // TODO - Put real user here and change mocked user in Layout.tsx
     // const { user: user, setToken } = useUserStore();
@@ -59,7 +67,6 @@ export const Sidebar = ({
     const { user } = useUserStore();
     console.log("Sidebar-user", user);
 
-    const navigate = useNavigate();
     const { setToken, setUser } = useUserStore();
     const logout = () => {
         setUser(null);

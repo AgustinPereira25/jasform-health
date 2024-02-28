@@ -38,7 +38,7 @@ const HomeTextAndImage: React.FC = () => {
     ];
 
     return (
-        <div className="p-6 text-center lg:mr-[10%] justify-center justify-items-center">
+        <div className="z-90 p-6 text-center lg:mr-[10%] justify-center justify-items-center">
             <div className="flex justify-center justify-items-center"
             ><JASFormLogo className="h-32 w-auto justify-center justify-items-center" />
             </div>

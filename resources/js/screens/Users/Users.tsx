@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +15,20 @@ import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
 import { truncateText } from "@/helpers/helpers";
+import { useUserStore } from "@/stores";
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
 export const Users = () => {
+    const navigate = useNavigate();
+    const { token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
     const [search, setSearch] = useState({ nameEmail: "", positionOrg: "" });
     const [debouncedSearch, setDebouncedSearch] = useState({ nameEmail: "", positionOrg: "" });
 
@@ -49,7 +58,6 @@ export const Users = () => {
         ...getUsersQuery(perPage, currentPage, enabledActive, enabledAdmin, debouncedSearch.nameEmail, debouncedSearch.positionOrg),
     });
     const users = data?.data;
-    const navigate = useNavigate();
 
     return (
         <>

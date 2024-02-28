@@ -7,7 +7,7 @@ export const BackgroundGradientAnimation = ({
     // gradientBackgroundStart = "rgb(108, 0, 162)", // hex #6C00A2 - Dark Violet
     // gradientBackgroundEnd = "rgb(0, 17, 82)", // hex #001152 - Dark Blue
     gradientBackgroundStart = "rgb(0, 17, 82)", // hex #001152 - Dark Blue
-    gradientBackgroundEnd = "rgb(108, 0, 162)", // hex #6C00A2 - Dark Violet
+    gradientBackgroundEnd = "rgb(100, 220, 255)", // hex #6C00A2 - Sky Blue
     firstColor = "18, 113, 255", // hex #1271FF - Blue
     secondColor = "40, 116, 252", // hex #2874FC - Light Blue
     thirdColor = "100, 220, 255", // hex #64DCFF - Sky Blue
@@ -88,7 +88,8 @@ export const BackgroundGradientAnimation = ({
     return (
         <div
             className={cn(
-                "h-screen w-screen relative overflow-hidden top-0 left-0 bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]",
+                "z-10 h-screen w-screen relative overflow-hidden top-0 left-0 bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]",
+                "pointer-events-none",
                 containerClassName
             )}
         >
@@ -163,7 +164,7 @@ export const BackgroundGradientAnimation = ({
                         ref={interactiveRef}
                         onMouseMove={handleMouseMove}
                         className={cn(
-                            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_30%)_no-repeat]`,
+                            `z-0 absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_30%)_no-repeat]`,
                             `[mix-blend-mode:var(--blending-value)] w-full h-full -top-1/2 -left-1/2`,
                             `opacity-70`
                         )}

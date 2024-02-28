@@ -9,6 +9,7 @@ use App\Users\Controllers\UpdateUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthLogOutController;
 use App\Activity_records\Controllers\ListActivity_recordController;
 use App\Activity_records\Controllers\GetActivity_recordController;
 use App\Activity_records\Controllers\StoreActivity_recordController;
@@ -80,6 +81,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/logout', [AuthLogOutController::class, 'logout']);
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('/logout', [AuthLogOutController::class, 'logout']);
+// });
+
 Route::prefix('forms')
     ->middleware(['sanitize_input'])
     ->group(static function () {
@@ -96,6 +102,8 @@ Route::prefix('form_instances')
 | Private Routes
 |--------------------------------------------------------------------------
 */
+
+
 Route::prefix('users')
     ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {

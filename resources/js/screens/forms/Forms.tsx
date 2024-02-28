@@ -1,8 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "@/stores";
 import { getFormsQuery } from "@/api";
@@ -18,7 +19,14 @@ function classNames(...classes: string[]) {
 }
 
 export const Forms = () => {
-    const { user } = useUserStore();
+    const navigate = useNavigate();
+    const { user, token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
     const location = useLocation();
     const isMyFormsRoute = location.pathname === ROUTES.myForms;
     const userId = isMyFormsRoute ? user?.id : "";

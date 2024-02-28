@@ -1,6 +1,6 @@
 import type { User } from "@/api/users";
 
-import { publicAPI } from "../../api/axios";
+import { privateAPI, publicAPI } from "../../api/axios";
 
 export interface LoginResponse {
   message: string;
@@ -17,6 +17,15 @@ export const loginMutation = {
   mutation: async (params: LoginParams) => {
     console.log("loginMutation-params:", params);
     const response = await publicAPI.post<LoginResponse>("/login", params);
+    return response;
+  },
+};
+
+export const logOutMutation = {
+  mutation: async () => {
+    console.log("loginMutation");
+    const response = await privateAPI.post<LoginResponse>("/logout");
+    console.log("loginMutation-response:", response);
     return response;
   },
 };

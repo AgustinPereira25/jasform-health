@@ -1,9 +1,19 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useUserStore } from "@/stores";
 import { NewEditProfile } from "./NewEditProfile";
+import { ROUTES } from "@/router";
 // import { UserRoles } from '@/api'
 
 export const Profile = () => {
-    const { user } = useUserStore();
+    const navigate = useNavigate();
+    const { user, token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
     return (
         <NewEditProfile initialData={user!} />
     )

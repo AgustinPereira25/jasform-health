@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 import type { User } from "@/api";
 import { getUserQuery } from "@/api";
@@ -9,10 +10,19 @@ import { tw } from "@/utils";
 import UserProfileSkeleton from "@/ui/common/Skeletons/UserProfileSkeleton";
 import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
+import { useUserStore } from "@/stores";
+import { ROUTES } from "@/router";
 
 export const PrepareProfileForm: React.FunctionComponent = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
+    const { token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
+    const { id } = useParams();
     // TODO- Error handling 404, and redirect to not found page. with navigate.
     let user: User = {};
     const { data: userData, isError, isLoading: isLoadingUser, isFetching } = useQuery({

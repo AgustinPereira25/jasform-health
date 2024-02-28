@@ -109,10 +109,10 @@ export const Login = () => {
                 <LoadingOverlay />
             )}
             <div
-                className="z-50 flex h-screen grow items-center justify-center gap-9 bg-gradient-to-r from-secondary to-primary px-6 py-12 lg:px-8"
+                className="pointer-events-auto flex h-screen grow items-center justify-center gap-9 bg-gradient-to-r from-secondary to-primary px-6 py-12 lg:px-8"
             >
                 <HomeTextAndImage />
-                <div className="bg-white p-8 rounded-lg">
+                <div className="bg-white p-8 rounded-lg z-90 ">
                     <div className="flex justify-center">
                         <h2 className="text-2xl font-medium text-gray-900">Welcome!</h2>
                     </div>
