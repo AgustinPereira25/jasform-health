@@ -1,21 +1,21 @@
 {
-  "family": "jasform-app-task-def-fam",
+  "family": "test-jasform-app-task-def-fam",
   "containerDefinitions": [
     {
-      "name": "jasform-container1",
-      "image": "819468451541.dkr.ecr.us-west-2.amazonaws.com/jasform-ecr:latest",
+      "name": "test-jasform-container1",
+      "image": "819468451541.dkr.ecr.us-west-2.amazonaws.com/test-jasform-ecr:latest",
       "cpu": 256,
       "memory": 512,
       "portMappings": [
         {
-          "name": "jasform-container1-443-tcp",
+          "name": "test-jasform-container1-443-tcp",
           "containerPort": 443,
           "hostPort": 443,
           "protocol": "tcp",
           "appProtocol": "http"
         },
         {
-          "name": "jasform-container1-80-tcp",
+          "name": "test-jasform-container1-80-tcp",
           "containerPort": 80,
           "hostPort": 80,
           "protocol": "tcp",
@@ -32,7 +32,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/jasform-app-task-def-fam",
+          "awslogs-group": "/ecs/test-jasform-app-task-def-fam",
           "awslogs-region": "us-west-2",
           "awslogs-stream-prefix": "ecs"
         },
