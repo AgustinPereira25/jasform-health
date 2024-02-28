@@ -1,6 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
+
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 import type { User } from "./users";
@@ -60,9 +61,10 @@ export interface QuestionsOption {
 export const getFormsQuery = (
   perPage: number,
   currentPage: number,
-  isActive: boolean,
-  formTitle: string,
-  date: string,
+  isActive: boolean | number,
+  userId: string,
+  formTitle?: string,
+  date?: string,
 ) => ({
   queryKey: [
     DOMAIN,
@@ -71,6 +73,7 @@ export const getFormsQuery = (
     perPage,
     currentPage,
     isActive,
+    userId,
     formTitle,
     date,
   ],
@@ -84,6 +87,7 @@ export const getFormsQuery = (
         isActive,
         form_title: formTitle,
         date,
+        userId,
       },
       headers: getAuthHeaders(),
     });

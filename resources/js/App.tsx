@@ -31,7 +31,7 @@ createRoot(document.getElementById("app")!).render(
             )}
             <ToastContainer
                 position="top-center"
-                theme="colored"
+                theme="light"
                 style={{ width: "30%" }}
             />
         </QueryClientProvider>

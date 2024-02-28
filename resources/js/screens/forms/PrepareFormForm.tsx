@@ -1,12 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 import type { Form } from "@/api";
 import { getFormQuery } from "@/api";
 import { NewForm } from "./NewForm";
 import { icons } from "@/ui";
+import { useUserStore } from "@/stores";
+import { ROUTES } from "@/router";
 
 export const PrepareFormForm: React.FunctionComponent = () => {
+    const navigate = useNavigate();
+    const { token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
     const { id } = useParams();
     // const navigate = useNavigate();
     // TODO- Error handling 404, and redirect to not found page. with navigate.
