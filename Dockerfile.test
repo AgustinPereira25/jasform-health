@@ -2,7 +2,6 @@ FROM serversideup/php:8.2-fpm-nginx
 
 # ENV SSL_MODE=mixed
     # AUTORUN_LARAVEL_MIGRATION=true
-
 WORKDIR /var/www/html
 COPY . .
 RUN composer install --optimize-autoloader --no-dev
