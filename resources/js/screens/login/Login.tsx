@@ -142,7 +142,7 @@ export const Login = () => {
                                 />
                             </div>
                             <div className="flex justify-end">
-                                <button className="text-sm font-medium text-blue-600">Forgot password?</button>
+                                <button onClick={() => navigate(ROUTES.recover)} className="text-sm font-medium text-blue-600">Forgot password?</button>
                             </div>
                             <div className="pb-8">
                                 <Button
@@ -164,7 +164,7 @@ export const Login = () => {
                     </form>
                     <div className="pb-2">
                         <span className="text-sm">Don&apos;t have a JASForm Account? </span>
-                        <button className="font-semibold text-blue-600 text-sm">Register now</button>
+                        <button onClick={() => navigate(ROUTES.register)} className="font-semibold text-blue-600 text-sm">Register now</button>
                     </div>
                 </div>
 

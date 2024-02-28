@@ -10,7 +10,7 @@ export interface LoginResponse {
 
 export interface LoginParams {
   email: string;
-  password: string;
+  password?: string;
 }
 
 export const loginMutation = {
@@ -26,6 +26,22 @@ export const logOutMutation = {
     console.log("loginMutation");
     const response = await privateAPI.post<LoginResponse>("/logout");
     console.log("loginMutation-response:", response);
+    return response;
+  },
+};
+
+export const recoverMutation = {
+  mutation: async (params: LoginParams) => {
+    console.log("recoverMutation-params:", params);
+    const response = await publicAPI.post<LoginResponse>("/recover", params);
+    return response;
+  },
+};
+
+export const registerMutation = {
+  mutation: async (params: LoginParams) => {
+    console.log("registerMutation-params:", params);
+    const response = await publicAPI.post<LoginResponse>("/register", params);
     return response;
   },
 };

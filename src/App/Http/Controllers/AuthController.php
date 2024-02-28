@@ -44,4 +44,18 @@ class AuthController
             'accessToken' => $token->plainTextToken,
         ], 200);
     }
+
+    public function recover(Request $request)
+    {
+        return response()->json([
+            'message' => 'An error occurred. Please try again later, or contact us if the problem persists.',
+        ], 500);
+    }
+
+    public function register(Request $request)
+    {
+        return response()->json([
+            'message' => 'An error occurred. Please try again later, or contact us if the problem persists.',
+        ], 500);
+    }
 }
