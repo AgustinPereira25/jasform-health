@@ -16,7 +16,7 @@ interface CheckRadioDDownScreenProps {
 
 // TODO - Make input text full height (it overflows the container).
 export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ formQuestions = [], comboBoxOption, currentQuestionOrder = 0, setQuestions }) => {
-
+    // console.log(formQuestions)
     // TODO - Fetch questions from API
     // const formQuestionsTest = [{
     //     id: 2, order: 1, title: 'Option 1',
@@ -37,9 +37,14 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     const [isInputEmpty, setIsInputEmpty] = useState(false);
     const [questionToShow, setQuestionToShow] = useState(currentFormQuestion?.title ?? '');
 
-    // useEffect(() => {
-    //     setQuestionToShow(currentFormQuestion!.title ?? '');
-    // }, [currentQuestionOrder]);
+    useEffect(() => {
+        setQuestionToShow(currentFormQuestion!.title ?? '');
+    }, [currentQuestionOrder]);
+
+    const getQuestionTypeName = (questionTypeId: number) => {
+        const questionType = transformedSteps.find((item) => item.id === questionTypeId);
+        return questionType?.name ?? '';
+    }
 
     const handleAddRowClick = (input: string, comboBoxOption: ComboBoxOption) => {
         if (!newInput) {
@@ -49,11 +54,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
 
         const getLastQuestionOrder = Object.values(questionsOption).pop()?.order;
         const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
-        const getLastQuestionId = Object.values(questionsOption).pop()?.id;
-        const lastQuestionId = getLastQuestionId ? getLastQuestionId + 1 : 1;
         if (comboBoxOption === 'Radio Button') {
             // TODO - change form question id
-            const newElement: QuestionsOption = { id: lastQuestionId, order: lastQuestionOrder, title: input, next_question: lastQuestionOrder, next_question_name: "Mock" };
+            const newElement: QuestionsOption = { order: lastQuestionOrder, title: input, next_question: newQuestionType.id };
             setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
             // Update the formQuestions general state
@@ -68,12 +71,14 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             });
             setQuestions(updatedQuestions ?? []);
         } else {
-            const newElement = { id: lastQuestionId, order: lastQuestionOrder, title: input };
-            setQuestionsOption([...questionsOption, newElement]);
+            const newElement = { order: lastQuestionOrder, title: input, next_question: null };
+            // setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
+                    const newQuestionOptions = question.question_options!.map((item) => (delete item.id, delete item.form_question_id, { ...item, next_question: null }));
+                    setQuestionsOption([...newQuestionOptions, newElement]);
                     return {
                         ...question,
                         question_options: [...questionsOption, newElement],
@@ -84,8 +89,8 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             setQuestions(updatedQuestions ?? []);
         }
     }
-    const handleDeleteRowClick = (id: number) => {
-        const newQuestions = questionsOption.filter((item) => item.id !== id);
+    const handleDeleteRowClick = (order: number) => {
+        const newQuestions = questionsOption.filter((item) => item.order !== order);
         setQuestionsOption(newQuestions);
         // Update the formQuestions general state
         const updatedQuestions = formQuestions?.map((question) => {
@@ -117,6 +122,12 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
+                    question.question_options?.map((item) => {
+                        return {
+                            ...item,
+                            next_question: "null",
+                        };
+                    });
                     return {
                         ...question,
                         question_options: [...questionsOption],
@@ -162,17 +173,17 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
 
     const handleComboBoxChange = (value: { id: number, name: string }) => {
         setNewQuestionType(value);
-        const updatedQuestions = formQuestions?.map((question) => {
-            if (question.order === currentQuestionOrder) {
-                return {
-                    ...question,
-                    question_type_id: value.id,
-                    question_type_name: value.name,
-                };
-            }
-            return question;
-        });
-        setQuestions(updatedQuestions ?? []);
+        // const updatedQuestions = formQuestions?.map((question) => {
+        //     if (question.order === currentQuestionOrder) {
+        //         return {
+        //             ...question,
+        //             question_type_id: value.id,
+        //             question_type_name: value.name,
+        //         };
+        //     }
+        //     return question;
+        // });
+        // setQuestions(updatedQuestions ?? []);
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -217,18 +228,18 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                 </div>
                 <div className="flex flex-col gap-3 justify-between border border-gray-300 text-black w-full">
                     {
-                        questionsOption.map((item) => {
+                        questionsOption.map((item, idx) => {
                             return (
-                                <div key={item.id} className="flex w-full hover:bg-gray-200 py-3 px-3">
+                                <div key={idx} className="flex w-full hover:bg-gray-200 py-3 px-3">
                                     <span className={tw('text-xs grow',
                                         comboBoxOption === 'Radio Button' && 'w-[53%]',
                                         comboBoxOption !== 'Radio Button' && 'w-[86%]',
                                     )}>{item.title}</span>
                                     {comboBoxOption === 'Radio Button' && (
-                                        <span className="w-[33%] text-xs grow">{item.next_question}</span>
+                                        <span className="w-[33%] text-xs grow">{getQuestionTypeName(item.next_question!)}</span>
                                     )}
                                     <div className="flex justify-center gap-3 w-[13%] grow">
-                                        <icons.TrashIcon className="w-5 h-5" onClick={() => handleDeleteRowClick(item.id!)} />
+                                        <icons.TrashIcon className="w-5 h-5" onClick={() => handleDeleteRowClick(item.order)} />
                                         <icons.DocumentDuplicateIcon className="w-5 h-5" />
                                         <icons.ArrowUpIcon className="w-5 h-5" onClick={() => handleUpClick(item)} />
                                         <icons.ArrowDownIcon className="w-5 h-5" onClick={() => handleDownClick(item)} />

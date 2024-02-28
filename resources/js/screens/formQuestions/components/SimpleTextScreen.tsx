@@ -30,9 +30,9 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
         // Update the formQuestions general state
         const updatedQuestions = formQuestions?.map((question) => {
             if (question.id === currentQuestion.id) {
+                delete question.question_options;
                 return {
                     ...question,
-                    question_options: [],
                     [id]: value,
                 };
             }

@@ -15,7 +15,6 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-// TODO - Finish this implementation by seeing figma and replying the design with the components.
 export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [] }) => {
 
     // TODO- Put this in constants file
@@ -38,12 +37,12 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [currentQuestionOrder, setCurrentQuestionOrder] = useState(currentQuestion?.order);
     const [questionTypeForm, setQuestionTypeForm] = useState<keyof typeof questionScreens>(currentQuestion?.question_type_id as keyof typeof questionScreens ?? 1);
     const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>('Check Box');
-    console.log(currentQuestion?.is_mandatory);
+    // console.log(currentQuestion?.is_mandatory);
     const [enabledIsMandatory, setEnabledIsMandatory] = useState(currentQuestion?.is_mandatory ?? false);
 
     useEffect(() => {
         setEnabledIsMandatory(currentQuestion?.is_mandatory ?? false);
-    }, [currentQuestion?.is_mandatory]);
+    }, [currentQuestion?.is_mandatory, questions]);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
@@ -73,6 +72,22 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 setComboBoxOption('Drop Down Combo');
                 break;
         }
+        // Update the formQuestions general state
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.order === currentQuestionOrder) {
+                return {
+                    ...question,
+                    question_type_id: questionTypeForm,
+                    question_type_name: questionTypes.find((questionType) => questionType.id === questionTypeForm)!.name,
+                };
+            }
+            return question;
+        });
+        const updatedQuestion = updatedQuestions?.find((question) => question.order === currentQuestionOrder);
+        setQuestions(updatedQuestions ?? []);
+        // console.log('questionTypeForm', questionTypeForm)
+        // console.log(updatedQuestion);
+        setCurrentQuestion(updatedQuestion);
     }
 
     const handleDeleteClick = (item: Question) => {
@@ -106,6 +121,15 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
     const handleSaveClick = () => {
         console.log(questions);
+        const data = questions;
+        data.map((question) => {
+            delete question.id;
+            // TODO - Delete id and form_question_id from question_options to fit endpoint.
+            question.question_options?.map((option) => {
+                delete option.id;
+            });
+        });
+        // const postQuestions = { form_id: formId, form_questions: questions.map((question) => ({ ...question, })) };
     }
 
     return (
@@ -205,7 +229,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         <ComboBox
                                             id="questionType"
                                             items={questionTypes}
-                                            defaultValue={questionTypes.find((item) => item.id === questionTypeForm)?.name}
+                                            defaultValue={currentQuestion.question_type_name}
                                             onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
                                         />
                                     </div>

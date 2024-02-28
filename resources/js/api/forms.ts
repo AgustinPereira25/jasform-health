@@ -42,7 +42,7 @@ export interface Question {
   text: string;
   order: number;
   is_mandatory: boolean;
-  form_id: number;
+  form_id?: number;
   question_type_id: number;
   question_type_name: string;
   question_options?: QuestionsOption[];
@@ -52,8 +52,7 @@ export interface QuestionsOption {
   id?: number;
   order: number;
   title: string;
-  next_question?: number;
-  next_question_name?: string;
+  next_question?: number | null;
   form_question_id?: number;
 }
 

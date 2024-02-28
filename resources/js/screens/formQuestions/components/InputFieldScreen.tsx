@@ -12,6 +12,7 @@ interface InputTextScreenProps {
 export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions }) => {
     // console.log(currentQuestion);
     // console.log(formQuestions)
+
     const [questionToShow, setQuestionToShow] = useState(currentQuestion.title ?? '');
     const [textToShow, setTextToShow] = useState(currentQuestion.text ?? '');
 
@@ -30,9 +31,9 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
         // Update the formQuestions general state
         const updatedQuestions = formQuestions?.map((question) => {
             if (question.id === currentQuestion.id) {
+                delete question.question_options;
                 return {
                     ...question,
-                    question_options: [],
                     [id]: value,
                 };
             }
