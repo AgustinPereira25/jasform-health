@@ -27,6 +27,7 @@ class StoreMultipleForm_question_and_optionsController
         }
         $form->form_questions()->delete();
 
+
         try {
             foreach ($request->form_questions as $questionKey => $questionData) {
                 $questionType = Question_type::find($questionData['question_type_id']);
@@ -40,6 +41,16 @@ class StoreMultipleForm_question_and_optionsController
 
                 if (isset($questionData['question_options'])) {
                     foreach ($questionData['question_options'] as $optionKey => $optionData) {
+                        if (array_key_exists('next_question', $optionData)) {
+                            if ($optionData['next_question'] === 'null') {
+                                $optionData['next_question'] = null;
+                            } else {
+                                $optionData['next_question'] = (int)$optionData['next_question'];
+                            }
+                        } else {
+                            $optionData['next_question'] = null;
+                        }
+
                         $option = new Question_option($optionData);
                         $question->question_options()->save($option);
                     }

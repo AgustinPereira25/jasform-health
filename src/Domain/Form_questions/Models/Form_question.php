@@ -16,7 +16,6 @@ use Domain\Question_options\Models\Question_option;
  * @property string $title
  * @property string $text
  * @property int $order
- * @property int $next_question
  * @property int $mandatory
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -71,11 +70,4 @@ class Form_question extends Model
     {
         return $this->hasMany(Question_option::class);
     }
-
-    // TODO
-    // public function next_questions(): HasMany
-    // {
-    //     return $this->hasMany(Question_option::class);
-    // }
-
 }
