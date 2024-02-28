@@ -1,6 +1,10 @@
 export const ROUTES = {
   base: "/",
+  myDashboard: "/home",
   login: "/login",
+  register: "/register",
+  recover: "/recover",
+  logout: "/logout",
   home: "/home",
   users: "/users",
   myForms: "/my-forms",

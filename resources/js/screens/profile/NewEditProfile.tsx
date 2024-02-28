@@ -17,6 +17,7 @@ import { createUser, updateUser } from "@/api";
 import { handleAxiosFieldErrors } from "@/utils";
 import { TextArea } from "@/ui/form/TextArea";
 import { DeleteUserConfirm } from "./DeleteUserConfirm";
+import { useUserStore } from "@/stores";
 
 interface NewEditProfileForm {
     id?: number;
@@ -88,6 +89,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
+    const { setUser } = useUserStore();
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -154,7 +156,13 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             onSuccess: (data) => {
                 updateUser.invalidates(queryClient);
                 toast.success(`User "${data.data.data.first_name}" successfully updated!`);
-                navigate(ROUTES.users);
+                if (pathname.includes(ROUTES.newUser)) {
+                    navigate(ROUTES.users);
+                } else {
+                    console.log("data.data.data:", data.data.data);
+                    setUser(data.data.data);
+                    navigate(ROUTES.myDashboard);
+                }
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {

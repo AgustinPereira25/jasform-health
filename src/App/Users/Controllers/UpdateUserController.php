@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Users\Controllers;
 
 use App\Users\Request\UpdateUserRequest;
-use App\Users\Transformers\UserTransformer;
+use App\Users\Transformers\UserListTransformer;
 use Domain\Users\Actions\UpdateUserAction;
 use Illuminate\Http\JsonResponse;
 use Domain\Users\Models\User;
@@ -46,7 +46,7 @@ class UpdateUserController
         $updatedUser = $updateUserAction->execute($request->toDtoUpdate(), $user);
 
         return responder()
-            ->success($updatedUser->refresh(), UserTransformer::class)
+            ->success($updatedUser->refresh(), UserListTransformer::class)
             ->respond(JsonResponse::HTTP_OK);
     }
 }

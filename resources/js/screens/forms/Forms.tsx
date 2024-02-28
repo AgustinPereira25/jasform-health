@@ -1,15 +1,15 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+import { useUserStore } from "@/stores";
 import { getFormsQuery } from "@/api";
 import { ROUTES } from "@/router";
-import type { FormDropdownItem } from "@/shared.types";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
-import { FormDropdown } from "./components";
 import Pagination from "@/ui/common/Pagination";
 import { paginatorValues } from "@/constants/pagination";
 
@@ -19,6 +19,16 @@ function classNames(...classes: string[]) {
 
 export const Forms = () => {
     const navigate = useNavigate();
+    const { user, token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
+    const location = useLocation();
+    const isMyFormsRoute = location.pathname === ROUTES.myForms;
+    const userId = isMyFormsRoute ? user?.id : "";
 
     const [search, setSearch] = useState({ formTitle: "", date: "" });
     const [debouncedSearch, setDebouncedSearch] = useState({ formTitle: "", date: "" });
@@ -46,16 +56,11 @@ export const Forms = () => {
     const [enabledActive, setEnabledActive] = useState(false);
 
     const { data, isLoading: isLoadingForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, debouncedSearch.formTitle, debouncedSearch.date),
+        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.date)
     });
+
     const forms = data?.data;
 
-    const FormDropdownOptions: FormDropdownItem[] = [
-        { name: "Edit", icon: <icons.PencilIcon /> },
-        // { name: "Duplicate", icon: <icons.DocumentDuplicateIcon /> },
-        { name: "Get Link", icon: <icons.LinkIcon /> },
-        { name: "Delete", icon: <icons.TrashIcon />, newSection: true },
-    ];
     return (
         <>
             <div className="bg-white">
@@ -220,7 +225,7 @@ export const Forms = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    {/* <td className="hidden py-4 pl-3 text-center text-sm  text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                    {/* <td className="hidden py-4 pl-3 text-center text-sm text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                     <Button
                       variant="tertiary"
                       onClick={() => console.log('delete')}
@@ -229,11 +234,9 @@ export const Forms = () => {
                     </Button>
                   </td> */}
                                     <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        <FormDropdown
-                                            items={FormDropdownOptions}
-                                            mode="FORM"
-                                            param={item.id}
-                                        />
+                                        <a href={`/forms/${item.id}`} className="flex justify-end">
+                                            <icons.ChevronRightIcon className="h-6 w-6 text-primary" />
+                                        </a>
                                     </td>
                                 </tr>
                             ))}

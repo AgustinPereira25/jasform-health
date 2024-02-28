@@ -15,7 +15,7 @@ class Question_optionTransformer extends Transformer
             'id' => (int) $question_option->id,
             'order' => (int) $question_option->order,
             'title' => (string) $question_option->title,
-            'next_question' => (int) $question_option->next_question,
+            'next_question' => $question_option->next_question !== null ? (int) $question_option->next_question : null,
             'form_question_id' => (int) $question_option->form_question_id,
         ];
     }

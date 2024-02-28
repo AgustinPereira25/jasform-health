@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
-import { icons } from "@/ui";
+import { Button, Modal, icons } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
@@ -51,13 +52,34 @@ export const Sidebar = ({
 }: {
     onCloseSidebar?: () => void;
 }) => {
+    const navigate = useNavigate();
+    const { token } = useUserStore();
+    useEffect(() => {
+        if (!token) {
+            navigate(ROUTES.login);
+        }
+    }, []);
+
     const { pathname: currentPath } = useLocation();
     // TODO - Put real user here and change mocked user in Layout.tsx
-    // const { user: mockUser, setToken } = useUserStore();
-    const { user: mockUser } = useUserStore();
+    // const { user: user, setToken } = useUserStore();
 
+    const { user } = useUserStore();
+    console.log("Sidebar-user", user);
+
+    const { setToken, setUser } = useUserStore();
     const logout = () => {
-        alert("Logout");
+        setUser(null);
+        setToken(null);
+        navigate(ROUTES.login);
+    };
+
+    const [showLogOutModal, setShowLogOutModal] = useState(false);
+    const handleOpenLogOutModal = () => {
+        setShowLogOutModal(true);
+    };
+    const handleCloseLogOutModal = () => {
+        setShowLogOutModal(false);
     };
 
     return (
@@ -66,13 +88,13 @@ export const Sidebar = ({
                 <img src="/JASForm_Isologo_big_transp_white.png" alt="Logo" className="h-10" />
             </div>
 
-            {mockUser && (
+            {user && (
                 <nav className="flex flex-1 flex-col">
                     <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">
                         {navigation
                             .filter((item) =>
                                 item.role_name.includes(
-                                    mockUser.role_name?.toLowerCase() ?? ""
+                                    user.role_name?.toLowerCase() ?? ""
                                 )
                             )
                             .map((item) => (
@@ -147,16 +169,16 @@ export const Sidebar = ({
                                             referrerPolicy="no-referrer"
                                             className="-ml-1 h-8 w-8 rounded-full bg-gray-800"
                                             src={
-                                                isValidImageUrl(mockUser?.photo ?? "")
-                                                    ? mockUser?.photo
+                                                isValidImageUrl(user?.photo ?? "")
+                                                    ? user?.photo
                                                     : "/Profile-Hello-Smile1b.png"
                                             }
-                                            alt={mockUser.first_name}
+                                            alt={user.first_name}
                                         />
                                         <span className="sr-only">Your profile</span>
                                         <div>
                                             <span aria-hidden="true">
-                                                {mockUser.first_name} {mockUser.last_name}
+                                                {user.first_name} {user.last_name}
                                             </span>
                                             <Link
                                                 to="/profile"
@@ -168,7 +190,7 @@ export const Sidebar = ({
                                     </div>
                                     <button
                                         className="mr-2"
-                                        onClick={logout}
+                                        onClick={handleOpenLogOutModal}
                                         title="Logout"
                                     >
                                         {item.icon}
@@ -179,6 +201,25 @@ export const Sidebar = ({
 
                 </nav>
             )}
+            <Modal
+                show={showLogOutModal}
+                title="Log out"
+                description="Are you sure you want to log out?"
+                onClose={handleCloseLogOutModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-row gap-4 h-16 p-3">
+                            <Button variant="secondary" onClick={handleCloseLogOutModal} >
+                                Cancel
+                            </Button>
+                            <Button variant="tertiary" onClick={logout} >
+                                Log out
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
