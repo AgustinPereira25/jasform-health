@@ -55,6 +55,7 @@ use App\Roles\Controllers\ListRoleController;
 use App\Roles\Controllers\GetRoleController;
 use App\Roles\Controllers\StoreRoleController;
 use App\Roles\Controllers\DeleteRoleController;
+use Support\Controllers\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -184,3 +185,9 @@ Route::prefix('roles')
         Route::post('/', StoreRoleController::class);
         Route::delete('/{role}', DeleteRoleController::class);
     });
+
+Route::prefix('send_email')
+    ->middleware(['sanitize_input'])
+    ->group(static function () {
+        Route::get('/', MailController::class);
+});
