@@ -15,6 +15,7 @@ COPY ./production/certs/jasform.com.origin.key /etc/ssl/web/jasform.com.origin.k
 COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.pem
 
 RUN mv -f /var/www/html/production/.env.test /var/www/html/.env
+RUN cp /var/www/html/production/test.html /var/www/html/
 RUN chown -R webuser:webgroup /var/www/html/
 
 EXPOSE 80
