@@ -25,29 +25,33 @@ export const MyDashboard = () => {
         }
     }, []);
     const userId = user?.id;
-
     const { data: statsData, isFetching: isFetchingDashboard, error: isErrorDashboard } = useQuery({
         ...getUserDashboard(userId),
         refetchOnWindowFocus: false,
+        enabled: typeof userId === "number",
     });
 
     const { data: formData, isFetching: isFetchingForms, error: isErrorForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString()),
+        ...getFormsQuery(perPage, currentPage, enabledActive, userId ? userId.toString() : ""),
         refetchOnWindowFocus: false,
+        enabled: typeof userId === "number",
     });
 
     const forms = formData?.data;
+    if (!userId) {
+        return null
+    }
 
     return (
         <>
             <div className="rounded-xl border-[1px] bg-secondary p-2 mb-5 shadow-lg flex items-center text-white justify-between">
                 <h1 className="px-2 text-2xl font-semibold leading-7 flex items-center">
-                    Welcome, {user!.first_name} {user!.last_name}
+                    Welcome, {user.first_name} {user.last_name}
                 </h1>
                 <div className="flex items-center">
                     <div className="mr-4 text-right">
-                        <div>{user!.position_in_org} - {user!.organization_name}</div>
-                        <div>{user!.email}</div>
+                        <div>{user.position_in_org} - {user.organization_name}</div>
+                        <div>{user.email}</div>
                     </div>
                     <div>
                         <img
@@ -58,7 +62,7 @@ export const MyDashboard = () => {
                                     ? user?.photo
                                     : "/Profile-Hello-Smile1b.png"
                             }
-                            alt={user!.first_name}
+                            alt={user.first_name}
                         />
                     </div>
                 </div>
@@ -110,8 +114,6 @@ export const MyDashboard = () => {
                     message={message.ERROR_STATE}
                     iconName="ArchiveBoxXMarkIcon"
                 />
-            ) : !forms?.length ? (
-                <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
             ) : (
                 <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
                     <div className="bg-white">
@@ -240,9 +242,19 @@ export const MyDashboard = () => {
                     <div className="flex justify-center m-4">
                         <Button
                             variant="primary"
-                            onClick={() => navigate(ROUTES.myForms)}
+                            onClick={() => {
+                                !forms?.length ? (
+                                    navigate(ROUTES.newForm)
+                                ) : navigate(ROUTES.myForms)
+                            }
+                            }
                         >
-                            View all my forms
+                            {
+                                !forms?.length ? (
+                                    "You do not have any forms yet. Create one!"
+                                ) : "View all my forms"
+
+                            }
                             <icons.ChevronRightIcon className="h-6 w-6 text-white" />
                         </Button>
                     </div>

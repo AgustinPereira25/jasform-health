@@ -4,7 +4,7 @@ export function isValidImageUrl(url: string) {
   const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
   const urlIsValid = urlRegex.test(url);
 
-  if (urlIsValid) {
+  if (urlIsValid && url !== "") {
     const urlParts = url.split(".");
     const extension = urlParts[urlParts.length - 1]?.toLowerCase() ?? "";
 
