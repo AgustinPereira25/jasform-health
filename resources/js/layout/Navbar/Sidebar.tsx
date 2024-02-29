@@ -55,7 +55,7 @@ export const Sidebar = ({
     onCloseSidebar?: () => void;
 }) => {
     const navigate = useNavigate();
-    const { token } = useUserStore();
+    const { token, clearUser } = useUserStore();
     useEffect(() => {
         if (!token) {
             navigate(ROUTES.login);
@@ -68,7 +68,6 @@ export const Sidebar = ({
 
     const { user } = useUserStore();
 
-    const { setToken, setUser } = useUserStore();
     const logout = () => {
         logOutMutation();
     };
@@ -77,8 +76,7 @@ export const Sidebar = ({
         useMutation({
             mutationFn: logOutUserMutation.mutation,
             onSuccess: () => {
-                setUser(null);
-                setToken(null);
+                clearUser();
                 localStorage.clear()
                 navigate(ROUTES.login);
             },

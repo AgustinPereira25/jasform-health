@@ -8,7 +8,7 @@ import { logOutUserMutation } from "./loginAuth";
 
 export const Logout = () => {
     const navigate = useNavigate();
-    const { token, setToken, setUser } = useUserStore();
+    const { token, clearUser } = useUserStore();
     useEffect(() => {
         if (!token) {
             navigate(ROUTES.login);
@@ -21,8 +21,7 @@ export const Logout = () => {
         useMutation({
             mutationFn: logOutUserMutation.mutation,
             onSuccess: () => {
-                setUser(null);
-                setToken(null);
+                clearUser()
                 localStorage.clear()
                 navigate(ROUTES.login);
             },
