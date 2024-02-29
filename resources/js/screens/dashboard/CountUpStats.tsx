@@ -27,7 +27,7 @@ const CountUpStats: React.FC<CountUpStatsProps> = ({ value }) => {
     }
 
     return (
-        <h1 ref={countupRef}>0</h1>
+        <span ref={countupRef}>0</span>
     );
 };
 

@@ -12,9 +12,9 @@ class AuthLogOutController
 
     public function logout(Request $request)
     {
-        Log::info('AuthLogOutController##########################################################################################################');
-        Log::info('Authenticated user: ', [$request->user()]);
-        Log::info('Authenticated user ID: ', [$request->user()->id]);
+        Log::info('AuthLogOutController-logout##########################################################################################################');
+        // Log::info('Authenticated user: ', [$request->user()]);
+        // Log::info('Authenticated user ID: ', [$request->user()->id]);
         $request->user()->currentAccessToken()->delete();
 
         return responder()

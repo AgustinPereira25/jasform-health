@@ -84,7 +84,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/recover', [AuthController::class, 'recover']);
 Route::post('/register', [AuthController::class, 'register']);
 
-// Route::post('/logout', [AuthLogOutController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthLogOutController::class, 'logout']);
 });

@@ -77,14 +77,13 @@ export const Login = () => {
             mutationFn: loginMutation.mutation,
             onSuccess: (data) => {
                 console.log("loginUserMutation-data:", data);
-                console.log("loginUserMutation-data.data.user:", data.data.user);
-                console.log("loginUserMutation-data.data.accessToken:", data.data.accessToken);
-                setUser(data.data.user);
-                setToken(data.data.accessToken);
+                console.log("loginUserMutation-data.data.user:", data.data.data.user);
+                console.log("loginUserMutation-data.data.accessToken:", data.data.data.accessToken);
+                setUser(data.data.data.user);
+                setToken(data.data.data.accessToken);
                 toast.success('Login successfully!', {
                     autoClose: 2000
                 });
-                // navigate(ROUTES.base);
                 navigate(ROUTES.myDashboard);
             },
             onError: (error: any) => {

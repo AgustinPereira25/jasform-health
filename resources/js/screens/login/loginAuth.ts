@@ -2,11 +2,19 @@ import type { User } from "@/api/users";
 
 import { privateAPI, publicAPI } from "../../api/axios";
 
-export interface LoginResponse {
+interface LoginData {
   message: string;
-  accessToken: string;
   user: User;
+  accessToken: string;
 }
+
+export interface ServiceResponse<T> {
+  status: number;
+  success: boolean;
+  data: T;
+}
+
+export type LoginResponse = ServiceResponse<LoginData>;
 
 export interface LoginParams {
   email: string;
@@ -17,15 +25,16 @@ export const loginMutation = {
   mutation: async (params: LoginParams) => {
     console.log("loginMutation-params:", params);
     const response = await publicAPI.post<LoginResponse>("/login", params);
+    console.log("loginMutation-response:", response);
     return response;
   },
 };
 
 export const logOutMutation = {
   mutation: async () => {
-    console.log("loginMutation");
+    console.log("logOutMutation-privateAPI", privateAPI);
     const response = await privateAPI.post<LoginResponse>("/logout");
-    console.log("loginMutation-response:", response);
+    console.log("logOutMutation-response:", response);
     return response;
   },
 };

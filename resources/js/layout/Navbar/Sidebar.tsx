@@ -1,9 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
+import { logOutMutation } from "../../screens/login/loginAuth";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
-import { Button, Modal, icons } from "@/ui";
+import { Button, Modal, icons, LoadingOverlay } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
@@ -69,10 +71,19 @@ export const Sidebar = ({
 
     const { setToken, setUser } = useUserStore();
     const logout = () => {
-        setUser(null);
-        setToken(null);
-        navigate(ROUTES.login);
+        loginOutMutation();
     };
+
+    const { mutate: loginOutMutation, isPending: isPendingLogOutUserMutation } =
+        useMutation({
+            mutationFn: logOutMutation.mutation,
+            onSuccess: (data) => {
+                console.log("loginOutMutation-data:", data);
+                setUser(null);
+                setToken(null);
+                navigate(ROUTES.login);
+            },
+        });
 
     const [showLogOutModal, setShowLogOutModal] = useState(false);
     const handleOpenLogOutModal = () => {
@@ -84,10 +95,12 @@ export const Sidebar = ({
 
     return (
         <div className="flex h-screen w-[206px] grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
+            {(isPendingLogOutUserMutation) && (
+                <LoadingOverlay />
+            )}
             <div className="flex justify-center h-4 p-2 pt-4 object-contain">
                 <img src="/JASForm_Isologo_big_transp_white.png" alt="Logo" className="h-10" />
             </div>
-
             {user && (
                 <nav className="flex flex-1 flex-col">
                     <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">

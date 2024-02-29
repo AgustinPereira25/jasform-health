@@ -27,7 +27,7 @@ export const useUserStore = create<UserStoreState>()(
       },
     }),
     {
-      name: "feedbackUserStore",
+      name: "userData",
     },
   ),
 );
