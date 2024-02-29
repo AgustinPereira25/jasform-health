@@ -2,31 +2,32 @@
 
 namespace Domain\Forms\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Form_instances\Models\Form_instance;
 use Domain\Form_questions\Models\Form_question;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Domain\Forms\Models\Form
  *
- * @property int $id
- * @property string $name
- * @property string $welcome_text
- * @property string $final_text
- * @property string $description
- * @property string $creation_date_time
- * @property mixed $logo
- * @property string $primary_color
- * @property string $secondary_color
- * @property string $rounded_style
- * @property string $api_url
- * @property string $status
- * @property string $public_code
+ * @property int                             $id
+ * @property string                          $name
+ * @property string                          $welcome_text
+ * @property string                          $final_text
+ * @property string                          $description
+ * @property string                          $creation_date_time
+ * @property mixed                           $logo
+ * @property string                          $primary_color
+ * @property string                          $secondary_color
+ * @property string                          $rounded_style
+ * @property string                          $api_url
+ * @property string                          $status
+ * @property string                          $public_code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $user_creator_id
- * @property int $user_auxiliary_editor_id
+ * @property int                             $user_creator_id
+ * @property int                             $user_auxiliary_editor_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form query()
@@ -46,22 +47,27 @@ use Domain\Form_questions\Models\Form_question;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserAuxiliaryEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereWelcomeText($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
  * @property-read int|null $form_instances_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
  * @property-read int|null $form_questions_count
  * @property int $user_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserId($value)
+ *
  * @property string $last_modified_date_time
- * @property int $is_active
- * @property int $is_user_responses_linked
- * @property int $is_initial_data_required
+ * @property int    $is_active
+ * @property int    $is_user_responses_linked
+ * @property int    $is_initial_data_required
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsUserResponsesLinked($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsRequestMandatoryInitialData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereLastModifiedDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereFinalText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsInitialDataRequired($value)
+ *
  * @mixin \Eloquent
  */
 class Form extends Model
@@ -100,5 +106,4 @@ class Form extends Model
     // {
     //     return $this->belongsTo(User::class);
     // }
-
 }

@@ -76,6 +76,6 @@ class UpdateFormRequest extends FormRequest
 
     public function getIdAttribute($value)
     {
-        return (string)$value;
+        return (string) $value;
     }
 }

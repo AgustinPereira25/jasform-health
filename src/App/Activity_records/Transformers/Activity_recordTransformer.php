@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Activity_records\Transformers;
 
+use Carbon\Carbon;
 use Domain\Activity_records\Models\Activity_record;
 use Flugg\Responder\Transformers\Transformer;
-use Carbon\Carbon;
 
 class Activity_recordTransformer extends Transformer
 {

@@ -2,10 +2,10 @@
 
 namespace App\Forms\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Forms\Models\Form;
 use App\Forms\Transformers\FormTransformer;
+use Domain\Forms\Models\Form;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class GetForm_byPublicCodeController
@@ -19,7 +19,7 @@ class GetForm_byPublicCodeController
             ->with(['form_questions', 'form_questions.question_options'])
             ->first();
 
-        if (!$form) {
+        if (! $form) {
             return responder()->error('Form not found')->respond(404);
         }
 

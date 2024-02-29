@@ -6,20 +6,18 @@ namespace App\Users\Controllers;
 
 use App\Users\Request\UpdateUserRequest;
 use App\Users\Transformers\UserListTransformer;
-use Domain\Users\Actions\UpdateUserAction;
-use Illuminate\Http\JsonResponse;
-use Domain\Users\Models\User;
 use Domain\Organizations\Models\Organization;
 use Domain\Roles\Models\Role;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
+use Domain\Users\Actions\UpdateUserAction;
+use Domain\Users\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class UpdateUserController
 {
     public function __invoke(UpdateUserRequest $request, UpdateUserAction $updateUserAction): JsonResponse
     {
         sleep(1);
-        $idString = (string)$request->id;
+        $idString = (string) $request->id;
 
         $organizationName = $request->input(UpdateUserRequest::ORGANIZATION_NAME);
         $organization = Organization::firstOrCreate(
@@ -30,7 +28,7 @@ class UpdateUserController
 
         $roleName = $request->input(UpdateUserRequest::ROLE_NAME);
         $role = Role::where('name', $roleName)->first();
-        if (!$role) {
+        if (! $role) {
             $errorMessage = "The role '$roleName' does not exist.";
             throw new \RuntimeException($errorMessage);
         }

@@ -2,8 +2,8 @@
 
 namespace App\Activity_records\Controllers;
 
-use Domain\Activity_records\Models\Activity_record;
 use App\Activity_records\Transformers\Activity_recordTransformer;
+use Domain\Activity_records\Models\Activity_record;
 use Illuminate\Http\JsonResponse;
 
 class GetActivity_recordController

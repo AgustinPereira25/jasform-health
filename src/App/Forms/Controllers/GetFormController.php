@@ -2,8 +2,8 @@
 
 namespace App\Forms\Controllers;
 
-use Domain\Forms\Models\Form;
 use App\Forms\Transformers\FormTransformer;
+use Domain\Forms\Models\Form;
 use Illuminate\Http\JsonResponse;
 
 class GetFormController

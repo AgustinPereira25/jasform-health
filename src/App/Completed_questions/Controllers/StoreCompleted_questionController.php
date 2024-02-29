@@ -9,8 +9,10 @@ use Illuminate\Http\JsonResponse;
 
 class StoreCompleted_questionController
 {
-    public function __invoke(StoreCompleted_questionRequest $request, StoreCompleted_questionAction $storeCompleted_questionAction): JsonResponse
-    {
+    public function __invoke(
+        StoreCompleted_questionRequest $request,
+        StoreCompleted_questionAction $storeCompleted_questionAction,
+    ): JsonResponse {
         $completed_question = $storeCompleted_questionAction->execute($request->toDto());
 
         return responder()

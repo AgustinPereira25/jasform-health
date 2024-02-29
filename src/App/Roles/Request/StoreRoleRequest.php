@@ -6,7 +6,6 @@ namespace App\Roles\Request;
 
 use Domain\Roles\DataTransferObjects\RoleDto;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreRoleRequest extends FormRequest
 {

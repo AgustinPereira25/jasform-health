@@ -2,8 +2,8 @@
 
 namespace App\Organizations\Controllers;
 
-use Domain\Organizations\Models\Organization;
 use App\Organizations\Transformers\OrganizationTransformer;
+use Domain\Organizations\Models\Organization;
 use Illuminate\Http\JsonResponse;
 
 class GetOrganizationController

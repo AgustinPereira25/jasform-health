@@ -14,7 +14,7 @@ class StoreActivity_recordRequest extends FormRequest
     public const ACTIVITY_PERFORMED = 'activity_performed';
     public const SESSION_DURATION = 'session_duration';
     public const ACTIVITY_RESULT = 'activity_result';
-    public const LOGIN_TYPE = 'login_type'; 
+    public const LOGIN_TYPE = 'login_type';
     public const DEVICE_INFO = 'device_info';
     public const USER_ID = 'user_id';
 

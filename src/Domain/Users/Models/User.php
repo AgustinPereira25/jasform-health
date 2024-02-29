@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Domain\Users\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Domain\Activity_records\Models\Activity_record;
+use Domain\Forms\Models\Form;
+use Domain\Organizations\Models\Organization;
+use Domain\Roles\Models\Role;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Domain\Organizations\Models\Organization;
-use Domain\Roles\Models\Role;
-use Domain\Forms\Models\Form;
-use Domain\Activity_records\Models\Activity_record;
 
 /**
  * Domain\Users\Models\User
@@ -30,6 +30,7 @@ use Domain\Activity_records\Models\Activity_record;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
@@ -41,13 +42,15 @@ use Domain\Activity_records\Models\Activity_record;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ *
  * @property string $first_name
  * @property string $last_name
- * @property mixed $photo
+ * @property mixed  $photo
  * @property string $position_in_org
  * @property string $status
- * @property int $organization_id
- * @property int $role_id
+ * @property int    $organization_id
+ * @property int    $role_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOrganizationId($value)
@@ -55,18 +58,23 @@ use Domain\Activity_records\Models\Activity_record;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoto($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrganization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
+ *
  * @property-read Organization $organization
  * @property-read Role $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity_record> $activity_records
  * @property-read int|null $activity_records_count
  * @property int $is_active
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsActive($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property string|null $phone
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrg($value)
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable

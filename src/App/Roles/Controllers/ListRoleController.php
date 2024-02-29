@@ -2,10 +2,10 @@
 
 namespace App\Roles\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Roles\Models\Role;
 use App\Roles\Transformers\RoleTransformer;
+use Domain\Roles\Models\Role;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListRoleController

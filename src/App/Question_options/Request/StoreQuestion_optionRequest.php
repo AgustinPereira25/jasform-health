@@ -6,7 +6,6 @@ namespace App\Question_options\Request;
 
 use Domain\Question_options\DataTransferObjects\Question_optionDto;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreQuestion_optionRequest extends FormRequest
 {

@@ -6,11 +6,11 @@ namespace App\Users\Controllers;
 
 use App\Users\Request\StoreUserRequest;
 use App\Users\Transformers\UserTransformer;
-use Domain\Users\Actions\StoreUserAction;
-use Illuminate\Http\JsonResponse;
 use Domain\Organizations\Models\Organization;
 use Domain\Roles\Models\Role;
+use Domain\Users\Actions\StoreUserAction;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class StoreUserController
@@ -27,7 +27,7 @@ class StoreUserController
 
         $roleName = $request->input(StoreUserRequest::ROLE_NAME);
         $role = Role::where('name', $roleName)->first();
-        if (!$role) {
+        if (! $role) {
             $errorMessage = "The role '$roleName' does not exist.";
             throw new \RuntimeException($errorMessage);
         }

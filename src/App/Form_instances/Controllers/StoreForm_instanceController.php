@@ -4,13 +4,13 @@ namespace App\Form_instances\Controllers;
 
 use App\Form_instances\Request\StoreForm_instanceRequest;
 use App\Form_instances\Transformers\Form_instanceTransformer;
-use Domain\Form_instances\Actions\StoreForm_instanceAction;
-use Domain\Forms\Models\Form;
-use Domain\Completer_users\Actions\StoreCompleter_userAction;
 use Domain\Completed_questions\Actions\StoreCompleted_questionAction;
-use Domain\Completer_users\DataTransferObjects\Completer_userDto;
-use Domain\Form_instances\DataTransferObjects\Form_instanceDto;
 use Domain\Completed_questions\DataTransferObjects\Completed_questionDto;
+use Domain\Completer_users\Actions\StoreCompleter_userAction;
+use Domain\Completer_users\DataTransferObjects\Completer_userDto;
+use Domain\Form_instances\Actions\StoreForm_instanceAction;
+use Domain\Form_instances\DataTransferObjects\Form_instanceDto;
+use Domain\Forms\Models\Form;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
@@ -21,9 +21,11 @@ class StoreForm_instanceController
         StoreForm_instanceAction $storeForm_instanceAction,
         StoreCompleter_userAction $storeCompleter_userAction,
         StoreCompleted_questionAction $storeCompleted_questionAction,
-        Form $formModel
+        Form $formModel,
     ): JsonResponse {
-        Log::info('####################################################################################################################################################################');
+        Log::info(
+            '####################################################################################################################################################################'
+        );
 
         Log::info('===StoreForm_instanceController=====> Request data: ', $request->all());
         Log::info('completer_user_email: ' . $request->input('completer_user_email'));
@@ -41,7 +43,11 @@ class StoreForm_instanceController
 
         $completedQuestions = $request->input('completed_questions');
 
-        if ($request->filled('completer_user_email') && $request->filled('completer_user_first_name') && $request->filled('completer_user_last_name')) {
+        if (
+            $request->filled('completer_user_email')
+            && $request->filled('completer_user_first_name')
+            && $request->filled('completer_user_last_name')
+        ) {
             $completerUserDto = new Completer_userDto(
                 email: $request->input('completer_user_email'),
                 first_name: $request->input('completer_user_first_name'),

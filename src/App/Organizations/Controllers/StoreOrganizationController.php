@@ -9,8 +9,10 @@ use Illuminate\Http\JsonResponse;
 
 class StoreOrganizationController
 {
-    public function __invoke(StoreOrganizationRequest $request, StoreOrganizationAction $storeOrganizationAction): JsonResponse
-    {
+    public function __invoke(
+        StoreOrganizationRequest $request,
+        StoreOrganizationAction $storeOrganizationAction,
+    ): JsonResponse {
         $organization = $storeOrganizationAction->execute($request->toDto());
 
         return responder()
@@ -18,4 +20,3 @@ class StoreOrganizationController
             ->respond(JsonResponse::HTTP_CREATED);
     }
 }
-

@@ -3,10 +3,10 @@
 // namespace App\Http\Controllers;
 namespace App\Organizations\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Organizations\Models\Organization;
 use App\Organizations\Transformers\OrganizationTransformer;
+use Domain\Organizations\Models\Organization;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListOrganizationController

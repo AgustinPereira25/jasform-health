@@ -4,13 +4,11 @@ namespace App\Form_questions\Controllers;
 
 use App\Form_questions\Request\StoreMultipleForm_questionAndOptionsRequest;
 use App\Forms\Transformers\FormTransformer;
-use Domain\Form_questions\Actions\StoreForm_questionAction;
-use Domain\Forms\Models\Form;
 use Domain\Form_questions\Models\Form_question;
-use Domain\Question_types\Models\Question_type;
+use Domain\Forms\Models\Form;
 use Domain\Question_options\Models\Question_option;
+use Domain\Question_types\Models\Question_type;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class StoreMultipleForm_question_and_optionsController
 {
@@ -18,7 +16,7 @@ class StoreMultipleForm_question_and_optionsController
     {
         $form = Form::find($request->form_id);
 
-        if (!$form) {
+        if (! $form) {
             return responder()->error("Form not found")->respond(JsonResponse::HTTP_NOT_FOUND);
         }
 
@@ -32,7 +30,7 @@ class StoreMultipleForm_question_and_optionsController
             foreach ($request->form_questions as $questionKey => $questionData) {
                 $questionType = Question_type::find($questionData['question_type_id']);
 
-                if (!$questionType) {
+                if (! $questionType) {
                     throw new \Exception("Question type not found for question index: $questionKey");
                 }
                 $question = new Form_question($questionData);
@@ -45,7 +43,7 @@ class StoreMultipleForm_question_and_optionsController
                             if ($optionData['next_question'] === 'null') {
                                 $optionData['next_question'] = null;
                             } else {
-                                $optionData['next_question'] = (int)$optionData['next_question'];
+                                $optionData['next_question'] = (int) $optionData['next_question'];
                             }
                         } else {
                             $optionData['next_question'] = null;

@@ -2,25 +2,26 @@
 
 namespace Domain\Form_questions\Models;
 
+use Domain\Forms\Models\Form;
+use Domain\Question_options\Models\Question_option;
+use Domain\Question_types\Models\Question_type;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Domain\Forms\Models\Form;
-use Domain\Question_types\Models\Question_type;
-use Domain\Question_options\Models\Question_option;
 
 /**
  * Domain\Form_questions\Models\Form_question
  *
- * @property int $id
- * @property string $title
- * @property string $text
- * @property int $order
- * @property int $mandatory
+ * @property int                             $id
+ * @property string                          $title
+ * @property string                          $text
+ * @property int                             $order
+ * @property int                             $mandatory
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $form_id
- * @property int $question_type_id
+ * @property int                             $form_id
+ * @property int                             $question_type_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question query()
@@ -34,19 +35,23 @@ use Domain\Question_options\Models\Question_option;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereUpdatedAt($value)
+ *
  * @property-read Form $form
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Question_option> $question_options
  * @property-read int|null $question_options_count
  * @property-read Question_type $question_type
  * @property int $is_mandatory
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsMandatory($value)
+ *
  * @property int $is_mandatory
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsMandatory($value)
+ *
  * @mixin \Eloquent
  */
 class Form_question extends Model
 {
-
     protected $fillable = [
         'title',
         'text',

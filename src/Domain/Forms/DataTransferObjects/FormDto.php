@@ -90,6 +90,7 @@ class FormDto
     {
         return $this->is_user_responses_linked;
     }
+
     public function getIsInitialDataRequired(): string
     {
         return $this->is_initial_data_required;

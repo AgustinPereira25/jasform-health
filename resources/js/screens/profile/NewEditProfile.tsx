@@ -89,7 +89,7 @@ type UserFormValues = z.infer<typeof userSchema>;
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
-    const { setUser } = useUserStore();
+    const { user: loggedUser, setUser } = useUserStore();
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -159,7 +159,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                 if (pathname.includes(ROUTES.newUser)) {
                     navigate(ROUTES.users);
                 } else {
-                    setUser(data.data.data);
+                    if (loggedUser?.id === data.data.data.id) {
+                        setUser(data.data.data);
+                    }
                     navigate(ROUTES.myDashboard);
                 }
             },

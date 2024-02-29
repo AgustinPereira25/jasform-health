@@ -6,7 +6,6 @@ namespace App\Completer_users\Request;
 
 use Domain\Completer_users\DataTransferObjects\Completer_userDto;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreCompleter_userRequest extends FormRequest
 {

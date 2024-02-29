@@ -1,6 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
+
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 
@@ -115,11 +116,16 @@ export const getFormByPublicCodeQuery = (public_code: Form["public_code"]) => ({
   },
 });
 
-export type CreateFormParams = Form
+export type CreateFormParams = Form;
 
 export const createForm = {
   mutation: async (params: CreateFormParams) => {
-    const { is_active, is_initial_data_required, is_user_responses_linked, ...rest } = params;
+    const {
+      is_active,
+      is_initial_data_required,
+      is_user_responses_linked,
+      ...rest
+    } = params;
     const response = await privateAPI.post<ServiceResponse<Form>>("/forms", {
       ...rest,
       is_active: is_active ? "1" : "0",
@@ -136,7 +142,12 @@ export const createForm = {
 
 export const updateForm = {
   mutation: async (params: CreateFormParams) => {
-    const { is_active, is_initial_data_required, is_user_responses_linked, ...rest } = params;
+    const {
+      is_active,
+      is_initial_data_required,
+      is_user_responses_linked,
+      ...rest
+    } = params;
     const response = await privateAPI.put<ServiceResponse<Form>>("/forms", {
       ...rest,
       is_active: is_active ? "1" : "0",

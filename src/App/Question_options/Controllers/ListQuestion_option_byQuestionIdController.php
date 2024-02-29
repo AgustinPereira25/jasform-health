@@ -2,10 +2,10 @@
 
 namespace App\Question_options\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Question_options\Models\Question_option;
 use App\Question_options\Transformers\Question_optionTransformer;
+use Domain\Question_options\Models\Question_option;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListQuestion_option_byQuestionIdController

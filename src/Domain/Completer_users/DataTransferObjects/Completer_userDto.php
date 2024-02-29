@@ -29,7 +29,7 @@ class Completer_userDto
         return $this->last_name;
     }
 
-    public function getCode(): string | null
+    public function getCode(): string|null
     {
         return $this->code;
     }

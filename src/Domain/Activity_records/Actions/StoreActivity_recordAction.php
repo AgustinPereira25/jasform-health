@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Activity_records\Actions;
 
-use Illuminate\Contracts\Hashing\Hasher;
 use Domain\Activity_records\DataTransferObjects\Activity_recordDto;
 use Domain\Activity_records\Models\Activity_record;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class StoreActivity_recordAction
 {

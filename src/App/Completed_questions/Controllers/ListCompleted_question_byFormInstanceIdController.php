@@ -2,10 +2,10 @@
 
 namespace App\Completed_questions\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Completed_questions\Models\Completed_question;
 use App\Completed_questions\Transformers\Completed_questionTransformer;
+use Domain\Completed_questions\Models\Completed_question;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListCompleted_question_byFormInstanceIdController
