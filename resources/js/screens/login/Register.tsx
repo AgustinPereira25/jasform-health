@@ -39,7 +39,6 @@ export const Register = () => {
     const { token } = useUserStore();
     useEffect(() => {
         if (token) {
-            console.log("Login-token:", token);
             navigate(ROUTES.myDashboard);
         }
     }, []);
@@ -56,7 +55,6 @@ export const Register = () => {
         useMutation({
             mutationFn: recoverMutation.mutation,
             onError: (error: any) => {
-                console.log("recoverUserMutation-error:", error);
                 if (error.response) {
                     toast.error(error.response.data.message);
                 } else if (error.request) {

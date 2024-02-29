@@ -24,7 +24,6 @@ export const MyDashboard = () => {
             navigate(ROUTES.login);
         }
     }, []);
-    console.log("user", user);
     const userId = user?.id;
 
     const { data: statsData, isFetching: isFetchingDashboard, error: isErrorDashboard } = useQuery({
