@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Users\Transformers\UserListTransformer;
+use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Domain\Users\Models\User;
-use Illuminate\Support\Facades\Log;
-use App\Users\Transformers\UserListTransformer;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController
@@ -21,11 +21,13 @@ class AuthController
 
     public function login(Request $request)
     {
-        Log::info('AuthController-login##########################################################################################################');
+        Log::info(
+            'AuthController-login##########################################################################################################'
+        );
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Incorrect email or password'],
             ]);
@@ -54,7 +56,6 @@ class AuthController
 
     public function recover(Request $request)
     {
-
         return responder()
             ->error(
                 message: 'An error occurred. Please try again later, or contact us if the problem persists.'

@@ -2,10 +2,10 @@
 
 namespace App\Completer_users\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Completer_users\Models\Completer_user;
 use App\Completer_users\Transformers\Completer_userTransformer;
+use Domain\Completer_users\Models\Completer_user;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListCompleter_userController
@@ -18,4 +18,5 @@ class ListCompleter_userController
         return responder()
             ->success($completer_users, Completer_userTransformer::class)
             ->respond();
-    }}
+    }
+}

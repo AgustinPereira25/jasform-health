@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Users\Controllers;
 
-use App\Users\Transformers\UserDetailTransformer;
-use Domain\Users\Models\User;
-use Illuminate\Http\JsonResponse;
-use Domain\Forms\Models\Form;
+use Domain\Completer_users\Models\Completer_user;
 use Domain\Form_instances\Models\Form_instance;
 use Domain\Form_questions\Models\Form_question;
-use Domain\Completer_users\Models\Completer_user;
+use Domain\Forms\Models\Form;
+use Domain\Users\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class GetUserDashboardController
 {
@@ -28,9 +27,14 @@ class GetUserDashboardController
         })->count();
 
         $totalCompleterUsers = Completer_user::whereIn('id', function ($query) use ($user) {
-            $query->select('completer_user_id')->from('form_instances')->whereIn('form_id', function ($subQuery) use ($user) {
-                $subQuery->select('id')->from('forms')->where('user_id', $user->id);
-            });
+            $query->select('completer_user_id')->from(
+                'form_instances'
+            )->whereIn(
+                'form_id',
+                function ($subQuery) use ($user) {
+                    $subQuery->select('id')->from('forms')->where('user_id', $user->id);
+                }
+            );
         })->count();
 
         $data = [

@@ -7,7 +7,6 @@ namespace App\Users\Request;
 use Domain\Users\DataTransferObjects\UserDtoUpdate;
 use Domain\Users\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -39,7 +38,7 @@ class UpdateUserRequest extends FormRequest
     public function toDtoUpdate(): UserDtoUpdate
     {
         return new UserDtoUpdate(
-            id: (string)$this[self::ID],
+            id: (string) $this[self::ID],
             first_name: $this[self::FIRST_NAME],
             last_name: $this[self::LAST_NAME],
             photo: $this[self::PHOTO] ? $this[self::PHOTO] : '',
@@ -61,6 +60,6 @@ class UpdateUserRequest extends FormRequest
 
     public function getIdAttribute($value)
     {
-        return (string)$value;
+        return (string) $value;
     }
 }

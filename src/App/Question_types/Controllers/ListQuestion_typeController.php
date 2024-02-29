@@ -2,10 +2,10 @@
 
 namespace App\Question_types\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Question_types\Models\Question_type;
 use App\Question_types\Transformers\Question_typeTransformer;
+use Domain\Question_types\Models\Question_type;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListQuestion_typeController

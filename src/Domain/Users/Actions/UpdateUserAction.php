@@ -6,7 +6,6 @@ namespace Domain\Users\Actions;
 
 use Domain\Users\DataTransferObjects\UserDtoUpdate;
 use Domain\Users\Models\User;
-use Illuminate\Contracts\Hashing\Hasher;
 
 class UpdateUserAction
 {

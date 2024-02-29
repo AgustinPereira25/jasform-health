@@ -2,8 +2,8 @@
 
 namespace App\Roles\Controllers;
 
-use Domain\Roles\Models\Role;
 use App\Roles\Transformers\RoleTransformer;
+use Domain\Roles\Models\Role;
 use Illuminate\Http\JsonResponse;
 
 class GetRoleController

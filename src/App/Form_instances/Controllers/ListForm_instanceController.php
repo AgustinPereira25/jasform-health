@@ -2,13 +2,12 @@
 
 namespace App\Form_instances\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Form_instances\Models\Form_instance;
 use App\Form_instances\Transformers\Form_instanceTransformer;
+use Domain\Form_instances\Models\Form_instance;
 use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Log;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ListForm_instanceController
 {

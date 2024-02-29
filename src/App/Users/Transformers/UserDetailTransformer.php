@@ -8,7 +8,6 @@ use Domain\Users\Models\User;
 
 class UserDetailTransformer extends UserListTransformer
 {
-
     public function transform(User $user): array
     {
         $userArray = parent::transform($user);

@@ -2,8 +2,8 @@
 
 namespace App\Form_questions\Controllers;
 
-use Domain\Form_questions\Models\Form_question;
 use App\Form_questions\Transformers\Form_questionTransformer;
+use Domain\Form_questions\Models\Form_question;
 use Illuminate\Http\JsonResponse;
 
 class GetForm_questionController

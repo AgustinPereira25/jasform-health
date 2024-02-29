@@ -2,8 +2,8 @@
 
 namespace App\Completer_users\Controllers;
 
-use Domain\Completer_users\Models\Completer_user;
 use App\Completer_users\Transformers\Completer_userTransformer;
+use Domain\Completer_users\Models\Completer_user;
 use Illuminate\Http\JsonResponse;
 
 class GetCompleter_userController

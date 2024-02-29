@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Forms\Transformers;
 
-use Domain\Forms\Models\Form;
-use Flugg\Responder\Transformers\Transformer;
-use Carbon\Carbon;
 use App\Form_questions\Transformers\Form_questionTransformer;
 use App\Question_options\Transformers\Question_optionTransformer;
+use Carbon\Carbon;
+use Domain\Forms\Models\Form;
+use Flugg\Responder\Transformers\Transformer;
 
 class FormTransformer extends Transformer
 {
     public function transform(Form $form): array
     {
-        $formQuestionTransformer = new Form_questionTransformer;
-        $questionOptionTransformer = new Question_optionTransformer;
+        $formQuestionTransformer = new Form_questionTransformer();
+        $questionOptionTransformer = new Question_optionTransformer();
 
         return [
             'id' => (int) $form->id,
@@ -37,14 +37,18 @@ class FormTransformer extends Transformer
             'user_id' => (int) $form->user_id,
             'form_instances_count' => $form->form_instances()->count(),
             'form_questions_count' => $form->form_questions()->count(),
-            'form_questions' => $form->form_questions->transform(function ($formQuestion) use ($formQuestionTransformer, $questionOptionTransformer) {
-                $formQuestionData = $formQuestionTransformer->transform($formQuestion);
-                $formQuestionData['question_options'] = $formQuestion->question_options->transform(function ($questionOption) use ($questionOptionTransformer) {
-                    return $questionOptionTransformer->transform($questionOption);
-                });
-
-                return $formQuestionData;
-            }),
+            'form_questions' => $form->form_questions->transform(
+                function ($formQuestion) use ($formQuestionTransformer, $questionOptionTransformer) {
+                    $formQuestionData = $formQuestionTransformer->transform($formQuestion);
+                    $formQuestionData['question_options'] = $formQuestion->question_options->transform(
+                        function ($questionOption) use ($questionOptionTransformer) {
+                            return $questionOptionTransformer->transform($questionOption);
+                        }
+                    );
+    
+                    return $formQuestionData;
+                }
+            ),
         ];
     }
 }

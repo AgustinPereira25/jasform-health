@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Users\Controllers;
 
-use Illuminate\Pagination\Paginator;
 use App\Users\Transformers\UserListTransformer;
 use Domain\Users\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListUserController
@@ -40,14 +40,14 @@ class ListUserController
         }
 
         $users->where(function ($query) use ($nameOrEmail, $positionOrOrganization) {
-            if (!empty($nameOrEmail)) {
+            if (! empty($nameOrEmail)) {
                 $query->where(function ($query) use ($nameOrEmail) {
                     $query->where('first_name', 'like', '%' . $nameOrEmail . '%')
                         ->orWhere('last_name', 'like', '%' . $nameOrEmail . '%')
                         ->orWhere('email', 'like', '%' . $nameOrEmail . '%');
                 });
             }
-            if (!empty($positionOrOrganization)) {
+            if (! empty($positionOrOrganization)) {
                 $query->where(function ($query) use ($positionOrOrganization) {
                     $query->where('position_in_org', 'like', '%' . $positionOrOrganization . '%')
                         ->orWhereHas('organization', function ($query) use ($positionOrOrganization) {

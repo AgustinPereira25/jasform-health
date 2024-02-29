@@ -2,15 +2,12 @@
 
 namespace App\Forms\Controllers;
 
-use Illuminate\Http\Request;
-use Domain\Forms\Models\Form;
 use App\Forms\Transformers\FormTransformer;
+use Domain\Forms\Models\Form;
 use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
-use Psy\Readline\Hoa\Console;
-
-use Illuminate\Support\Facades\Log;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ListFormController
 {
@@ -33,23 +30,23 @@ class ListFormController
 
         if ($isActive == 1) {
             $forms->where('is_active', true);
-        };
+        }
         // if ($isActive == 0) {
         //     $forms->where('is_active', false);
         // };
 
-        if (!empty($userId)) {
+        if (! empty($userId)) {
             $forms->where('user_id', $userId);
         }
 
 
         $forms->where(function ($query) use ($name, $date) {
-            if (!empty($name)) {
+            if (! empty($name)) {
                 $query->where(function ($query) use ($name) {
                     $query->where('name', 'like', '%' . $name . '%');
                 });
             }
-            if (!empty($date)) {
+            if (! empty($date)) {
                 $query->where(function ($query) use ($date) {
                     $query->where('last_modified_date_time', 'like', '%' . $date . '%');
                 });

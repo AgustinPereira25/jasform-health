@@ -2,21 +2,22 @@
 
 namespace Domain\Completed_questions\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Domain\Form_instances\Models\Form_instance;
 use Domain\Question_types\Models\Question_type;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Domain\Completed_questions\Models\Completed_question
  *
- * @property int $id
- * @property string $title
- * @property string $answer
+ * @property int                             $id
+ * @property string                          $title
+ * @property string                          $answer
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $form_instance_id
- * @property int $question_type_id
+ * @property int                             $form_instance_id
+ * @property int                             $question_type_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question query()
@@ -27,8 +28,10 @@ use Domain\Question_types\Models\Question_type;
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereUpdatedAt($value)
+ *
  * @property-read Form_instance $form_instance
  * @property-read Question_type $question_type
+ *
  * @mixin \Eloquent
  */
 

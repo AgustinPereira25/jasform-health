@@ -11,7 +11,7 @@ class Form_instanceDto
         private readonly string $final_date_time,
         private readonly string $api_response,
         private readonly int $form_id,
-        private readonly int | null $completer_user_id,
+        private readonly int|null $completer_user_id,
     ) {
     }
 
@@ -35,7 +35,7 @@ class Form_instanceDto
         return $this->form_id;
     }
 
-    public function getCompleterUserId(): int | null
+    public function getCompleterUserId(): int|null
     {
         return $this->completer_user_id;
     }

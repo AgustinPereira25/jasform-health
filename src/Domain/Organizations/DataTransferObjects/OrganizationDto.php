@@ -21,5 +21,4 @@ class OrganizationDto
     {
         return $this->description;
     }
-
 }

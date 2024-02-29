@@ -24,4 +24,3 @@ class StoreQuestion_optionAction
         ]);
     }
 }
-

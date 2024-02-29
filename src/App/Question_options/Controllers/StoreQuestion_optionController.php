@@ -9,8 +9,10 @@ use Illuminate\Http\JsonResponse;
 
 class StoreQuestion_optionController
 {
-    public function __invoke(StoreQuestion_optionRequest $request, StoreQuestion_optionAction $storeQuestion_optionAction): JsonResponse
-    {
+    public function __invoke(
+        StoreQuestion_optionRequest $request,
+        StoreQuestion_optionAction $storeQuestion_optionAction,
+    ): JsonResponse {
         $question_option = $storeQuestion_optionAction->execute($request->toDto());
 
         return responder()
@@ -18,4 +20,3 @@ class StoreQuestion_optionController
             ->respond(JsonResponse::HTTP_CREATED);
     }
 }
-

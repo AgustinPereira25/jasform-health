@@ -8,7 +8,7 @@ class Form_MultiplesQuestionAndOptionsDto
 {
     public function __construct(
         private readonly int $form_id,
-        private readonly array $form_questions
+        private readonly array $form_questions,
     ) {
     }
 
