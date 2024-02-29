@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Domain\Users\Models\User;
 use Illuminate\Support\Facades\Log;
 use App\Users\Transformers\UserListTransformer;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController
 {
@@ -19,43 +21,51 @@ class AuthController
 
     public function login(Request $request)
     {
-        Log::info('AuthController##########################################################################################################');
+        Log::info('AuthController-login##########################################################################################################');
 
-        $credentials = $request->only('email', 'password');
-        // Log::info('credentials-email: ' . $credentials['email']);
-        // Log::info('credentials-password: ' . $credentials['password']);
+        $user = User::where('email', $request->email)->first();
 
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'Incorrect email or password',
-            ], 401);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Incorrect email or password'],
+            ]);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        // if (!Auth::attempt($credentials)) {
+        //     return response()->json([
+        //         'message' => 'Incorrect email or password',
+        //     ], 401);
+        // }
+
+        // $user = User::where('email', $request->email)->firstOrFail();
 
         $token = $user->createToken('api-token');
 
         $user = $this->transformer->transform($user);
 
-        return response()->json([
-            'message' => 'Logged in successfully',
-            'user' => $user,
-            'accessToken' => $token->plainTextToken,
-        ], 200);
+        return responder()
+            ->success([
+                'message' => 'Logged in successfully',
+                'user' => $user,
+                'accessToken' => $token->plainTextToken,
+            ])
+            ->respond();
     }
 
     public function recover(Request $request)
     {
-        return response()->json([
-            'message' => 'An error occurred. Please try again later, or contact us if the problem persists.',
-        ], 500);
+
+        return responder()
+            ->error(
+                message: 'An error occurred. Please try again later, or contact us if the problem persists.'
+            )
+            ->respond(status: 500);
     }
 
-    public function register(Request $request)
-    {
-        return response()->json([
-            'message' => 'An error occurred. Please try again later, or contact us if the problem persists.',
-        ], 500);
-    }
+    // public function register(Request $request)
+    // {
+    //     return response()->json([
+    //         'message' => 'An error occurred. Please try again later, or contact us if the problem persists.',
+    //     ], 500);
+    // }
 }
