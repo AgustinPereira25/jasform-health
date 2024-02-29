@@ -13,21 +13,23 @@ interface CheckRadioDDownScreenProps {
     currentQuestionOrder?: number;
     setQuestions: (questions: Question[]) => void;
 };
+// TODO - Export this interface..
+interface ComboBoxOptions {
+    id: number | null;
+    name: string;
+};
 
 // TODO - Make input text full height (it overflows the container).
 export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ formQuestions = [], comboBoxOption, currentQuestionOrder = 0, setQuestions }) => {
     // console.log(formQuestions)
-    // TODO - Fetch questions from API
-    // const formQuestionsTest = [{
-    //     id: 2, order: 1, title: 'Option 1',
-    //     next_question: 'Next Step 1'
-    // }, { id: 1, order: 2, title: 'Option 2', next_question: 'Next Step 2' }
-    //     , { id: 3, order: 3, title: 'Option 3', next_question: 'Next Step 3' },
-    // { id: 4, order: 4, title: 'Option 4', next_question: 'Next Step 4' }
-    // ];
 
-    const transformedSteps = formQuestions ? formQuestions.map((item) => ({ id: item.order, name: item.title })) : [];
-    const [newQuestionType, setNewQuestionType] = useState(transformedSteps[0] ?? { id: 0, name: '' });
+    const getLastQuestionOrder = (questionsOption: QuestionsOption[]) => {
+        return Object.values(questionsOption).pop()?.order ?? 1;
+    };
+
+    const transformedSteps: ComboBoxOptions[] = formQuestions ? formQuestions.map((item) => ({ id: item.order, name: item.title })) : [];
+
+    const [newQuestionType, setNewQuestionType] = useState<ComboBoxOptions>(transformedSteps[0] ?? { id: 1, name: '' });
 
     const currentFormQuestion = formQuestions.find((item) => item.order === currentQuestionOrder);
     // console.log('currentFormQuestion', currentFormQuestion);
@@ -36,6 +38,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     const [newInput, setNewInput] = useState('');
     const [isInputEmpty, setIsInputEmpty] = useState(false);
     const [questionToShow, setQuestionToShow] = useState(currentFormQuestion?.title ?? '');
+
+    // Add default options to the list
+    transformedSteps.push({ id: 0, name: 'Default Next Question' }, { id: null, name: 'Go To End' });
 
     useEffect(() => {
         setQuestionToShow(currentFormQuestion!.title ?? '');
@@ -52,8 +57,10 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             return;
         }
 
-        const getLastQuestionOrder = Object.values(questionsOption).pop()?.order;
-        const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
+        //const getLastQuestionOrder = Object.values(questionsOption).pop()?.order;
+        // const getLastQuestionOrder = getLastQuestionOrder(questionsOption);
+        // const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
+        const lastQuestionOrder = getLastQuestionOrder(questionsOption) + 1;
         if (comboBoxOption === 'Radio Button') {
             // TODO - change form question id
             const newElement: QuestionsOption = { order: lastQuestionOrder, title: input, next_question: newQuestionType.id };
@@ -171,19 +178,8 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         // eslint-disable-next-line react-hooks/exhaustive-deps
         , [comboBoxOption]);
 
-    const handleComboBoxChange = (value: { id: number, name: string }) => {
+    const handleComboBoxChange = (value: ComboBoxOptions) => {
         setNewQuestionType(value);
-        // const updatedQuestions = formQuestions?.map((question) => {
-        //     if (question.order === currentQuestionOrder) {
-        //         return {
-        //             ...question,
-        //             question_type_id: value.id,
-        //             question_type_name: value.name,
-        //         };
-        //     }
-        //     return question;
-        // });
-        // setQuestions(updatedQuestions ?? []);
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -240,7 +236,6 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                                     )}
                                     <div className="flex justify-center gap-3 w-[13%] grow">
                                         <icons.TrashIcon className="w-5 h-5" onClick={() => handleDeleteRowClick(item.order)} />
-                                        <icons.DocumentDuplicateIcon className="w-5 h-5" />
                                         <icons.ArrowUpIcon className="w-5 h-5" onClick={() => handleUpClick(item)} />
                                         <icons.ArrowDownIcon className="w-5 h-5" onClick={() => handleDownClick(item)} />
                                     </div>

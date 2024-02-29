@@ -65,7 +65,7 @@ export const Input = forwardRef(
                     )}
                     <input
                         ref={ref}
-                        type={isPassword && !isPasswordVisible ? "password" : "text"}
+                        type={isPassword && !isPasswordVisible ? "password" : type}
                         id={id}
                         {...rest}
                         className={tw(

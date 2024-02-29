@@ -26,6 +26,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         [currentScreen.currentQuestionOrder]
     );
 
+    // console.log('currentQuestionInfo', currentQuestionInfo)
+
     const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
 
     // console.log('savedAnswerCheckedOptions', savedAnswerCheckedOptions)
@@ -43,6 +45,28 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setError('Answer is mandatory');
             }
             if (!error) {
+
+                let nextQuestionTypeRadio = 0;
+
+                if (questiontypeId === 4) // Radio Button
+                {
+                    const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
+                    console.log('next_question', next_question);
+                    console.log('answerInput', answerInput);
+                    switch (next_question) {
+                        case 0:
+                            nextQuestionTypeRadio = 6; // Finish form instance.
+                            break;
+                        case null:
+                            // Find next question type by increasing current order.
+                            nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                            break;
+                        default:
+                            nextQuestionTypeRadio = next_question!;
+                            break;
+                    }
+                }
+                // console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
@@ -53,7 +77,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                const nextQuestionType: number = questiontypeId === 4 ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }
@@ -149,7 +173,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                                 type="radio"
                                                 name="answer"
                                                 id={`chck-radio-answer-radio-${option.id}`}
-                                                value={option.id}
+                                                value={option.title}
                                                 onChange={handleChange}
                                             />
                                             <label htmlFor={`chck-radio-answer-radio-${option.id}`}>{option.title}</label>

@@ -6,7 +6,7 @@ import { Combobox } from '@headlessui/react'
 import { forwardRef } from '@/utils'
 
 interface Item {
-    id: number,
+    id: number | null,
     name: string
 };
 

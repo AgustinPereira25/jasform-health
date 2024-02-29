@@ -57,7 +57,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [enabledIsMandatory, setEnabledIsMandatory] = useState<boolean>((currentQuestion?.is_mandatory ?? false) as boolean);
 
     useEffect(() => {
-        setEnabledIsMandatory((currentQuestion?.is_mandatory ?? false) as boolean);
+        setEnabledIsMandatory(currentQuestion?.is_mandatory as boolean);
         setComboBoxOption(getComboBoxOption(currentQuestion?.question_type_id as keyof typeof questionScreens));
     }, [currentQuestion?.is_mandatory, currentQuestion?.question_type_id]);
 
@@ -142,19 +142,20 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         data.map((question) => {
             question.form_question_id = Number(formId);
             // Change is_mandatory field from boolean to Number to fit endpoint.
-            question.is_mandatory = question.is_mandatory === (true || 1) ? 1 : 0;
+            question.is_mandatory = question.is_mandatory === true ? 1 : question.is_mandatory === false ? 0 : question.is_mandatory;
 
             delete question.id;
             delete question.form_id;
             // TODO - Delete id and form_question_id from question_options to fit endpoint.
             question.question_options?.map((option) => {
                 delete option.id;
+                delete option.form_question_id;
             });
         });
         // console.log('data', data)
         const postQuestions = { form_id: Number(formId), form_questions: data };
-        // console.log(postQuestions);
-        updateFormQuestionsMutation(postQuestions);
+        console.log(postQuestions);
+        // updateFormQuestionsMutation(postQuestions);
     }
 
     const handleMandatoryChange = (checked: boolean) => {
@@ -232,7 +233,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </div>
                 </div>
                 <div className="flex gap-3 w-full h-full">
-                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%]">
+                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll">
                         <span>Content</span>
                         <div className="flex flex-col items-center">
                             {
@@ -265,7 +266,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                 </div>
                                                 <div className="flex gap-2 items-center">
                                                     <icons.TrashIcon className="w-5 h-5" onClick={() => handleDeleteClick(item)} />
-                                                    <icons.DocumentDuplicateIcon className="w-5 h-5" />
                                                     <icons.ArrowUpIcon className="w-5 h-5" onClick={() => handleUpClick(item)} />
                                                     <icons.ArrowDownIcon className="w-5 h-5" onClick={() => handleDownClick(item)} />
                                                 </div>
@@ -288,7 +288,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     <div className="bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]">
                         {
                             currentQuestion && (
-                                <div className="h-full flex flex-col">
+                                <div className="h-full flex flex-col overflow-scroll">
                                     <div className="flex justify-between">
                                         <div className="flex flex-col">
                                             <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
