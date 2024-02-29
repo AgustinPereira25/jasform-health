@@ -77,9 +77,6 @@ export const Login = () => {
             onSuccess: (data) => {
                 setUser(data.data.data.user);
                 setToken(data.data.data.accessToken);
-                toast.success('Login successfully!', {
-                    autoClose: 2000
-                });
                 navigate(ROUTES.myDashboard);
             },
             onError: (error: any) => {
