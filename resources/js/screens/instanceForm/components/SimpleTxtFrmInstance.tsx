@@ -31,7 +31,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                 title: currentQuestionInfo.title,
                 completer_user_answer: answerInput,
                 order: currentQuestionInfo.order,
-                is_mandatory: currentQuestionInfo.is_mandatory,
+                is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                 question_type_id: currentQuestionInfo.question_type_id,
                 question_type_name: currentQuestionInfo.question_type_name,
             };
