@@ -79,6 +79,7 @@ export const Sidebar = ({
             onSuccess: () => {
                 setUser(null);
                 setToken(null);
+                localStorage.clear()
                 navigate(ROUTES.login);
             },
         });

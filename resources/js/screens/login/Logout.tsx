@@ -23,6 +23,7 @@ export const Logout = () => {
             onSuccess: () => {
                 setUser(null);
                 setToken(null);
+                localStorage.clear()
                 navigate(ROUTES.login);
             },
         });
