@@ -155,7 +155,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         // console.log('data', data)
         const postQuestions = { form_id: Number(formId), form_questions: data };
         console.log(postQuestions);
-        // updateFormQuestionsMutation(postQuestions);
+        updateFormQuestionsMutation(postQuestions);
     }
 
     const handleMandatoryChange = (checked: boolean) => {
