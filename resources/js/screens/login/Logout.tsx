@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
-import { logOutMutation } from "./loginAuth";
+import { logOutUserMutation } from "./loginAuth";
 
 export const Logout = () => {
     console.log("logout")
@@ -15,15 +15,15 @@ export const Logout = () => {
             console.log("Logout-token:", token);
             navigate(ROUTES.login);
         } else {
-            loginOutMutation();
+            logOutMutation();
         }
     }, []);
 
-    const { mutate: loginOutMutation } =
+    const { mutate: logOutMutation } =
         useMutation({
-            mutationFn: logOutMutation.mutation,
+            mutationFn: logOutUserMutation.mutation,
             onSuccess: (data) => {
-                console.log("loginOutMutation-data:", data);
+                console.log("logOutMutation-data:", data);
                 setUser(null);
                 setToken(null);
                 navigate(ROUTES.login);

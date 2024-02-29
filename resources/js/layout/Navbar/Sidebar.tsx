@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
-import { logOutMutation } from "../../screens/login/loginAuth";
+import { logOutUserMutation } from "../../screens/login/loginAuth";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
 import { Button, Modal, icons, LoadingOverlay } from "@/ui";
@@ -71,14 +71,14 @@ export const Sidebar = ({
 
     const { setToken, setUser } = useUserStore();
     const logout = () => {
-        loginOutMutation();
+        logOutMutation();
     };
 
-    const { mutate: loginOutMutation, isPending: isPendingLogOutUserMutation } =
+    const { mutate: logOutMutation, isPending: isPendingLogOutUserMutation } =
         useMutation({
-            mutationFn: logOutMutation.mutation,
+            mutationFn: logOutUserMutation.mutation,
             onSuccess: (data) => {
-                console.log("loginOutMutation-data:", data);
+                console.log("logOutMutation-data:", data);
                 setUser(null);
                 setToken(null);
                 navigate(ROUTES.login);

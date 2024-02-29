@@ -30,11 +30,11 @@ export const loginMutation = {
   },
 };
 
-export const logOutMutation = {
+export const logOutUserMutation = {
   mutation: async () => {
-    console.log("logOutMutation-privateAPI", privateAPI);
+    console.log("logOutUserMutation-privateAPI", privateAPI);
     const response = await privateAPI.post<LoginResponse>("/logout");
-    console.log("logOutMutation-response:", response);
+    console.log("logOutUserMutation-response:", response);
     return response;
   },
 };
