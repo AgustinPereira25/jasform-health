@@ -7,13 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "@/stores";
 import { getFormsQuery } from "@/api";
-import { MODAL_ROUTES } from "@/router";
-import { useNavigateModal } from "@/router/useNavigateModal";
+import { ROUTES } from "@/router";
 import { Button, icons, Input } from "@/ui";
 import { tw } from "@/utils";
 import Pagination from "@/ui/common/Pagination";
 import { paginatorValues } from "@/constants/pagination";
-import { ROUTES } from "@/router";
+
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
@@ -61,7 +60,6 @@ export const Forms = () => {
     });
 
     const forms = data?.data;
-    const navigateModal = useNavigateModal();
 
     return (
         <>
@@ -70,7 +68,7 @@ export const Forms = () => {
                     Forms
                     <Button
                         variant="primary"
-                        onClick={() => navigateModal(MODAL_ROUTES.userForm)}
+                        onClick={() => navigate(ROUTES.newForm)}
                     >
                         <icons.PlusIcon className={tw(`h-5 w-5`)} />
                         Create Form

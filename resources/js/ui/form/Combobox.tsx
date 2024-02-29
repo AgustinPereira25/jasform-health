@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, ForwardedRef } from 'react';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
 
@@ -26,7 +26,12 @@ const ComboBox = forwardRef(
         ref: ForwardedRef<HTMLInputElement>
     ) => {
         const defaultItem: Item = items.find(item => item.name.toUpperCase() === defaultValue?.toUpperCase())!;
+        // console.log('defaultItem', defaultItem)
         const [selectedItem, setSelectedItem] = useState(defaultItem);
+
+        useEffect(() => {
+            setSelectedItem(defaultItem ?? '');
+        }, [defaultItem]);
 
         const handleChange = (e: Item) => {
             setSelectedItem(e);

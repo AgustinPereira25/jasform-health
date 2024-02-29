@@ -1,15 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Input } from '@/ui'
+import type { Question } from '@/api';
 
 interface SimpleTextScreenProps {
-    text: string;
+    currentQuestion: Question;
+    formQuestions?: Question[];
+    setQuestions: (questions: Question[]) => void;
 };
 // TODO - Make input text full height (it overflows the container).
-export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
-    console.log(text)
+export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions }) => {
+    // console.log(currentQuestion);
+    // console.log(formQuestions);
+    const [title, setTitle] = React.useState(currentQuestion.title ?? '');
+    const [textToShow, setTextToShow] = React.useState(currentQuestion.text ?? '');
+
+    useEffect(() => {
+        setTitle(currentQuestion.title ?? '');
+        setTextToShow(currentQuestion.text ?? '');
+    }, [currentQuestion.title, currentQuestion.text]);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = event.target;
+        if (id === 'title') {
+            setTitle(value);
+        } else if (id === 'text') {
+            setTextToShow(value);
+        }
+        // Update the formQuestions general state
+        const updatedQuestions = formQuestions?.map((question) => {
+            if (question.id === currentQuestion.id) {
+                delete question.question_options;
+                return {
+                    ...question,
+                    [id]: value,
+                };
+            }
+            return question;
+        });
+        setQuestions(updatedQuestions ?? []);
+    }
+
     return (
-        <div className="flex flex-col pt-3">
+        <div className="flex flex-col py-4">
             <div className="flex gap-3">
                 <span className="shrink-0">Title</span>
                 <Input
@@ -18,9 +51,9 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
                     type="text"
                     id="title"
                     placeholder="Title"
-                // error={errors.firstName?.message}
-                // value={passwordInput}
-                // defaultValue={user?.first_name}
+                    // value={passwordInput}
+                    value={title}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />
@@ -30,11 +63,10 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ text }) => {
                     containerClassName="w-full"
                     fullHeight
                     type="text"
-                    id="text_to_show"
+                    id="text"
                     placeholder="Text to Show"
-                // error={errors.firstName?.message}
-                // value={passwordInput}
-                // defaultValue={user?.first_name}
+                    value={textToShow}
+                    onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />
