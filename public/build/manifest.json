@@ -1,6 +1,11 @@
 {
+  "node_modules/countup.js/dist/countUp.min.js": {
+    "file": "assets/countUp.min-2a2ef8a6.js",
+    "isDynamicEntry": true,
+    "src": "node_modules/countup.js/dist/countUp.min.js"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-612dde63.css",
+    "file": "assets/app-39ce2040.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -11,9 +16,12 @@
   "resources/js/App.tsx": {
     "css": [
       "assets/App-d9e3f7bd.css",
-      "assets/app-612dde63.css"
+      "assets/app-39ce2040.css"
     ],
-    "file": "assets/App-7ebaf802.js",
+    "dynamicImports": [
+      "node_modules/countup.js/dist/countUp.min.js"
+    ],
+    "file": "assets/App-8522cbd2.js",
     "isEntry": true,
     "src": "resources/js/App.tsx"
   }

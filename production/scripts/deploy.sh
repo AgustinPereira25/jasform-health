@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LOG=/tmp/deploy.log
-DIR=/home/laravel/jasform
+DIR=/opt/medicalljasform
 
 echo "--------------------" >> $LOG
 echo "Deploy starting at - $(date)"  >> $LOG
