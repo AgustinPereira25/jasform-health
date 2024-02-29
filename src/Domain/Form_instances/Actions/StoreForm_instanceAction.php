@@ -19,6 +19,7 @@ class StoreForm_instanceAction
         return Form_instance::create([
             'initial_date_time' => $form_instanceDto->getInitialDateTime(),
             'final_date_time' => $form_instanceDto->getFinalDateTime(),
+            'api_response' => $form_instanceDto->getApiResponse(),
             'form_id' => $form_instanceDto->getFormId(),
             'completer_user_id' => $form_instanceDto->getCompleterUserId(),
         ]);

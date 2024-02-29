@@ -9,6 +9,7 @@ class Form_instanceDto
     public function __construct(
         private readonly string $initial_date_time,
         private readonly string $final_date_time,
+        private readonly string $api_response,
         private readonly int $form_id,
         private readonly int | null $completer_user_id,
     ) {
@@ -22,6 +23,11 @@ class Form_instanceDto
     public function getFinalDateTime(): string
     {
         return $this->final_date_time;
+    }
+
+    public function getApiResponse(): string
+    {
+        return $this->api_response;
     }
 
     public function getFormId(): int

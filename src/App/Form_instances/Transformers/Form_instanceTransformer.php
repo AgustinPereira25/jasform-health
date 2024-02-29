@@ -28,6 +28,7 @@ class Form_instanceTransformer extends Transformer
             'id' => (int) $form_instance->id,
             'initial_date_time' => Carbon::parse($form_instance->initial_date_time)->format('Y-m-d H:i:s'),
             'final_date_time' => Carbon::parse($form_instance->final_date_time)->format('Y-m-d H:i:s'),
+            'api_response' => (string) $form_instance->api_response,
             'form_id' => (int) $form_instance->form_id,
             'completer_user_id' => $form_instance->completer_user ? $form_instance->completer_user->id : null,
             'completer_user_first_name' => $form_instance->completer_user ? $form_instance->completer_user->first_name : null,

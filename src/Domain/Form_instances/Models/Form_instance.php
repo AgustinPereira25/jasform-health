@@ -18,6 +18,7 @@ use Domain\Completed_questions\Models\Completed_question;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $form_id
  * @property int $completer_user_id
+ * @property string $api_response
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance query()
@@ -37,6 +38,7 @@ use Domain\Completed_questions\Models\Completed_question;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereFinalDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereInitialDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereIsCompleted($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereApiResponse($value)
  * @mixin \Eloquent
  */
 class Form_instance extends Model
@@ -47,6 +49,7 @@ class Form_instance extends Model
         'final_date_time',
         'form_id',
         'completer_user_id',
+        'api_response',
     ];
 
     public function form(): BelongsTo
