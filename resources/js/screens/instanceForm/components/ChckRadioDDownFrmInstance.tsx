@@ -28,8 +28,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
 
-    console.log('savedAnswerCheckedOptions', savedAnswerCheckedOptions)
-    console.log('currentState.completed_questions', currentState.completed_questions);
+    // console.log('savedAnswerCheckedOptions', savedAnswerCheckedOptions)
+    // console.log('currentState.completed_questions', currentState.completed_questions);
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
 
     if (questiontypeId === 5) {
@@ -48,7 +48,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     title: currentQuestionInfo.title,
                     completer_user_answer: answerInput,
                     order: currentQuestionInfo.order,
-                    is_mandatory: currentQuestionInfo.is_mandatory,
+                    is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
@@ -58,9 +58,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             }
         }
         else { // Checkbox
-            console.log('checkedAnswers', checkedAnswers);
-            console.log('mandatory', currentQuestionInfo.is_mandatory);
-            console.log('checkedAnswers.length', checkedAnswers.length);
+            // console.log('checkedAnswers', checkedAnswers);
+            // console.log('mandatory', currentQuestionInfo.is_mandatory);
+            // console.log('checkedAnswers.length', checkedAnswers.length);
             if (currentQuestionInfo.is_mandatory && checkedAnswers.length === 0) {
                 setError('Answer is mandatory');
             }
@@ -70,7 +70,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     title: currentQuestionInfo.title,
                     completer_user_answer: "",
                     order: currentQuestionInfo.order,
-                    is_mandatory: currentQuestionInfo.is_mandatory,
+                    is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                     completer_user_answer_checked_options: checkedAnswers,
@@ -95,7 +95,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
             if (checked) {
                 setError('');
-                setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question!, form_question_id: option.form_question_id! }]);
+                // setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question!, form_question_id: option.form_question_id! }]);
+                // TODO - Check this
+                setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question! }]);
             } else {
                 setCheckedAnswers(checkedAnswers.filter((answer) => answer.order !== Number(value)));
             }

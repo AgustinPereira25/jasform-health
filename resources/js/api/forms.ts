@@ -1,7 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
-
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 
@@ -42,7 +41,8 @@ export interface Question {
   title: string;
   text: string;
   order: number;
-  is_mandatory: boolean;
+  is_mandatory: boolean | 1 | 0;
+  form_question_id?: number;
   form_id?: number;
   question_type_id: number;
   question_type_name: string;
@@ -54,7 +54,6 @@ export interface QuestionsOption {
   order: number;
   title: string;
   next_question?: number | null;
-  form_question_id?: number;
 }
 
 export const getFormsQuery = (

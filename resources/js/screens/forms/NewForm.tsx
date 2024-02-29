@@ -166,7 +166,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         });
 
     const onSubmit = (data: NewForm) => {
-        console.log(data);
+        // console.log(data);
 
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
@@ -186,7 +186,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             is_user_responses_linked: data.enabledLinkResponsesUser,
             user_id: userId,
         }
-        console.log(form_CreateFormParams)
+        // console.log(form_CreateFormParams)
         if (pathname.includes(ROUTES.newForm)) {
             createFormMutation(form_CreateFormParams);
         } else {

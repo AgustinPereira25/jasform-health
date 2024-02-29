@@ -77,7 +77,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
-                    const newQuestionOptions = question.question_options!.map((item) => (delete item.id, delete item.form_question_id, { ...item, next_question: null }));
+                    const newQuestionOptions = question.question_options!.map((item) => (delete item.id, { ...item, next_question: null }));
                     setQuestionsOption([...newQuestionOptions, newElement]);
                     return {
                         ...question,

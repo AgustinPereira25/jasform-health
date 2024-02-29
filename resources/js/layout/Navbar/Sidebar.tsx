@@ -65,7 +65,7 @@ export const Sidebar = ({
     // const { user: user, setToken } = useUserStore();
 
     const { user } = useUserStore();
-    console.log("Sidebar-user", user);
+    // console.log("Sidebar-user", user);
 
     const { setToken, setUser } = useUserStore();
     const logout = () => {

@@ -36,7 +36,7 @@ export interface CompleterUserAnswerCheckedOption {
   order: number;
   title: string;
   next_question: number;
-  form_question_id: number;
+  form_question_id?: number;
 }
 
 const DOMAIN = "form_instance";
@@ -44,14 +44,14 @@ const ALL = "all";
 
 export const createFormInstance = {
   mutation: async (body: CompletedForm) => {
-    console.log("body:", body);
+    // console.log("body:", body);
     const response = await privateAPI.post<ServiceResponse<CompletedForm>>(
       "/form_instances",
       {
         ...body,
       },
     );
-    console.log("response:", { response });
+    // console.log("response:", { response });
     return response.data.data;
   },
   invalidates: (queryClient: QueryClient) => {
@@ -65,15 +65,15 @@ export interface FormInstanceURL {
 }
 export const sendExternalEndpoint = {
   mutation: async (info: FormInstanceURL) => {
-    console.log("body:", info.body);
-    console.log("url:", info.url);
+    // console.log("body:", info.body);
+    // console.log("url:", info.url);
     const response = await urlAPI.post<ServiceResponse<CompletedForm>>(
       info.url,
       {
         ...info.body,
       },
     );
-    console.log("response:", { response });
+    // console.log("response:", { response });
     return response.data.data;
   },
   invalidates: (queryClient: QueryClient) => {
@@ -112,7 +112,7 @@ export const getFormInstancesQuery = (
         headers: getAuthHeaders(),
       },
     );
-    // console.log(response)
+    // // console.log(response)
     return response.data;
   },
 });
