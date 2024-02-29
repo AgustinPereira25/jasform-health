@@ -16,16 +16,12 @@ class ListFormController
 {
     public function __invoke(Request $request): JsonResponse
     {
-        Log::info('ListFormController####################################################################################################################################################################');
-
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
         $isActive = $request->get('isActive', 'false');
         $name = $request->get('form_title', "");
         $date = $request->get('date', "");
         $userId = $request->get('userId', "");
-        Log::info('userId: ' . $request->input('userId'));
-        Log::info('userId: ' . $userId);
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;

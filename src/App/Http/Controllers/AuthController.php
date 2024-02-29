@@ -23,12 +23,6 @@ class AuthController
     {
         Log::info('AuthController-login##########################################################################################################');
 
-        //$credentials = $request->only('email', 'password');
-        // Log::info('credentials-email: ' . $credentials['email']);
-        // Log::info('credentials-password: ' . $credentials['password']);
-        Log::info('request-email: ' . $request->email);
-        Log::info('request-password: ' . $request->password);
-
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {

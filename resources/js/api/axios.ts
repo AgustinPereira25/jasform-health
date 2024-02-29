@@ -15,15 +15,10 @@ export const publicAPI = axios.create(publicBaseConfig);
 
 export const getAuthHeaders = () => ({ Authorization: `Bearer ${getToken()}` });
 const getToken = () => {
-  console.log("getToken()");
   const storeString = localStorage.getItem("userData");
-  console.log("1getToken()-storeString", storeString);
   if (storeString) {
-    console.log("2getToken()-storeString", storeString);
     const store = JSON.parse(storeString);
-    console.log("getToken()-store", store);
     const token = store.state ? store.state.token : null;
-    console.log("getToken()-token", token);
     return token;
   }
   return null;

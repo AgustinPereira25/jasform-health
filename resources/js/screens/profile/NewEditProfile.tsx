@@ -159,7 +159,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                 if (pathname.includes(ROUTES.newUser)) {
                     navigate(ROUTES.users);
                 } else {
-                    console.log("data.data.data:", data.data.data);
                     setUser(data.data.data);
                     navigate(ROUTES.myDashboard);
                 }

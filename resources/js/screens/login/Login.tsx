@@ -35,7 +35,6 @@ export const Login = () => {
     const { token } = useUserStore();
     useEffect(() => {
         if (token) {
-            console.log("Login-token:", token);
             navigate(ROUTES.myDashboard);
         }
     }, []);
@@ -76,9 +75,6 @@ export const Login = () => {
         useMutation({
             mutationFn: loginMutation.mutation,
             onSuccess: (data) => {
-                console.log("loginUserMutation-data:", data);
-                console.log("loginUserMutation-data.data.user:", data.data.data.user);
-                console.log("loginUserMutation-data.data.accessToken:", data.data.data.accessToken);
                 setUser(data.data.data.user);
                 setToken(data.data.data.accessToken);
                 toast.success('Login successfully!', {
@@ -87,7 +83,6 @@ export const Login = () => {
                 navigate(ROUTES.myDashboard);
             },
             onError: (error: any) => {
-                console.log("loginUserMutation-error:", error);
                 if (error.response) {
                     toast.error(error.response.data.message);
                 } else if (error.request) {

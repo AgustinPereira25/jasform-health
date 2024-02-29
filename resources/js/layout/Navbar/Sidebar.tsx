@@ -67,7 +67,6 @@ export const Sidebar = ({
     // const { user: user, setToken } = useUserStore();
 
     const { user } = useUserStore();
-    console.log("Sidebar-user", user);
 
     const { setToken, setUser } = useUserStore();
     const logout = () => {
@@ -77,8 +76,7 @@ export const Sidebar = ({
     const { mutate: logOutMutation, isPending: isPendingLogOutUserMutation } =
         useMutation({
             mutationFn: logOutUserMutation.mutation,
-            onSuccess: (data) => {
-                console.log("logOutMutation-data:", data);
+            onSuccess: () => {
                 setUser(null);
                 setToken(null);
                 navigate(ROUTES.login);
