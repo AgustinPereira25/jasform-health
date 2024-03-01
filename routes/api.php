@@ -84,10 +84,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/recover', [AuthController::class, 'recover']);
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthLogOutController::class, 'logout']);
-});
-
 Route::prefix('forms')
     ->middleware(['sanitize_input'])
     ->group(static function () {
@@ -104,7 +100,9 @@ Route::prefix('form_instances')
 | Private Routes
 |--------------------------------------------------------------------------
 */
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthLogOutController::class, 'logout']);
+});
 
 Route::prefix('users')
     ->middleware(['sanitize_input', 'auth:sanctum'])

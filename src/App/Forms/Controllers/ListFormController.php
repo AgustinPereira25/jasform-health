@@ -19,6 +19,7 @@ class ListFormController
         $name = $request->get('form_title', "");
         $date = $request->get('date', "");
         $userId = $request->get('userId', "");
+        $publicCode = $request->get('publicCode', "");
 
         Paginator::currentPageResolver(function () use ($currentPage) {
             return $currentPage;
@@ -35,22 +36,27 @@ class ListFormController
         //     $forms->where('is_active', false);
         // };
 
-        if (! empty($userId)) {
+        if (!empty($userId)) {
             $forms->where('user_id', $userId);
         }
 
 
-        $forms->where(function ($query) use ($name, $date) {
-            if (! empty($name)) {
+        $forms->where(function ($query) use ($name, $publicCode) {
+            if (!empty($name)) {
                 $query->where(function ($query) use ($name) {
                     $query->where('name', 'like', '%' . $name . '%');
                 });
             }
-            if (! empty($date)) {
-                $query->where(function ($query) use ($date) {
-                    $query->where('last_modified_date_time', 'like', '%' . $date . '%');
+            if (!empty($publicCode)) {
+                $query->where(function ($query) use ($publicCode) {
+                    $query->where('public_code', 'like', '%' . $publicCode . '%');
                 });
             }
+            // if (!empty($date)) {
+            //     $query->where(function ($query) use ($date) {
+            //         $query->where('last_modified_date_time', 'like', '%' . $date . '%');
+            //     });
+            // }
             // if (!empty($userId)) {
             //     $query->where(function ($query) use ($userId) {
             //         $query->where('user_id', $userId);
