@@ -109,6 +109,10 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
     const handleDeleteClick = (item: Question) => {
         const newQuestions = questions.filter((question) => question.order !== item.order);
+        // Reorder questions
+        newQuestions.map((question, index) => {
+            question.order = index + 1;
+        });
         setQuestions(newQuestions);
     }
 

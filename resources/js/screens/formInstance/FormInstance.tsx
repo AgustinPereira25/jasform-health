@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { debounce } from 'lodash'
+import React, { useState } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+// import { debounce } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 
-import { Button, Input, icons } from '@/ui'
+import { Button, icons } from '@/ui'
 import { tw } from '@/utils'
 import { paginatorValues } from '@/constants/pagination'
 import Pagination from '@/ui/common/Pagination'
@@ -12,37 +12,41 @@ import { useCompletedQuestions } from '@/stores'
 
 export const FormInstance: React.FC = () => {
     const { formId } = useParams();
+    const [searchParams] = useSearchParams();
+    const publicCode = searchParams.get('publicCode');
+
     const navigate = useNavigate();
 
     const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
     //TODO - Make the filters work
-    const [search, setSearch] = useState({ nameEmailCode: "", submitted_start_date: "", submitted_end_date: "" });
-    const [debouncedSearch, setDebouncedSearch] = useState({ nameEmailCode: "", submitted_start_date: "", submitted_end_date: "" });
+    // const [search, setSearch] = useState({ nameEmailCode: "", submitted_start_date: "", submitted_end_date: "" });
+    // const [debouncedSearch, setDebouncedSearch] = useState({ nameEmailCode: "", submitted_start_date: "", submitted_end_date: "" });
 
-    const handleDebouncedSearch = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        debounce((query: any) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            setDebouncedSearch(query);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        }, 500) as (query: any) => void,
-        []
-    );
+    // const handleDebouncedSearch = useCallback(
+    //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //     debounce((query: any) => {
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    //         setDebouncedSearch(query);
+    //         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //     }, 500) as (query: any) => void,
+    //     []
+    // );
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
+    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { id, value } = e.target;
 
-        setSearch(prevState => {
-            const updatedState = { ...prevState, [id]: value };
-            handleDebouncedSearch(updatedState);
-            return updatedState;
-        });
-    };
+    //     setSearch(prevState => {
+    //         const updatedState = { ...prevState, [id]: value };
+    //         handleDebouncedSearch(updatedState);
+    //         return updatedState;
+    //     });
+    // };
 
     const { data, isLoading: isLoadingForms } = useQuery({
-        ...getFormInstancesQuery(perPage, currentPage, formId!, debouncedSearch.nameEmailCode, debouncedSearch.submitted_start_date, debouncedSearch.submitted_end_date),
+        // ...getFormInstancesQuery(perPage, currentPage, formId!, debouncedSearch.nameEmailCode, debouncedSearch.submitted_start_date, debouncedSearch.submitted_end_date),
+        ...getFormInstancesQuery(perPage, currentPage, formId!),
     });
     const forms = data?.data;
 
@@ -64,16 +68,16 @@ export const FormInstance: React.FC = () => {
                     Return
                 </Button>
                 <span className="pl-3 text-2xl text-black">
-                    New Form&apos;s Information
+                    Form&apos;s Instances
                 </span>
                 {
-                    formId && (
-                        <span className="text-2xl text-gray-500 italic">- Form Public Code: {formId}</span>
+                    publicCode && (
+                        <span className="text-2xl text-gray-500 italic">- Form Public Code: {publicCode}</span>
                     )
                 }
             </div>
             <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg w-full">
-                <div className="flex gap-5">
+                {/* <div className="flex gap-5">
                     <Input
                         type="search"
                         id="nameEmailCode"
@@ -99,7 +103,7 @@ export const FormInstance: React.FC = () => {
                         value={search.submitted_end_date}
                         onChange={handleInputChange}
                     />
-                </div>
+                </div> */}
                 <div className="rounded-sm border-[1px] border-gray-300">
                     <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                         <colgroup>

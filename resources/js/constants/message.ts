@@ -9,4 +9,5 @@ export const message = {
     "An unexpected error occurred. Please try again later. If the issue persists, contact the system administrator.",
   EMPTY_IMAGES: "There aren't images to show.",
   PAGE_NOT_FOUND: "The page you are looking for does not exist.",
+  INACTIVE_FORM: "The form is currently inactive.",
 } as const;

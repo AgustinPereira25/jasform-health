@@ -14,7 +14,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     const questiontypeId = currentScreen.questionType;
     const [error, setError] = useState<string>('');
 
-    const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
+    const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswerInput);
 
     useEffect(() => {
@@ -70,7 +70,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
-                    completer_user_answer: answerInput,
+                    answer: answerInput,
                     order: currentQuestionInfo.order,
                     is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                     question_type_id: currentQuestionInfo.question_type_id,
@@ -92,7 +92,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
-                    completer_user_answer: "",
+                    answer: "",
                     order: currentQuestionInfo.order,
                     is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                     question_type_id: currentQuestionInfo.question_type_id,

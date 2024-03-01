@@ -7,13 +7,14 @@ import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { Button, Input, LoadingOverlay, icons } from '@/ui'
+import { Button, Input, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
 import type { IHttpResponseError } from '@/api';
 import { createForm, updateForm } from '@/api'
 import type { CreateFormParams, Form } from '@/api';
 import { ROUTES } from '@/router'
 import { useUserStore } from '@/stores'
+import { DeleteFormConfirm } from './components'
 
 interface NewFormProps {
     initialData: Form;
@@ -124,7 +125,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             mutationFn: createForm.mutation,
             onSuccess: (data) => {
                 createForm.invalidates(queryClient);
-                toast.success(`Form "${data.description}" successfully created!`);
+                toast.success(`Form "${data.name}" successfully created!`);
                 navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
@@ -147,7 +148,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             mutationFn: updateForm.mutation,
             onSuccess: (data) => {
                 updateForm.invalidates(queryClient);
-                toast.success(`Form "${data.description}" successfully updated!`);
+                toast.success(`Form "${data.name}" successfully updated!`);
                 navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
@@ -245,6 +246,14 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useState(false);
     const [showSecondaryColorPicker, setShowSecondaryColorPicker] = useState(false);
 
+    const [showDeletionModal, setshowDeletionModal] = useState(false);
+    const handleOpenDeletionModal = () => {
+        setshowDeletionModal(true);
+    };
+    const handleCloseDeletionModal = () => {
+        setshowDeletionModal(false);
+    };
+
     return (
         <>
             {(isPendingCreateFormMutation || isPendingUpdateFormMutation) && (
@@ -261,22 +270,26 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             Return
                         </Button>
                         <span className="pl-3 text-2xl text-black">
-                            New Form&apos;s Information
+                            {!form.public_code && 'New'} Form&apos;s Information
                         </span>
                         {
                             form.id && (
-                                <span className="text-2xl text-gray-500 italic">- Form Code: {form.id}</span>
+                                <span className="text-2xl text-gray-500 italic">- Form Public Code: {form.public_code}</span>
                             )
                         }
                     </div>
                     <div className="flex gap-5">
-                        <Button
-                            variant="secondary"
-                            onClick={() => console.log('DeleteForm')}
-                        >
-                            <icons.TrashIcon className={tw(`w-5 h-5`)} />
-                            Delete
-                        </Button>
+                        {
+                            form.id && (
+                                <Button
+                                    variant="secondary"
+                                    onClick={handleOpenDeletionModal}
+                                >
+                                    <icons.TrashIcon className={tw(`w-5 h-5`)} />
+                                    Delete
+                                </Button>
+                            )
+                        }
                         {
                             form.id && (
                                 <Button
@@ -296,6 +309,16 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         </Button>
                     </div>
                 </div>
+                <Modal
+                    show={showDeletionModal}
+                    title="Confirm Deletion"
+                    description="Are you sure you want to execute a deletion?"
+                    onClose={handleCloseDeletionModal}
+                >
+                    <div className="flex h-16 p-3 m-auto">
+                        <DeleteFormConfirm />
+                    </div>
+                </Modal>
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
                     <div className="flex gap-6 shrink-0">
                         <div className="shrink-0">
@@ -432,8 +455,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         {...register("pcolor")}
                                         // {...register("pcolor")}
                                         // error={errors.pcolor?.message}
-                                        // defaultValue={''}
-                                        value={primaryColor}
+                                        defaultValue={primaryColor}
+                                        // value={primaryColor}
+                                        onChange={(e) => setPrimaryColor(e.target.value)}
                                     />
                                     <Button ref={primaryWrapperRef} style={{
                                         backgroundColor: primaryColor,
@@ -472,8 +496,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
                                         // error={errors.pcolor?.message}
-                                        // defaultValue={''}
-                                        value={secondaryColor}
+                                        defaultValue={secondaryColor}
+                                        //value={secondaryColor}
+                                        onChange={(e) => setSecondaryColor(e.target.value)}
                                     />
                                     <Button ref={secondaryWrapperRef} style={{
                                         backgroundColor: secondaryColor,
@@ -507,7 +532,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <Input
                                         containerClassName="w-full"
                                         fullHeight
-                                        type="text"
+                                        type="number"
                                         id="borderRadius"
                                         placeholder="Border Radius"
                                         {...register("borderRadius")}
@@ -612,15 +637,15 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Last Modified Date: 15/01/2024 03:45PM</span>
+                                <span>Last Modified Date: {form.last_modified_date_time?.toString() ?? ''}</span>
                             </div>
                             <hr className="mx-3" />
                             <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Instances: 100</span>
+                                <span>Instances: {form.form_instances_count ?? 0}</span>
                             </div>
                             <hr className="mx-3" />
                             <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Questions: 10</span>
+                                <span>Questions: {form.form_questions_count ?? 0}</span>
                             </div>
                             <hr className="mx-3" />
                             <div className="flex p-3 h-16 ">
@@ -646,7 +671,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <div className="flex p-3 h-16 ">
                                         <Button
                                             variant="primary"
-                                            onClick={() => { navigate(`/form-instance/${form.id}`) }}
+                                            onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
                                         >
                                             <icons.EyeIcon className={tw(`w-5 h-5`)} />
                                             View form&apos;s instances

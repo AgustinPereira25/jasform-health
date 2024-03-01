@@ -34,11 +34,11 @@ export const CompletedQuestions: React.FC = () => {
                 <div className="rounded-sm border-[1px] border-gray-300">
                     <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                         <colgroup>
-                            <col className="w-full sm:w-4/12" />
+                            <col className="sm:w-1/12" />
                             <col className="lg:w-4/12" />
                             <col className="lg:w-2/12" />
                             <col className="lg:w-1/12" />
-                            <col className="lg:w-1/12" />
+                            <col className="lg:w-4/12" />
                         </colgroup>
                         <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-sm leading-6">
                             <tr>
@@ -62,7 +62,7 @@ export const CompletedQuestions: React.FC = () => {
                                 </th>
                                 <th
                                     scope="col"
-                                    className="hidden w-full py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
+                                    className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
                                 >
                                     ANSWER
                                 </th>
@@ -74,7 +74,7 @@ export const CompletedQuestions: React.FC = () => {
                                     <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                         <div className="flex items-center gap-x-4">
                                             <div className="truncate text-sm leading-6 text-black">
-                                                {idx}
+                                                {idx + 1}
                                             </div>
                                         </div>
                                     </td>
@@ -88,8 +88,8 @@ export const CompletedQuestions: React.FC = () => {
                                     <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
                                         {item.question_type_name}
                                     </td>
-                                    <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        {item?.completer_user_answer}
+                                    <td className="hidden w-full py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] grow sm:table-cell sm:pr-6 lg:pr-8">
+                                        {item?.answer}
                                     </td>
                                 </tr>
                             ))}
