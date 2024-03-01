@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $user_id
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record query()
@@ -41,9 +40,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity_record whereUserId($value)
- *
  * @property-read User $user
- *
  * @mixin \Eloquent
  */
 class Activity_record extends Model

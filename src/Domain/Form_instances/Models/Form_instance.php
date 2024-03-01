@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                             $form_id
  * @property int                             $completer_user_id
  * @property string                          $api_response
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance query()
@@ -29,20 +28,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereUpdatedAt($value)
- *
  * @property-read Completer_user $completer_user
  * @property-read Form $form
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Completed_question> $completed_questions
  * @property-read int|null $completed_questions_count
  * @property string $initial_date_time
  * @property string $final_date_time
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereCompletedQuestions($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereFinalDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereInitialDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereIsCompleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_instance whereApiResponse($value)
- *
  * @mixin \Eloquent
  */
 class Form_instance extends Model

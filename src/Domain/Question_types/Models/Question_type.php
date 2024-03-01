@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string                          $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type query()
@@ -23,10 +22,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question_type whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
  * @property-read int|null $form_questions_count
- *
  * @mixin \Eloquent
  */
 class Question_type extends Model

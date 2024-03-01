@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $user_creator_id
  * @property int                             $user_auxiliary_editor_id
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form query()
@@ -47,27 +46,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserAuxiliaryEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereWelcomeText($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
  * @property-read int|null $form_instances_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_question> $form_questions
  * @property-read int|null $form_questions_count
  * @property int $user_id
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUserId($value)
- *
  * @property string $last_modified_date_time
  * @property int    $is_active
  * @property int    $is_user_responses_linked
  * @property int    $is_initial_data_required
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsUserResponsesLinked($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsRequestMandatoryInitialData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereLastModifiedDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereFinalText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsInitialDataRequired($value)
- *
  * @mixin \Eloquent
  */
 class Form extends Model
