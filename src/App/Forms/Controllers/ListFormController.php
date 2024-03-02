@@ -18,15 +18,15 @@ class ListFormController
         Log::info('ListFormController#####################');
         Log::info('===ListFormController=====> Request data: ', $request->all());
 
-        $user = $request->user();
-        Log::info('user: ' . $user);
-        if (!$user) {
+        $loggedUser = $request->user();
+        Log::info('loggedUser: ' . $loggedUser);
+        if (!$loggedUser) {
             return responder()->error('Unauthenticated')->respond(500);
         }
-        $roleName = $user->role->name;
-        if ($roleName !== 'Admin') {
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
             $userId = $request->get('userId', "");
-            if ($user->id != $userId) {
+            if ($loggedUser->id != $userId) {
                 return responder()->error('You do not have permission for this request')->respond(500);
             }
         }

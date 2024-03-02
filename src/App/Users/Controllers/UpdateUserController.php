@@ -16,6 +16,20 @@ class UpdateUserController
 {
     public function __invoke(UpdateUserRequest $request, UpdateUserAction $updateUserAction): JsonResponse
     {
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
+            $userId = $request->id;
+            if ($loggedUser->id != $userId) {
+                return responder()->error('You do not have permission for this request')->respond(500);
+            }
+        }
+
+
+
         sleep(1);
         $idString = (string) $request->id;
 
@@ -28,7 +42,7 @@ class UpdateUserController
 
         $roleName = $request->input(UpdateUserRequest::ROLE_NAME);
         $role = Role::where('name', $roleName)->first();
-        if (! $role) {
+        if (!$role) {
             $errorMessage = "The role '$roleName' does not exist.";
             throw new \RuntimeException($errorMessage);
         }

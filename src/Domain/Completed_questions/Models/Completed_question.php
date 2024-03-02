@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $form_instance_id
  * @property int                             $question_type_id
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question query()
@@ -28,10 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereUpdatedAt($value)
- *
  * @property-read Form_instance $form_instance
  * @property-read Question_type $question_type
- *
  * @mixin \Eloquent
  */
 

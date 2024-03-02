@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string                          $last_name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user query()
@@ -25,15 +24,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form_instance> $form_instances
  * @property-read int|null $form_instances_count
  * @property string $code
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Completer_user whereCode($value)
- *
  * @property-read Form_instance|null $form_instance
- *
  * @mixin \Eloquent
  */
 class Completer_user extends Model

@@ -81,7 +81,7 @@ export const Login = () => {
             },
             onError: (error: any) => {
                 if (error.response) {
-                    toast.error(error.response.data.message);
+                    toast.error(error.response.data.error.fields.email[0]);
                 } else if (error.request) {
                     toast.error('Request was made but no response was received');
                 } else {
@@ -91,6 +91,7 @@ export const Login = () => {
         });
 
     const onSubmit = (data: LoginFormValues) => {
+        console.info("onSubmit");
         loginUserMutation(data);
     };
 

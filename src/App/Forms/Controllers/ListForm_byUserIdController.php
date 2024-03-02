@@ -12,13 +12,13 @@ class ListForm_byUserIdController
 {
     public function __invoke(Request $request, $userId): JsonResponse
     {
-        $user = $request->user();
-        if (!$user) {
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
             return responder()->error('Unauthenticated')->respond(500);
         }
-        $roleName = $user->role->name;
-        if ($roleName !== 'Admin') {
-            if ($user->id != $userId) {
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
+            if ($loggedUser->id != $userId) {
                 return responder()->error('You do not have permission for this request')->respond(500);
             }
         }

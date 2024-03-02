@@ -15,14 +15,14 @@ class StoreFormController
 {
     public function __invoke(StoreFormRequest $request, StoreFormAction $storeFormAction): JsonResponse
     {
-        $user = $request->user();
-        if (!$user) {
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
             return responder()->error('Unauthenticated')->respond(500);
         }
-        $roleName = $user->role->name;
-        if ($roleName !== 'Admin') {
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
             $userId = $request->user_id;
-            if ($user->id != $userId) {
+            if ($loggedUser->id != $userId) {
                 return responder()->error('You do not have permission for this request')->respond(500);
             }
         }

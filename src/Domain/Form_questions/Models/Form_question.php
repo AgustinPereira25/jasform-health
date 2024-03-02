@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $form_id
  * @property int                             $question_type_id
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question query()
@@ -35,19 +34,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereUpdatedAt($value)
- *
  * @property-read Form $form
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Question_option> $question_options
  * @property-read int|null $question_options_count
  * @property-read Question_type $question_type
  * @property int $is_mandatory
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsMandatory($value)
- *
  * @property int $is_mandatory
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Form_question whereIsMandatory($value)
- *
  * @mixin \Eloquent
  */
 class Form_question extends Model

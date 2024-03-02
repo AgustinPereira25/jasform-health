@@ -15,6 +15,15 @@ class ListUserController
 {
     public function __invoke(Request $request): JsonResponse
     {
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
+            return responder()->error('You do not have permission for this request')->respond(500);
+        }
+
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
         $isActive = $request->get('isActive', "false");
@@ -40,14 +49,14 @@ class ListUserController
         }
 
         $users->where(function ($query) use ($nameOrEmail, $positionOrOrganization) {
-            if (! empty($nameOrEmail)) {
+            if (!empty($nameOrEmail)) {
                 $query->where(function ($query) use ($nameOrEmail) {
                     $query->where('first_name', 'like', '%' . $nameOrEmail . '%')
                         ->orWhere('last_name', 'like', '%' . $nameOrEmail . '%')
                         ->orWhere('email', 'like', '%' . $nameOrEmail . '%');
                 });
             }
-            if (! empty($positionOrOrganization)) {
+            if (!empty($positionOrOrganization)) {
                 $query->where(function ($query) use ($positionOrOrganization) {
                     $query->where('position_in_org', 'like', '%' . $positionOrOrganization . '%')
                         ->orWhereHas('organization', function ($query) use ($positionOrOrganization) {
