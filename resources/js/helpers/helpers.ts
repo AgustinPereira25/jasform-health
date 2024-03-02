@@ -47,3 +47,8 @@ export function isURL(str: string) {
   return urlRegex.test(str);
 }
 
+export function isValidEmail(email: string) {
+  // Regular expression for basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}

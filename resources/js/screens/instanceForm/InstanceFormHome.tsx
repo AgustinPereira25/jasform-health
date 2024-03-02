@@ -5,6 +5,7 @@ import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
+import { isValidEmail } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const [searchParams] = useSearchParams();
@@ -50,8 +51,11 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             }
             if (email === '') {
                 emailError = 'Email Address is mandatory';
+            } else if (!isValidEmail(email)) {
+                emailError = 'Email Address is invalid';
             }
             setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
+            return;
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_first_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
