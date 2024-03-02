@@ -15,6 +15,7 @@ import type { CreateFormParams, Form } from '@/api';
 import { ROUTES } from '@/router'
 import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
+import { TextArea } from '@/ui/form/TextArea'
 
 interface NewFormProps {
     initialData: Form;
@@ -321,7 +322,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                 </Modal>
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
                     <div className="flex gap-6 shrink-0">
-                        <div className="shrink-0">
+                        <div className="w-full">
                             <div className={tw(
                                 'flex p-3 h-16',
                                 errors.name && 'pb-5'
@@ -392,7 +393,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             <div className={tw(
-                                'flex p-3 h-16',
+                                'flex p-3 h-20',
                                 errors.logo && 'pb-5'
                             )}
                             >
@@ -400,10 +401,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <span>Logo URL</span>
                                 </div>
                                 <div className="flex grow">
-                                    <Input
-                                        containerClassName="w-full"
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full h-full"
                                         fullHeight
-                                        type="text"
                                         id="logo"
                                         placeholder="Enter Logo URL"
                                         {...register("logo")}
@@ -469,7 +470,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
                                     </Button>
                                     {showPrimaryColorPicker && (
-                                        <div ref={primaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
+                                        <div ref={primaryPickerRef} className="z-[1] absolute left-1/2 top-[35%]">
                                             <HexColorPicker color={primaryColor} onChange={(primaryColor) => {
                                                 setPrimaryColor(primaryColor);
                                                 setValue("pcolor", primaryColor);
@@ -510,7 +511,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
                                     </Button>
                                     {showSecondaryColorPicker && (
-                                        <div ref={secondaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
+                                        <div ref={secondaryPickerRef} className="z-[1] absolute left-1/2 top-[42%]">
                                             <HexColorPicker color={secondaryColor} onChange={(secondaryColor) => {
                                                 setSecondaryColor(secondaryColor);
                                                 setValue("scolor", secondaryColor);
@@ -544,7 +545,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                         </div>
-                        <div className="w-full">
+                        <div className="w-[40%] shrink-0">
                             <div className="flex p-3 h-16 items-center justify-between">
                                 <span>Form&apos;s Publish State</span>
                                 <div className="flex gap-3 pl-3">
