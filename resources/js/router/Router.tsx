@@ -64,6 +64,13 @@ export const Router = () => {
                     <Route element={<Forms />} path={ROUTES.forms} />
                 </Route>
                 {/* </Route> */}
+
+                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
+                <Route element={<Layout />}>
+                    <Route element={<Forms />} path={ROUTES.formsByUserId} />
+                </Route>
+                {/* </Route> */}
+
                 <Route element={<Layout />}>
                     <Route element={<Forms />} path={ROUTES.myForms} />
                 </Route>

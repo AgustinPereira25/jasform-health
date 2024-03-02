@@ -19,6 +19,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     useEffect(() => {
         setAnswerInput(savedAnswerInput);
+        setError('');
     }, [savedAnswerInput, currentScreen.currentQuestionOrder]);
 
     const savedAnswerCheckedOptions = useMemo(
@@ -43,6 +44,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         if (questiontypeId !== 3) { // Dropdown and Radio
             if (currentQuestionInfo.is_mandatory && !answerInput) {
                 setError('Answer is mandatory');
+                return;
             }
             if (!error) {
 
@@ -127,6 +129,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             }
         } else {
             setAnswerInput(value);
+            setError('');
         }
     }
     const handleGoBackClick = () => {
@@ -180,6 +183,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                         </div>
                                     ))
                                 }
+                                <div className="flex items-center justify-center h-10">
+                                    {error && (<span className="text-red-500">{error}</span>)}
+                                </div>
                             </>
                         ) : (
                             <ComboBox

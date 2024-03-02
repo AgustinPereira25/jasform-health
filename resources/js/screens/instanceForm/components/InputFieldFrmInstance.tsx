@@ -21,8 +21,9 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (currentQuestionInfo.is_mandatory && !answerInput) {
+        if (currentQuestionInfo.is_mandatory === true && !answerInput) {
             setError('Answer is mandatory');
+            return;
         }
         if (!error) {
             const answer: CompletedQuestion = {

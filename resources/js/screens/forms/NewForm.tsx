@@ -17,7 +17,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { parseDate } from '@/helpers/helpers'
+import { isURL, parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -152,8 +152,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             onSuccess: (data) => {
                 updateForm.invalidates(queryClient);
                 toast.success(`Form "${data.name}" successfully updated!`);
-                //TODO: descomentar esto que era para test
-                // navigate(ROUTES.forms);
+                navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -172,6 +171,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const onSubmit = (data: NewForm) => {
         // console.log(data);
+        if (data.logo !== '') {
+            if (!isURL(data.logo!)) {
+                setError("logo", { message: "Invalid logo URL" });
+                return;
+            }
+        }
+        if (data.apiURL !== '') {
+            if (!isURL(data.apiURL!)) {
+                setError("apiURL", { message: "Invalid api URL" });
+                return;
+            }
+        }
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
@@ -285,7 +296,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         </span>
                         {
                             form.id && (
-                                <span className="text-2xl text-gray-500 italic">- Form Public Code: {form.public_code}</span>
+                                <span className="text-2xl text-gray-500 italic">- Public Code: {form.public_code}</span>
                             )
                         }
                     </div>
@@ -554,6 +565,29 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
+                            <div className={tw(
+                                'flex p-3 h-20',
+                                errors.apiURL && 'pb-5'
+                            )}
+                            >
+                                <div className="flex shrink-0 w-40">
+                                    <span>API URL (callback)</span>
+                                </div>
+                                <div className="flex w-full">
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="apiURL"
+                                        placeholder="Enter API URL"
+                                        {...register("apiURL")}
+                                        error={errors.apiURL?.message}
+                                        // value={passwordInput}
+                                        defaultValue={''}
+                                    />
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
                         </div>
                         <div className="w-[40%] shrink-0">
                             <div className="flex p-3 h-16 items-center justify-between">
@@ -685,7 +719,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             {
-                                !pathname.includes(ROUTES.newForm) && (
+                                (!pathname.includes(ROUTES.newForm) && form.form_instances_count !== 0) && (
                                     <div className="flex p-3 h-16 ">
                                         <Button
                                             variant="primary"
@@ -700,29 +734,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <hr className="mx-3" />
                         </div>
                     </div>
-                    <div className={tw(
-                        'flex p-3 h-16',
-                        errors.apiURL && 'pb-5'
-                    )}
-                    >
-                        <div className="flex shrink-0 w-40">
-                            <span>API URL (callback)</span>
-                        </div>
-                        <div className="flex w-full">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="apiURL"
-                                placeholder="Enter API URL"
-                                {...register("apiURL")}
-                                // error={errors.organization?.message}
-                                // value={passwordInput}
-                                defaultValue={''}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
                 </div>
             </form>
         </>

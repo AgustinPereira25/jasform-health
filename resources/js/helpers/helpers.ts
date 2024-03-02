@@ -40,3 +40,10 @@ export const parseDate = (date: string | undefined) => {
 
   return finalDate;
 }
+
+export function isURL(str: string) {
+  // Regular expression for a basic URL validation
+  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+  return urlRegex.test(str);
+}
+

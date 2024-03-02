@@ -7,9 +7,10 @@ interface SimpleTextScreenProps {
     currentQuestion: Question;
     formQuestions?: Question[];
     setQuestions: (questions: Question[]) => void;
+    setCurrentQuestion: (question: Question) => void;
 };
 // TODO - Make input text full height (it overflows the container).
-export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions }) => {
+export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions, setCurrentQuestion }) => {
     // console.log(currentQuestion);
     // console.log(formQuestions);
     const [title, setTitle] = React.useState(currentQuestion.title ?? '');
@@ -22,6 +23,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
+        // console.log(id, value)
         if (id === 'title') {
             setTitle(value);
         } else if (id === 'text') {
@@ -29,7 +31,7 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
         }
         // Update the formQuestions general state
         const updatedQuestions = formQuestions?.map((question) => {
-            if (question.id === currentQuestion.id) {
+            if (question.order === currentQuestion.order) {
                 delete question.question_options;
                 return {
                     ...question,
@@ -39,6 +41,8 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
             return question;
         });
         setQuestions(updatedQuestions ?? []);
+        const currentModifiedQuestion = updatedQuestions?.find((question) => question.order === currentQuestion.order);
+        setCurrentQuestion(currentModifiedQuestion!);
     }
 
     return (
