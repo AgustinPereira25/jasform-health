@@ -24,6 +24,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
 
         if (currentQuestionInfo.is_mandatory && !answerInput) {
             setError('Answer is mandatory');
+            return;
         }
         if (!error) {
             const answer: CompletedQuestion = {

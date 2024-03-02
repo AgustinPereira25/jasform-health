@@ -24,7 +24,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             api_url: formInstanceInfo.api_url ?? '',
             aux_code: aux_code ?? '',
         };
-        console.log("initialFormData:", { initialFormData });
+        // console.log("initialFormData:", { initialFormData });
         useFormInstance.setState({
             formInstance: initialFormData,
         })
@@ -80,7 +80,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 break;
         }
     }
-    console.log(`${formInstanceInfo.logo}`)
+    // console.log(`${formInstanceInfo.logo}`)
     return (
         <div className="bg-white p-8 rounded-lg w-[35%]">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
