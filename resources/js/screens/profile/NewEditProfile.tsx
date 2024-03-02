@@ -502,7 +502,12 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     <Button variant="primary">User&apos;s Dashboard</Button>
                                 </div> */}
                                         <hr className="mx-3" /><div className="flex h-16 p-3 ">
-                                            <Button variant="primary">User&apos;s Forms</Button>
+                                            <Button
+                                                variant="primary"
+                                                onClick={() => navigate(`/forms/byUserId/${user.id}`)}
+                                            >
+                                                User&apos;s Forms
+                                            </Button>
                                         </div><hr className="mx-3" />
                                     </>
                                 )

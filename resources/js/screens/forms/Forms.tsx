@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "@/stores";
@@ -26,6 +26,7 @@ interface SearchInputs {
     publicCode: string
 }
 export const Forms = () => {
+    const { user_id } = useParams();
     const navigate = useNavigate();
     const { user, token } = useUserStore();
     useEffect(() => {
@@ -35,9 +36,14 @@ export const Forms = () => {
     }, []);
 
     const location = useLocation();
-    const isMyFormsRoute = location.pathname === ROUTES.myForms;
-    const userId = isMyFormsRoute ? user?.id : "";
 
+    const isUserFormsRoute = location.pathname.startsWith(ROUTES.formsByUserId.replace("/:user_id", ""));
+    // console.log('isUserFormsRoute', isUserFormsRoute, user_id)
+    const userIdFormsRoute = isUserFormsRoute && user_id;
+
+    const isMyFormsRoute = location.pathname === ROUTES.myForms;
+    const userId = isMyFormsRoute ? user?.id : isUserFormsRoute ? userIdFormsRoute : "";
+    // console.log('userId', userId)
     const [search, setSearch] = useState<SearchInputs>({ formTitle: "", publicCode: "" });
     const [debouncedSearch, setDebouncedSearch] = useState<SearchInputs>({ formTitle: "", publicCode: "" });
 
