@@ -40,8 +40,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     const [isInputEmpty, setIsInputEmpty] = useState(false);
     const [questionToShow, setQuestionToShow] = useState(currentFormQuestion?.title ?? '');
 
-    // Add default options to the list
-    transformedSteps.push({ id: 0, name: 'Default Next Question' }, { id: null, name: 'Go To End' });
+    // Add default options to the list on the top of the list
+    transformedSteps.unshift({ id: 0, name: 'Default Next Question' });
+    transformedSteps.push({ id: null, name: 'Go To End' });
 
     useEffect(() => {
         setQuestionToShow(currentFormQuestion!.title ?? '');
