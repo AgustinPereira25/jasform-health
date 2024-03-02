@@ -27,10 +27,25 @@ class AuthController
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Incorrect email or password'],
-            ]);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return responder()
+                ->error()
+                ->data([
+                    'code' => 401,
+                    'message' => 'Incorrect email or password.',
+                ])
+                ->respond(401);
+            // throw ValidationException::withMessages(['Incorrect email or password']);
+        }
+
+        if (!$user->is_active) {
+            return responder()
+                ->error()
+                ->data([
+                    'code' => 402,
+                    'message' => 'Your user is currently inactive, contact your administrator.',
+                ])
+                ->respond(402);
         }
 
         // if (!Auth::attempt($credentials)) {

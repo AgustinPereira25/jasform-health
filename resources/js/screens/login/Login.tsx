@@ -81,7 +81,7 @@ export const Login = () => {
             },
             onError: (error: any) => {
                 if (error.response) {
-                    toast.error(error.response.data.error.fields.email[0]);
+                    toast.error(error.response.data.error.message);
                 } else if (error.request) {
                     toast.error('Request was made but no response was received');
                 } else {
