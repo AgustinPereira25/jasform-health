@@ -46,7 +46,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     };
 
-
     // TODO - Order is undefined?
     formQuestions = formQuestions.sort((a, b) => a.order - b.order);
 
@@ -194,10 +193,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     toast.error(err?.response.data.message);
                 } else if (err?.response?.data?.error?.fields) {
                     const errors = err?.response.data.error.fields;
-                    Object.entries(errors).forEach(([_, valArray]) => {
-                        //toast.error(`${valArray[0]}`);
-                        toast.error("Please make sure the mandatory fields [Title, Text to show and Question to show] are filled.");
-                    });
+                    Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title, Text to show and Question to show] are filled.");
+
                 } else {
                     toast.error("There was an error trying to update the user. Please try again later.");
                 }

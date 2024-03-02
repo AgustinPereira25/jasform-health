@@ -59,7 +59,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         case 0:
                             nextQuestionTypeRadio = 6; // Finish form instance.
                             break;
-                        case null:
+                        case -1:
                             // Find next question type by increasing current order.
                             nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                             break;
