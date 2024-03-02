@@ -59,13 +59,15 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     useEffect(() => {
         setEnabledIsMandatory(currentQuestion?.is_mandatory as boolean);
         setComboBoxOption(getComboBoxOption(currentQuestion?.question_type_id as keyof typeof questionScreens));
-    }, [currentQuestion?.is_mandatory, currentQuestion?.question_type_id]);
+        setCurrentQuestionOrder(currentQuestion?.order);
+    }, [currentQuestion?.is_mandatory, currentQuestion?.question_type_id, currentQuestion?.order]);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
         const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
         const newElement: Question = { form_question_id: Number(formId), text: '', title: '', question_type_id: 1, question_type_name: 'Simple Text', is_mandatory: false, order: lastQuestionOrder };
         setQuestions([...questions, newElement]);
+        setCurrentQuestion(newElement);
     };
 
     const handleQuestionClick = (item: Question, order: number) => {
@@ -90,7 +92,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 break;
         }
         // Update the formQuestions general state
-        const updatedQuestions = formQuestions?.map((question) => {
+        const updatedQuestions = questions?.map((question) => {
             if (question.order === currentQuestionOrder) {
                 return {
                     ...question,
@@ -163,7 +165,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     }
 
     const handleMandatoryChange = (checked: boolean) => {
-        const updatedQuestions = formQuestions?.map((question) => {
+        const updatedQuestions = questions?.map((question) => {
             if (question.order === currentQuestionOrder) {
                 return {
                     ...question,

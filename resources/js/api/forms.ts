@@ -83,7 +83,7 @@ export const getFormsQuery = (
       params: {
         per_page: perPage,
         page: currentPage,
-        isActive: isActive ? 1 : 0,
+        isActive,
         form_title: formTitle,
         date,
         userId,
