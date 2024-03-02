@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Switch } from '@headlessui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -14,12 +14,15 @@ import { questionScreens } from './utils'
 
 interface FormQuestionsProps {
     initialData: Question[];
+    public_code: string | undefined;
 }
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [] }) => {
+export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [], public_code }) => {
+    const { id: formId } = useParams();
+    const navigate = useNavigate();
 
     // TODO- Put this in constants file
     const questionTypes = [
@@ -43,8 +46,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     };
 
-    const { id: formId } = useParams();
-    const navigate = useNavigate();
 
     // TODO - Order is undefined?
     formQuestions = formQuestions.sort((a, b) => a.order - b.order);
@@ -222,8 +223,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                             Form&apos;s Questions
                         </span>
                         {
-                            formId && (
-                                <span className="text-2xl text-gray-500 italic">- Form Code: {formId}</span>
+                            public_code && (
+                                <span className="text-2xl text-gray-500 italic">- Public Code: {public_code}</span>
                             )
                         }
                     </div>
