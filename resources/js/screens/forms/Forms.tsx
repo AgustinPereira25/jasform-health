@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 import { useUserStore } from "@/stores";
 import { getFormsQuery } from "@/api";
@@ -229,8 +230,7 @@ export const Forms = () => {
                                                 <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                                     <div className="flex gap-x-3">
                                                         <div className="truncate text-sm leading-6 text-black">
-                                                            {item?.last_modified_date_time?.toString()}
-                                                            {/* TODO: Apply USA format MM/DD/YYYY HH:MM AM/PM */}
+                                                            {dayjs(item?.last_modified_date_time?.toString()).format('MM/DD/YYYY HH:mm A') ?? ''}
                                                         </div>
                                                     </div>
                                                 </td>
