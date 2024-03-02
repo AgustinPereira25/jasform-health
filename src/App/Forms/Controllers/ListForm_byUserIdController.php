@@ -27,6 +27,7 @@ class ListForm_byUserIdController
             ->where('user_id', $userId)
             ->withCount('form_instances')
             ->withCount('form_questions')
+            ->orderBy('last_modified_date_time', 'desc')
             ->get();
 
         return responder()
