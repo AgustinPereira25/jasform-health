@@ -36,7 +36,7 @@ class StoreFormController
                 ->respond(JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $publicCode = Str::random(20);
+        $publicCode = Str::random(6);
         $now = Carbon::now()->toDateTimeString();
 
         $formDto = $request->toDto()
