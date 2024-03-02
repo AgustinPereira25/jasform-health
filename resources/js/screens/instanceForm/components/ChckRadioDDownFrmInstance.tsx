@@ -48,7 +48,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
                 let nextQuestionTypeRadio = 0;
 
-                if (questiontypeId === 4) // Radio Button
+                if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
                 {
                     const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
                     console.log('next_question', next_question);
@@ -77,7 +77,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = questiontypeId === 4 ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                const nextQuestionType: number = (questiontypeId === 4 || questiontypeId === 5) ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }

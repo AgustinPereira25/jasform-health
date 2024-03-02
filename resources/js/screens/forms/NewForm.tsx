@@ -684,7 +684,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             {
-                                form.id && (
+                                !pathname.includes(ROUTES.newForm) && (
                                     <div className="flex p-3 h-16 ">
                                         <Button
                                             variant="primary"

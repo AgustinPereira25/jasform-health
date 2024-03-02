@@ -155,7 +155,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
             // TODO - Delete id and form_question_id from question_options to fit endpoint.
             question.question_options?.map((option) => {
                 delete option.id;
-                delete option.form_question_id;
             });
         });
         // console.log('data', data)
