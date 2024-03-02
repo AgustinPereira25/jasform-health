@@ -79,6 +79,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                 return question;
             });
             setQuestions(updatedQuestions ?? []);
+            setNewQuestionType(transformedSteps[0]!);
         } else {
             const newElement = { order: lastQuestionOrder, title: input, next_question: null };
             // setQuestionsOption([...questionsOption, newElement]);
