@@ -152,7 +152,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             onSuccess: (data) => {
                 updateForm.invalidates(queryClient);
                 toast.success(`Form "${data.name}" successfully updated!`);
-                navigate(ROUTES.forms);
+                //TODO: descomentar esto que era para test
+                // navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {

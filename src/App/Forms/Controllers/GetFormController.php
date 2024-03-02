@@ -23,6 +23,7 @@ class GetFormController
             }
         }
 
+        sleep(1);
         $form->loadCount('form_instances');
         $form->loadCount('form_questions');
 
