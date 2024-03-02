@@ -6,7 +6,7 @@ import { useUserStore } from "@/stores";
 import { getFormsQuery, getUserDashboard } from "@/api";
 import { Button, icons } from "@/ui";
 import { ROUTES } from "@/router";
-import { isValidImageUrl } from "@/helpers/helpers";
+import { isValidImageUrl, parseDate } from "@/helpers/helpers";
 import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
 import DashboardCardsSkeleton from "@/ui/common/Skeletons/DashboardCardsSkeleton";
@@ -197,8 +197,7 @@ export const MyDashboard = () => {
                                         <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                             <div className="flex gap-x-3">
                                                 <div className="truncate text-sm leading-6 text-black">
-                                                    {item?.last_modified_date_time?.toString()}
-                                                    {/* TODO: Apply USA format MM/DD/YYYY HH:MM AM/PM */}
+                                                    {parseDate(item?.last_modified_date_time?.toString())}
                                                 </div>
                                             </div>
                                         </td>
