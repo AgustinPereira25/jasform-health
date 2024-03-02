@@ -15,6 +15,18 @@ class StoreFormController
 {
     public function __invoke(StoreFormRequest $request, StoreFormAction $storeFormAction): JsonResponse
     {
+        $user = $request->user();
+        if (!$user) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $roleName = $user->role->name;
+        if ($roleName !== 'Admin') {
+            $userId = $request->user_id;
+            if ($user->id != $userId) {
+                return responder()->error('You do not have permission for this request')->respond(500);
+            }
+        }
+
         $userId = $request->user_id;
         try {
             User::findOrFail($userId);

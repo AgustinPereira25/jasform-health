@@ -9,10 +9,28 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Spatie\QueryBuilder\QueryBuilder;
 
+use Illuminate\Support\Facades\Log;
+
 class ListFormController
 {
     public function __invoke(Request $request): JsonResponse
     {
+        Log::info('ListFormController#####################');
+        Log::info('===ListFormController=====> Request data: ', $request->all());
+
+        $user = $request->user();
+        Log::info('user: ' . $user);
+        if (!$user) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $roleName = $user->role->name;
+        if ($roleName !== 'Admin') {
+            $userId = $request->get('userId', "");
+            if ($user->id != $userId) {
+                return responder()->error('You do not have permission for this request')->respond(500);
+            }
+        }
+
         $perPage = $request->get('perPage', 10);
         $currentPage = $request->get('currentPage', 1);
         $isActive = $request->get('isActive', 'false');

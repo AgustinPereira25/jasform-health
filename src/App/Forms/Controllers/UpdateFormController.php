@@ -8,10 +8,27 @@ use Domain\Forms\Actions\UpdateFormAction;
 use Domain\Forms\Models\Form;
 use Illuminate\Http\JsonResponse;
 
+use Illuminate\Support\Facades\Log;
+
 class UpdateFormController
 {
     public function __invoke(UpdateFormRequest $request, UpdateFormAction $updateFormAction): JsonResponse
     {
+        Log::info(
+            'UpdateFormController###########'
+        );
+        $user = $request->user();
+        if (!$user) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $roleName = $user->role->name;
+        if ($roleName !== 'Admin') {
+            $userId = $request->user_id;
+            if ($user->id != $userId) {
+                return responder()->error('You do not have permission for this request')->respond(500);
+            }
+        }
+
         sleep(1);
         $formIdToUpdate = (string) $request->id;
 
@@ -20,7 +37,7 @@ class UpdateFormController
 
         $form = Form::find($formIdToUpdate);
         if (
-            ! $form
+            !$form
             || (string) $form->user_id !== (string) $user_id
             || (string) $form->public_code !== (string) $public_code
         ) {
