@@ -186,7 +186,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
             mutationFn: updateFormQuestions.mutation,
             onSuccess: () => {
                 updateFormQuestions.invalidates(queryClient);
-                toast.success(`Form Questions for Form "${formId}" successfully updated!`);
+                toast.success(`Form Questions for Form "${public_code}" successfully updated!`);
                 navigate(`/forms/${formId}`);
             },
             onError: (err: IHttpResponseError) => {
@@ -195,7 +195,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 } else if (err?.response?.data?.error?.fields) {
                     const errors = err?.response.data.error.fields;
                     Object.entries(errors).forEach(([_, valArray]) => {
-                        toast.error(`${valArray[0]}`);
+                        //toast.error(`${valArray[0]}`);
+                        toast.error("Please make sure the mandatory fields [Title, Text to show and Question to show] are filled.");
                     });
                 } else {
                     toast.error("There was an error trying to update the user. Please try again later.");
@@ -311,7 +312,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         </div>
                                     </div>
                                     <hr />
-                                    <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
+                                    <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} setCurrentQuestion={setCurrentQuestion} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
                                     <div className="flex gap-3 pb-5 pl-2">
                                         <div className="flex w-40 items-center">
                                             <span>Mandatory Question</span>

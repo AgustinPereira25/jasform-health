@@ -12,6 +12,7 @@ interface CheckRadioDDownScreenProps {
     comboBoxOption: ComboBoxOption;
     currentQuestionOrder?: number;
     setQuestions: (questions: Question[]) => void;
+    setCurrentQuestion?: (question: Question) => void;
 };
 // TODO - Export this interface..
 interface ComboBoxOptions {
