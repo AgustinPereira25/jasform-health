@@ -17,7 +17,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { parseDate } from '@/helpers/helpers'
+import { isURL, parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -152,8 +152,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             onSuccess: (data) => {
                 updateForm.invalidates(queryClient);
                 toast.success(`Form "${data.name}" successfully updated!`);
-                //TODO: descomentar esto que era para test
-                // navigate(ROUTES.forms);
+                navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -172,6 +171,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const onSubmit = (data: NewForm) => {
         // console.log(data);
+        if (data.logo !== '') {
+            if (!isURL(data.logo!)) {
+                setError("logo", { message: "Invalid logo URL" });
+                return;
+            }
+        }
+        if (data.apiURL !== '') {
+            if (!isURL(data.apiURL!)) {
+                setError("apiURL", { message: "Invalid api URL" });
+                return;
+            }
+        }
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
@@ -570,7 +581,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="apiURL"
                                         placeholder="Enter API URL"
                                         {...register("apiURL")}
-                                        // error={errors.organization?.message}
+                                        error={errors.apiURL?.message}
                                         // value={passwordInput}
                                         defaultValue={''}
                                     />
