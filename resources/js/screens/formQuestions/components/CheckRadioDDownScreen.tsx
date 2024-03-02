@@ -214,10 +214,10 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             <div className="flex flex-col py-4">
                 <div className="flex justify-between bg-gray-100 py-3 px-3 border rounded-t-lg border-gray-300 text-gray-500 w-full">
                     <span className={tw('text-xs grow',
-                        comboBoxOption === 'Radio Button' && 'w-[53%]',
-                        comboBoxOption !== 'Radio Button' && 'w-[86%]',
+                        (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && 'w-[53%]',
+                        (comboBoxOption !== 'Radio Button' && comboBoxOption !== 'Drop Down Combo') && 'w-[86%]',
                     )}>OPTION TITLE</span>
-                    {comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo' && (
+                    {(comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && (
                         <span className="w-[33%] text-xs grow">NEXT STEP</span>
                     )}
                     <span className="w-[13%] text-xs grow"></span>
@@ -231,7 +231,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                                         (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && 'w-[53%]',
                                         (comboBoxOption !== 'Radio Button' && comboBoxOption !== 'Drop Down Combo') && 'w-[86%]',
                                     )}>{item.title}</span>
-                                    {comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo' && (
+                                    {(comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && (
                                         <span className="w-[33%] text-xs grow">{getQuestionTypeName(item.next_question!)}</span>
                                     )}
                                     <div className="flex justify-center gap-3 w-[13%] grow">
@@ -258,7 +258,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                         value={newInput}
                     />
                     {
-                        comboBoxOption === "Radio Button" || comboBoxOption === 'Drop Down Combo' && (
+                        (comboBoxOption === "Radio Button" || comboBoxOption === 'Drop Down Combo') && (
                             <ComboBox
                                 id="questionType"
                                 items={transformedSteps}
