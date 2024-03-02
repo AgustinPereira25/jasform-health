@@ -16,6 +16,7 @@ import { ROUTES } from '@/router'
 import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
+import { makeFormURLInstance } from '@/utils'
 
 interface NewFormProps {
     initialData: Form;
@@ -175,7 +176,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             name: data.name,
             welcome_text: data.welcomeTxt,
             final_text: data.finalTxt,
-            creation_date_time: '2024-01-11 12:56:19.000', // TODO - Change this to the correct date format (US).
+            creation_date_time: new Date().toString(), // TODO - Change this to the correct date format (US).
             description: data.description,
             primary_color: data.pcolor,
             secondary_color: data.scolor,
@@ -254,6 +255,14 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     const handleCloseDeletionModal = () => {
         setshowDeletionModal(false);
     };
+
+    const handlePublicLinkClick = async () => {
+        if (!pathname.includes(ROUTES.newForm)) {
+            const URL = makeFormURLInstance(form.public_code!);
+            await navigator.clipboard.writeText(URL);
+            toast.success(`Link "${URL}" successfully copied to the clipboard!`);
+        }
+    }
 
     return (
         <>
@@ -633,21 +642,27 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Creation Date: 15/01/2024 03:45PM</span>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Last Modified Date: {form.last_modified_date_time?.toString() ?? ''}</span>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Instances: {form.form_instances_count ?? 0}</span>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Questions: {form.form_questions_count ?? 0}</span>
-                            </div>
+                            {
+                                !pathname.includes(ROUTES.newForm) && (
+                                    <>
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Creation Date: {form.creation_date_time}</span>
+                                        </div>
+                                        <hr className="mx-3" />
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Last Modified Date: {form.last_modified_date_time?.toString() ?? ''}</span>
+                                        </div>
+                                        <hr className="mx-3" />
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Instances: {form.form_instances_count ?? 0}</span>
+                                        </div>
+                                        <hr className="mx-3" />
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Questions: {form.form_questions_count ?? 0}</span>
+                                        </div>
+                                    </>
+                                )
+                            }
                             <hr className="mx-3" />
                             <div className="flex p-3 h-16 ">
                                 <Button
@@ -661,6 +676,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <div className="flex p-3 h-16 ">
                                 <Button
                                     variant="primary"
+                                    onClick={handlePublicLinkClick}
                                 >
                                     <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
                                     Get Public Link with Code to Share
