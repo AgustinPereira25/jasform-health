@@ -14,6 +14,7 @@ interface ComboBoxProps extends ComponentPropsWithoutRef<"input"> {
     items: Item[],
     defaultValue?: string,
     onValueChange: (value: Item) => void
+    className?: string
 }
 
 function classNames(...classes: (string | boolean)[]) {
@@ -22,7 +23,7 @@ function classNames(...classes: (string | boolean)[]) {
 
 const ComboBox = forwardRef(
     (
-        { items, defaultValue, onValueChange }: ComboBoxProps,
+        { items, defaultValue, onValueChange, className: classNameProp }: ComboBoxProps,
         ref: ForwardedRef<HTMLInputElement>
     ) => {
         const defaultItem: Item = items.find(item => item.name.toUpperCase() === defaultValue?.toUpperCase())!;
@@ -38,7 +39,7 @@ const ComboBox = forwardRef(
             onValueChange(e);
         }
         return (
-            <Combobox as="div" value={selectedItem} onChange={(e: Item) => handleChange(e)} ref={ref}>
+            <Combobox as="div" value={selectedItem} onChange={(e: Item) => handleChange(e)} ref={ref} className={classNameProp && classNameProp}>
                 <div className="relative">
                     <Combobox.Input
                         className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
