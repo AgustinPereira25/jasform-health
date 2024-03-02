@@ -35,7 +35,7 @@ export const parseDate = (date: string | undefined) => {
 
     // Get timezone from browser
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    finalDate = dayjs.utc(date).tz(tz).format('MM/DD/YYYY HH:mm A');
+    finalDate = dayjs.utc(date).tz(tz).format('MM/DD/YYYY hh:mm A');
   }
 
   return finalDate;
