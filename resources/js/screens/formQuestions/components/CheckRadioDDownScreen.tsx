@@ -264,6 +264,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                                 items={transformedSteps}
                                 defaultValue={newQuestionType.name}
                                 onValueChange={(item) => handleComboBoxChange(item)}
+                                className="w-2/5"
                             />
                         )
                     }

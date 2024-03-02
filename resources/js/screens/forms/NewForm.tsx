@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
-import dayjs from 'dayjs'
 
 import { Button, Input, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
@@ -18,6 +17,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
+import { parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -172,13 +172,12 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const onSubmit = (data: NewForm) => {
         // console.log(data);
-
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
             welcome_text: data.welcomeTxt,
             final_text: data.finalTxt,
-            creation_date_time: dayjs(new Date().toString()).format('MM/DD/YYYY HH:mm A'), // TODO - Change this to the correct date format (US).
+            creation_date_time: parseDate(new Date().toString()!),
             description: data.description,
             primary_color: data.pcolor,
             secondary_color: data.scolor,
@@ -648,11 +647,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 !pathname.includes(ROUTES.newForm) && (
                                     <>
                                         <div className="flex px-3 h-16 items-center justify-between">
-                                            <span>Creation Date: {dayjs(form.creation_date_time?.toString()).format('MM/DD/YYYY HH:mm A') ?? ''}</span>
+                                            <span>Creation Date: {parseDate(form.creation_date_time?.toString())}</span>
                                         </div>
                                         <hr className="mx-3" />
                                         <div className="flex px-3 h-16 items-center justify-between">
-                                            <span>Last Modified Date: {dayjs(form.last_modified_date_time?.toString()).format('MM/DD/YYYY HH:mm A') ?? ''}</span>
+                                            <span>Last Modified Date: {parseDate(form.last_modified_date_time?.toString())}</span>
                                         </div>
                                         <hr className="mx-3" />
                                         <div className="flex px-3 h-16 items-center justify-between">

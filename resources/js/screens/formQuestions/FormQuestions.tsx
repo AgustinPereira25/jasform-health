@@ -298,13 +298,14 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         <div className="flex flex-col">
                                             <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
                                         </div>
-                                        <div className="flex gap-2 items-center pb-2">
+                                        <div className="flex gap-2 items-center justify-end pb-2 grow">
                                             <span>Question Type</span>
                                             <ComboBox
                                                 id="questionType"
                                                 items={questionTypes}
                                                 defaultValue={currentQuestion.question_type_name}
                                                 onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
+                                                className="w-2/5"
                                             />
                                         </div>
                                     </div>
