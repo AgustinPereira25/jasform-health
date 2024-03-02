@@ -78,7 +78,7 @@ export const Forms = () => {
                     </Button>
                 </h2>
             </div>
-            <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg">
+            <div className="rounded-xl border-[1px] bg-white p-2 pt-4 pl-4 shadow-lg">
                 <div className="flex gap-5">
                     <Input
                         type="search"
@@ -136,7 +136,7 @@ export const Forms = () => {
                         !forms?.length ? (
                             <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
                         ) : (
-                            <div className="rounded-sm border-[1px] border-gray-300">
+                            <div className="rounded-lg borderborder-gray-300">
                                 <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                                     <colgroup>
                                         <col className="w-full sm:w-4/12" />
@@ -286,7 +286,7 @@ export const Forms = () => {
                 }
 
             </div>
-            <div className="h-[100px]"></div>
+            <div className="h-[50px]"></div>
         </>
     );
 };

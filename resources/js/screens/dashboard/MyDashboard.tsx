@@ -82,7 +82,7 @@ export const MyDashboard = () => {
                     <h1 className="flex items-center justify-between px-2 pb-2 text-2xl font-semibold leading-7 text-primary ">
                         Stats
                     </h1>
-                    <div className="rounded-xl flex justify-center py-5 p-14 cursor-default">
+                    <div className="rounded-xl flex justify-center py-5 p-14 cursor-default gap-6">
                         {Object.entries(statsData).map(([key, value], index) => {
                             const colors = ['bg-green-700', 'bg-red-700', 'bg-yellow-600', 'bg-purple-900'];
                             const colorClass = colors[index % colors.length];

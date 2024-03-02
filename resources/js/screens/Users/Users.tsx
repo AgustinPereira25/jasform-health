@@ -292,7 +292,6 @@ export const Users = () => {
                             )}
                     </div>
                 )}
-                <div className="h-[50px]"></div>
             </div>
         </>
     );
