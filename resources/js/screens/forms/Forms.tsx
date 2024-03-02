@@ -20,6 +20,10 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
+interface SearchInputs {
+    formTitle: string,
+    publicCode: string
+}
 export const Forms = () => {
     const navigate = useNavigate();
     const { user, token } = useUserStore();
@@ -33,13 +37,13 @@ export const Forms = () => {
     const isMyFormsRoute = location.pathname === ROUTES.myForms;
     const userId = isMyFormsRoute ? user?.id : "";
 
-    const [search, setSearch] = useState({ formTitle: "", date: "" });
-    const [debouncedSearch, setDebouncedSearch] = useState({ formTitle: "", date: "" });
+    const [search, setSearch] = useState<SearchInputs>({ formTitle: "", publicCode: "" });
+    const [debouncedSearch, setDebouncedSearch] = useState<SearchInputs>({ formTitle: "", publicCode: "" });
 
     const handleDebouncedSearch = useCallback(
-        debounce((query: any) => {
+        debounce((query: SearchInputs) => {
             setDebouncedSearch(query);
-        }, 500) as (query: any) => void,
+        }, 500) as (query: SearchInputs) => void,
         []
     );
 
@@ -59,7 +63,7 @@ export const Forms = () => {
     const [enabledActive, setEnabledActive] = useState(false);
 
     const { data, isLoading: isLoadingForms, isFetching: isFetchingForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.date)
+        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.publicCode)
     });
 
     const forms = data?.data;
@@ -90,11 +94,11 @@ export const Forms = () => {
                         onChange={handleInputChange}
                     />
                     <Input
-                        type="date"
-                        id="date"
-                        label="Date"
-                        placeholder="Search by Date"
-                        value={search.date}
+                        type="search"
+                        id="publicCode"
+                        label="Public Code"
+                        placeholder="Search by Public Code"
+                        value={search.publicCode}
                         onChange={handleInputChange}
                     />
                     <Switch.Group

@@ -20,6 +20,10 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
+interface SearchInputs {
+    nameEmail: string;
+    positionOrg: string;
+}
 export const Users = () => {
     const navigate = useNavigate();
     const { token } = useUserStore();
@@ -29,13 +33,13 @@ export const Users = () => {
         }
     }, []);
 
-    const [search, setSearch] = useState({ nameEmail: "", positionOrg: "" });
-    const [debouncedSearch, setDebouncedSearch] = useState({ nameEmail: "", positionOrg: "" });
+    const [search, setSearch] = useState<SearchInputs>({ nameEmail: "", positionOrg: "" });
+    const [debouncedSearch, setDebouncedSearch] = useState<SearchInputs>({ nameEmail: "", positionOrg: "" });
 
     const handleDebouncedSearch = useCallback(
-        debounce((query: any) => {
+        debounce((query: SearchInputs) => {
             setDebouncedSearch(query);
-        }, 500) as (query: any) => void,
+        }, 500) as (query: SearchInputs) => void,
         []
     );
 

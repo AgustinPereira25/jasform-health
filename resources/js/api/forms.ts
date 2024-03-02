@@ -1,7 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
-
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 
@@ -63,7 +62,7 @@ export const getFormsQuery = (
   isActive: boolean | number,
   userId: string,
   formTitle?: string,
-  date?: string,
+  publicCode?: string,
 ) => ({
   queryKey: [
     DOMAIN,
@@ -74,7 +73,7 @@ export const getFormsQuery = (
     isActive,
     userId,
     formTitle,
-    date,
+    publicCode,
   ],
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
@@ -83,9 +82,9 @@ export const getFormsQuery = (
       params: {
         per_page: perPage,
         page: currentPage,
-        isActive,
+        isActive: isActive ? "1" : "0",
         form_title: formTitle,
-        date,
+        publicCode,
         userId,
       },
       headers: getAuthHeaders(),
