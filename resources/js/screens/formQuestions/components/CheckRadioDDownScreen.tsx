@@ -59,10 +59,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             return;
         }
 
-        //const getLastQuestionOrder = Object.values(questionsOption).pop()?.order;
-        // const getLastQuestionOrder = getLastQuestionOrder(questionsOption);
-        // const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
-        const lastQuestionOrder = getLastQuestionOrder(questionsOption) + 1;
+        const lastQuestionOrder = getLastQuestionOrder(questionsOption);
         if (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') {
             // TODO - change form question id
             const newElement: QuestionsOption = { order: lastQuestionOrder, title: input, next_question: newQuestionType.id };
@@ -71,6 +68,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
+
                     return {
                         ...question,
                         question_options: [...questionsOption, newElement],

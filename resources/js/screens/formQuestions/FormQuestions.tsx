@@ -65,7 +65,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
         const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
-        const newElement: Question = { form_question_id: Number(formId), text: '', title: '', question_type_id: 1, question_type_name: 'Simple Text', is_mandatory: false, order: lastQuestionOrder };
+        const newElement: Question = { form_question_id: Number(formId), text: '', title: '', question_type_id: 1, question_type_name: 'Simple Text', is_mandatory: false, order: lastQuestionOrder, question_options: [] };
         setQuestions([...questions, newElement]);
         setCurrentQuestion(newElement);
     };
@@ -152,7 +152,11 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
             delete question.id;
             delete question.form_id;
-            // TODO - Delete id and form_question_id from question_options to fit endpoint.
+            if ((!question.question_options || question.question_options.length === 0)
+                && question.question_type_id !== 1 && question.question_type_id !== 2 && question.question_type_id !== 5) {
+                toast.error('Please add options to the Check Box or Radio Button question.');
+                return;
+            }
             question.question_options?.map((option) => {
                 delete option.id;
             });
@@ -237,7 +241,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </div>
                 </div>
                 <div className="flex gap-3 w-full h-full">
-                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll">
+                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll overflow-y-scroll">
                         <span>Content</span>
                         <div className="flex flex-col items-center">
                             {
@@ -259,7 +263,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                     idx === 0 && `border-t border-t-gray-200`,
                                                     idx !== 0 && `border-y border-y-gray-200`
                                                 )}>
-                                                <div className="flex flex-col justify-center pl-3">
+                                                <div className="flex flex-col justify-center pl-3 overflow-y-scroll">
                                                     <span className={tw(`text-sm font-semibold`,
                                                         item.order === currentQuestion?.order && 'text-[#407EC9]',
                                                         item.order !== currentQuestion?.order && 'text-[#6B7280]'
