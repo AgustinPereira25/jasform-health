@@ -285,7 +285,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         </span>
                         {
                             form.id && (
-                                <span className="text-2xl text-gray-500 italic">- Form Public Code: {form.public_code}</span>
+                                <span className="text-2xl text-gray-500 italic">- Public Code: {form.public_code}</span>
                             )
                         }
                     </div>
@@ -554,6 +554,29 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
+                            <div className={tw(
+                                'flex p-3 h-20',
+                                errors.apiURL && 'pb-5'
+                            )}
+                            >
+                                <div className="flex shrink-0 w-40">
+                                    <span>API URL (callback)</span>
+                                </div>
+                                <div className="flex w-full">
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="apiURL"
+                                        placeholder="Enter API URL"
+                                        {...register("apiURL")}
+                                        // error={errors.organization?.message}
+                                        // value={passwordInput}
+                                        defaultValue={''}
+                                    />
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
                         </div>
                         <div className="w-[40%] shrink-0">
                             <div className="flex p-3 h-16 items-center justify-between">
@@ -685,7 +708,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             {
-                                !pathname.includes(ROUTES.newForm) && (
+                                (!pathname.includes(ROUTES.newForm) && form.form_instances_count !== 0) && (
                                     <div className="flex p-3 h-16 ">
                                         <Button
                                             variant="primary"
@@ -700,29 +723,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <hr className="mx-3" />
                         </div>
                     </div>
-                    <div className={tw(
-                        'flex p-3 h-16',
-                        errors.apiURL && 'pb-5'
-                    )}
-                    >
-                        <div className="flex shrink-0 w-40">
-                            <span>API URL (callback)</span>
-                        </div>
-                        <div className="flex w-full">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="apiURL"
-                                placeholder="Enter API URL"
-                                {...register("apiURL")}
-                                // error={errors.organization?.message}
-                                // value={passwordInput}
-                                defaultValue={''}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
                 </div>
             </form>
         </>
