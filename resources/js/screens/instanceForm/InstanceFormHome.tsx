@@ -5,6 +5,7 @@ import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
+import { isValidEmail } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const [searchParams] = useSearchParams();
@@ -24,7 +25,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             api_url: formInstanceInfo.api_url ?? '',
             aux_code: aux_code ?? '',
         };
-        console.log("initialFormData:", { initialFormData });
+        // console.log("initialFormData:", { initialFormData });
         useFormInstance.setState({
             formInstance: initialFormData,
         })
@@ -38,6 +39,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     const handleHomeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (formInstanceInfo.is_initial_data_required) {
+
             let firstNameError = '';
             let lastNameError = '';
             let emailError = '';
@@ -50,8 +52,13 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             }
             if (email === '') {
                 emailError = 'Email Address is mandatory';
+            } else if (!isValidEmail(email)) {
+                emailError = 'Email Address is invalid';
             }
-            setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
+            if (firstNameError !== '' && lastNameError !== '' && emailError !== '') {
+                setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
+                return;
+            }
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_first_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
@@ -80,7 +87,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 break;
         }
     }
-    console.log(`${formInstanceInfo.logo}`)
+    // console.log(`${formInstanceInfo.logo}`)
     return (
         <div className="bg-white p-8 rounded-lg w-[35%]">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">

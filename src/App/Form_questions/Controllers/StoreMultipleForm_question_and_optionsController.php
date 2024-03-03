@@ -16,7 +16,7 @@ class StoreMultipleForm_question_and_optionsController
     {
         $form = Form::find($request->form_id);
 
-        if (! $form) {
+        if (!$form) {
             return responder()->error("Form not found")->respond(JsonResponse::HTTP_NOT_FOUND);
         }
 
@@ -30,7 +30,7 @@ class StoreMultipleForm_question_and_optionsController
             foreach ($request->form_questions as $questionKey => $questionData) {
                 $questionType = Question_type::find($questionData['question_type_id']);
 
-                if (! $questionType) {
+                if (!$questionType) {
                     throw new \Exception("Question type not found for question index: $questionKey");
                 }
                 $question = new Form_question($questionData);
@@ -40,11 +40,11 @@ class StoreMultipleForm_question_and_optionsController
                 if (isset($questionData['question_options'])) {
                     foreach ($questionData['question_options'] as $optionKey => $optionData) {
                         if (array_key_exists('next_question', $optionData)) {
-                            if ($optionData['next_question'] === 'null') {
-                                $optionData['next_question'] = null;
-                            } else {
-                                $optionData['next_question'] = (int) $optionData['next_question'];
-                            }
+                            // if ($optionData['next_question'] === 'null') {
+                            //     $optionData['next_question'] = null;
+                            // } else {
+                            $optionData['next_question'] = (int) $optionData['next_question'];
+                            // }
                         } else {
                             $optionData['next_question'] = null;
                         }

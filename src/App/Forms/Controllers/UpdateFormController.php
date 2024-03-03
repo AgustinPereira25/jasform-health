@@ -15,12 +15,19 @@ class UpdateFormController
     public function __invoke(UpdateFormRequest $request, UpdateFormAction $updateFormAction): JsonResponse
     {
         Log::info(
-            'UpdateFormController####################################################################################################################################################################'
+            'UpdateFormController###########'
         );
-        Log::info('===UpdateFormController=====> Request data: ', $request->all());
-        Log::info('UpdateFormController-user_id: ' . $request->input('user_id'));
-        Log::info('UpdateFormController-public_code: ' . $request->input('public_code'));
-        Log::info('UpdateFormController-id: ' . $request->input('id'));
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
+            $userId = $request->user_id;
+            if ($loggedUser->id != $userId) {
+                return responder()->error('You do not have permission for this request')->respond(500);
+            }
+        }
 
         sleep(1);
         $formIdToUpdate = (string) $request->id;

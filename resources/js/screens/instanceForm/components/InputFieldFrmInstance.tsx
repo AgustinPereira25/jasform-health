@@ -11,7 +11,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
 
     const [error, setError] = useState<string>('');
 
-    const savedAnswer = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
+    const savedAnswer = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswer);
 
     useEffect(() => {
@@ -21,14 +21,15 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     const currentQuestionInfo: Question = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder) ?? {} as Question;
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (currentQuestionInfo.is_mandatory && !answerInput) {
+        if (currentQuestionInfo.is_mandatory === true && !answerInput) {
             setError('Answer is mandatory');
+            return;
         }
         if (!error) {
             const answer: CompletedQuestion = {
                 id: currentQuestionInfo.id!,
                 title: currentQuestionInfo.title,
-                completer_user_answer: answerInput,
+                answer: answerInput,
                 order: currentQuestionInfo.order,
                 is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                 question_type_id: currentQuestionInfo.question_type_id,

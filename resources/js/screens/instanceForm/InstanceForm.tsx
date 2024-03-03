@@ -5,6 +5,8 @@ import { useState } from "react";
 import { FormInstanceScreens } from "./components";
 import { getFormByPublicCodeQuery } from "@/api/forms";
 import { icons } from "@/ui";
+import EmptyState from "@/ui/common/EmptyState";
+import { message } from "@/constants/message";
 
 export interface FormInstanceFlow {
     questionType: number,
@@ -19,7 +21,7 @@ export const InstanceForm: React.FunctionComponent = () => {
         enabled: !!publicCode,
     });
 
-    const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 0 });
+    const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 1 });
     const FormInstance = FormInstanceScreens[currentScreen.questionType as 0 | 1 | 2 | 3 | 4 | 5 | 6];
 
     return (
@@ -30,7 +32,13 @@ export const InstanceForm: React.FunctionComponent = () => {
                 </div>
             ) : (
                 <div className="flex items-center justify-center w-full">
-                    <FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData!} />
+                    {
+                        !formInstanceData?.is_active ? (
+                            <div className="bg-white px-10 pt-10 pb-5 rounded-lg">
+                                <EmptyState message={message.INACTIVE_FORM} iconName="ExclamationCircleIcon" />
+                            </div>
+                        ) : (<FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData} />)
+                    }
                 </div>
             )}
         </div>

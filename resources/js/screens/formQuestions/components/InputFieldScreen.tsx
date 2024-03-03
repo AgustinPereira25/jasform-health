@@ -7,9 +7,10 @@ interface InputTextScreenProps {
     currentQuestion: Question;
     formQuestions: Question[];
     setQuestions: (questions: Question[]) => void;
+    setCurrentQuestion: (question: Question) => void;
 };
 
-export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions }) => {
+export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuestion, formQuestions, setQuestions, setCurrentQuestion }) => {
     // console.log(currentQuestion);
     // console.log(formQuestions)
 
@@ -30,7 +31,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
         }
         // Update the formQuestions general state
         const updatedQuestions = formQuestions?.map((question) => {
-            if (question.id === currentQuestion.id) {
+            if (question.order === currentQuestion.order) {
                 delete question.question_options;
                 return {
                     ...question,
@@ -40,6 +41,8 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
             return question;
         });
         setQuestions(updatedQuestions ?? []);
+        const currentModifiedQuestion = updatedQuestions?.find((question) => question.order === currentQuestion.order);
+        setCurrentQuestion(currentModifiedQuestion!);
     }
 
     return (

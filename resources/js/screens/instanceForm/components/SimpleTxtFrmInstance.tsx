@@ -11,7 +11,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
 
     const [error, setError] = useState<string>('');
 
-    const savedAnswer = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
+    const savedAnswer = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswer);
 
     useEffect(() => {
@@ -24,12 +24,13 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
 
         if (currentQuestionInfo.is_mandatory && !answerInput) {
             setError('Answer is mandatory');
+            return;
         }
         if (!error) {
             const answer: CompletedQuestion = {
                 id: currentQuestionInfo.id!,
                 title: currentQuestionInfo.title,
-                completer_user_answer: answerInput,
+                answer: answerInput,
                 order: currentQuestionInfo.order,
                 is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                 question_type_id: currentQuestionInfo.question_type_id,

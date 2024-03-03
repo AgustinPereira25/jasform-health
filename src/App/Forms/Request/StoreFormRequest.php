@@ -31,7 +31,8 @@ class StoreFormRequest extends FormRequest
         return [
             self::NAME => ['required'],
             self::WELCOME_TEXT => ['required'],
-            self::FINAL_TEXT,
+            self::FINAL_TEXT => ['required'],
+            self::DESCRIPTION => ['required'],
             self::CREATION_DATE_TIME,
             self::IS_ACTIVE => ['required'],
             self::IS_USER_RESPONSES_LINKED => ['required'],

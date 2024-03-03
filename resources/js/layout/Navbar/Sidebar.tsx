@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { logOutUserMutation } from "../../screens/login/loginAuth";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
-import { Button, Modal, icons, LoadingOverlay } from "@/ui";
+import { Button, Modal, icons, LoadingOverlay, Tooltip } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
@@ -15,13 +15,13 @@ const navigation = [
         path: ROUTES.home,
         label: "My Dashboard",
         icon: <icons.DashboardIcon />,
-        role_name: "admin, creator",
+        role_name: "creator, admin",
     },
     {
         path: ROUTES.myForms,
         label: "My Forms",
         icon: <icons.MyFormsIcon />,
-        role_name: "admin, creator",
+        role_name: "creator, admin",
     },
     {
         path: ROUTES.users,
@@ -100,13 +100,9 @@ export const Sidebar = ({
             </div>
             {user && (
                 <nav className="flex flex-1 flex-col">
-                    <ul className="flex flex-1 flex-col gap-y-7 overflow-y-auto">
+                    <ul className="flex flex-1 flex-col gap-y-0 overflow-y-auto mt-4">
                         {navigation
-                            .filter((item) =>
-                                item.role_name.includes(
-                                    user.role_name?.toLowerCase() ?? ""
-                                )
-                            )
+                            .filter((item) => item.role_name !== "admin" && item.role_name !== "all")
                             .map((item) => (
                                 <li
                                     key={item.label}
@@ -127,7 +123,12 @@ export const Sidebar = ({
                                 </li>
                             ))}
                     </ul>
-                    <hr className="w-11/12 bg-[#407EC9]" />
+                    {
+                        user.role_name?.toLowerCase() === "admin" && (
+                            <hr className="w-12/12 bg-[#407EC9]" />
+                        )
+                    }
+
                     {/* <button
                     onClick={() => setToken(null)}
                     className="pl-5 group flex w-full gap-x-3 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-[#407EC9] hover:text-white"
@@ -137,7 +138,7 @@ export const Sidebar = ({
                   </button> */}
                     <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
-                            .filter((item) => item.role_name === "")
+                            .filter((item) => item.role_name === user.role_name?.toLowerCase())
                             .map((item) => (
                                 <li
                                     key={item.label}
@@ -158,7 +159,7 @@ export const Sidebar = ({
                                 </li>
                             ))}
                     </ul>
-                    <hr className="w-11/12 bg-[#407EC9]" />
+                    <hr className="w-12/12 bg-[#407EC9]" />
                     <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
                             .filter((item) => item.role_name === "all")
@@ -230,6 +231,16 @@ export const Sidebar = ({
                     </div>
                 </div>
             </Modal>
-        </div>
+
+            <div className="fixed bottom-0 left-0 m-3">
+                <Tooltip
+                    content={"Need help? Go to Documentation"} className="text-nowrap w-64"
+                >
+                    <a href="Https://jasform.com/docs" target="_blank" rel="noopener noreferrer" title="Need help? Go to Documentation">
+                        <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
+                    </a>
+                </Tooltip>
+            </div>
+        </div >
     );
 };

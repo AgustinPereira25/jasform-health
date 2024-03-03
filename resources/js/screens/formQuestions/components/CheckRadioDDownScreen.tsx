@@ -12,6 +12,7 @@ interface CheckRadioDDownScreenProps {
     comboBoxOption: ComboBoxOption;
     currentQuestionOrder?: number;
     setQuestions: (questions: Question[]) => void;
+    setCurrentQuestion?: (question: Question) => void;
 };
 // TODO - Export this interface..
 interface ComboBoxOptions {
@@ -39,8 +40,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     const [isInputEmpty, setIsInputEmpty] = useState(false);
     const [questionToShow, setQuestionToShow] = useState(currentFormQuestion?.title ?? '');
 
-    // Add default options to the list
-    transformedSteps.push({ id: 0, name: 'Default Next Question' }, { id: null, name: 'Go To End' });
+    // Add default options to the list on the top of the list
+    transformedSteps.unshift({ id: -1, name: 'Default Next Question' });
+    transformedSteps.push({ id: 0, name: 'Go To End' });
 
     useEffect(() => {
         setQuestionToShow(currentFormQuestion!.title ?? '');
@@ -57,11 +59,8 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             return;
         }
 
-        //const getLastQuestionOrder = Object.values(questionsOption).pop()?.order;
-        // const getLastQuestionOrder = getLastQuestionOrder(questionsOption);
-        // const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
-        const lastQuestionOrder = getLastQuestionOrder(questionsOption) + 1;
-        if (comboBoxOption === 'Radio Button') {
+        const lastQuestionOrder = getLastQuestionOrder(questionsOption);
+        if (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') {
             // TODO - change form question id
             const newElement: QuestionsOption = { order: lastQuestionOrder, title: input, next_question: newQuestionType.id };
             setQuestionsOption([...questionsOption, newElement]);
@@ -69,6 +68,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
+                    question.text = question.title;
                     return {
                         ...question,
                         question_options: [...questionsOption, newElement],
@@ -77,6 +77,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                 return question;
             });
             setQuestions(updatedQuestions ?? []);
+            setNewQuestionType(transformedSteps[0]!);
         } else {
             const newElement = { order: lastQuestionOrder, title: input, next_question: null };
             // setQuestionsOption([...questionsOption, newElement]);
@@ -85,6 +86,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
                     const newQuestionOptions = question.question_options!.map((item) => (delete item.id, { ...item, next_question: null }));
+                    question.text = question.title;
                     setQuestionsOption([...newQuestionOptions, newElement]);
                     return {
                         ...question,
@@ -214,10 +216,10 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             <div className="flex flex-col py-4">
                 <div className="flex justify-between bg-gray-100 py-3 px-3 border rounded-t-lg border-gray-300 text-gray-500 w-full">
                     <span className={tw('text-xs grow',
-                        comboBoxOption === 'Radio Button' && 'w-[53%]',
-                        comboBoxOption !== 'Radio Button' && 'w-[86%]',
+                        (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && 'w-[53%]',
+                        (comboBoxOption !== 'Radio Button' && comboBoxOption !== 'Drop Down Combo') && 'w-[86%]',
                     )}>OPTION TITLE</span>
-                    {comboBoxOption === 'Radio Button' && (
+                    {(comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && (
                         <span className="w-[33%] text-xs grow">NEXT STEP</span>
                     )}
                     <span className="w-[13%] text-xs grow"></span>
@@ -228,10 +230,10 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                             return (
                                 <div key={idx} className="flex w-full hover:bg-gray-200 py-3 px-3">
                                     <span className={tw('text-xs grow',
-                                        comboBoxOption === 'Radio Button' && 'w-[53%]',
-                                        comboBoxOption !== 'Radio Button' && 'w-[86%]',
+                                        (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && 'w-[53%]',
+                                        (comboBoxOption !== 'Radio Button' && comboBoxOption !== 'Drop Down Combo') && 'w-[86%]',
                                     )}>{item.title}</span>
-                                    {comboBoxOption === 'Radio Button' && (
+                                    {(comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') && (
                                         <span className="w-[33%] text-xs grow">{getQuestionTypeName(item.next_question!)}</span>
                                     )}
                                     <div className="flex justify-center gap-3 w-[13%] grow">
@@ -258,12 +260,13 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                         value={newInput}
                     />
                     {
-                        comboBoxOption === "Radio Button" && (
+                        (comboBoxOption === "Radio Button" || comboBoxOption === 'Drop Down Combo') && (
                             <ComboBox
                                 id="questionType"
                                 items={transformedSteps}
                                 defaultValue={newQuestionType.name}
                                 onValueChange={(item) => handleComboBoxChange(item)}
+                                className="w-2/5"
                             />
                         )
                     }

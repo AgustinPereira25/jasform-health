@@ -59,6 +59,7 @@ export const Login = () => {
     //   },
     // });
 
+    //Todo: Clear this default values
     const {
         formState: { errors },
         handleSubmit,
@@ -81,7 +82,7 @@ export const Login = () => {
             },
             onError: (error: any) => {
                 if (error.response) {
-                    toast.error(error.response.data.message);
+                    toast.error(error.response.data.error.message);
                 } else if (error.request) {
                     toast.error('Request was made but no response was received');
                 } else {
@@ -91,6 +92,7 @@ export const Login = () => {
         });
 
     const onSubmit = (data: LoginFormValues) => {
+        console.info("onSubmit");
         loginUserMutation(data);
     };
 

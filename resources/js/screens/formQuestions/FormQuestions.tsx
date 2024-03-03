@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Switch } from '@headlessui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -14,12 +14,15 @@ import { questionScreens } from './utils'
 
 interface FormQuestionsProps {
     initialData: Question[];
+    public_code: string | undefined;
 }
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [] }) => {
+export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [], public_code }) => {
+    const { id: formId } = useParams();
+    const navigate = useNavigate();
 
     // TODO- Put this in constants file
     const questionTypes = [
@@ -43,9 +46,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     };
 
-    const { id: formId } = useParams();
-    const navigate = useNavigate();
-
     // TODO - Order is undefined?
     formQuestions = formQuestions.sort((a, b) => a.order - b.order);
 
@@ -59,13 +59,15 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     useEffect(() => {
         setEnabledIsMandatory(currentQuestion?.is_mandatory as boolean);
         setComboBoxOption(getComboBoxOption(currentQuestion?.question_type_id as keyof typeof questionScreens));
-    }, [currentQuestion?.is_mandatory, currentQuestion?.question_type_id]);
+        setCurrentQuestionOrder(currentQuestion?.order);
+    }, [currentQuestion?.is_mandatory, currentQuestion?.question_type_id, currentQuestion?.order]);
 
     const handleAddQuestionClick = () => {
         const getLastQuestionOrder = Object.values(questions).pop()?.order;
         const lastQuestionOrder = getLastQuestionOrder ? getLastQuestionOrder + 1 : 1;
-        const newElement: Question = { form_question_id: Number(formId), text: '', title: '', question_type_id: 1, question_type_name: 'Simple Text', is_mandatory: false, order: lastQuestionOrder };
+        const newElement: Question = { form_question_id: Number(formId), text: '', title: '', question_type_id: 1, question_type_name: 'Simple Text', is_mandatory: false, order: lastQuestionOrder, question_options: [] };
         setQuestions([...questions, newElement]);
+        setCurrentQuestion(newElement);
     };
 
     const handleQuestionClick = (item: Question, order: number) => {
@@ -90,7 +92,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                 break;
         }
         // Update the formQuestions general state
-        const updatedQuestions = formQuestions?.map((question) => {
+        const updatedQuestions = questions?.map((question) => {
             if (question.order === currentQuestionOrder) {
                 return {
                     ...question,
@@ -109,6 +111,10 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
     const handleDeleteClick = (item: Question) => {
         const newQuestions = questions.filter((question) => question.order !== item.order);
+        // Reorder questions
+        newQuestions.map((question, index) => {
+            question.order = index + 1;
+        });
         setQuestions(newQuestions);
     }
 
@@ -146,10 +152,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
 
             delete question.id;
             delete question.form_id;
-            // TODO - Delete id and form_question_id from question_options to fit endpoint.
+            if ((!question.question_options || question.question_options.length === 0)
+                && question.question_type_id !== 1 && question.question_type_id !== 2 && question.question_type_id !== 5) {
+                toast.error('Please add options to the Check Box or Radio Button question.');
+                return;
+            }
             question.question_options?.map((option) => {
                 delete option.id;
-                delete option.form_question_id;
             });
         });
         // console.log('data', data)
@@ -159,7 +168,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     }
 
     const handleMandatoryChange = (checked: boolean) => {
-        const updatedQuestions = formQuestions?.map((question) => {
+        const updatedQuestions = questions?.map((question) => {
             if (question.order === currentQuestionOrder) {
                 return {
                     ...question,
@@ -180,7 +189,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
             mutationFn: updateFormQuestions.mutation,
             onSuccess: () => {
                 updateFormQuestions.invalidates(queryClient);
-                toast.success(`Form Questions for Form "${formId}" successfully updated!`);
+                toast.success(`Form Questions for Form "${public_code}" successfully updated!`);
                 navigate(`/forms/${formId}`);
             },
             onError: (err: IHttpResponseError) => {
@@ -188,9 +197,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     toast.error(err?.response.data.message);
                 } else if (err?.response?.data?.error?.fields) {
                     const errors = err?.response.data.error.fields;
-                    Object.entries(errors).forEach(([_, valArray]) => {
-                        toast.error(`${valArray[0]}`);
-                    });
+                    Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title, Text to show and Question to show] are filled.");
+
                 } else {
                     toast.error("There was an error trying to update the user. Please try again later.");
                 }
@@ -217,8 +225,8 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                             Form&apos;s Questions
                         </span>
                         {
-                            formId && (
-                                <span className="text-2xl text-gray-500 italic">- Form Code: {formId}</span>
+                            public_code && (
+                                <span className="text-2xl text-gray-500 italic">- Public Code: {public_code}</span>
                             )
                         }
                     </div>
@@ -233,7 +241,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </div>
                 </div>
                 <div className="flex gap-3 w-full h-full">
-                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll">
+                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll overflow-y-scroll">
                         <span>Content</span>
                         <div className="flex flex-col items-center">
                             {
@@ -255,7 +263,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                     idx === 0 && `border-t border-t-gray-200`,
                                                     idx !== 0 && `border-y border-y-gray-200`
                                                 )}>
-                                                <div className="flex flex-col justify-center pl-3">
+                                                <div className="flex flex-col justify-center pl-3 overflow-y-scroll">
                                                     <span className={tw(`text-sm font-semibold`,
                                                         item.order === currentQuestion?.order && 'text-[#407EC9]',
                                                         item.order !== currentQuestion?.order && 'text-[#6B7280]'
@@ -293,18 +301,19 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                         <div className="flex flex-col">
                                             <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
                                         </div>
-                                        <div className="flex gap-2 items-center pb-2">
+                                        <div className="flex gap-2 items-center justify-end pb-2 grow">
                                             <span>Question Type</span>
                                             <ComboBox
                                                 id="questionType"
                                                 items={questionTypes}
                                                 defaultValue={currentQuestion.question_type_name}
                                                 onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
+                                                className="w-2/5"
                                             />
                                         </div>
                                     </div>
                                     <hr />
-                                    <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
+                                    <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} setCurrentQuestion={setCurrentQuestion} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
                                     <div className="flex gap-3 pb-5 pl-2">
                                         <div className="flex w-40 items-center">
                                             <span>Mandatory Question</span>

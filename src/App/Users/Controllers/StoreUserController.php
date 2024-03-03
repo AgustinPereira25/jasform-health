@@ -17,6 +17,15 @@ class StoreUserController
 {
     public function __invoke(StoreUserRequest $request, StoreUserAction $storeUserAction): JsonResponse
     {
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
+            return responder()->error('You do not have permission for this request')->respond(500);
+        }
+
         sleep(1);
         $organizationName = $request->input(StoreUserRequest::ORGANIZATION_NAME);
         $organization = Organization::firstOrCreate(
@@ -27,7 +36,7 @@ class StoreUserController
 
         $roleName = $request->input(StoreUserRequest::ROLE_NAME);
         $role = Role::where('name', $roleName)->first();
-        if (! $role) {
+        if (!$role) {
             $errorMessage = "The role '$roleName' does not exist.";
             throw new \RuntimeException($errorMessage);
         }

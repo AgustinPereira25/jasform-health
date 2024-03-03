@@ -21,7 +21,7 @@ export interface CompletedForm {
 export interface CompletedQuestion {
   id: number;
   title: string;
-  completer_user_answer: string;
+  answer: string;
   text?: string;
   order: number;
   is_mandatory: boolean;
@@ -85,9 +85,9 @@ export const getFormInstancesQuery = (
   perPage: number,
   currentPage: number,
   formId: string,
-  nameEmailCode: string,
-  submitted_start_date: string,
-  submitted_end_date: string,
+  nameEmailCode?: string,
+  submitted_start_date?: string,
+  submitted_end_date?: string,
 ) => ({
   queryKey: [
     DOMAIN,

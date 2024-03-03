@@ -7,13 +7,17 @@ import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { Button, Input, LoadingOverlay, icons } from '@/ui'
+import { Button, Input, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
 import type { IHttpResponseError } from '@/api';
 import { createForm, updateForm } from '@/api'
 import type { CreateFormParams, Form } from '@/api';
 import { ROUTES } from '@/router'
 import { useUserStore } from '@/stores'
+import { DeleteFormConfirm } from './components'
+import { TextArea } from '@/ui/form/TextArea'
+import { makeFormURLInstance } from '@/utils'
+import { isURL, parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -124,7 +128,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             mutationFn: createForm.mutation,
             onSuccess: (data) => {
                 createForm.invalidates(queryClient);
-                toast.success(`Form "${data.description}" successfully created!`);
+                toast.success(`Form "${data.name}" successfully created!`);
                 navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
@@ -147,7 +151,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             mutationFn: updateForm.mutation,
             onSuccess: (data) => {
                 updateForm.invalidates(queryClient);
-                toast.success(`Form "${data.description}" successfully updated!`);
+                toast.success(`Form "${data.name}" successfully updated!`);
                 navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
@@ -167,13 +171,24 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const onSubmit = (data: NewForm) => {
         // console.log(data);
-
+        if (data.logo !== '') {
+            if (!isURL(data.logo!)) {
+                setError("logo", { message: "Invalid logo URL" });
+                return;
+            }
+        }
+        if (data.apiURL !== '') {
+            if (!isURL(data.apiURL!)) {
+                setError("apiURL", { message: "Invalid api URL" });
+                return;
+            }
+        }
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
             welcome_text: data.welcomeTxt,
             final_text: data.finalTxt,
-            creation_date_time: '2024-01-11 12:56:19.000', // TODO - Change this to the correct date format (US).
+            creation_date_time: parseDate(new Date().toString()!),
             description: data.description,
             primary_color: data.pcolor,
             secondary_color: data.scolor,
@@ -186,7 +201,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             is_user_responses_linked: data.enabledLinkResponsesUser,
             user_id: userId,
         }
-        // console.log(form_CreateFormParams)
+        console.log(form_CreateFormParams)
         if (pathname.includes(ROUTES.newForm)) {
             createFormMutation(form_CreateFormParams);
         } else {
@@ -245,6 +260,22 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     const [showPrimaryColorPicker, setShowPrimaryColorPicker] = useState(false);
     const [showSecondaryColorPicker, setShowSecondaryColorPicker] = useState(false);
 
+    const [showDeletionModal, setshowDeletionModal] = useState(false);
+    const handleOpenDeletionModal = () => {
+        setshowDeletionModal(true);
+    };
+    const handleCloseDeletionModal = () => {
+        setshowDeletionModal(false);
+    };
+
+    const handlePublicLinkClick = async () => {
+        if (!pathname.includes(ROUTES.newForm)) {
+            const URL = makeFormURLInstance(form.public_code!);
+            await navigator.clipboard.writeText(URL);
+            toast.success(`Link "${URL}" successfully copied to the clipboard!`);
+        }
+    }
+
     return (
         <>
             {(isPendingCreateFormMutation || isPendingUpdateFormMutation) && (
@@ -261,22 +292,26 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             Return
                         </Button>
                         <span className="pl-3 text-2xl text-black">
-                            New Form&apos;s Information
+                            {!form.public_code && 'New'} Form&apos;s Information
                         </span>
                         {
                             form.id && (
-                                <span className="text-2xl text-gray-500 italic">- Form Code: {form.id}</span>
+                                <span className="text-2xl text-gray-500 italic">- Public Code: {form.public_code}</span>
                             )
                         }
                     </div>
                     <div className="flex gap-5">
-                        <Button
-                            variant="secondary"
-                            onClick={() => console.log('DeleteForm')}
-                        >
-                            <icons.TrashIcon className={tw(`w-5 h-5`)} />
-                            Delete
-                        </Button>
+                        {
+                            form.id && (
+                                <Button
+                                    variant="secondary"
+                                    onClick={handleOpenDeletionModal}
+                                >
+                                    <icons.TrashIcon className={tw(`w-5 h-5`)} />
+                                    Delete
+                                </Button>
+                            )
+                        }
                         {
                             form.id && (
                                 <Button
@@ -296,9 +331,19 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         </Button>
                     </div>
                 </div>
+                <Modal
+                    show={showDeletionModal}
+                    title="Confirm Deletion"
+                    description="Are you sure you want to execute a deletion?"
+                    onClose={handleCloseDeletionModal}
+                >
+                    <div className="flex h-16 p-3 m-auto">
+                        <DeleteFormConfirm />
+                    </div>
+                </Modal>
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
                     <div className="flex gap-6 shrink-0">
-                        <div className="shrink-0">
+                        <div className="w-full">
                             <div className={tw(
                                 'flex p-3 h-16',
                                 errors.name && 'pb-5'
@@ -369,7 +414,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             <div className={tw(
-                                'flex p-3 h-16',
+                                'flex p-3 h-20',
                                 errors.logo && 'pb-5'
                             )}
                             >
@@ -377,10 +422,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <span>Logo URL</span>
                                 </div>
                                 <div className="flex grow">
-                                    <Input
-                                        containerClassName="w-full"
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full h-full"
                                         fullHeight
-                                        type="text"
                                         id="logo"
                                         placeholder="Enter Logo URL"
                                         {...register("logo")}
@@ -432,8 +477,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         {...register("pcolor")}
                                         // {...register("pcolor")}
                                         // error={errors.pcolor?.message}
-                                        // defaultValue={''}
-                                        value={primaryColor}
+                                        defaultValue={primaryColor}
+                                        // value={primaryColor}
+                                        onChange={(e) => setPrimaryColor(e.target.value)}
                                     />
                                     <Button ref={primaryWrapperRef} style={{
                                         backgroundColor: primaryColor,
@@ -445,7 +491,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
                                     </Button>
                                     {showPrimaryColorPicker && (
-                                        <div ref={primaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
+                                        <div ref={primaryPickerRef} className="z-[1] absolute left-1/2 top-[35%]">
                                             <HexColorPicker color={primaryColor} onChange={(primaryColor) => {
                                                 setPrimaryColor(primaryColor);
                                                 setValue("pcolor", primaryColor);
@@ -472,8 +518,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
                                         // error={errors.pcolor?.message}
-                                        // defaultValue={''}
-                                        value={secondaryColor}
+                                        defaultValue={secondaryColor}
+                                        //value={secondaryColor}
+                                        onChange={(e) => setSecondaryColor(e.target.value)}
                                     />
                                     <Button ref={secondaryWrapperRef} style={{
                                         backgroundColor: secondaryColor,
@@ -485,7 +532,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <icons.PaintBrushIcon className={tw(`w-5 h-5`)} />
                                     </Button>
                                     {showSecondaryColorPicker && (
-                                        <div ref={secondaryPickerRef} className="z-[1] absolute left-1/2 top-[30%]">
+                                        <div ref={secondaryPickerRef} className="z-[1] absolute left-1/2 top-[42%]">
                                             <HexColorPicker color={secondaryColor} onChange={(secondaryColor) => {
                                                 setSecondaryColor(secondaryColor);
                                                 setValue("scolor", secondaryColor);
@@ -507,7 +554,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <Input
                                         containerClassName="w-full"
                                         fullHeight
-                                        type="text"
+                                        type="number"
                                         id="borderRadius"
                                         placeholder="Border Radius"
                                         {...register("borderRadius")}
@@ -518,8 +565,31 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
+                            <div className={tw(
+                                'flex p-3 h-20',
+                                errors.apiURL && 'pb-5'
+                            )}
+                            >
+                                <div className="flex shrink-0 w-40">
+                                    <span>API URL (callback)</span>
+                                </div>
+                                <div className="flex w-full">
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="apiURL"
+                                        placeholder="Enter API URL"
+                                        {...register("apiURL")}
+                                        error={errors.apiURL?.message}
+                                        // value={passwordInput}
+                                        defaultValue={''}
+                                    />
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
                         </div>
-                        <div className="w-full">
+                        <div className="w-[40%] shrink-0">
                             <div className="flex p-3 h-16 items-center justify-between">
                                 <span>Form&apos;s Publish State</span>
                                 <div className="flex gap-3 pl-3">
@@ -607,21 +677,27 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Creation Date: 15/01/2024 03:45PM</span>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Last Modified Date: 15/01/2024 03:45PM</span>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Instances: 100</span>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex px-3 h-16 items-center justify-between">
-                                <span>Questions: 10</span>
-                            </div>
+                            {
+                                !pathname.includes(ROUTES.newForm) && (
+                                    <>
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Creation Date: {parseDate(form.creation_date_time?.toString())}</span>
+                                        </div>
+                                        <hr className="mx-3" />
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Last Modified Date: {parseDate(form.last_modified_date_time?.toString())}</span>
+                                        </div>
+                                        <hr className="mx-3" />
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Instances: {form.form_instances_count ?? 0}</span>
+                                        </div>
+                                        <hr className="mx-3" />
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>Questions: {form.form_questions_count ?? 0}</span>
+                                        </div>
+                                    </>
+                                )
+                            }
                             <hr className="mx-3" />
                             <div className="flex p-3 h-16 ">
                                 <Button
@@ -635,6 +711,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <div className="flex p-3 h-16 ">
                                 <Button
                                     variant="primary"
+                                    onClick={handlePublicLinkClick}
                                 >
                                     <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
                                     Get Public Link with Code to Share
@@ -642,11 +719,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             {
-                                form.id && (
+                                (!pathname.includes(ROUTES.newForm) && form.form_instances_count !== 0) && (
                                     <div className="flex p-3 h-16 ">
                                         <Button
                                             variant="primary"
-                                            onClick={() => { navigate(`/form-instance/${form.id}`) }}
+                                            onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
                                         >
                                             <icons.EyeIcon className={tw(`w-5 h-5`)} />
                                             View form&apos;s instances
@@ -657,29 +734,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <hr className="mx-3" />
                         </div>
                     </div>
-                    <div className={tw(
-                        'flex p-3 h-16',
-                        errors.apiURL && 'pb-5'
-                    )}
-                    >
-                        <div className="flex shrink-0 w-40">
-                            <span>API URL (callback)</span>
-                        </div>
-                        <div className="flex w-full">
-                            <Input
-                                containerClassName="w-full"
-                                fullHeight
-                                type="text"
-                                id="apiURL"
-                                placeholder="Enter API URL"
-                                {...register("apiURL")}
-                                // error={errors.organization?.message}
-                                // value={passwordInput}
-                                defaultValue={''}
-                            />
-                        </div>
-                    </div>
-                    <hr className="mx-3" />
                 </div>
             </form>
         </>

@@ -15,6 +15,18 @@ class StoreFormController
 {
     public function __invoke(StoreFormRequest $request, StoreFormAction $storeFormAction): JsonResponse
     {
+        $loggedUser = $request->user();
+        if (!$loggedUser) {
+            return responder()->error('Unauthenticated')->respond(500);
+        }
+        $loggedRoleName = $loggedUser->role->name;
+        if ($loggedRoleName !== 'Admin') {
+            $userId = $request->user_id;
+            if ($loggedUser->id != $userId) {
+                return responder()->error('You do not have permission for this request')->respond(500);
+            }
+        }
+
         $userId = $request->user_id;
         try {
             User::findOrFail($userId);
@@ -24,7 +36,7 @@ class StoreFormController
                 ->respond(JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $publicCode = Str::random(20);
+        $publicCode = Str::random(6);
         $now = Carbon::now()->toDateTimeString();
 
         $formDto = $request->toDto()

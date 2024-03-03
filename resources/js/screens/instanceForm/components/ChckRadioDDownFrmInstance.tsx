@@ -14,11 +14,12 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     const questiontypeId = currentScreen.questionType;
     const [error, setError] = useState<string>('');
 
-    const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer ?? '';
+    const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswerInput);
 
     useEffect(() => {
         setAnswerInput(savedAnswerInput);
+        setError('');
     }, [savedAnswerInput, currentScreen.currentQuestionOrder]);
 
     const savedAnswerCheckedOptions = useMemo(
@@ -43,12 +44,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         if (questiontypeId !== 3) { // Dropdown and Radio
             if (currentQuestionInfo.is_mandatory && !answerInput) {
                 setError('Answer is mandatory');
+                return;
             }
             if (!error) {
 
                 let nextQuestionTypeRadio = 0;
 
-                if (questiontypeId === 4) // Radio Button
+                if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
                 {
                     const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
                     console.log('next_question', next_question);
@@ -57,7 +59,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         case 0:
                             nextQuestionTypeRadio = 6; // Finish form instance.
                             break;
-                        case null:
+                        case -1:
                             // Find next question type by increasing current order.
                             nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                             break;
@@ -70,14 +72,14 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
-                    completer_user_answer: answerInput,
+                    answer: answerInput,
                     order: currentQuestionInfo.order,
                     is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = questiontypeId === 4 ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                const nextQuestionType: number = (questiontypeId === 4 || questiontypeId === 5) ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }
@@ -92,7 +94,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
-                    completer_user_answer: "",
+                    answer: "",
                     order: currentQuestionInfo.order,
                     is_mandatory: currentQuestionInfo.is_mandatory as boolean,
                     question_type_id: currentQuestionInfo.question_type_id,
@@ -127,6 +129,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             }
         } else {
             setAnswerInput(value);
+            setError('');
         }
     }
     const handleGoBackClick = () => {
@@ -180,6 +183,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                         </div>
                                     ))
                                 }
+                                <div className="flex items-center justify-center h-10">
+                                    {error && (<span className="text-red-500">{error}</span>)}
+                                </div>
                             </>
                         ) : (
                             <ComboBox

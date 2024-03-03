@@ -8,7 +8,7 @@ const DashboardCardsSkeleton = () => {
                 <div className="h-5 w-56 rounded-full bg-gray-300"></div>
             </div>
 
-            <div className="rounded-xl flex justify-center py-5 p-12 cursor-default">
+            <div className="rounded-xl flex justify-center py-5 p-12 cursor-default gap-6">
                 {Array.from({ length: 4 }).map((_, index) => {
 
                     return (
