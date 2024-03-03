@@ -172,7 +172,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     return (
         <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl max-w-md w-[30%]">
-            <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
+            <div className="flex flex-col justify-center gap-2">
+                <span>{`${currentQuestionInfo.title}`}</span>
+                <span>{`${currentQuestionInfo.text}`}</span>
+            </div>
             <form id="chck-radio-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
                 <div className="flex flex-col pt-6 pb-20 gap-6">
 

@@ -314,30 +314,34 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                     </div>
                                     <hr />
                                     <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} setCurrentQuestion={setCurrentQuestion} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
-                                    <div className="flex gap-3 pb-5 pl-2">
-                                        <div className="flex w-40 items-center">
-                                            <span>Mandatory Question</span>
-                                        </div>
-                                        <Switch.Group as="div" className="flex items-center justify-between gap-2">
-                                            <Switch
-                                                checked={enabledIsMandatory}
-                                                onChange={(e) => handleMandatoryChange(e)}
-                                                className={classNames(
-                                                    enabledIsMandatory ? 'bg-[#065F46]' : 'bg-gray-200',
-                                                    'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
-                                                )}
-                                            >
-                                                <span
-                                                    aria-hidden="true"
-                                                    className={classNames(
-                                                        enabledIsMandatory ? 'translate-x-5' : 'translate-x-0',
-                                                        'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                                                    )}
-                                                />
-                                            </Switch>
-                                        </Switch.Group>
-                                        <span className={classNames(enabledIsMandatory ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledIsMandatory ? 'Active' : 'Inactive'}</span>
-                                    </div>
+                                    {
+                                        currentQuestion.question_type_id !== 1 && (
+                                            <div className="flex gap-3 pb-5 pl-2">
+                                                <div className="flex w-40 items-center">
+                                                    <span>Mandatory Question</span>
+                                                </div>
+                                                <Switch.Group as="div" className="flex items-center justify-between gap-2">
+                                                    <Switch
+                                                        checked={enabledIsMandatory}
+                                                        onChange={(e) => handleMandatoryChange(e)}
+                                                        className={classNames(
+                                                            enabledIsMandatory ? 'bg-[#065F46]' : 'bg-gray-200',
+                                                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2'
+                                                        )}
+                                                    >
+                                                        <span
+                                                            aria-hidden="true"
+                                                            className={classNames(
+                                                                enabledIsMandatory ? 'translate-x-5' : 'translate-x-0',
+                                                                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                                            )}
+                                                        />
+                                                    </Switch>
+                                                </Switch.Group>
+                                                <span className={classNames(enabledIsMandatory ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledIsMandatory ? 'Active' : 'Inactive'}</span>
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             )
                         }
