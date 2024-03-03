@@ -18,7 +18,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { isURL, parseDate } from '@/helpers/helpers'
+import { parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -73,11 +73,20 @@ const formSchema = z
                 message: "Invalid logo URL"
             }),
         finalTxt: z.string(),
-        pcolor: z.string(),
-        scolor: z.string(),
-        borderRadius: z.string(),
+        pcolor: z.string().refine(
+            pcolor => pcolor === '' || /^#[0-9A-Fa-f]{6}$/.test(pcolor),
+            { message: "Invalid primary color" }
+        ),
+        scolor: z.string().refine(
+            scolor => scolor === '' || /^#[0-9A-Fa-f]{6}$/.test(scolor),
+            { message: "Invalid secondary color" }
+        ),
+        borderRadius: z.string().refine(
+            borderRadius => borderRadius === '' || /^(\d+|\d+\.\d+)(px|%)?$/.test(borderRadius),
+            { message: "Invalid border radius" }
+        ),
         apiURL: z.string().refine(
-            apiURL => /^(http|https):\/\/[^ "]+$/.test(apiURL),
+            apiURL => apiURL === '' || /^(http|https):\/\/[^ "]+$/.test(apiURL),
             { message: "Invalid URL" }
         ),
         publicCode: z.string(),
@@ -176,18 +185,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const onSubmit = (data: NewForm) => {
         // console.log(data);
-        if (data.logo !== '') {
-            if (!isURL(data.logo!)) {
-                setError("logo", { message: "Invalid logo URL" });
-                return;
-            }
-        }
-        if (data.apiURL !== '') {
-            if (!isURL(data.apiURL!)) {
-                setError("apiURL", { message: "Invalid api URL" });
-                return;
-            }
-        }
+        // if (data.logo !== '') {
+        //     if (!isURL(data.logo!)) {
+        //         setError("logo", { message: "Invalid logo URL" });
+        //         return;
+        //     }
+        // }
+        // if (data.apiURL !== '') {
+        //     if (!isURL(data.apiURL!)) {
+        //         setError("apiURL", { message: "Invalid api URL" });
+        //         return;
+        //     }
+        // }
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
@@ -480,8 +489,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="pcolor"
                                         placeholder="Primary Color"
                                         {...register("pcolor")}
-                                        // {...register("pcolor")}
-                                        // error={errors.pcolor?.message}
+                                        error={errors.pcolor?.message}
                                         defaultValue={primaryColor}
                                         // value={primaryColor}
                                         onChange={(e) => setPrimaryColor(e.target.value)}
@@ -522,7 +530,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="scolor"
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
-                                        // error={errors.pcolor?.message}
+                                        error={errors.scolor?.message}
                                         defaultValue={secondaryColor}
                                         //value={secondaryColor}
                                         onChange={(e) => setSecondaryColor(e.target.value)}
@@ -559,11 +567,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <Input
                                         containerClassName="w-full"
                                         fullHeight
-                                        type="number"
+                                        type="text"
                                         id="borderRadius"
                                         placeholder="Border Radius"
                                         {...register("borderRadius")}
-                                        // error={errors.organization?.message}
+                                        error={errors.borderRadius?.message}
                                         // value={passwordInput}
                                         defaultValue={''}
                                     />
