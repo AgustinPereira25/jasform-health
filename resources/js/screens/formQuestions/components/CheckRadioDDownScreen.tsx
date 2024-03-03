@@ -25,7 +25,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     // console.log(formQuestions)
 
     const getLastQuestionOrder = (questionsOption: QuestionsOption[]) => {
-        return Object.values(questionsOption).pop()?.order ?? 1;
+        // return order of last element of questionsOption array
+        const lastQuestion = questionsOption.slice(-1)[0]?.order ?? 0;
+        return lastQuestion;
     };
 
     const transformedSteps: ComboBoxOptions[] = formQuestions ? formQuestions.map((item) => ({ id: item.order, name: item.title })) : [];
@@ -66,7 +68,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         const lastQuestionOrder = getLastQuestionOrder(questionsOption);
         if (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') {
             // TODO - change form question id
-            const newElement: QuestionsOption = { order: lastQuestionOrder, title: input, next_question: newQuestionType.id };
+            const newElement: QuestionsOption = { order: lastQuestionOrder + 1, title: input, next_question: newQuestionType.id };
             setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
             // Update the formQuestions general state
@@ -82,7 +84,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             setQuestions(updatedQuestions ?? []);
             setNewQuestionType(transformedSteps[0]!);
         } else {
-            const newElement = { order: lastQuestionOrder, title: input, next_question: null };
+            const newElement = { order: lastQuestionOrder + 1, title: input, next_question: null };
             // setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
             // Update the formQuestions general state

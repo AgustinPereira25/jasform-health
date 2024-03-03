@@ -72,6 +72,11 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         default:
                             nextQuestionTypeRadio = next_question!;
                             nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.order ?? 0;
+                            if (nextQuestionTypeRadioOrder === 0) {
+                                // If next question is not found because its deleted, find next question by increasing current order.
+                                nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                                nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
+                            }
                             break;
                     }
                 }
