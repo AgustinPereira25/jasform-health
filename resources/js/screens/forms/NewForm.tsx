@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button, Input, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
@@ -120,6 +121,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             enabledInitialData: form.is_initial_data_required ?? false,
             enabledLinkResponsesUser: form.is_user_responses_linked ?? false,
         },
+        resolver: zodResolver(formSchema),
     });
 
     const queryClient = useQueryClient();

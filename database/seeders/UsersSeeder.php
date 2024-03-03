@@ -36,7 +36,7 @@ class UsersSeeder extends Seeder
             [
                 'first_name' => 'Admin',
                 'last_name' => 'JASForm',
-                'photo' => ' CDN PHOTO',
+                'photo' => 'https://jasform-pub.s3.us-west-2.amazonaws.com/jasformavataradmin.png',
                 'position_in_org' => 'Administrator',
                 'is_active' => true,
                 'email' => 'admin@jasform.com',
