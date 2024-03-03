@@ -66,8 +66,8 @@ export const Login = () => {
         register,
     } = useForm<LoginFormValues>({
         defaultValues: {
-            email: "angelalsmith@armyspy.com",
-            password: "JASForm12345",
+            email: "",
+            password: "",
         },
         resolver: zodResolver(loginSchema),
     });
