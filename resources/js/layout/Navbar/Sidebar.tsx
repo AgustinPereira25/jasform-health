@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { logOutUserMutation } from "../../screens/login/loginAuth";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
-import { Button, Modal, icons, LoadingOverlay } from "@/ui";
+import { Button, Modal, icons, LoadingOverlay, Tooltip } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
 import { isValidImageUrl } from "@/helpers/helpers";
@@ -231,6 +231,16 @@ export const Sidebar = ({
                     </div>
                 </div>
             </Modal>
-        </div>
+
+            <div className="fixed bottom-0 left-0 m-3">
+                <Tooltip
+                    content={"Need help? Go to Documentation"} className="text-nowrap w-64"
+                >
+                    <a href="Https://jasform.com/docs" target="_blank" rel="noopener noreferrer" title="Need help? Go to Documentation">
+                        <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
+                    </a>
+                </Tooltip>
+            </div>
+        </div >
     );
 };
