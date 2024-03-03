@@ -21,7 +21,7 @@ export const InstanceForm: React.FunctionComponent = () => {
         enabled: !!publicCode,
     });
 
-    const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 0 });
+    const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 1 });
     const FormInstance = FormInstanceScreens[currentScreen.questionType as 0 | 1 | 2 | 3 | 4 | 5 | 6];
 
     return (
@@ -37,7 +37,7 @@ export const InstanceForm: React.FunctionComponent = () => {
                             <div className="bg-white px-10 pt-10 pb-5 rounded-lg">
                                 <EmptyState message={message.INACTIVE_FORM} iconName="ExclamationCircleIcon" />
                             </div>
-                        ) : (<FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData!} />)
+                        ) : (<FormInstance currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} formInstanceInfo={formInstanceData} />)
                     }
                 </div>
             )}

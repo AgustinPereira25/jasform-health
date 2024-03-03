@@ -39,6 +39,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     const handleHomeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (formInstanceInfo.is_initial_data_required) {
+
             let firstNameError = '';
             let lastNameError = '';
             let emailError = '';
@@ -54,8 +55,10 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             } else if (!isValidEmail(email)) {
                 emailError = 'Email Address is invalid';
             }
-            setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
-            return;
+            if (firstNameError !== '' && lastNameError !== '' && emailError !== '') {
+                setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
+                return;
+            }
         }
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_first_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
