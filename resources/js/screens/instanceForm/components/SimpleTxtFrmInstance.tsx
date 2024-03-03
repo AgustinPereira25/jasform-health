@@ -51,7 +51,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id="simple-txt-container-form-div" className="bg-white p-7 border rounded-xl max-w-md">
+        <div id="simple-txt-container-form-div" className="bg-white p-7 border rounded-xl max-w-md w-[30%]">
             <div className="flex flex-col items-center justify-center gap-2">
                 <span>{`${currentQuestionInfo.title}`}</span>
                 <span>{`${currentQuestionInfo.text}`}</span>

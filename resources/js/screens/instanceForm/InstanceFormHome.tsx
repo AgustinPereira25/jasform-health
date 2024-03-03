@@ -89,7 +89,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     }
     // console.log(`${formInstanceInfo.logo}`)
     return (
-        <div className="bg-white p-8 rounded-lg w-[35%]">
+        <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
                 <img className="object-contain" src={formInstanceInfo.logo} alt="cardiology" />
                 <span className="text-2xl font-medium" style={{

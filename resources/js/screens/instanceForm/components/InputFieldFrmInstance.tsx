@@ -50,7 +50,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id="input-field-container-form-div" className="bg-white p-7 border rounded-xl max-w-md">
+        <div id="input-field-container-form-div" className="bg-white p-7 border rounded-xl max-w-md w-[30%]">
             <div className="flex flex-col items-center justify-center gap-2">
                 <span>{`${currentQuestionInfo.title}`}</span>
                 <span>{`${currentQuestionInfo.text}`}</span>
