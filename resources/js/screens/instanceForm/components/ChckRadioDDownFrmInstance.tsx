@@ -22,12 +22,17 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         setError('');
     }, [savedAnswerInput, currentScreen.currentQuestionOrder]);
 
+    useEffect(() => {
+        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+        setComboBoxItems(items);
+    }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
+
     const savedAnswerCheckedOptions = useMemo(
         () => currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [],
-        [currentScreen.currentQuestionOrder]
+        [currentScreen.currentQuestionOrder, currentState.completed_questions]
     );
 
-    // console.log('currentQuestionInfo', currentQuestionInfo)
+    console.log('currentQuestionInfo', currentQuestionInfo)
 
     const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
 
@@ -35,10 +40,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     // console.log('currentState.completed_questions', currentState.completed_questions);
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
 
-    if (questiontypeId === 5) {
-        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
-        setComboBoxItems(items);
-    }
+    // if (questiontypeId === 5) {
+    //     // const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+    //     // setComboBoxItems(items);
+    // }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (questiontypeId !== 3) { // Dropdown and Radio
@@ -49,6 +54,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             if (!error) {
 
                 let nextQuestionTypeRadio = 0;
+                let nextQuestionTypeRadioOrder = 0;
                 if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
                 {
                     const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
@@ -61,9 +67,11 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         case -1:
                             // Find next question type by increasing current order.
                             nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                            nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
                             break;
                         default:
                             nextQuestionTypeRadio = next_question!;
+                            nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.order ?? 0;
                             break;
                     }
                 }
@@ -81,13 +89,27 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
                 // TODO - Refactor this code to a function.
                 // in this function changes question order (nextQuestionTypeRadio or currentScreen.currentQuestionOrder + 1)
-                const nextQuestionOrder = (questiontypeId === 4 || questiontypeId === 5) ? formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.order : currentScreen.currentQuestionOrder + 1;
+                let nextQuestionOrder = currentScreen.currentQuestionOrder + 1;
+                if (nextQuestionTypeRadio !== 6) {
+                    nextQuestionOrder = nextQuestionTypeRadioOrder
+                }
 
                 //In this function only changes question order for finding next question type.
-                const nextQuestionType: number = (questiontypeId === 4 || questiontypeId === 5) ? formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.question_type_id ?? 6 : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                let nextQuestionType = 0;
+                switch (nextQuestionTypeRadio) {
+                    case 6:
+                        nextQuestionType = 6; // finish form isntance (radio or drop down)
+                        break;
+                    case 0: // Isnt radio or drop down (default next step)
+                        nextQuestionType = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                        break;
+                    default: // Is radio or drop down, but with next_question (not default or go to end)
+                        nextQuestionType = nextQuestionTypeRadio;
+                        break;
+                }
                 console.log('nextQuestionType', nextQuestionType)
                 console.log('nextQuestionOrder', nextQuestionOrder)
-                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: nextQuestionOrder! });
+                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: nextQuestionOrder });
             }
         }
         else { // Checkbox
@@ -112,6 +134,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const updatedState = currentState.completed_questions.filter((question) => question.order !== currentScreen.currentQuestionOrder);
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...updatedState, answer] } });
                 const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+
+                console.log('nextQuestionType', nextQuestionType);
+                console.log('nextQuestionOrder', currentScreen.currentQuestionOrder + 1);
+
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }

@@ -63,7 +63,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_first_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
 
-            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
+            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.question_type_id ?? 0;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
         }
     }
