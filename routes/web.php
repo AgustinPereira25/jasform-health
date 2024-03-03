@@ -17,8 +17,4 @@ Route::get('/test', function () {
     return 'Running ' . now();
 });
 
-Route::get('/test-repo', function () {
-    return 'Running Test 20240228 - 1029';
-});
-
 Route::get('{unknown}', fn () => view('app  '))->where('unknown', '^(?!api).*$');
