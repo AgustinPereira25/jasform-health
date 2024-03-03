@@ -31,11 +31,14 @@ class UpdateFormController
 
         sleep(1);
         $formIdToUpdate = (string) $request->id;
-
         $user_id = $request->input('user_id');
         $public_code = $request->input('public_code');
 
         $form = Form::find($formIdToUpdate);
+        Log::info('UpdateFormController-form-id: ' . $form->id);
+        Log::info('UpdateFormController-form-user_id: ' . $form->user_id);
+        Log::info('UpdateFormController-form-public_code: ' . $form->public_code);
+
         if (
             !$form
             || (string) $form->user_id !== (string) $user_id
