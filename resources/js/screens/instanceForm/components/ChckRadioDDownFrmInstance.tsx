@@ -49,7 +49,6 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             if (!error) {
 
                 let nextQuestionTypeRadio = 0;
-
                 if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
                 {
                     const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
@@ -79,8 +78,16 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = (questiontypeId === 4 || questiontypeId === 5) ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
-                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
+
+                // TODO - Refactor this code to a function.
+                // in this function changes question order (nextQuestionTypeRadio or currentScreen.currentQuestionOrder + 1)
+                const nextQuestionOrder = (questiontypeId === 4 || questiontypeId === 5) ? formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.order : currentScreen.currentQuestionOrder + 1;
+
+                //In this function only changes question order for finding next question type.
+                const nextQuestionType: number = (questiontypeId === 4 || questiontypeId === 5) ? formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.question_type_id ?? 6 : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                console.log('nextQuestionType', nextQuestionType)
+                console.log('nextQuestionOrder', nextQuestionOrder)
+                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: nextQuestionOrder! });
             }
         }
         else { // Checkbox
@@ -118,14 +125,14 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             // title:            string;
             // next_question:    number;
             // form_question_id: number;
-            const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
+            const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.title.toUpperCase() === value.toUpperCase()) ?? {} as QuestionsOption;
             if (checked) {
                 setError('');
                 // setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question!, form_question_id: option.form_question_id! }]);
                 // TODO - Check this
                 setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question! }]);
             } else {
-                setCheckedAnswers(checkedAnswers.filter((answer) => answer.order !== Number(value)));
+                setCheckedAnswers(checkedAnswers.filter((answer) => answer.title.toUpperCase() !== value.toUpperCase()));
             }
         } else {
             setAnswerInput(value);
@@ -138,25 +145,25 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     }
 
     return (
-        <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl">
+        <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl max-w-md">
             <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
             <form id="chck-radio-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
-                <div className="flex flex-col pt-6 pb-20 gap-4">
+                <div className="flex flex-col pt-6 pb-20 gap-6">
 
                     {
                         questiontypeId === 3 ? (
                             <>
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
-                                        <div key={option.order} className="flex items-center gap-3">
+                                        <div key={option.title} className="flex items-center gap-3">
                                             <Input
                                                 compact
                                                 type="checkbox"
                                                 name={option.title}
                                                 id={`chck-radio-answer-checkbox-${option.id}`}
-                                                value={option.order}
+                                                value={option.title}
                                                 onChange={handleChange}
-                                                checked={checkedAnswers.some((answer) => answer.order === option.order)}
+                                                checked={checkedAnswers.some((answer) => answer.title === option.title)}
                                             />
                                             <label htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
                                         </div>
@@ -170,7 +177,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                             <>
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
-                                        <div key={option.order} className="flex items-center gap-3">
+                                        <div key={option.title} className="flex items-center gap-5">
                                             <Input
                                                 compact
                                                 type="radio"
@@ -199,7 +206,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         )
                     }
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-8">
                     <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
                         backgroundColor: formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',

@@ -43,14 +43,18 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setAnswerInput(value);
+        setError('');
     }
     const handleGoBackClick = () => {
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id="input-field-container-form-div" className="bg-white p-7 border rounded-xl">
-            <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
+        <div id="input-field-container-form-div" className="bg-white p-7 border rounded-xl max-w-md">
+            <div className="flex flex-col items-center justify-center gap-2">
+                <span>{`${currentQuestionInfo.title}`}</span>
+                <span>{`${currentQuestionInfo.text}`}</span>
+            </div>
             <form id="input-field-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
                 <div className="flex flex-col pt-6 pb-20 gap-4">
                     <Input
