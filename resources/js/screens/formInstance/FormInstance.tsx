@@ -8,13 +8,13 @@ import { tw } from '@/utils'
 import { paginatorValues } from '@/constants/pagination'
 import Pagination from '@/ui/common/Pagination'
 import { getFormInstancesQuery } from '@/api/formInstance'
-import { useCompletedQuestions } from '@/stores'
+import { useCompletedQuestions, useUserStore } from '@/stores'
 
 export const FormInstance: React.FC = () => {
     const { formId } = useParams();
     const [searchParams] = useSearchParams();
     const publicCode = searchParams.get('publicCode');
-
+    const { token } = useUserStore();
     const navigate = useNavigate();
 
     const [perPage, setPerPage] = useState(5);
@@ -47,6 +47,7 @@ export const FormInstance: React.FC = () => {
     const { data, isLoading: isLoadingForms } = useQuery({
         // ...getFormInstancesQuery(perPage, currentPage, formId!, debouncedSearch.nameEmailCode, debouncedSearch.submitted_start_date, debouncedSearch.submitted_end_date),
         ...getFormInstancesQuery(perPage, currentPage, formId!),
+        enabled: !!token,
     });
     const forms = data?.data;
 

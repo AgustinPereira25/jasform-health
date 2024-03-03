@@ -34,6 +34,21 @@ class UsersSeeder extends Seeder
 
         DB::table('users')->insert([
             [
+                'first_name' => 'Admin',
+                'last_name' => 'JASForm',
+                'photo' => ' CDN PHOTO',
+                'position_in_org' => 'Administrator',
+                'is_active' => true,
+                'email' => 'admin@jasform.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('vsl34lgss4398kdfDFwf'),
+                'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0047',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'organization_id' => 1,
+                'role_id' => 1
+            ],
+            [
                 'first_name' => 'Angela',
                 'last_name' => 'Smith',
                 'photo' => 'https://static01.nyt.com/newsgraphics/2020/11/12/fake-people/4b806cf591a8a76adfc88d19e90c8c634345bf3d/fallbacks/mobile-06.jpg',

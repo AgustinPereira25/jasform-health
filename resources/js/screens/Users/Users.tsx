@@ -60,8 +60,13 @@ export const Users = () => {
 
     const { data, isFetching, isError, isLoading: isLoadingUsers } = useQuery({
         ...getUsersQuery(perPage, currentPage, enabledActive, enabledAdmin, debouncedSearch.nameEmail, debouncedSearch.positionOrg),
+        enabled: !!token,
     });
     const users = data?.data;
+
+    if (!token) {
+        return null;
+    }
 
     return (
         <>

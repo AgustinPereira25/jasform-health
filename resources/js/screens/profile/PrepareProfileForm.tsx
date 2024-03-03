@@ -28,7 +28,7 @@ export const PrepareProfileForm: React.FunctionComponent = () => {
     const { data: userData, isError, isLoading: isLoadingUser, isFetching } = useQuery({
         ...getUserQuery(parseInt(id!)),
         // The query will not execute until the id exists
-        enabled: !!id,
+        enabled: !!id && !!token,
     });
     user = userData!;
 

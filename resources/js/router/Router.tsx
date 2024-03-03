@@ -23,7 +23,6 @@ import { FinalStepFrmInstance } from "@/screens/instanceForm/components";
 import { MyDashboard } from "@/screens/dashboard";
 
 export const Router = () => {
-
     const location = useLocation();
     const { previousLocation } = (location.state ?? {}) as {
         previousLocation?: Location;
@@ -31,113 +30,51 @@ export const Router = () => {
 
     return (
         <>
-            {/* PUBLIC ONLY ROUTES */}
             <Routes location={previousLocation ?? location}>
+                {/* PUBLIC ONLY ROUTES */}
                 <Route element={<ProtectedRoute expected="loggedOut" />}>
                     <Route element={<Login />} path={ROUTES.login} />
                     <Route element={<Logout />} path={ROUTES.logout} />
                     <Route element={<Register />} path={ROUTES.register} />
                     <Route element={<Recover />} path={ROUTES.recover} />
-
                 </Route>
+                {/* FormInstanceLayout Routes */}
+                <Route element={<FormInstanceLayout />}>
+                    <Route element={<InstanceForm />} path={ROUTES.instanceForm} />
+                    <Route element={<FinalStepFrmInstance />} path={ROUTES.instanceFormFinished} />
+                </Route>
+
                 {/* PRIVATE ONLY ROUTES */}
-                {/* Acá es cuando el usuario ya entró entonces mostramos una Layout (seria el menu lateral azul y demas) */}
-                {/* <Route element={<ProtectedRoute expected={["admin", "standard"]} />}> */}
+                {/* <Route element={<ProtectedRoute expected={["admin", "creator", "standard"]} />}> */}
                 <Route element={<Layout />}>
                     <Route element={<Navigate to={ROUTES.home} />} path={ROUTES.base} />
-
                     {/* <Route element={<Home />} path={ROUTES.home} /> */}
-
                     <Route path={ROUTES.notFound} element={<NotFound />} />
-
+                    <Route element={<MyDashboard />} path={ROUTES.myDashboard} />
+                    <Route element={<Profile />} path={ROUTES.profile} />
+                    <Route element={<PrepareProfileForm />} path={ROUTES.editUser} />
+                    <Route element={<Forms />} path={ROUTES.myForms} />
+                    <Route element={<PrepareFormForm />} path={ROUTES.newForm} />
+                    <Route element={<PrepareFormForm />} path={ROUTES.editForm} />
+                    <Route element={<PrepareQuestionsForm />} path={ROUTES.questionsForm} />
+                    <Route element={<FormInstance />} path={ROUTES.formInstances} />
+                    <Route element={<CompletedQuestions />} path={ROUTES.completedQuestionsList} />
                 </Route>
                 {/* </Route> */}
 
                 {/* <Route element={<ProtectedRoute expected="admin" />}> */}
                 <Route element={<Layout />}>
                     <Route element={<Users />} path={ROUTES.users} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
+                    <Route element={<DeleteUserConfirm />} path={ROUTES.deleteUser} />
+                    <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />
                     <Route element={<Forms />} path={ROUTES.forms} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
                     <Route element={<Forms />} path={ROUTES.formsByUserId} />
                 </Route>
                 {/* </Route> */}
 
-                <Route element={<Layout />}>
-                    <Route element={<Forms />} path={ROUTES.myForms} />
-                </Route>
-                <Route element={<Layout />}>
-                    <Route element={<MyDashboard />} path={ROUTES.myDashboard} />
-                </Route>
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<PrepareFormForm />} path={ROUTES.newForm} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<PrepareFormForm />} path={ROUTES.editForm} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<PrepareQuestionsForm />} path={ROUTES.questionsForm} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<Profile />} path={ROUTES.profile} />
-                </Route>
-                {/* </Route> */}
-
+                {/* PRIVATE ONLY ROUTES */}
+                {/* Acá es cuando el usuario ya entró entonces mostramos una Layout (seria el menu lateral azul y demas) */}
                 {/* TODO - Do the same as here in Forms Screen(create PrepareFormForm component and use it in the routes below in order to get data before rendering the form) */}
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<PrepareProfileForm />} path={ROUTES.editUser} />
-                </Route>
-                {/* </Route> */}
-
-                <Route element={<Layout />}>
-                    <Route element={<DeleteUserConfirm />} path={ROUTES.deleteUser} />
-                </Route>
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<PrepareProfileForm />} path={ROUTES.newUser} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<FormInstance />} path={ROUTES.formInstances} />
-                </Route>
-                {/* </Route> */}
-
-                {/* <Route element={<ProtectedRoute expected="admin" />}> */}
-                <Route element={<Layout />}>
-                    <Route element={<CompletedQuestions />} path={ROUTES.completedQuestionsList} />
-                </Route>
-                {/* </Route> */}
-
-                {/* FormInstanceLayout Routes */}
-                <Route element={<FormInstanceLayout />}>
-                    <Route element={<InstanceForm />} path={ROUTES.instanceForm} />
-                </Route>
-
-                <Route element={<FormInstanceLayout />}>
-                    <Route element={<FinalStepFrmInstance />} path={ROUTES.instanceFormFinished} />
-                </Route>
             </Routes>
 
             {/* MODALS ROUTES */}
