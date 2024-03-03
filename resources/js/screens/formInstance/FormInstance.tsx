@@ -157,18 +157,19 @@ export const FormInstance: React.FC = () => {
                                 </tr>
                             )}
                             {forms?.map((item, idx) => (
-                                <tr key={item.public_code}>
+                                <tr key={item.public_code} className="font-normal">
                                     <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                         <div className="flex items-center gap-x-4">
-                                            <div className="truncate text-sm leading-6 text-black">
-                                                {`${item.completer_user_first_name} ${item.completer_user_last_name}`}
+                                            <div className="flex flex-col truncate text-sm leading-6 text-black">
+                                                <span>{`${item.completer_user_first_name} ${item.completer_user_last_name}`}</span>
+                                                <span className="text-gray-500 italic"> {item.completer_user_email}</span>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                         <div className="flex gap-x-3">
                                             <div className="truncate text-sm leading-6 text-black">
-                                                {item?.public_code}
+                                                {item?.public_code ?? 'Not Apply'}
                                             </div>
                                         </div>
                                     </td>

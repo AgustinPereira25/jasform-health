@@ -105,7 +105,7 @@ export const Forms = () => {
                         type="search"
                         id="publicCode"
                         label="Public Code"
-                        placeholder="Search by Public Code"
+                        placeholder="Public Code"
                         value={search.publicCode}
                         onChange={handleInputChange}
                     />
