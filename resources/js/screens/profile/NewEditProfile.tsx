@@ -496,7 +496,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                             </div>
                             <hr className="mx-3" />
                             {
-                                user.id && (
+                                (user.id && user.total_forms !== 0) && (
                                     <>
                                         {/* <div className="flex h-16 p-3 ">
                                     <Button variant="primary">User&apos;s Dashboard</Button>

@@ -138,7 +138,7 @@ export const FormInstance: React.FC = () => {
                                     scope="col"
                                     className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
                                 >
-                                    # QUESTIONS
+                                    # ANSWERED QUESTIONS
                                 </th>
                                 <th
                                     scope="col"
@@ -180,7 +180,7 @@ export const FormInstance: React.FC = () => {
                                         {item?.completed_questions_count}
                                     </td>
                                     <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        <icons.ChevronRightIcon className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
+                                        <icons.ChevronRightIcon color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
                                     </td>
                                 </tr>
                             ))}
