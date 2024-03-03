@@ -76,7 +76,10 @@ const formSchema = z
         pcolor: z.string(),
         scolor: z.string(),
         borderRadius: z.string(),
-        apiURL: z.string(),
+        apiURL: z.string().refine(
+            apiURL => /^(http|https):\/\/[^ "]+$/.test(apiURL),
+            { message: "Invalid URL" }
+        ),
         publicCode: z.string(),
         publishState: z.boolean(),
         enabledInitialData: z.boolean(),
