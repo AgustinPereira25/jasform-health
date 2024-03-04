@@ -73,7 +73,7 @@ export const FormInstance: React.FC = () => {
                 </span>
                 {
                     publicCode && (
-                        <span className="text-2xl text-gray-500 italic">- Form Public Code: {publicCode}</span>
+                        <span className="text-2xl text-gray-500">- Form Public Code: {publicCode}</span>
                     )
                 }
             </div>
