@@ -104,6 +104,8 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
     const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "JASForm12345" : "");
 
+    const [photoUrl, setPhotoUrl] = useState(user?.photo);
+
     const {
         register,
         handleSubmit,
@@ -260,11 +262,11 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 <span>Profile Photo</span>
                             </div>
                             <div className="flex shrink-0 overflow-hidden rounded-full">
-                                <div className="relative p-0">
+                                <div className="relative p-0 bg-gray-100">
                                     <img
-                                        src={isValidImageUrl(user?.photo ?? '') ? user?.photo : '/Profile-Hello-Smile1b.png'}
-                                        alt="user"
-                                        className="h-[120px] w-[120px]"
+                                        src={isValidImageUrl(photoUrl ?? '') ? photoUrl : '/Profile-Hello-Smile1b.png'}
+                                        alt="UserPhoto"
+                                        className="object-scale-down h-[120px] w-[120px]"
                                     />
                                 </div>
                             </div>
@@ -343,6 +345,10 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     {...register("photo")}
                                     error={errors.photo?.message}
                                     defaultValue={user?.photo}
+                                    onChange={(e) => {
+                                        setPhotoUrl(e.target.value);
+                                        void register("photo").onChange(e);
+                                    }}
                                 />
                             </div>
                         </div>

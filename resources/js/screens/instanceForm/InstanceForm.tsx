@@ -19,6 +19,7 @@ export const InstanceForm: React.FunctionComponent = () => {
         ...getFormByPublicCodeQuery(publicCode),
         // The query will not execute until the id exists
         enabled: !!publicCode,
+        refetchOnWindowFocus: false,
     });
 
     const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 1 });

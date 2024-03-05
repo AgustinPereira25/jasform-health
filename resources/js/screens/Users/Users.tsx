@@ -231,12 +231,14 @@ export const Users = () => {
                                         className="cursor-pointer hover:bg-gray-100"
                                     >
                                         <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
-                                            <div className="flex items-center gap-x-4">
-                                                <img
-                                                    src={isValidImageUrl(item?.photo ?? '') ? item?.photo : '/Profile-Hello-Smile1b.png'}
-                                                    alt={`${item.first_name} ${item.last_name}`}
-                                                    className="h-8 w-8 rounded-full bg-gray-800"
-                                                />
+                                            <div className="flex items-center gap-x-4 ">
+                                                <div className="rounded-full bg-gray-100">
+                                                    <img
+                                                        src={isValidImageUrl(item?.photo ?? '') ? item?.photo : '/Profile-Hello-Smile1b.png'}
+                                                        alt={`${item.first_name} ${item.last_name}`}
+                                                        className="object-scale-down h-8 w-8 rounded-full bg-gray-100"
+                                                    />
+                                                </div>
                                                 <div className="flex flex-col">
                                                     <div className="truncate text-sm leading-6 text-black">
                                                         {truncateText(item.first_name + " " + item.last_name, 30)}
