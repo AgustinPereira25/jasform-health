@@ -81,7 +81,41 @@ class ListUserController
         //         });
         // }
 
-        $users->orderBy('first_name');
+        $sort = $request->get('sort', 'name');
+
+        switch ($sort) {
+            case 'name':
+                $users->orderBy('first_name');
+                break;
+            case '-name':
+                $users->orderByDesc('first_name');
+                break;
+            case 'email':
+                $users->orderBy('email');
+                break;
+            case '-email':
+                $users->orderByDesc('email');
+                break;
+            case 'position':
+                $users->orderBy('position_in_org');
+                break;
+            case '-position':
+                $users->orderByDesc('position_in_org');
+                break;
+            case 'organization':
+                $users->join('organizations', 'users.organization_id', '=', 'organizations.id')
+                    ->select('users.*', 'organizations.name as organization_name')
+                    ->orderBy('organization_name');
+                break;
+            case '-organization':
+                $users->join('organizations', 'users.organization_id', '=', 'organizations.id')
+                    ->select('users.*', 'organizations.name as organization_name')
+                    ->orderByDesc('organization_name');
+                break;
+            default:
+                $users->orderBy('first_name');
+                break;
+        }
 
         $users = $users->paginate($perPage);
 
