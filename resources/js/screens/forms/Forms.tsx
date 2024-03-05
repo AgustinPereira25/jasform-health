@@ -122,25 +122,25 @@ export const Forms = () => {
                         placeholder="Public Code"
                         value={search.publicCode}
                         onChange={handleInputChange}
+                        className="h-[43px]"
                     />
                     <Input
                         type="search"
                         id="formTitle"
                         label="Title"
                         placeholder="Search by form title"
-                        className="min-w-[210px]"
+                        className="min-w-[210px] h-[43px]"
                         value={search.formTitle}
                         onChange={handleInputChange}
                     />
-                    <div className=" gap-2 items-center">
-                        <Label label={"Sort by"} />
-                        <ComboBox
-                            id="sortOptions"
-                            items={sortOptions}
-                            defaultValue={sort?.name}
-                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
-                        />
+                    {/* <div className="gap-2 items-center">
+                        <Label label={"Start date"} />
+                        <DatePickerUnit />
                     </div>
+                    <div className="gap-2 items-center">
+                        <Label label={"End date"} />
+                        <DatePickerUnit />
+                    </div> */}
                     <Switch.Group
                         as="div"
                         className="flex items-center justify-between gap-2"
@@ -171,6 +171,15 @@ export const Forms = () => {
                             />
                         </Switch>
                     </Switch.Group>
+                    <div className="ml-auto gap-2 items-center">
+                        <Label containerClassName="justify-end" label={"Sort by"} />
+                        <ComboBox
+                            id="sortOptions"
+                            items={sortOptions}
+                            defaultValue={sort?.name}
+                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
+                        />
+                    </div>
                 </div>
                 {
                     isFetchingForms ?

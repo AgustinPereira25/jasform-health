@@ -121,15 +121,6 @@ export const Users = () => {
                         value={search.positionOrg}
                         onChange={handleInputChange}
                     />
-                    <div className=" gap-2 items-center">
-                        <Label label={"Sort by"} />
-                        <ComboBox
-                            id="sortOptions"
-                            items={sortOptions}
-                            defaultValue={sort?.name}
-                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
-                        />
-                    </div>
                     <Switch.Group
                         as="div"
                         className="flex items-center justify-between gap-2"
@@ -190,6 +181,15 @@ export const Users = () => {
                             />
                         </Switch>
                     </Switch.Group>
+                    <div className="ml-auto gap-2 items-center">
+                        <Label containerClassName="justify-end" label={"Sort by"} />
+                        <ComboBox
+                            id="sortOptions"
+                            items={sortOptions}
+                            defaultValue={sort?.name}
+                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
+                        />
+                    </div>
                 </div>
                 {isFetching ? (
                     <TableSkeleton />
