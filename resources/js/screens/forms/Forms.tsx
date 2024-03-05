@@ -9,13 +9,28 @@ import { useUserStore } from "@/stores";
 import { getFormsQuery } from "@/api";
 import { message } from "@/constants/message";
 import { ROUTES } from "@/router";
-import { Button, icons, Input } from "@/ui";
+import { Button, icons, Input, Label } from "@/ui";
 import { tw } from "@/utils";
 import Pagination from "@/ui/common/Pagination";
 import { paginatorValues } from "@/constants/pagination";
 import EmptyState from "@/ui/common/EmptyState";
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import { parseDate } from "@/helpers/helpers";
+import type { Option } from "@/ui/form/Combobox";
+import ComboBox from "@/ui/form/Combobox";
+
+const sortOptions: Option[] = [
+    { id: 0, name: "Public code AZ", value: "publicCode" },
+    { id: 1, name: "Public code ZA", value: "-publicCode" },
+    { id: 2, name: "Title AZ", value: "title" },
+    { id: 3, name: "Title ZA", value: "-title" },
+    { id: 4, name: "Last modified date ASC", value: "lastModifiedDate" },
+    { id: 5, name: "Last modified date DESC", value: "-lastModifiedDate" },
+    { id: 6, name: "Questions amount ASC", value: "questionsAmount" },
+    { id: 7, name: "Questions amount DESC", value: "-questionsAmount" },
+    { id: 8, name: "Instances amount ASC", value: "instancesAmount" },
+    { id: 9, name: "Instances amount DESC", value: "-instancesAmount" },
+];
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -64,13 +79,21 @@ export const Forms = () => {
         });
     };
 
+    const [sort, setSort] = useState(sortOptions[5]);
+    const handleComboboxChange = useCallback((selectedOptionId: number) => {
+        const selectedOption = sortOptions.find(option => option.id === selectedOptionId);
+        if (selectedOption) {
+            setSort(selectedOption);
+        }
+    }, []);
+
     const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     const [enabledActive, setEnabledActive] = useState(false);
 
     const { data, isLoading: isLoadingForms, isFetching: isFetchingForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.publicCode),
+        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.publicCode, sort?.value ?? "lastModifiedDate"),
         enabled: !!token,
     });
 
@@ -109,6 +132,15 @@ export const Forms = () => {
                         value={search.formTitle}
                         onChange={handleInputChange}
                     />
+                    <div className=" gap-2 items-center">
+                        <Label label={"Sort by"} />
+                        <ComboBox
+                            id="sortOptions"
+                            items={sortOptions}
+                            defaultValue={sort?.name}
+                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
+                        />
+                    </div>
                     <Switch.Group
                         as="div"
                         className="flex items-center justify-between gap-2"

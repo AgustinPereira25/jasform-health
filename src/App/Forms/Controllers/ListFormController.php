@@ -45,8 +45,8 @@ class ListFormController
 
         $forms = QueryBuilder::for(Form::class)
             ->withCount('form_instances')
-            ->withCount('form_questions')
-            ->orderBy('last_modified_date_time', 'desc');
+            ->withCount('form_questions');
+        // ->orderBy('last_modified_date_time', 'desc');
 
         if ($isActive == 1) {
             $forms->where('is_active', true);
@@ -82,6 +82,48 @@ class ListFormController
             //     });
             // }
         });
+
+
+        $sort = $request->get('sort', '-lastModifiedDate');
+
+        switch ($sort) {
+            case 'publicCode':
+                $forms->orderBy('public_code');
+                break;
+            case '-publicCode':
+                $forms->orderByDesc('public_code');
+                break;
+            case 'title':
+                $forms->orderBy('name');
+                break;
+            case '-title':
+                $forms->orderByDesc('name');
+                break;
+            case 'lastModifiedDate':
+                $forms->orderBy('last_modified_date_time');
+                break;
+            case '-lastModifiedDate':
+                $forms->orderByDesc('last_modified_date_time');
+                break;
+            case 'questionsAmount':
+                $forms->orderBy('form_questions_count'); // Asegúrate de que este es el nombre correcto del contador
+                break;
+            case '-questionsAmount':
+                $forms->orderByDesc('form_questions_count'); // Asegúrate de que este es el nombre correcto del contador
+                break;
+            case 'instancesAmount':
+                $forms->orderBy('form_instances_count'); // Asegúrate de que este es el nombre correcto del contador
+                break;
+            case '-instancesAmount':
+                $forms->orderByDesc('form_instances_count'); // Asegúrate de que este es el nombre correcto del contador
+                break;
+            default:
+                $forms->orderBy('name');
+                break;
+        }
+
+
+
 
         $forms = $forms->paginate($perPage);
 

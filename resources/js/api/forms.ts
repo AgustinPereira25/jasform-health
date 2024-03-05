@@ -64,6 +64,7 @@ export const getFormsQuery = (
   userId: string,
   formTitle?: string,
   publicCode?: string,
+  sort?: string,
 ) => ({
   queryKey: [
     DOMAIN,
@@ -75,6 +76,7 @@ export const getFormsQuery = (
     userId,
     formTitle,
     publicCode,
+    sort,
   ],
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
@@ -87,6 +89,7 @@ export const getFormsQuery = (
         form_title: formTitle,
         publicCode,
         userId,
+        sort,
       },
       headers: getAuthHeaders(),
     });
