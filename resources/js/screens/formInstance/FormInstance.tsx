@@ -154,7 +154,9 @@ export const FormInstance: React.FC = () => {
                                         <th
                                             scope="col"
                                             className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                        ></th>
+                                        >
+                                            VIEW
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">

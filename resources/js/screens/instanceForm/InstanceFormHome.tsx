@@ -55,7 +55,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             } else if (!isValidEmail(email)) {
                 emailError = 'Email Address is invalid';
             }
-            if (firstNameError !== '' && lastNameError !== '' && emailError !== '') {
+            if (firstNameError !== '' || lastNameError !== '' || emailError !== '') {
                 setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
                 return;
             }

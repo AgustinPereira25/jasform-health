@@ -336,7 +336,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                                                 />
                                             </Switch>
                                         </Switch.Group>
-                                        <span className={classNames(enabledIsMandatory ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledIsMandatory ? 'Active' : 'Inactive'}</span>
+                                        <span className={classNames(enabledIsMandatory ? 'text-[#065F46]' : 'text-red-600', 'w-16')}>{enabledIsMandatory ? 'Yes' : 'No'}</span>
                                     </div>
                                 </div>
                             )
