@@ -19,7 +19,7 @@ export const FormInstance: React.FC = () => {
     const { token } = useUserStore();
     const navigate = useNavigate();
 
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     //TODO - Make the filters work
@@ -214,8 +214,7 @@ export const FormInstance: React.FC = () => {
                                 )}
                         </div>
                     )
-                };
-
+                }
             </div>
             <div className="h-[100px]"></div>
         </div>

@@ -1,6 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
+
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 
@@ -80,8 +81,8 @@ export const getFormsQuery = (
 
     const response = await privateAPI.get<ServiceResponse<Form[]>>("forms", {
       params: {
-        per_page: perPage,
-        page: currentPage,
+        perPage: perPage,
+        currentPage: currentPage,
         isActive: isActive ? "1" : "0",
         form_title: formTitle,
         publicCode,

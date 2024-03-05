@@ -6,10 +6,12 @@ use App\Forms\Request\StoreFormRequest;
 use App\Forms\Transformers\FormTransformer;
 use Domain\Forms\Actions\StoreFormAction;
 use Domain\Users\Models\User;
+use Domain\Forms\Models\Form;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class StoreFormController
 {
@@ -36,7 +38,11 @@ class StoreFormController
                 ->respond(JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $publicCode = Str::random(6);
+        $faker = Faker::create();
+        do {
+            $publicCode = implode($faker->randomElements(array_merge(range('A', 'Z')), 6));
+        } while (Form::where('public_code', $publicCode)->exists());
+
         $now = Carbon::now()->toDateTimeString();
 
         $formDto = $request->toDto()
@@ -44,13 +50,6 @@ class StoreFormController
             ->withCreationDateTime($now)
             ->withLastModifiedDateTime($now);
         $form = $storeFormAction->execute($formDto);
-
-        $formId = $form->id;
-        $firstPartPublicCode = substr($publicCode, 0, 10);
-        $secondPartPublicCode = substr($publicCode, 10);
-        $newPublicCode = $firstPartPublicCode . $formId . $secondPartPublicCode;
-        $form->public_code = $newPublicCode;
-        $form->save();
 
         return responder()
             ->success($form, FormTransformer::class)

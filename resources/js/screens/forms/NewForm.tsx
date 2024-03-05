@@ -427,6 +427,30 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
+
+                            <div className={tw(
+                                'flex p-3 h-16',
+                                errors.finalTxt && 'pb-5'
+                            )}
+                            >
+                                <div className="flex w-40">
+                                    <span>Final Text*</span>
+                                </div>
+                                <div className="flex grow">
+                                    <Input
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        type="text"
+                                        id="finalTxt"
+                                        placeholder="Enter Final Text"
+                                        {...register("finalTxt")}
+                                        error={errors.finalTxt?.message}
+                                        // value={passwordInput}
+                                        defaultValue={form?.final_text}
+                                    />
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
                             <div className={tw(
                                 'flex p-3 h-20',
                                 errors.logo && 'pb-5'
@@ -446,29 +470,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         error={errors.logo?.message}
                                         // value={passwordInput}
                                         defaultValue={form?.logo}
-                                    />
-                                </div>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className={tw(
-                                'flex p-3 h-16',
-                                errors.finalTxt && 'pb-5'
-                            )}
-                            >
-                                <div className="flex w-40">
-                                    <span>Final Text</span>
-                                </div>
-                                <div className="flex grow">
-                                    <Input
-                                        containerClassName="w-full"
-                                        fullHeight
-                                        type="text"
-                                        id="finalTxt"
-                                        placeholder="Enter Final Text"
-                                        {...register("finalTxt")}
-                                        error={errors.finalTxt?.message}
-                                        // value={passwordInput}
-                                        defaultValue={form?.final_text}
                                     />
                                 </div>
                             </div>

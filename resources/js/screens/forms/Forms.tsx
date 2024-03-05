@@ -64,7 +64,7 @@ export const Forms = () => {
         });
     };
 
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     const [enabledActive, setEnabledActive] = useState(false);

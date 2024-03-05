@@ -67,7 +67,7 @@ export const TextArea = forwardRef(
                 />
                 {!!right && (
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                        <IconWrapper size="sm" className="text-gray-400 bg-gray-50 h-5 w-5">
+                        <IconWrapper size="sm" className="text-gray-400 h-5 w-5">
                             {right}
                         </IconWrapper>
                     </div>
