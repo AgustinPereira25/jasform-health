@@ -94,19 +94,19 @@ export const Forms = () => {
                 <div className="flex gap-5">
                     <Input
                         type="search"
+                        id="publicCode"
+                        label="Public Code"
+                        placeholder="Public Code"
+                        value={search.publicCode}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="search"
                         id="formTitle"
                         label="Title"
                         placeholder="Search by form title"
                         className="min-w-[210px]"
                         value={search.formTitle}
-                        onChange={handleInputChange}
-                    />
-                    <Input
-                        type="search"
-                        id="publicCode"
-                        label="Public Code"
-                        placeholder="Public Code"
-                        value={search.publicCode}
                         onChange={handleInputChange}
                     />
                     <Switch.Group
@@ -205,7 +205,9 @@ export const Forms = () => {
                                             <th
                                                 scope="col"
                                                 className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                            ></th>
+                                            >
+                                                EDIT
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
