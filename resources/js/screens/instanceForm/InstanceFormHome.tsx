@@ -5,7 +5,7 @@ import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
-import { isValidEmail, isValidImageUrl } from '@/helpers/helpers';
+import { getColorContrast, isValidEmail, isValidImageUrl } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const [searchParams] = useSearchParams();
@@ -153,7 +153,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                                 backgroundColor: formInstanceInfo.primary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'white',
+                                color: getColorContrast(formInstanceInfo.primary_color),
                             }}
                         >
                             Complete the form

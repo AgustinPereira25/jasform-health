@@ -5,6 +5,7 @@ import { useFormInstance } from '@/stores/useFormInstance';
 import { Button } from '@/ui'
 import type { InstanceProps } from './FormInstanceScreens';
 import type { Question } from '@/api';
+import { getColorContrast } from '@/helpers/helpers';
 
 export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -53,7 +54,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                         backgroundColor: formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                        color: getColorContrast(formInstanceInfo.secondary_color),
                         // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                     }}
                 >
@@ -67,7 +68,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                         backgroundColor: formInstanceInfo.primary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'white',
+                        color: getColorContrast(formInstanceInfo.primary_color),
                     }}
                     onClick={handleNextQuestionButton}
                 >

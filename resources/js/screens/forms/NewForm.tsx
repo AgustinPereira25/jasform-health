@@ -18,7 +18,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { isValidImageUrl, parseDate } from '@/helpers/helpers'
+import { getColorContrast, isValidImageUrl, parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -548,8 +548,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     />
                                     <Button aria-label="Primary color picker" ref={primaryWrapperRef} style={{
                                         backgroundColor: primaryColor,
-                                        color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
-                                        borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                                        color: getColorContrast(primaryColor),
+                                        borderColor: getColorContrast(primaryColor),
                                     }}
                                         onClick={() => setShowPrimaryColorPicker(true)}
                                     >
@@ -590,8 +590,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     />
                                     <Button aria-label="Secondary color picker" ref={secondaryWrapperRef} style={{
                                         backgroundColor: secondaryColor,
-                                        color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") ? 'black' : 'white',
-                                        borderColor: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#fff") ? 'black' : 'white',
+                                        color: getColorContrast(secondaryColor),
+                                        borderColor: getColorContrast(secondaryColor),
                                     }}
                                         onClick={() => setShowSecondaryColorPicker(true)}
                                     >

@@ -52,3 +52,8 @@ export function isValidEmail(email: string) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
+
+export function getColorContrast(color = '') {
+  const darkColors = ['#6', '#8', '#9', '#b', '#e', '#6f', '#c', '#d', '#a', '#f'];
+  return darkColors.some(prefix => color.startsWith(prefix)) ? 'black' : 'white';
+}
