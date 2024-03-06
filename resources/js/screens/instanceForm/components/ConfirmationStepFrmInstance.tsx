@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, LoadingOverlay, icons } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
-import type { IHttpResponseError, Question } from '@/api';
+import type { IHttpResponseError } from '@/api';
 import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
 import { ROUTES } from '@/router';
@@ -36,8 +36,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
     }
 
     const handleGoCompletedQuestionClick = (gridSelectedQuestionTypeId: number, gridSelectedQuestionOrder: number) => {
-        const gridSelectedQuestion: Question = formInstanceInfo.form_questions?.find((question) => question.order === gridSelectedQuestionOrder) ?? {} as Question;
-        setCurrentScreen({ questionType: gridSelectedQuestion.question_type_id, currentQuestionOrder: gridSelectedQuestion.order });
+        setCurrentScreen({ questionType: gridSelectedQuestionTypeId, currentQuestionOrder: gridSelectedQuestionOrder });
     }
 
     const queryClient = useQueryClient();
