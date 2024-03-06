@@ -11,6 +11,7 @@ import { getFormInstancesQuery } from '@/api/formInstance'
 import { useCompletedQuestions, useUserStore } from '@/stores'
 import EmptyState from '@/ui/common/EmptyState'
 import { message } from '@/constants/message'
+import { truncateText } from '@/helpers/helpers'
 
 export const FormInstance: React.FC = () => {
     const { formId } = useParams();
@@ -174,8 +175,8 @@ export const FormInstance: React.FC = () => {
                                             <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                                 <div className="flex items-center gap-x-4">
                                                     <div className="flex flex-col truncate text-sm leading-6 text-black">
-                                                        <span>{`${item.completer_user_first_name} ${item.completer_user_last_name}`}</span>
-                                                        <span className="text-gray-500 italic"> {item.completer_user_email}</span>
+                                                        <span>{truncateText(`${item.completer_user_first_name} ${item.completer_user_last_name}`, 30)}</span>
+                                                        <span className="text-gray-500 italic"> {truncateText(item.completer_user_email, 30)}</span>
                                                     </div>
                                                 </div>
                                             </td>
