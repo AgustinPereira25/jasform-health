@@ -208,10 +208,10 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         setQuestions(updatedQuestions ?? []);
     }
     return (
-        <div className="flex flex-col pt-3">
+        <div className="flex flex-col">
             <div className="flex flex-col gap-3 py-4">
-                <div className="flex gap-2">
-                    <span className="shrink-0 w-[100px]">Title</span>
+                <div className="flex flex-col gap-3 md:flex-row">
+                    <span className="shrink-0 w-28">Title</span>
                     <Input
                         containerClassName="w-full"
                         // fullHeight
@@ -223,8 +223,8 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                         onChange={(event) => handleChange(event)}
                     />
                 </div>
-                <div className="flex gap-2">
-                    <span className="shrink-0 w-[100px]">Text to show</span>
+                <div className="flex flex-col gap-3 md:flex-row pt-1">
+                    <span className="shrink-0 w-28">Text to Show</span>
                     <Input
                         containerClassName="w-full"
                         fullHeight

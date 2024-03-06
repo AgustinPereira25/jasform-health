@@ -47,8 +47,8 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
 
     return (
         <div className="flex flex-col py-4">
-            <div className="flex gap-3">
-                <span className="shrink-0">Title</span>
+            <div className="flex flex-col gap-3 md:flex-row">
+                <span className="shrink-0 w-28">Title</span>
                 <Input
                     containerClassName="w-full"
                     // fullHeight
@@ -61,8 +61,8 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
                 />
             </div>
             <hr />
-            <div className="flex gap-3 py-4">
-                <span className="shrink-0">Text to Show</span>
+            <div className="flex flex-col gap-3 py-4 md:flex-row">
+                <span className="shrink-0 w-28">Text to Show</span>
                 <Input
                     containerClassName="w-full"
                     fullHeight
