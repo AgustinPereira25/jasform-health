@@ -538,7 +538,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     />
                                     <Button ref={primaryWrapperRef} style={{
                                         backgroundColor: primaryColor,
-                                        color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
+                                        color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") || primaryColor === '#aabbcc' ? 'black' : 'white',
                                         borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                                     }}
                                         onClick={() => setShowPrimaryColorPicker(true)}
@@ -579,7 +579,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     />
                                     <Button ref={secondaryWrapperRef} style={{
                                         backgroundColor: secondaryColor,
-                                        color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") ? 'black' : 'white',
+                                        color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") || secondaryColor === '#aabbcc' ? 'black' : 'white',
                                         borderColor: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#fff") ? 'black' : 'white',
                                     }}
                                         onClick={() => setShowSecondaryColorPicker(true)}

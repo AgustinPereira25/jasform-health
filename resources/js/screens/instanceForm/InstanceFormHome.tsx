@@ -97,7 +97,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                     color: formInstanceInfo.primary_color ?? '#407EC9',
                 }}>{formInstanceInfo.welcome_text}</span>
                 <div className="p-4 w-full">
-                    <span className="italic">{formInstanceInfo.description}</span>
+                    <span className="break-words italic">{formInstanceInfo.description}</span>
                 </div>
             </div>
             <form

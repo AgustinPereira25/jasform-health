@@ -91,7 +91,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             <div id="final-step-container-form-div" className="bg-white p-7 border rounded-xl flex flex-col justify-between items-center max-w-[650px] h-full max-h-[650px] gap-3">
                 <span className="text-2xl font-semibold">About to submit the form</span>
                 <div className="flex flex-col gap-3">
-                    <span className="text-lg font-light text break-words">Your answers will be sent to your relevant health center.</span>
+                    <span className="text-lg font-light text break-words">{formInstanceInfo.final_text}</span>
                     <span className="text-lg font-light text break-words">Click in &ldquo;Finish & Send&ldquo; button to complete and send the form.</span>
                 </div>
 

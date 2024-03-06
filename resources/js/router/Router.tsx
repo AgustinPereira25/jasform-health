@@ -42,7 +42,7 @@ export const Router = () => {
                 </Route>
                 {/* FormInstanceLayout Routes */}
                 <Route element={<FormInstanceLayout />}>
-                    <Route element={<InstanceForm />} path={ROUTES.instanceForm} />
+                    <Route element={<InstanceForm />} path={ROUTES.instanceForm || ROUTES.instanceFormFinished} />
                     <Route element={<FinalStepFrmInstance />} path={ROUTES.instanceFormFinished} />
                 </Route>
 
