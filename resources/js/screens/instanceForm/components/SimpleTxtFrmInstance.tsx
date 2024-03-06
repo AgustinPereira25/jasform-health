@@ -20,7 +20,15 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
             question_type_id: currentQuestionInfo.question_type_id,
             question_type_name: currentQuestionInfo.question_type_name,
         };
-        useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
+        if (!currentState.completed_questions.find((question) => question.order === answer.order)) {
+            useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
+        }
+        else {
+            if (currentState.completed_questions.find((question) => question.order === answer.order)?.answer !== answer.answer) {
+                const newCompletedQuestions = currentState.completed_questions.map((question) => question.order === answer.order ? answer : question);
+                useFormInstance.setState({ formInstance: { ...currentState, completed_questions: newCompletedQuestions } });
+            }
+        }
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
     }

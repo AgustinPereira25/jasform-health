@@ -14,4 +14,5 @@ export const message = {
     "The form is currently inactive. Please contact the Form administrator.",
   INVALID_PUBLIC_CODE:
     "The code provided is not valid. Verify the web address, try another one or please contact the Form administrator.",
+  MODAL_DELETE_ALL_NEXT_QUESTIONS: "Are you sure you want to change your answer? This action will delete all next question's answers.",
 } as const;

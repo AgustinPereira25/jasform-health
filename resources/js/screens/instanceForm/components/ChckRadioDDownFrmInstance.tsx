@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { Button, Input } from '@/ui'
+import { Button, Input, Modal } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
 import type { InstanceProps } from './FormInstanceScreens';
 import type { CompletedQuestion, CompleterUserAnswerCheckedOption } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { Question, QuestionsOption } from '@/api';
+import { message } from '@/constants/message';
 
 export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -16,6 +17,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     const savedAnswerInput = currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.answer ?? '';
     const [answerInput, setAnswerInput] = useState<string>(savedAnswerInput);
+
+    const [valueInput, setValueInput] = useState<string>('');
+
+    const [showDeletionModal, setShowDeletionModal] = useState(false);
+    const handleCloseDeletionModal = () => {
+        setShowDeletionModal(false);
+    };
 
     useEffect(() => {
         setAnswerInput(savedAnswerInput);
@@ -46,6 +54,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     // }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const currentState = useFormInstance.getState().formInstance!;
         if (questiontypeId !== 3) { // Dropdown and Radio
             if (currentQuestionInfo.is_mandatory && !answerInput) {
                 setError('Answer is mandatory');
@@ -90,8 +99,15 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
-                useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-
+                if (!currentState.completed_questions.find((question) => question.order === answer.order)) {
+                    useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
+                }
+                else {
+                    if (currentState.completed_questions.find((question) => question.order === answer.order)?.answer !== answer.answer) {
+                        const newCompletedQuestions = currentState.completed_questions.map((question) => question.order === answer.order ? answer : question);
+                        useFormInstance.setState({ formInstance: { ...currentState, completed_questions: newCompletedQuestions } });
+                    }
+                }
                 // TODO - Refactor this code to a function.
                 // in this function changes question order (nextQuestionTypeRadio or currentScreen.currentQuestionOrder + 1)
                 let nextQuestionOrder = currentScreen.currentQuestionOrder + 1;
@@ -135,11 +151,21 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                     completer_user_answer_checked_options: checkedAnswers,
                 };
+                if (!currentState.completed_questions.find((question) => question.order === answer.order)) {
+                    useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
+                }
+                else {
+                    if (currentState.completed_questions.find((question) => question.order === answer.order)?.completer_user_answer_checked_options !== answer.completer_user_answer_checked_options) {
+                        const newCompletedQuestions = currentState.completed_questions.map((question) => question.order === answer.order ? answer : question);
+                        useFormInstance.setState({ formInstance: { ...currentState, completed_questions: newCompletedQuestions } });
+                    }
+                }
+                // TODO - Test checkbox option and Radio button
                 // Check if there is an answer for the current question
-                const updatedState = currentState.completed_questions.filter((question) => question.order !== currentScreen.currentQuestionOrder);
-                useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...updatedState, answer] } });
-                const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                // const updatedState = currentState.completed_questions.filter((question) => question.order !== currentScreen.currentQuestionOrder);
+                // useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...updatedState, answer] } });
 
+                const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
                 console.log('nextQuestionType', nextQuestionType);
                 console.log('nextQuestionOrder', currentScreen.currentQuestionOrder + 1);
 
@@ -166,9 +192,28 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setCheckedAnswers(checkedAnswers.filter((answer) => answer.title.toUpperCase() !== value.toUpperCase()));
             }
         } else {
-            setAnswerInput(value);
-            setError('');
+            if (answerInput !== value && answerInput) {
+                const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
+                const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === value)?.next_question;
+
+                if (nextQuestionAnswerInput !== nextQuestionValue) {
+                    // Show modal to confirm answer change
+                    setShowDeletionModal(true);
+                    setValueInput(value);
+                    setError('');
+                }
+            } else {
+                setAnswerInput(value);
+                setError('');
+            }
         }
+    }
+    const handleDelete = () => {
+        setAnswerInput(valueInput);
+        const updatedState = currentState.completed_questions.slice(0, currentQuestionInfo.order - 1);
+        console.log('updatedState', updatedState);
+        useFormInstance.setState({ formInstance: { ...currentState, completed_questions: updatedState } });
+        setShowDeletionModal(false);
     }
     const handleGoBackClick = () => {
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
@@ -181,6 +226,25 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 <span>{`${currentQuestionInfo.title}`}</span>
                 <span>{`${currentQuestionInfo.text}`}</span>
             </div>
+            <Modal
+                show={showDeletionModal}
+                title="Confirm answer change"
+                description={message.MODAL_DELETE_ALL_NEXT_QUESTIONS}
+                onClose={handleCloseDeletionModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-row gap-4 h-16 p-3">
+                            <Button variant="secondary" onClick={handleCloseDeletionModal} >
+                                Cancel
+                            </Button>
+                            <Button variant="tertiary" onClick={handleDelete} >
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
             <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow" onSubmit={handleSubmit}>
                 <div className="flex flex-col pt-3 pb-3 gap-4">
 
