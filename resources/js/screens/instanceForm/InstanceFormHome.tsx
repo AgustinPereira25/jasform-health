@@ -5,7 +5,7 @@ import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
-import { isValidEmail } from '@/helpers/helpers';
+import { isValidEmail, isValidImageUrl } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const [searchParams] = useSearchParams();
@@ -92,7 +92,11 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     return (
         <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
-                <img className="object-contain" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
+                {
+                    isValidImageUrl(formInstanceInfo.logo ?? '') && (
+                        <img className="object-contain" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
+                    )
+                }
                 <span className="text-2xl font-medium" style={{
                     color: formInstanceInfo.primary_color ?? '#407EC9',
                 }}>{formInstanceInfo.welcome_text}</span>
