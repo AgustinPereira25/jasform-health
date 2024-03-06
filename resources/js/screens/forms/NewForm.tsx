@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button, Input, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
@@ -17,7 +18,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { isURL, parseDate } from '@/helpers/helpers'
+import { isValidImageUrl, parseDate } from '@/helpers/helpers'
 
 interface NewFormProps {
     initialData: Form;
@@ -72,10 +73,22 @@ const formSchema = z
                 message: "Invalid logo URL"
             }),
         finalTxt: z.string(),
-        pcolor: z.string(),
-        scolor: z.string(),
-        borderRadius: z.string(),
-        apiURL: z.string(),
+        pcolor: z.string().refine(
+            pcolor => pcolor === '' || /^#[0-9A-Fa-f]{6}$/.test(pcolor),
+            { message: "Invalid primary color" }
+        ),
+        scolor: z.string().refine(
+            scolor => scolor === '' || /^#[0-9A-Fa-f]{6}$/.test(scolor),
+            { message: "Invalid secondary color" }
+        ),
+        borderRadius: z.string().refine(
+            borderRadius => borderRadius === '' || /^(\d+|\d+\.\d+)(px|%)?$/.test(borderRadius),
+            { message: "Invalid border radius" }
+        ),
+        apiURL: z.string().refine(
+            apiURL => apiURL === '' || /^(http|https):\/\/[^ "]+$/.test(apiURL),
+            { message: "Invalid URL" }
+        ),
         publicCode: z.string(),
         publishState: z.boolean(),
         enabledInitialData: z.boolean(),
@@ -97,6 +110,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     if (user) {
         userId = user.id!;
     }
+
+    const [logoUrl, setLogoUrl] = useState(form?.logo);
+
     const {
         register,
         handleSubmit,
@@ -120,6 +136,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             enabledInitialData: form.is_initial_data_required ?? false,
             enabledLinkResponsesUser: form.is_user_responses_linked ?? false,
         },
+        resolver: zodResolver(formSchema),
     });
 
     const queryClient = useQueryClient();
@@ -171,18 +188,18 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const onSubmit = (data: NewForm) => {
         // console.log(data);
-        if (data.logo !== '') {
-            if (!isURL(data.logo!)) {
-                setError("logo", { message: "Invalid logo URL" });
-                return;
-            }
-        }
-        if (data.apiURL !== '') {
-            if (!isURL(data.apiURL!)) {
-                setError("apiURL", { message: "Invalid api URL" });
-                return;
-            }
-        }
+        // if (data.logo !== '') {
+        //     if (!isURL(data.logo!)) {
+        //         setError("logo", { message: "Invalid logo URL" });
+        //         return;
+        //     }
+        // }
+        // if (data.apiURL !== '') {
+        //     if (!isURL(data.apiURL!)) {
+        //         setError("apiURL", { message: "Invalid api URL" });
+        //         return;
+        //     }
+        // }
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
@@ -344,6 +361,21 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
                     <div className="flex gap-6 shrink-0">
                         <div className="w-full">
+                            <div className="flex h-36 p-3">
+                                <div className="flex w-40 shrink-0">
+                                    <span>Form Logo</span>
+                                </div>
+                                <div className="flex shrink-0 overflow-hidden rounded-lg">
+                                    <div className="relative p-0">
+                                        <img
+                                            src={isValidImageUrl(logoUrl ?? '') ? logoUrl : '/LogoPlaceHolder.png'}
+                                            alt="user"
+                                            className="object-scale-down h-[90%] w-[80%]"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
                             <div className={tw(
                                 'flex p-3 h-16',
                                 errors.name && 'pb-5'
@@ -391,7 +423,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             </div>
                             <hr className="mx-3" />
                             <div className={tw(
-                                'flex p-3 h-16',
+                                'flex p-3 h-24',
                                 errors.description && 'pb-5'
                             )}
                             >
@@ -399,7 +431,17 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <span>Description*</span>
                                 </div>
                                 <div className="flex grow">
-                                    <Input
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="description"
+                                        placeholder="Enter Description"
+                                        {...register("description")}
+                                        error={errors.description?.message}
+                                        defaultValue={''}
+                                    />
+                                    {/* <Input
                                         containerClassName="w-full"
                                         fullHeight
                                         type="text"
@@ -409,7 +451,41 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         error={errors.description?.message}
                                         //value={passwordInput}
                                         defaultValue={''}
+                                    /> */}
+                                </div>
+                            </div>
+                            <hr className="mx-3" />
+
+                            <div className={tw(
+                                'flex p-3 h-20',
+                                errors.finalTxt && 'pb-5'
+                            )}
+                            >
+                                <div className="flex w-40 h-">
+                                    <span>Final Text*</span>
+                                </div>
+                                <div className="flex grow">
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="finalTxt"
+                                        placeholder="Enter Final Text"
+                                        {...register("finalTxt")}
+                                        error={errors.finalTxt?.message}
+                                        defaultValue={''}
                                     />
+                                    {/* <Input
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        type="text"
+                                        id="finalTxt"
+                                        placeholder="Enter Final Text"
+                                        {...register("finalTxt")}
+                                        error={errors.finalTxt?.message}
+                                        // value={passwordInput}
+                                        defaultValue={form?.final_text}
+                                    /> */}
                                 </div>
                             </div>
                             <hr className="mx-3" />
@@ -430,31 +506,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         placeholder="Enter Logo URL"
                                         {...register("logo")}
                                         error={errors.logo?.message}
-                                        // value={passwordInput}
                                         defaultValue={form?.logo}
-                                    />
-                                </div>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className={tw(
-                                'flex p-3 h-16',
-                                errors.finalTxt && 'pb-5'
-                            )}
-                            >
-                                <div className="flex w-40">
-                                    <span>Final Text</span>
-                                </div>
-                                <div className="flex grow">
-                                    <Input
-                                        containerClassName="w-full"
-                                        fullHeight
-                                        type="text"
-                                        id="finalTxt"
-                                        placeholder="Enter Final Text"
-                                        {...register("finalTxt")}
-                                        error={errors.finalTxt?.message}
-                                        // value={passwordInput}
-                                        defaultValue={form?.final_text}
+                                        onChange={(e) => {
+                                            setLogoUrl(e.target.value);
+                                            void register("logo").onChange(e);
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -475,8 +531,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="pcolor"
                                         placeholder="Primary Color"
                                         {...register("pcolor")}
-                                        // {...register("pcolor")}
-                                        // error={errors.pcolor?.message}
+                                        error={errors.pcolor?.message}
                                         defaultValue={primaryColor}
                                         // value={primaryColor}
                                         onChange={(e) => setPrimaryColor(e.target.value)}
@@ -517,7 +572,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         id="scolor"
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
-                                        // error={errors.pcolor?.message}
+                                        error={errors.scolor?.message}
                                         defaultValue={secondaryColor}
                                         //value={secondaryColor}
                                         onChange={(e) => setSecondaryColor(e.target.value)}
@@ -554,11 +609,11 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <Input
                                         containerClassName="w-full"
                                         fullHeight
-                                        type="number"
+                                        type="text"
                                         id="borderRadius"
                                         placeholder="Border Radius"
                                         {...register("borderRadius")}
-                                        // error={errors.organization?.message}
+                                        error={errors.borderRadius?.message}
                                         // value={passwordInput}
                                         defaultValue={''}
                                     />

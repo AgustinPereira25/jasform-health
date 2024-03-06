@@ -10,14 +10,14 @@ export const FinalStepFrmInstance: React.FC = () => {
     return (
         <>
             <div id="final-step-container-form-div" className="bg-white p-10 border rounded-xl flex flex-col justify-between items-center max-w-screen-sm h-full max-h-[430px] gap-7">
-                <span className="text-3xl font-semibold">Gracias por completar este formulario</span>
+                <span className="text-3xl font-semibold">Thank you for complete this form.</span>
                 <div className="flex flex-col gap-5 w-[70%]">
-                    <span className="text-xl font-light text break-words">Tus respuestas fueron enviadas correctamente.</span>
-                    <span className="text-xl font-light text break-words">Puedes cerrar esta ventana con el botón de abajo.</span>
+                    <span className="text-xl font-light text break-words">Your answers were correctly sent.</span>
+                    <span className="text-xl font-light text break-words">You can close this window with the button below.</span>
                 </div>
                 <div className="flex flex-col gap-7 items-center">
                     <div>
-                        <Button onClick={handleFinishClick} variant="secondary" type="button" id="final-step-close-window-btn">Cerrar esta ventana</Button>
+                        <Button onClick={handleFinishClick} variant="secondary" type="button" id="final-step-close-window-btn">Close this window</Button>
                     </div>
                 </div>
             </div>

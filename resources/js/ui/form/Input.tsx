@@ -100,7 +100,7 @@ export const Input = forwardRef(
 
                     {!!right && (
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <IconWrapper size="sm" className="text-gray-400 bg-gray-50 h-5 w-5">
+                            <IconWrapper size="sm" className="text-gray-400 h-5 w-5">
                                 {right}
                             </IconWrapper>
                         </div>
@@ -113,7 +113,7 @@ export const Input = forwardRef(
                             tabIndex={0}
                             role="button"
                         >
-                            <IconWrapper size="sm" className="text-gray-500 bg-gray-50 h-5 w-5">
+                            <IconWrapper size="sm" className="text-gray-500 h-5 w-5">
                                 {isPasswordVisible ? <icons.EyeSlashIcon /> : <icons.EyeIcon />}
                                 {/* <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} /> */}
                             </IconWrapper>

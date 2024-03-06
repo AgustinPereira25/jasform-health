@@ -55,7 +55,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             } else if (!isValidEmail(email)) {
                 emailError = 'Email Address is invalid';
             }
-            if (firstNameError !== '' && lastNameError !== '' && emailError !== '') {
+            if (firstNameError !== '' || lastNameError !== '' || emailError !== '') {
                 setErrors({ firstName: firstNameError, lastName: lastNameError, email: emailError })
                 return;
             }
@@ -63,7 +63,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         if (errors.firstName === '' && errors.lastName === '' && errors.email === '') {
             useFormInstance.setState({ formInstance: { ...currentState, completer_user_first_name: firstName, completer_user_last_name: lastName, completer_user_email: email } });
 
-            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 0;
+            const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.question_type_id ?? 0;
             setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: 1 });
         }
     }
@@ -88,8 +88,9 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
     }
     // console.log(`${formInstanceInfo.logo}`)
+    {/* <div className="bg-white p-8 rounded-lg max-w-[650px] h-full max-h-[650px] gap-3"> */ }
     return (
-        <div className="bg-white p-8 rounded-lg w-[35%]">
+        <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
                 <img className="object-contain" src={formInstanceInfo.logo} alt="cardiology" />
                 <span className="text-2xl font-medium" style={{

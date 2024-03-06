@@ -6,6 +6,7 @@ export const ROUTES = {
   recover: "/recover",
   logout: "/logout",
   home: "/home",
+  publicCode: "/publicCode",
   users: "/users",
   myForms: "/my-forms",
   forms: "/forms",

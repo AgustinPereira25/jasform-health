@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 import { paginatorValues } from "../../constants/pagination";
 import { getUsersQuery } from "@/api";
 import { ROUTES } from "@/router";
-import { Button, icons, Input } from "@/ui";
+import { Button, icons, Input, Label } from "@/ui";
 import { tw } from "@/utils";
 import { isValidImageUrl } from "@/helpers/helpers";
 import Pagination from "@/ui/common/Pagination";
@@ -16,6 +16,20 @@ import EmptyState from "@/ui/common/EmptyState";
 import { message } from "@/constants/message";
 import { truncateText } from "@/helpers/helpers";
 import { useUserStore } from "@/stores";
+import type { Option } from "@/ui/form/Combobox";
+import ComboBox from "@/ui/form/Combobox";
+
+const sortOptions: Option[] = [
+    { id: 0, name: "Name AZ", value: "name" },
+    { id: 1, name: "Name ZA", value: "-name" },
+    { id: 2, name: "Email AZ", value: "email" },
+    { id: 3, name: "Email ZA", value: "-email" },
+    { id: 4, name: "Position AZ", value: "position" },
+    { id: 5, name: "Position ZA", value: "-position" },
+    { id: 6, name: "Organization AZ", value: "organization" },
+    { id: 7, name: "Organization ZA", value: "-organization" },
+];
+
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
@@ -30,6 +44,14 @@ export const Users = () => {
     useEffect(() => {
         if (!token) {
             navigate(ROUTES.login);
+        }
+    }, []);
+
+    const [sort, setSort] = useState(sortOptions[0]);
+    const handleComboboxChange = useCallback((selectedOptionId: number) => {
+        const selectedOption = sortOptions.find(option => option.id === selectedOptionId);
+        if (selectedOption) {
+            setSort(selectedOption);
         }
     }, []);
 
@@ -52,16 +74,21 @@ export const Users = () => {
         });
     };
 
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     const [enabledActive, setEnabledActive] = useState(false);
     const [enabledAdmin, setEnabledAdmin] = useState(false);
 
     const { data, isFetching, isError, isLoading: isLoadingUsers } = useQuery({
-        ...getUsersQuery(perPage, currentPage, enabledActive, enabledAdmin, debouncedSearch.nameEmail, debouncedSearch.positionOrg),
+        ...getUsersQuery(perPage, currentPage, enabledActive, enabledAdmin, debouncedSearch.nameEmail, debouncedSearch.positionOrg, sort?.value ?? "name"),
+        enabled: !!token,
     });
     const users = data?.data;
+
+    if (!token) {
+        return null;
+    }
 
     return (
         <>
@@ -154,6 +181,15 @@ export const Users = () => {
                             />
                         </Switch>
                     </Switch.Group>
+                    <div className="ml-auto gap-2 items-center">
+                        <Label containerClassName="justify-end" label={"Sort by"} />
+                        <ComboBox
+                            id="sortOptions"
+                            items={sortOptions}
+                            defaultValue={sort?.name}
+                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
+                        />
+                    </div>
                 </div>
                 {isFetching ? (
                     <TableSkeleton />
@@ -226,12 +262,14 @@ export const Users = () => {
                                         className="cursor-pointer hover:bg-gray-100"
                                     >
                                         <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
-                                            <div className="flex items-center gap-x-4">
-                                                <img
-                                                    src={isValidImageUrl(item?.photo ?? '') ? item?.photo : '/Profile-Hello-Smile1b.png'}
-                                                    alt={`${item.first_name} ${item.last_name}`}
-                                                    className="h-8 w-8 rounded-full bg-gray-800"
-                                                />
+                                            <div className="flex items-center gap-x-4 ">
+                                                <div className="rounded-full bg-gray-100">
+                                                    <img
+                                                        src={isValidImageUrl(item?.photo ?? '') ? item?.photo : '/Profile-Hello-Smile1b.png'}
+                                                        alt={`${item.first_name} ${item.last_name}`}
+                                                        className="object-scale-down h-8 w-8 rounded-full bg-gray-100"
+                                                    />
+                                                </div>
                                                 <div className="flex flex-col">
                                                     <div className="truncate text-sm leading-6 text-black">
                                                         {truncateText(item.first_name + " " + item.last_name, 30)}

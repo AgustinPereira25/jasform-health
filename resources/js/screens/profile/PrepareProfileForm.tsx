@@ -28,7 +28,8 @@ export const PrepareProfileForm: React.FunctionComponent = () => {
     const { data: userData, isError, isLoading: isLoadingUser, isFetching } = useQuery({
         ...getUserQuery(parseInt(id!)),
         // The query will not execute until the id exists
-        enabled: !!id,
+        enabled: !!id && !!token,
+        refetchOnWindowFocus: false,
     });
     user = userData!;
 
@@ -55,7 +56,7 @@ export const PrepareProfileForm: React.FunctionComponent = () => {
                         </div>
                     </div>
                     <EmptyState
-                        message={message.EMPTY_STATE_ENTITY}
+                        message={message.ERROR_STATE}
                         iconName="ArchiveBoxXMarkIcon"
                     />
                 </>

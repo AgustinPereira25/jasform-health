@@ -9,13 +9,28 @@ import { useUserStore } from "@/stores";
 import { getFormsQuery } from "@/api";
 import { message } from "@/constants/message";
 import { ROUTES } from "@/router";
-import { Button, icons, Input } from "@/ui";
+import { Button, icons, Input, Label } from "@/ui";
 import { tw } from "@/utils";
 import Pagination from "@/ui/common/Pagination";
 import { paginatorValues } from "@/constants/pagination";
 import EmptyState from "@/ui/common/EmptyState";
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import { parseDate } from "@/helpers/helpers";
+import type { Option } from "@/ui/form/Combobox";
+import ComboBox from "@/ui/form/Combobox";
+
+const sortOptions: Option[] = [
+    { id: 0, name: "Public code AZ", value: "publicCode" },
+    { id: 1, name: "Public code ZA", value: "-publicCode" },
+    { id: 2, name: "Title AZ", value: "title" },
+    { id: 3, name: "Title ZA", value: "-title" },
+    { id: 4, name: "Last modified date ASC", value: "lastModifiedDate" },
+    { id: 5, name: "Last modified date DESC", value: "-lastModifiedDate" },
+    { id: 6, name: "Questions amount ASC", value: "questionsAmount" },
+    { id: 7, name: "Questions amount DESC", value: "-questionsAmount" },
+    { id: 8, name: "Instances amount ASC", value: "instancesAmount" },
+    { id: 9, name: "Instances amount DESC", value: "-instancesAmount" },
+];
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -64,13 +79,22 @@ export const Forms = () => {
         });
     };
 
-    const [perPage, setPerPage] = useState(5);
+    const [sort, setSort] = useState(sortOptions[5]);
+    const handleComboboxChange = useCallback((selectedOptionId: number) => {
+        const selectedOption = sortOptions.find(option => option.id === selectedOptionId);
+        if (selectedOption) {
+            setSort(selectedOption);
+        }
+    }, []);
+
+    const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     const [enabledActive, setEnabledActive] = useState(false);
 
     const { data, isLoading: isLoadingForms, isFetching: isFetchingForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.publicCode)
+        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.publicCode, sort?.value ?? "lastModifiedDate"),
+        enabled: !!token,
     });
 
     const forms = data?.data;
@@ -93,21 +117,30 @@ export const Forms = () => {
                 <div className="flex gap-5">
                     <Input
                         type="search"
-                        id="formTitle"
-                        label="Title"
-                        placeholder="Search by form title"
-                        className="min-w-[210px]"
-                        value={search.formTitle}
+                        id="publicCode"
+                        label="Public Code"
+                        placeholder="Public Code"
+                        value={search.publicCode}
                         onChange={handleInputChange}
+                        className="h-[43px]"
                     />
                     <Input
                         type="search"
-                        id="publicCode"
-                        label="Public Code"
-                        placeholder="Search by Public Code"
-                        value={search.publicCode}
+                        id="formTitle"
+                        label="Title"
+                        placeholder="Search by form title"
+                        className="min-w-[210px] h-[43px]"
+                        value={search.formTitle}
                         onChange={handleInputChange}
                     />
+                    {/* <div className="gap-2 items-center">
+                        <Label label={"Start date"} />
+                        <DatePickerUnit />
+                    </div>
+                    <div className="gap-2 items-center">
+                        <Label label={"End date"} />
+                        <DatePickerUnit />
+                    </div> */}
                     <Switch.Group
                         as="div"
                         className="flex items-center justify-between gap-2"
@@ -138,6 +171,15 @@ export const Forms = () => {
                             />
                         </Switch>
                     </Switch.Group>
+                    <div className="ml-auto gap-2 items-center">
+                        <Label containerClassName="justify-end" label={"Sort by"} />
+                        <ComboBox
+                            id="sortOptions"
+                            items={sortOptions}
+                            defaultValue={sort?.name}
+                            onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
+                        />
+                    </div>
                 </div>
                 {
                     isFetchingForms ?
@@ -204,7 +246,9 @@ export const Forms = () => {
                                             <th
                                                 scope="col"
                                                 className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                            ></th>
+                                            >
+                                                EDIT
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">

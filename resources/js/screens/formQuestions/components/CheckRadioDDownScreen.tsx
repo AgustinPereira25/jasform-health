@@ -25,7 +25,9 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     // console.log(formQuestions)
 
     const getLastQuestionOrder = (questionsOption: QuestionsOption[]) => {
-        return Object.values(questionsOption).pop()?.order ?? 1;
+        // return order of last element of questionsOption array
+        const lastQuestion = questionsOption.slice(-1)[0]?.order ?? 0;
+        return lastQuestion;
     };
 
     const transformedSteps: ComboBoxOptions[] = formQuestions ? formQuestions.map((item) => ({ id: item.order, name: item.title })) : [];
@@ -38,14 +40,18 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     const [questionsOption, setQuestionsOption] = useState<QuestionsOption[]>(currentFormQuestionOptionsList ?? []);
     const [newInput, setNewInput] = useState('');
     const [isInputEmpty, setIsInputEmpty] = useState(false);
-    const [questionToShow, setQuestionToShow] = useState(currentFormQuestion?.title ?? '');
+
+    //Inputs for text and title
+    const [title, setTitle] = React.useState(currentFormQuestion?.title ?? '');
+    const [textToShow, setTextToShow] = useState(currentFormQuestion?.text ?? '');
 
     // Add default options to the list on the top of the list
     transformedSteps.unshift({ id: -1, name: 'Default Next Question' });
     transformedSteps.push({ id: 0, name: 'Go To End' });
 
     useEffect(() => {
-        setQuestionToShow(currentFormQuestion!.title ?? '');
+        setTitle(currentFormQuestion!.title ?? '');
+        setTextToShow(currentFormQuestion!.text ?? '');
     }, [currentQuestionOrder]);
 
     const getQuestionTypeName = (questionTypeId: number) => {
@@ -62,13 +68,12 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         const lastQuestionOrder = getLastQuestionOrder(questionsOption);
         if (comboBoxOption === 'Radio Button' || comboBoxOption === 'Drop Down Combo') {
             // TODO - change form question id
-            const newElement: QuestionsOption = { order: lastQuestionOrder, title: input, next_question: newQuestionType.id };
+            const newElement: QuestionsOption = { order: lastQuestionOrder + 1, title: input, next_question: newQuestionType.id };
             setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
-                    question.text = question.title;
                     return {
                         ...question,
                         question_options: [...questionsOption, newElement],
@@ -79,14 +84,13 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
             setQuestions(updatedQuestions ?? []);
             setNewQuestionType(transformedSteps[0]!);
         } else {
-            const newElement = { order: lastQuestionOrder, title: input, next_question: null };
+            const newElement = { order: lastQuestionOrder + 1, title: input, next_question: null };
             // setQuestionsOption([...questionsOption, newElement]);
             setNewInput('');
             // Update the formQuestions general state
             const updatedQuestions = formQuestions?.map((question) => {
                 if (question.order === currentQuestionOrder) {
                     const newQuestionOptions = question.question_options!.map((item) => (delete item.id, { ...item, next_question: null }));
-                    question.text = question.title;
                     setQuestionsOption([...newQuestionOptions, newElement]);
                     return {
                         ...question,
@@ -185,12 +189,18 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setQuestionToShow(event.target.value);
+        const { id, value } = event.target;
+        console.log(id, value);
+        if (id === 'title') {
+            setTitle(value);
+        } else if (id === 'text') {
+            setTextToShow(value);
+        }
         const updatedQuestions = formQuestions?.map((question) => {
             if (question.order === currentQuestionOrder) {
                 return {
                     ...question,
-                    title: event.target.value,
+                    [id]: value,
                 };
             }
             return question;
@@ -199,18 +209,33 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     }
     return (
         <div className="flex flex-col pt-3">
-            <div className="flex gap-3">
-                <span className="shrink-0">Question to show</span>
-                <Input
-                    containerClassName="w-full"
-                    // fullHeight
-                    type="text"
-                    id="question_to_show"
-                    placeholder="Question to Show"
-                    // error={errors.firstName?.message}
-                    value={questionToShow}
-                    onChange={(event) => handleChange(event)}
-                />
+            <div className="flex flex-col gap-3 py-4">
+                <div className="flex gap-2">
+                    <span className="shrink-0 w-[100px]">Title</span>
+                    <Input
+                        containerClassName="w-full"
+                        // fullHeight
+                        type="text"
+                        id="title"
+                        placeholder="Title"
+                        // value={passwordInput}
+                        value={title}
+                        onChange={(event) => handleChange(event)}
+                    />
+                </div>
+                <div className="flex gap-2">
+                    <span className="shrink-0 w-[100px]">Text to show</span>
+                    <Input
+                        containerClassName="w-full"
+                        fullHeight
+                        type="text"
+                        id="text"
+                        placeholder="Text to Show"
+                        // error={errors.firstName?.message}
+                        value={textToShow}
+                        onChange={(event) => handleChange(event)}
+                    />
+                </div>
             </div>
             <hr />
             <div className="flex flex-col py-4">

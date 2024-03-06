@@ -70,7 +70,7 @@ export const CompletedQuestions: React.FC = () => {
                         </thead>
                         <tbody className="divide-y divide-white/5">
                             {completed_questions?.map((item, idx) => (
-                                <tr key={item.id}>
+                                <tr key={item.id} className="font-normal">
                                     <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                         <div className="flex items-center gap-x-4">
                                             <div className="truncate text-sm leading-6 text-black">

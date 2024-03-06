@@ -22,12 +22,17 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         setError('');
     }, [savedAnswerInput, currentScreen.currentQuestionOrder]);
 
+    useEffect(() => {
+        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+        setComboBoxItems(items);
+    }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
+
     const savedAnswerCheckedOptions = useMemo(
         () => currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [],
-        [currentScreen.currentQuestionOrder]
+        [currentScreen.currentQuestionOrder, currentState.completed_questions]
     );
 
-    // console.log('currentQuestionInfo', currentQuestionInfo)
+    console.log('currentQuestionInfo', currentQuestionInfo)
 
     const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
 
@@ -35,10 +40,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     // console.log('currentState.completed_questions', currentState.completed_questions);
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
 
-    if (questiontypeId === 5) {
-        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
-        setComboBoxItems(items);
-    }
+    // if (questiontypeId === 5) {
+    //     // const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+    //     // setComboBoxItems(items);
+    // }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (questiontypeId !== 3) { // Dropdown and Radio
@@ -49,7 +54,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             if (!error) {
 
                 let nextQuestionTypeRadio = 0;
-
+                let nextQuestionTypeRadioOrder = 0;
                 if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
                 {
                     const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
@@ -62,13 +67,20 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         case -1:
                             // Find next question type by increasing current order.
                             nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                            nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
                             break;
                         default:
-                            nextQuestionTypeRadio = next_question!;
+                            nextQuestionTypeRadioOrder = next_question!; // next question order
+                            nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadioOrder)?.question_type_id ?? 6;
+                            if (nextQuestionTypeRadio === 0) {
+                                // If next question is not found because its deleted, find next question by increasing current order.
+                                nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                                nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
+                            }
                             break;
                     }
                 }
-                // console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
+                console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
@@ -79,8 +91,30 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_name: currentQuestionInfo.question_type_name,
                 };
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
-                const nextQuestionType: number = (questiontypeId === 4 || questiontypeId === 5) ? nextQuestionTypeRadio : formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
-                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
+
+                // TODO - Refactor this code to a function.
+                // in this function changes question order (nextQuestionTypeRadio or currentScreen.currentQuestionOrder + 1)
+                let nextQuestionOrder = currentScreen.currentQuestionOrder + 1;
+                if (nextQuestionTypeRadio !== 6) {
+                    nextQuestionOrder = nextQuestionTypeRadioOrder
+                }
+
+                //In this function only changes question order for finding next question type.
+                let nextQuestionType = 0;
+                switch (nextQuestionTypeRadio) {
+                    case 6:
+                        nextQuestionType = 6; // finish form isntance (radio or drop down)
+                        break;
+                    case 0: // Isnt radio or drop down (default next step)
+                        nextQuestionType = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+                        break;
+                    default: // Is radio or drop down, but with next_question (not default or go to end)
+                        nextQuestionType = nextQuestionTypeRadio;
+                        break;
+                }
+                console.log('nextQuestionType', nextQuestionType)
+                console.log('nextQuestionOrder', nextQuestionOrder)
+                setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: nextQuestionOrder });
             }
         }
         else { // Checkbox
@@ -105,6 +139,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const updatedState = currentState.completed_questions.filter((question) => question.order !== currentScreen.currentQuestionOrder);
                 useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...updatedState, answer] } });
                 const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
+
+                console.log('nextQuestionType', nextQuestionType);
+                console.log('nextQuestionOrder', currentScreen.currentQuestionOrder + 1);
+
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
         }
@@ -118,14 +156,14 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             // title:            string;
             // next_question:    number;
             // form_question_id: number;
-            const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.order === Number(value)) ?? {} as QuestionsOption;
+            const option: QuestionsOption = currentQuestionInfo.question_options?.find((option) => option.title.toUpperCase() === value.toUpperCase()) ?? {} as QuestionsOption;
             if (checked) {
                 setError('');
                 // setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question!, form_question_id: option.form_question_id! }]);
                 // TODO - Check this
                 setCheckedAnswers([...checkedAnswers, { id: option.id!, order: option.order, title: option.title, next_question: option.next_question! }]);
             } else {
-                setCheckedAnswers(checkedAnswers.filter((answer) => answer.order !== Number(value)));
+                setCheckedAnswers(checkedAnswers.filter((answer) => answer.title.toUpperCase() !== value.toUpperCase()));
             }
         } else {
             setAnswerInput(value);
@@ -138,25 +176,28 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     }
 
     return (
-        <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl">
-            <span>{`${currentQuestionInfo.title}: ${currentQuestionInfo.text}`}</span>
-            <form id="chck-radio-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
-                <div className="flex flex-col pt-6 pb-20 gap-4">
+        <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
+            <div className="flex flex-col justify-center gap-2">
+                <span>{`${currentQuestionInfo.title}`}</span>
+                <span>{`${currentQuestionInfo.text}`}</span>
+            </div>
+            <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow" onSubmit={handleSubmit}>
+                <div className="flex flex-col pt-3 pb-3 gap-4">
 
                     {
                         questiontypeId === 3 ? (
                             <>
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
-                                        <div key={option.order} className="flex items-center gap-3">
+                                        <div key={option.title} className="flex items-center gap-3">
                                             <Input
                                                 compact
                                                 type="checkbox"
                                                 name={option.title}
                                                 id={`chck-radio-answer-checkbox-${option.id}`}
-                                                value={option.order}
+                                                value={option.title}
                                                 onChange={handleChange}
-                                                checked={checkedAnswers.some((answer) => answer.order === option.order)}
+                                                checked={checkedAnswers.some((answer) => answer.title === option.title)}
                                             />
                                             <label htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
                                         </div>
@@ -170,7 +211,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                             <>
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
-                                        <div key={option.order} className="flex items-center gap-3">
+                                        <div key={option.title} className="flex items-center gap-5">
                                             <Input
                                                 compact
                                                 type="radio"
@@ -178,6 +219,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                                 id={`chck-radio-answer-radio-${option.id}`}
                                                 value={option.title}
                                                 onChange={handleChange}
+                                                checked={answerInput === option.title}
                                             />
                                             <label htmlFor={`chck-radio-answer-radio-${option.id}`}>{option.title}</label>
                                         </div>
@@ -199,7 +241,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         )
                     }
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-8">
                     <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
                         backgroundColor: formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',

@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, LoadingOverlay } from '@/ui'
+import { Button, LoadingOverlay, icons } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
-import type { IHttpResponseError } from '@/api';
+import type { IHttpResponseError, Question } from '@/api';
 import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
 import { ROUTES } from '@/router';
@@ -33,6 +33,11 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
     const handleGoBackClick = () => {
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
+    }
+
+    const handleGoCompletedQuestionClick = (gridSelectedQuestionTypeId: number, gridSelectedQuestionOrder: number) => {
+        const gridSelectedQuestion: Question = formInstanceInfo.form_questions?.find((question) => question.order === gridSelectedQuestionOrder) ?? {} as Question;
+        setCurrentScreen({ questionType: gridSelectedQuestion.question_type_id, currentQuestionOrder: gridSelectedQuestion.order });
     }
 
     const queryClient = useQueryClient();
@@ -84,25 +89,81 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             {(isPendingCreateFormInstanceMutation || isPendingCreateFormInstanceMutation) && (
                 <LoadingOverlay />
             )}
-            <div id="final-step-container-form-div" className="bg-white p-10 border rounded-xl flex flex-col justify-between items-center max-w-screen-sm h-full max-h-[430px] gap-7">
-                <span className="text-3xl font-semibold">A punto de enviar el formulario</span>
-                <div className="flex flex-col gap-5 w-[70%]">
-                    <span className="text-xl font-light text break-words">Tus respuestas serán enviadas a tu centro de salud pertinente.</span>
-                    <span className="text-xl font-light text break-words">Haz click en “Finalizar y Enviar” para completar y enviar el formulario.</span>
+            <div id="final-step-container-form-div" className="bg-white p-7 border rounded-xl flex flex-col justify-between items-center max-w-[650px] h-full max-h-[650px] gap-3">
+                <span className="text-2xl font-semibold">About to submit the form</span>
+                <div className="flex flex-col gap-3">
+                    <span className="text-lg font-light text break-words">Your answers will be sent to your relevant health center.</span>
+                    <span className="text-lg font-light text break-words">Click in &ldquo;Finish & Send&ldquo; button to complete and send the form.</span>
                 </div>
-                <div className="flex flex-col gap-7 items-center">
-                    <div>
-                        <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
-                            style={{
-                                backgroundColor: formInstanceInfo.primary_color,
-                                border: formInstanceInfo.rounded_style ? 1 : 'none',
-                                borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
-                            }}
-                        >
-                            Finalizar y Enviar
-                        </Button>
+
+                <div className="rounded-xl border-[1px] bg-white shadow-lg max-h-64 overflow-scroll">
+                    <div className="rounded-sm border-[1px] border-gray-300">
+                        <table className="whitespace-normal bg-white text-left shadow-md">
+                            <colgroup>
+                                <col className="w-1/12" />
+                                <col className="w-2/12" />
+                                <col className="w-2/12" />
+                                <col className="w-[9%]" />
+                            </colgroup>
+                            <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-xs leading-6">
+                                <tr>
+                                    <th
+                                        scope="col"
+                                        className="py-1 pl-4 pr-4 font-normal text-[#6B7280] sm:pl-6 lg:pl-6"
+                                    >
+                                        QUESTION
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden py-1 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
+                                    >
+                                        TYPE
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="py-1 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:pr-4 sm:text-left lg:pr-3"
+                                    >
+                                        ANSWER
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden py-1 pl-0 pr-4 font-normal text-[#6B7280] md:table-cell lg:pr-3"
+                                    >
+                                        GO TO
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5 text-xs">
+                                {currentState.completed_questions?.map((item) => (
+                                    <tr key={item.id} className="font-normal">
+                                        <td className="py-2 pl-4 pr-4 sm:pl-6 lg:pl-6">
+                                            <div className="flex items-center gap-x-4">
+                                                <div className="whitespace-normal leading-4 text-black">
+                                                    {item.title}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-normal py-2 pl-0 pr-4 sm:table-cell sm:pr-4">
+                                            <div className="flex gap-x-3">
+                                                <div className="whitespace-normal leading-4 text-black">
+                                                    {item.question_type_name}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-normal py-2 pl-0 pr-4 leading-4 text-[#6B7280] md:table-cell lg:pr-3">
+                                            {item.question_type_id === 3 ? item.completer_user_answer_checked_options?.map((option) => option.title).join("; ") : item.answer}
+                                        </td>
+                                        <td className="whitespace-normal max-w-fit py-2 pl-0 pr-4 leading-4 text-[#6B7280] grow sm:table-cell sm:pr-1 lg:pr-3">
+                                            <icons.ArrowRightIcon className="w-5 h-5 text-[#00519E]" onClick={() => handleGoCompletedQuestionClick(item.question_type_id, item.order)} />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
+                </div>
+
+                <div className="flex w-full gap-7 justify-between items-center pt-4">
                     <div>
                         <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
                             backgroundColor: formInstanceInfo.secondary_color,
@@ -112,7 +173,19 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                             // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                         }}
                         >
-                            Volver
+                            Go back
+                        </Button>
+                    </div>
+                    <div>
+                        <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
+                            style={{
+                                backgroundColor: formInstanceInfo.primary_color,
+                                border: formInstanceInfo.rounded_style ? 1 : 'none',
+                                borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            }}
+                        >
+                            Finish & Send
                         </Button>
                     </div>
                 </div>

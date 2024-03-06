@@ -5,15 +5,18 @@ import { useParams } from "react-router-dom";
 import { getFormQuery } from "@/api";
 import { icons } from "@/ui";
 import { QuestionsForm } from "./FormQuestions";
+import { useUserStore } from "@/stores";
 
 export const PrepareQuestionsForm: React.FunctionComponent = () => {
     const { id } = useParams();
+    const { token } = useUserStore();
+
     // const navigate = useNavigate();
     // TODO- Error handling 404, and redirect to not found page. with navigate.
     const { data: formQtsData, isLoading: isLoadingQuestsForm } = useQuery({
         ...getFormQuery(parseInt(id!)),
         // The query will not execute until the id exists
-        enabled: !!id,
+        enabled: !!id && !!token,
     });
 
     // useEffect(() => {

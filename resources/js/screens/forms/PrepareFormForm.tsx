@@ -5,9 +5,13 @@ import { useEffect } from "react";
 import type { Form } from "@/api";
 import { getFormQuery } from "@/api";
 import { NewForm } from "./NewForm";
-import { icons } from "@/ui";
+import { Button, icons } from "@/ui";
 import { useUserStore } from "@/stores";
 import { ROUTES } from "@/router";
+import { tw } from "@/utils";
+import EmptyState from "@/ui/common/EmptyState";
+import { message } from "@/constants/message";
+import FormInfoSkeleton from "@/ui/common/Skeletons/FormInfoSkeleton";
 
 export const PrepareFormForm: React.FunctionComponent = () => {
     const navigate = useNavigate();
@@ -22,10 +26,11 @@ export const PrepareFormForm: React.FunctionComponent = () => {
     // const navigate = useNavigate();
     // TODO- Error handling 404, and redirect to not found page. with navigate.
     let form: Form = {};
-    const { data: formData, isLoading: isLoadingForm } = useQuery({
+    const { data: formData, isError, isLoading: isLoadingForm, isFetching } = useQuery({
         ...getFormQuery(parseInt(id!)),
         // The query will not execute until the id exists
         enabled: !!id,
+        refetchOnWindowFocus: false,
     });
     form = formData!;
 
@@ -36,19 +41,31 @@ export const PrepareFormForm: React.FunctionComponent = () => {
     //     }
     // }
     // , [isLoadingForm]);
+
+    // return <FormInfoSkeleton />
+
     return (
         <div>
-            {isLoadingForm ? (
-                <tr className="h-full items-center">
-                    <td colSpan={5}>
-                        <div className="flex justify-center p-9">
-                            <icons.SpinnerIcon />
+            {isLoadingForm || isFetching ? (
+                <FormInfoSkeleton />
+            ) : isError ? (
+                <>
+                    <div className="flex items-center justify-between bg-white px-2 pb-4 text-base font-semibold leading-7">
+                        <div className="flex items-center">
+                            <Button variant="secondary" onClick={() => navigate(-1)}>
+                                <icons.ArrowLeftIcon className={tw(`h-5 w-5`)} />
+                                Return
+                            </Button>
                         </div>
-                    </td>
-                </tr>
-            ) : (
-                <NewForm initialData={form} />
-            )}
+                    </div>
+                    <EmptyState
+                        message={message.ERROR_STATE}
+                        iconName="ArchiveBoxXMarkIcon"
+                    />
+                </>
+            ) : <NewForm initialData={form} />
+            }
+
         </div>
     );
 }

@@ -42,6 +42,7 @@ export const getUsersQuery = (
   isAdmin: boolean,
   nameOrEmail: string,
   positionOrOrganization: string,
+  sort: string,
 ) => ({
   queryKey: [
     DOMAIN,
@@ -53,6 +54,7 @@ export const getUsersQuery = (
     isAdmin,
     nameOrEmail,
     positionOrOrganization,
+    sort,
   ],
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
@@ -65,6 +67,7 @@ export const getUsersQuery = (
         isAdmin,
         nameOrEmail,
         positionOrOrganization,
+        sort,
       },
       headers: getAuthHeaders(),
     });

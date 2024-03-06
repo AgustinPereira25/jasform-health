@@ -8,16 +8,18 @@ import { tw } from '@/utils'
 import { paginatorValues } from '@/constants/pagination'
 import Pagination from '@/ui/common/Pagination'
 import { getFormInstancesQuery } from '@/api/formInstance'
-import { useCompletedQuestions } from '@/stores'
+import { useCompletedQuestions, useUserStore } from '@/stores'
+import EmptyState from '@/ui/common/EmptyState'
+import { message } from '@/constants/message'
 
 export const FormInstance: React.FC = () => {
     const { formId } = useParams();
     const [searchParams] = useSearchParams();
     const publicCode = searchParams.get('publicCode');
-
+    const { token } = useUserStore();
     const navigate = useNavigate();
 
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     //TODO - Make the filters work
@@ -44,9 +46,10 @@ export const FormInstance: React.FC = () => {
     //     });
     // };
 
-    const { data, isLoading: isLoadingForms } = useQuery({
+    const { data, isError, isLoading: isLoadingForms } = useQuery({
         // ...getFormInstancesQuery(perPage, currentPage, formId!, debouncedSearch.nameEmailCode, debouncedSearch.submitted_start_date, debouncedSearch.submitted_end_date),
         ...getFormInstancesQuery(perPage, currentPage, formId!),
+        enabled: !!token,
     });
     const forms = data?.data;
 
@@ -72,7 +75,7 @@ export const FormInstance: React.FC = () => {
                 </span>
                 {
                     publicCode && (
-                        <span className="text-2xl text-gray-500 italic">- Form Public Code: {publicCode}</span>
+                        <span className="text-2xl text-gray-500">- Form Public Code: {publicCode}</span>
                     )
                 }
             </div>
@@ -104,100 +107,114 @@ export const FormInstance: React.FC = () => {
                         onChange={handleInputChange}
                     />
                 </div> */}
-                <div className="rounded-sm border-[1px] border-gray-300">
-                    <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
-                        <colgroup>
-                            <col className="w-full sm:w-4/12" />
-                            <col className="lg:w-4/12" />
-                            <col className="lg:w-2/12" />
-                            <col className="lg:w-1/12" />
-                            <col className="lg:w-1/12" />
-                        </colgroup>
-                        <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-sm leading-6">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
-                                >
-                                    NAME / EMAIL
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
-                                >
-                                    AUX USER CODE
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:pr-8 sm:text-left lg:pr-20"
-                                >
-                                    SUBMITTED DATE
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
-                                >
-                                    # QUESTIONS
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                ></th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/5">
-                            {isLoadingForms && (
-                                <tr className="h-full items-center">
-                                    <td colSpan={5}>
-                                        <div className="flex justify-center p-9">
-                                            <icons.SpinnerIcon />
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
-                            {forms?.map((item, idx) => (
-                                <tr key={item.public_code}>
-                                    <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
-                                        <div className="flex items-center gap-x-4">
-                                            <div className="truncate text-sm leading-6 text-black">
-                                                {`${item.completer_user_first_name} ${item.completer_user_last_name}`}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
-                                        <div className="flex gap-x-3">
-                                            <div className="truncate text-sm leading-6 text-black">
-                                                {item?.public_code}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                                        {item.final_date_time?.toString()}
-                                    </td>
-                                    <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        {item?.completed_questions_count}
-                                    </td>
-                                    <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                        <icons.ChevronRightIcon className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    {Object.keys(paginatorValues).includes(perPage.toString()) &&
-                        Number(currentPage) > 0 && (
-                            <Pagination
-                                paginatorValues={paginatorValues}
-                                totalItems={data?.pagination?.total}
-                                itemsPerPage={parseInt(perPage.toString(), 10)}
-                                currentPage={parseInt(currentPage.toString(), 10)}
-                                onPageChange={(newPerPage, newCurrentPage) => {
-                                    setPerPage(newPerPage)
-                                    setCurrentPage(newCurrentPage)
-                                }}
-                            />
-                        )}
-                </div>
+                {
+                    isError ? (
+                        <EmptyState
+                            message={message.ERROR_STATE}
+                            iconName="ArchiveBoxXMarkIcon"
+                        />
+                    ) : !forms?.length ? (
+                        <EmptyState message={message.EMPTY_STATE_WITHOUT_FILTER} iconName="PencilSquareIcon" />
+                    ) : (
+                        <div className="rounded-sm border-[1px] border-gray-300">
+                            <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
+                                <colgroup>
+                                    <col className="w-full sm:w-4/12" />
+                                    <col className="lg:w-4/12" />
+                                    <col className="lg:w-2/12" />
+                                    <col className="lg:w-1/12" />
+                                    <col className="lg:w-1/12" />
+                                </colgroup>
+                                <thead className="border-b-[1px] border-gray-300 bg-gray-200 text-sm leading-6">
+                                    <tr>
+                                        <th
+                                            scope="col"
+                                            className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
+                                        >
+                                            NAME / EMAIL
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
+                                        >
+                                            AUX USER CODE
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:pr-8 sm:text-left lg:pr-20"
+                                        >
+                                            SUBMITTED DATE
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] md:table-cell lg:pr-20"
+                                        >
+                                            # ANSWERED QUESTIONS
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                                        >
+                                            VIEW
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {isLoadingForms && (
+                                        <tr className="h-full items-center">
+                                            <td colSpan={5}>
+                                                <div className="flex justify-center p-9">
+                                                    <icons.SpinnerIcon />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    {forms?.map((item, idx) => (
+                                        <tr key={item.public_code} className="font-normal">
+                                            <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
+                                                <div className="flex items-center gap-x-4">
+                                                    <div className="flex flex-col truncate text-sm leading-6 text-black">
+                                                        <span>{`${item.completer_user_first_name} ${item.completer_user_last_name}`}</span>
+                                                        <span className="text-gray-500 italic"> {item.completer_user_email}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
+                                                <div className="flex gap-x-3">
+                                                    <div className="truncate text-sm leading-6 text-black">
+                                                        {item?.public_code ?? 'Not Apply'}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
+                                                {item.final_date_time?.toString()}
+                                            </td>
+                                            <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                                {item?.completed_questions_count}
+                                            </td>
+                                            <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                                <icons.ChevronRightIcon color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            {Object.keys(paginatorValues).includes(perPage.toString()) &&
+                                Number(currentPage) > 0 && (
+                                    <Pagination
+                                        paginatorValues={paginatorValues}
+                                        totalItems={data?.pagination?.total}
+                                        itemsPerPage={parseInt(perPage.toString(), 10)}
+                                        currentPage={parseInt(currentPage.toString(), 10)}
+                                        onPageChange={(newPerPage, newCurrentPage) => {
+                                            setPerPage(newPerPage)
+                                            setCurrentPage(newCurrentPage)
+                                        }}
+                                    />
+                                )}
+                        </div>
+                    )
+                }
             </div>
             <div className="h-[100px]"></div>
         </div>

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import { useUserStore } from "@/stores";
 import { getFormsQuery, getUserDashboard } from "@/api";
@@ -12,6 +13,7 @@ import { message } from "@/constants/message";
 import DashboardCardsSkeleton from "@/ui/common/Skeletons/DashboardCardsSkeleton";
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import CountUpStats from "./CountUpStats";
+import { PDFDashboard } from "./PDFDashboard";
 
 const enabledActive = 1;
 const perPage = 3;
@@ -48,7 +50,18 @@ export const MyDashboard = () => {
                 <h1 className="px-2 text-2xl font-semibold leading-7 flex items-center">
                     Welcome, {user.first_name} {user.last_name}
                 </h1>
-                <div className="flex items-center">
+                <div className="flex items-center gap-10">
+                    <div>
+                        <PDFDownloadLink className="text-[#00519E] font-semibold" document={<PDFDashboard data={statsData} />} fileName="PDFDashboard.pdf">
+                            {/* {({ blob, url, loading, error }) =>
+                                loading ? 'Loading document...' : 'Download report now!'
+                            } */}
+                            <Button variant="secondary" className="bg-white">
+                                <icons.DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                                Get Report
+                            </Button>
+                        </PDFDownloadLink>
+                    </div>
                     <div className="mr-4 text-right">
                         <div>{user.position_in_org} - {user.organization_name}</div>
                         <div>{user.email}</div>

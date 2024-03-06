@@ -1,6 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
+
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 
@@ -63,6 +64,7 @@ export const getFormsQuery = (
   userId: string,
   formTitle?: string,
   publicCode?: string,
+  sort?: string,
 ) => ({
   queryKey: [
     DOMAIN,
@@ -74,18 +76,21 @@ export const getFormsQuery = (
     userId,
     formTitle,
     publicCode,
+    sort,
   ],
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
 
+    sort = sort ?? "-lastModifiedDate";
     const response = await privateAPI.get<ServiceResponse<Form[]>>("forms", {
       params: {
-        per_page: perPage,
-        page: currentPage,
+        perPage: perPage,
+        currentPage: currentPage,
         isActive: isActive ? "1" : "0",
         form_title: formTitle,
         publicCode,
         userId,
+        sort,
       },
       headers: getAuthHeaders(),
     });
