@@ -81,6 +81,7 @@ export const getFormsQuery = (
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
 
+    sort = sort ?? "-lastModifiedDate";
     const response = await privateAPI.get<ServiceResponse<Form[]>>("forms", {
       params: {
         perPage: perPage,

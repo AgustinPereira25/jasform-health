@@ -12,4 +12,6 @@ export const message = {
   PAGE_NOT_FOUND: "The page you are looking for does not exist.",
   INACTIVE_FORM:
     "The form is currently inactive. Please contact the Form administrator.",
+  INVALID_PUBLIC_CODE:
+    "The code provided is not valid. Verify the web address, try another one or please contact the Form administrator.",
 } as const;

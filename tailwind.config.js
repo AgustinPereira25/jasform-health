@@ -17,6 +17,7 @@ module.exports = {
                 third: "moveInCircle 40s linear infinite",
                 fourth: "moveHorizontal 40s ease infinite",
                 fifth: "moveInCircle 20s ease infinite",
+                shimmer: "shimmer 8s linear infinite"
             },
             keyframes: {
                 moveHorizontal: {
@@ -52,6 +53,14 @@ module.exports = {
                         transform: "translateY(-50%)",
                     },
                 },
+                shimmer: {
+                    "from": {
+                        "backgroundPosition": "0 0"
+                    },
+                    "to": {
+                        "backgroundPosition": "-200% 0"
+                    }
+                }
             }
         },
     },
