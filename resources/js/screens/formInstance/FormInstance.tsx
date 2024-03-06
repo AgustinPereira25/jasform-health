@@ -67,6 +67,7 @@ export const FormInstance: React.FC = () => {
                 <Button
                     variant="secondary"
                     onClick={() => navigate(-1)}
+                    aria-label="Return"
                 >
                     <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
                     Return
@@ -194,7 +195,7 @@ export const FormInstance: React.FC = () => {
                                                 {item?.completed_questions_count}
                                             </td>
                                             <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                                <icons.ChevronRightIcon color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
+                                                <icons.ChevronRightIcon aria-label="Go completed questions" color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
                                             </td>
                                         </tr>
                                     ))}

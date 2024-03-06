@@ -304,6 +304,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         <Button
                             variant="secondary"
                             onClick={() => navigate(-1)}
+                            aria-label="Return"
                         >
                             <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
                             Return
@@ -323,6 +324,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <Button
                                     variant="secondary"
                                     onClick={handleOpenDeletionModal}
+                                    aria-label="Delete Form"
                                 >
                                     <icons.TrashIcon className={tw(`w-5 h-5`)} />
                                     Delete
@@ -334,6 +336,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <Button
                                     variant="primary"
                                     onClick={() => navigate(`/forms/${form.id}/questions`)}
+                                    aria-label="Edit Form's Questions"
                                 >
                                     <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
                                     Edit Form&apos;s Questions
@@ -343,6 +346,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         <Button
                             type="submit"
                             variant="primary"
+                            aria-label="Save Form"
                         >
                             Save
                         </Button>
@@ -369,7 +373,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <div className="relative p-0">
                                         <img
                                             src={isValidImageUrl(logoUrl ?? '') ? logoUrl : '/LogoPlaceHolder.png'}
-                                            alt="user"
+                                            alt={`${form.name}`}
                                             className="object-scale-down h-[90%] w-[80%]"
                                         />
                                     </div>
@@ -390,6 +394,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="name"
+                                        aria-label="Form Name"
                                         placeholder="Enter Form Name"
                                         {...register("name")}
                                         error={errors.name?.message}
@@ -413,6 +418,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="welcomeTxt"
+                                        aria-label="Welcome text"
                                         placeholder="Enter Welcome Text"
                                         {...register("welcomeTxt")}
                                         error={errors.welcomeTxt?.message}
@@ -436,6 +442,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         containerClassName="w-full"
                                         fullHeight
                                         id="description"
+                                        aria-label="Description"
                                         placeholder="Enter Description"
                                         {...register("description")}
                                         error={errors.description?.message}
@@ -470,6 +477,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         containerClassName="w-full"
                                         fullHeight
                                         id="finalTxt"
+                                        aria-label="Final text"
                                         placeholder="Enter Final Text"
                                         {...register("finalTxt")}
                                         error={errors.finalTxt?.message}
@@ -503,6 +511,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         containerClassName="w-full h-full"
                                         fullHeight
                                         id="logo"
+                                        aria-label="logo url"
                                         placeholder="Enter Logo URL"
                                         {...register("logo")}
                                         error={errors.logo?.message}
@@ -529,6 +538,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="pcolor"
+                                        aria-label="primary color"
                                         placeholder="Primary Color"
                                         {...register("pcolor")}
                                         error={errors.pcolor?.message}
@@ -536,9 +546,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         // value={primaryColor}
                                         onChange={(e) => setPrimaryColor(e.target.value)}
                                     />
-                                    <Button ref={primaryWrapperRef} style={{
+                                    <Button aria-label="Primary color picker" ref={primaryWrapperRef} style={{
                                         backgroundColor: primaryColor,
-                                        color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") || primaryColor === '#aabbcc' ? 'black' : 'white',
+                                        color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
                                         borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                                     }}
                                         onClick={() => setShowPrimaryColorPicker(true)}
@@ -570,6 +580,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="scolor"
+                                        aria-label="secondary color"
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
                                         error={errors.scolor?.message}
@@ -577,9 +588,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         //value={secondaryColor}
                                         onChange={(e) => setSecondaryColor(e.target.value)}
                                     />
-                                    <Button ref={secondaryWrapperRef} style={{
+                                    <Button aria-label="Secondary color picker" ref={secondaryWrapperRef} style={{
                                         backgroundColor: secondaryColor,
-                                        color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") || secondaryColor === '#aabbcc' ? 'black' : 'white',
+                                        color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") ? 'black' : 'white',
                                         borderColor: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#fff") ? 'black' : 'white',
                                     }}
                                         onClick={() => setShowSecondaryColorPicker(true)}
@@ -616,6 +627,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         error={errors.borderRadius?.message}
                                         // value={passwordInput}
                                         defaultValue={''}
+                                        aria-label="Border Radius"
                                     />
                                 </div>
                             </div>
@@ -767,6 +779,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <Button
                                     variant="primary"
                                     onClick={handlePublicLinkClick}
+                                    aria-label="Get Public Link"
                                 >
                                     <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
                                     Get Public Link with Code to Share
@@ -779,6 +792,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <Button
                                             variant="primary"
                                             onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
+                                            aria-label="View Form's Instances"
                                         >
                                             <icons.EyeIcon className={tw(`w-5 h-5`)} />
                                             View form&apos;s instances

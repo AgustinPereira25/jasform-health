@@ -181,7 +181,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                                 backgroundColor: formInstanceInfo.primary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'white',
                             }}
                         >
                             Finish & Send

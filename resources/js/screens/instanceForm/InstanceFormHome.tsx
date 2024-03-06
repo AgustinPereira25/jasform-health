@@ -92,7 +92,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     return (
         <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
-                <img className="object-contain" src={formInstanceInfo.logo} alt="cardiology" />
+                <img className="object-contain" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
                 <span className="text-2xl font-medium" style={{
                     color: formInstanceInfo.primary_color ?? '#407EC9',
                 }}>{formInstanceInfo.welcome_text}</span>
@@ -106,6 +106,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 <div className="grid">
                     {/* <div> */}
                     <Input
+                        aria-label="First Name"
                         type="text"
                         id="first_name"
                         label="First Name"
@@ -117,6 +118,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                     {/* </div> */}
                     {/* <div> */}
                     <Input
+                        aria-label="Last Name"
                         type="text"
                         id="last_name"
                         label="Last Name"
@@ -128,6 +130,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                     {/* </div> */}
                     {/* <div> */}
                     <Input
+                        aria-label="Email Address"
                         id="email"
                         label="Email Address"
                         placeholder="Email@email.com"
@@ -138,6 +141,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                     {/* </div> */}
                     <div className="pb-8">
                         <Button
+                            aria-label="Complete the form"
                             type="submit"
                             variant="primary"
                             className="flex w-full"
@@ -145,7 +149,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                                 backgroundColor: formInstanceInfo.primary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'white',
                             }}
                         >
                             Complete the form

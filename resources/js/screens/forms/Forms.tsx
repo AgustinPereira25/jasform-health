@@ -313,7 +313,7 @@ export const Forms = () => {
                   </td> */}
                                                 <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                                     <a href={`/forms/${item.id}`} className="flex justify-end">
-                                                        <icons.ChevronRightIcon className="h-6 w-6 text-primary" />
+                                                        <icons.ChevronRightIcon aria-label="Edit form" className="h-6 w-6 text-primary" />
                                                     </a>
                                                 </td>
                                             </tr>

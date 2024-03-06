@@ -17,7 +17,15 @@ export const FinalStepFrmInstance: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-7 items-center">
                     <div>
-                        <Button onClick={handleFinishClick} variant="secondary" type="button" id="final-step-close-window-btn">Close this window</Button>
+                        <Button
+                            aria-label="Close this window"
+                            onClick={handleFinishClick}
+                            variant="secondary"
+                            type="button"
+                            id="final-step-close-window-btn"
+                        >
+                            Close this window
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -235,10 +235,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 <div className="flex h-16 p-3 m-auto">
                     <div className="flex flex-col items-center justify-center">
                         <div className="flex flex-row gap-4 h-16 p-3">
-                            <Button variant="secondary" onClick={handleCloseDeletionModal} >
+                            <Button aria-label="Cancel" variant="secondary" onClick={handleCloseDeletionModal} >
                                 Cancel
                             </Button>
-                            <Button variant="tertiary" onClick={handleDelete} >
+                            <Button aria-label="Confirm" variant="tertiary" onClick={handleDelete} >
                                 Confirm
                             </Button>
                         </div>
@@ -306,27 +306,34 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     }
                 </div>
                 <div className="flex justify-between gap-8">
-                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
-                        backgroundColor: formInstanceInfo.secondary_color,
-                        border: formInstanceInfo.rounded_style ? 1 : 'none',
-                        borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
-                        // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
-                    }}
+                    <Button
+                        aria-label="Back"
+                        variant="secondary"
+                        type="button"
+                        id="goBack-answer-btn"
+                        onClick={handleGoBackClick}
+                        style={{
+                            backgroundColor: formInstanceInfo.secondary_color,
+                            border: formInstanceInfo.rounded_style ? 1 : 'none',
+                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                            color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                        }}
                     >
-                        Atrás
+                        Back
                     </Button>
                     <Button
+                        aria-label="Next"
                         type="submit"
                         id="submit-answer-btn"
                         style={{
                             backgroundColor: formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'white',
                         }}
                     >
-                        Siguiente
+                        Next
                     </Button>
                 </div>
             </form>
