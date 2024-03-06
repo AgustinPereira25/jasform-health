@@ -70,17 +70,17 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                             nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
                             break;
                         default:
-                            nextQuestionTypeRadio = next_question!;
-                            nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadio)?.order ?? 0;
-                            if (nextQuestionTypeRadioOrder === 0) {
+                            nextQuestionTypeRadioOrder = next_question!; // next question order
+                            nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === nextQuestionTypeRadioOrder)?.question_type_id ?? 6;
+                            if (nextQuestionTypeRadio === 0) {
                                 // If next question is not found because its deleted, find next question by increasing current order.
                                 nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
-                                nextQuestionTypeRadioOrder = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
+                                nextQuestionTypeRadio = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.order ?? 0;
                             }
                             break;
                     }
                 }
-                // console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
+                console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
@@ -176,13 +176,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     }
 
     return (
-        <div id="chck-radio-container-form-div" className="bg-white p-6 border rounded-xl max-w-md w-[30%]">
+        <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-center gap-2">
                 <span>{`${currentQuestionInfo.title}`}</span>
                 <span>{`${currentQuestionInfo.text}`}</span>
             </div>
-            <form id="chck-radio-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
-                <div className="flex flex-col pt-6 pb-20 gap-6">
+            <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow" onSubmit={handleSubmit}>
+                <div className="flex flex-col pt-3 pb-3 gap-4">
 
                     {
                         questiontypeId === 3 ? (

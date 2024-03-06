@@ -29,12 +29,12 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
     return (
-        <div id="simple-txt-container-form-div" className="bg-white p-7 border rounded-xl max-w-md w-[30%]">
-            <div className="flex flex-col justify-center gap-5">
+        <div id="simple-txt-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
+            <div className="flex flex-col justify-start items-start gap-4 h-full">
                 <span>{`${currentQuestionInfo.title}`}</span>
                 <span>{`${currentQuestionInfo.text}`}</span>
             </div>
-            <div className="flex justify-between pt-8">
+            <div className="flex justify-between pt-3">
                 <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
                     backgroundColor: formInstanceInfo.secondary_color,
                     border: formInstanceInfo.rounded_style ? 1 : 'none',

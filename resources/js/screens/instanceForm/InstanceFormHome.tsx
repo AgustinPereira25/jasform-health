@@ -88,6 +88,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
     }
     // console.log(`${formInstanceInfo.logo}`)
+    {/* <div className="bg-white p-8 rounded-lg max-w-[650px] h-full max-h-[650px] gap-3"> */ }
     return (
         <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
             <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">

@@ -28,13 +28,13 @@ export const InstanceForm: React.FunctionComponent = () => {
     const FormInstance = FormInstanceScreens[currentScreen.questionType as 0 | 1 | 2 | 3 | 4 | 5 | 6];
 
     return (
-        <div className="w-full">
+        <div className="w-full h-full">
             {isLoading || isFetching ? (
                 <div className="flex h-full items-center justify-center">
                     <icons.SpinnerIcon />
                 </div>
             ) : (
-                <div className="flex items-center justify-center w-full">
+                <div className="flex items-center justify-center w-full h-full">
                     {
                         !formInstanceData?.is_active ? (
                             <div className="max-w-[25%] bg-white px-10 pt-10 pb-5 rounded-lg flex flex-col justify-center">
