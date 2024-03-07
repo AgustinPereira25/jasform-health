@@ -61,8 +61,8 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     return (
         <div id="input-field-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-center gap-2">
-                <span>{`${currentQuestionInfo.title}`}</span>
-                <span>{`${currentQuestionInfo.text}`}</span>
+                <h1>{`${currentQuestionInfo.title}`}</h1>
+                <p>{`${currentQuestionInfo.text}`}</p>
             </div>
             <form id="input-field-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>
                 <div className="flex flex-col pt-6 pb-20 gap-4">

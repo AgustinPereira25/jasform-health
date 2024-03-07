@@ -8,7 +8,6 @@ import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
 import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
-import { ROUTES } from '@/router';
 import { getColorContrast } from '@/helpers/helpers';
 
 export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
@@ -20,6 +19,12 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
         if (!previewMode) {
             useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
             currentState = useFormInstance.getState().formInstance!;
+
+            // Delete flag used to determinate if a question is completed or not. (Form modal confirmation.)
+            currentState.completed_questions.forEach((question) => {
+                delete question.is_completed;
+            });
+
             console.log("currentState:", currentState);
             createFormInstanceMutation(currentState);
             if (currentState.api_url) {
@@ -72,7 +77,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             onSuccess: () => {
                 sendExternalEndpoint.invalidates(queryClient);
                 toast.success(`Form successfully sent!`);
-                navigate(ROUTES.home);
+                navigate(`/instance-form/${currentState.public_code}/finished`);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -157,7 +162,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                                             {item.question_type_id === 3 ? item.completer_user_answer_checked_options?.map((option) => option.title).join("; ") : item.answer}
                                         </td>
                                         <td className="whitespace-normal max-w-fit py-2 pl-0 pr-4 leading-4 text-[#6B7280] grow sm:table-cell sm:pr-1 lg:pr-3">
-                                            <icons.ArrowRightIcon className="w-5 h-5 text-[#00519E]" onClick={() => handleGoCompletedQuestionClick(item.question_type_id, item.order)} />
+                                            <icons.ChevronRightIcon className="w-5 h-5 text-[#00519E]" onClick={() => handleGoCompletedQuestionClick(item.question_type_id, item.order)} />
                                         </td>
                                     </tr>
                                 ))}
