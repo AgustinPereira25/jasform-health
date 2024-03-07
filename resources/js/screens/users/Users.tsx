@@ -107,7 +107,7 @@ export const Users = () => {
                         type="search"
                         id="nameEmail"
                         label="Name/Email"
-                        placeholder="Search by Name or Email"
+                        placeholder="Name or Email"
                         className="min-w-[210px]"
                         value={search.nameEmail}
                         onChange={handleInputChange}
@@ -116,7 +116,7 @@ export const Users = () => {
                         type="search"
                         id="positionOrg"
                         label="Position/Organization"
-                        placeholder="Search by Position or Organization"
+                        placeholder="Position or Organization"
                         className="min-w-[270px]"
                         value={search.positionOrg}
                         onChange={handleInputChange}
@@ -242,7 +242,7 @@ export const Users = () => {
                                         scope="col"
                                         className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
                                     >
-                                        <span className="sr-only">Action</span>
+                                        EDIT
                                     </th>
                                 </tr>
                             </thead>

@@ -128,7 +128,7 @@ export const Forms = () => {
                         type="search"
                         id="formTitle"
                         label="Title"
-                        placeholder="Search by form title"
+                        placeholder="Form title"
                         className="min-w-[210px] h-[43px]"
                         value={search.formTitle}
                         onChange={handleInputChange}
@@ -192,7 +192,7 @@ export const Forms = () => {
                             <div className="rounded-lg borderborder-gray-300">
                                 <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                                     <colgroup>
-                                        <col className="w-full sm:w-4/12" />
+                                        <col className="sm:w-2/12" />
                                         <col className="lg:w-4/12" />
                                         <col className="lg:w-2/12" />
                                         <col className="lg:w-1/12" />
@@ -203,13 +203,13 @@ export const Forms = () => {
                                         <tr>
                                             <th
                                                 scope="col"
-                                                className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
+                                                className="py-2 pl-2 pr-8 font-normal text-[#6B7280] sm:pl-4 lg:pl-5"
                                             >
                                                 PUBLIC CODE
                                             </th>
                                             <th
                                                 scope="col"
-                                                className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
+                                                className="py-2 pl-2 pr-8 font-normal text-[#6B7280] sm:pl-4 lg:pl-5"
                                             >
                                                 TITLE
                                             </th>
@@ -263,14 +263,14 @@ export const Forms = () => {
                                         )}
                                         {forms?.map((item) => (
                                             <tr key={item.id}>
-                                                <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
+                                                <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
                                                     <div className="flex items-center gap-x-4">
                                                         <div className="truncate text-sm leading-6 text-black">
-                                                            {item.public_code}
+                                                            {truncateText(item.public_code!, 6)}
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
+                                                <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
                                                     <div className="flex items-center gap-x-4">
                                                         <div className="truncate text-sm leading-6 text-black">
                                                             {truncateText(item.name!, 30)}

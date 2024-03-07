@@ -176,7 +176,13 @@ export const MyDashboard = () => {
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="py-2 pl-4 pr-8 font-normal text-[#6B7280] sm:pl-6 lg:pl-8"
+                                        className="py-2 pl-2 pr-8 font-normal text-[#6B7280] sm:pl-4 lg:pl-5"
+                                    >
+                                        PUBLIC CODE
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="py-2 pl-2 pr-8 font-normal text-[#6B7280] sm:pl-4 lg:pl-5"
                                     >
                                         TITLE
                                     </th>
@@ -204,16 +210,12 @@ export const MyDashboard = () => {
                                     >
                                         STATUS
                                     </th>
-                                    {/* <th
-                  scope="col"
-                  className="hidden py-2 pl-0 pr-4 font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                >
-                  GET LINK
-                </th> */}
                                     <th
                                         scope="col"
                                         className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
-                                    ></th>
+                                    >
+                                        EDIT
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
@@ -228,7 +230,14 @@ export const MyDashboard = () => {
                                 )}
                                 {forms?.map((item) => (
                                     <tr key={item.id}>
-                                        <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
+                                        <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
+                                            <div className="flex items-center gap-x-4">
+                                                <div className="truncate text-sm leading-6 text-black">
+                                                    {item.public_code}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
                                             <div className="flex items-center gap-x-4">
                                                 <div className="truncate text-sm leading-6 text-black">
                                                     {item.name}

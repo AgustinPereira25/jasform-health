@@ -29,6 +29,7 @@ export interface CompletedQuestion {
   question_type_name: string;
   form_id?: number;
   completer_user_answer_checked_options?: CompleterUserAnswerCheckedOption[];
+  is_completed?: boolean;
 }
 
 export interface CompleterUserAnswerCheckedOption {
