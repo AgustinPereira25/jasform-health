@@ -1,5 +1,3 @@
-"use client";
-
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { useEffect } from "react";
 

@@ -1,8 +1,7 @@
 
 import React from 'react'
 
-import { JASFormLogo } from './Logo'
-"use client";
+import { JASFormLogo } from './Logo';
 import { TypewriterEffect } from "@/ui";
 
 const HomeTextAndImage: React.FC = () => {
