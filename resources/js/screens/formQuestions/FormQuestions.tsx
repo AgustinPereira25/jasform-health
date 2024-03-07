@@ -4,24 +4,30 @@ import { Switch } from '@headlessui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { Button, LoadingOverlay, icons } from '@/ui'
+import { Button, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
-import type { IHttpResponseError } from '@/api';
+import type { Form, IHttpResponseError } from '@/api';
 import { updateFormQuestions } from '@/api'
 import type { Question } from '@/api';
 import ComboBox from '@/ui/form/Combobox'
 import { questionScreens } from './utils'
+import { FormInstanceScreens } from '../instanceForm/components'
+import type { FormInstanceFlow } from '../instanceForm'
+import type { CompletedForm } from '@/api/formInstance'
+import { useFormInstance } from '@/stores'
+import { message } from '@/constants/message'
 
 interface FormQuestionsProps {
-    initialData: Question[];
-    public_code: string | undefined;
+    initialData: Form;
 }
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQuestions = [], public_code }) => {
+export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form = {} }) => {
     const { id: formId } = useParams();
+    let formQuestions = form.form_questions ?? [];
+    const public_code = form.public_code;
     const navigate = useNavigate();
 
     // TODO- Put this in constants file
@@ -56,6 +62,14 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     const [comboBoxOption, setComboBoxOption] = useState<'Check Box' | 'Radio Button' | 'Drop Down Combo'>(getComboBoxOption(currentQuestion?.question_type_id as keyof typeof questionScreens));
     const [enabledIsMandatory, setEnabledIsMandatory] = useState<boolean>((currentQuestion?.is_mandatory ?? false) as boolean);
 
+    const [PreviewForm, setPreviewForm] = useState<Form>({} as Form);
+    const [showPreviewFormModal, setShowPreviewFormModal] = useState<boolean>(false);
+    const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 1 });
+
+    const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
+
+    const [navigateBack, setNavigateBack] = useState<boolean>(false);
+
     useEffect(() => {
         setEnabledIsMandatory(currentQuestion?.is_mandatory as boolean);
         setComboBoxOption(getComboBoxOption(currentQuestion?.question_type_id as keyof typeof questionScreens));
@@ -77,6 +91,59 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
     }
 
     const QuestionTypeScreen = questionScreens[questionTypeForm];
+
+    const FormInstance = FormInstanceScreens[currentScreen.questionType as 0 | 1 | 2 | 3 | 4 | 5 | 6];
+
+    const handlePreviewClick = () => {
+        // Clear state.
+        useFormInstance.setState({ formInstance: null });
+        // TODO - Check if this is the best way to do it.
+        const initialFormData: CompletedForm = {
+            form_id: Number(formId),
+            initial_date_time: new Date,
+            completer_user_first_name: "",
+            completer_user_last_name: "",
+            completer_user_email: "",
+            completed_questions_count: 0,
+            public_code: public_code!,
+            completed_questions: [],
+            api_url: '',
+            aux_code: '',
+        };
+        // console.log("initialFormData:", { initialFormData });
+        useFormInstance.setState({
+            formInstance: initialFormData,
+            previewMode: true,
+        })
+        const formPreviewInfo: Form = {
+            id: Number(formId),
+            public_code: public_code!,
+            name: form.name,
+            description: form.description,
+            logo: form.logo,
+            is_active: form.is_active,
+            is_initial_data_required: form.is_initial_data_required,
+            is_user_responses_linked: form.is_user_responses_linked,
+            welcome_text: form.welcome_text,
+            final_text: form.final_text,
+            primary_color: form.primary_color!,
+            secondary_color: form.secondary_color!,
+            rounded_style: form.rounded_style!,
+            form_questions: questions,
+        };
+        setPreviewForm(formPreviewInfo);
+        // Preview from current question
+        setCurrentScreen({ questionType: (currentQuestion?.question_type_id ?? 0) as 0 | 1 | 2 | 3 | 4 | 5 | 6, currentQuestionOrder: currentQuestion?.order ?? 0 });
+        setShowPreviewFormModal(true);
+
+        // if (option === 0) {
+        //     // Preview from beggining
+        //     setCurrentScreen({ questionType: (questions.shift()!.question_type_id ?? 0) as 0 | 1 | 2 | 3 | 4 | 5 | 6, currentQuestionOrder: questions.shift()!.order ?? 0 });
+        // } else {
+        // // Preview from current question
+        // setCurrentScreen({ questionType: (currentQuestion?.question_type_id ?? 0) as 0 | 1 | 2 | 3 | 4 | 5 | 6, currentQuestionOrder: currentQuestion?.order ?? 0 });
+        // }
+    }
 
     const handleComboboxChange = (id: keyof typeof questionScreens) => {
         setQuestionTypeForm(id);
@@ -142,7 +209,12 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
         }
     }
 
-    const handleSaveClick = () => {
+    const handleSaveClick = (option = 0) => {
+        if (option === 0) {
+            setNavigateBack(true);
+        } else {
+            setNavigateBack(false);
+        }
         // console.log(questions);
         const data = questions;
         data.map((question) => {
@@ -190,7 +262,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
             onSuccess: () => {
                 updateFormQuestions.invalidates(queryClient);
                 toast.success(`Form Questions for Form "${public_code}" successfully updated!`);
-                navigate(`/forms/${formId}`);
+                if (navigateBack) navigate(`/forms/${formId}`);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -206,21 +278,48 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
             },
         });
 
+    const handleClosePreviewFormModal = () => {
+        setShowPreviewFormModal(false);
+    };
+
+    const handleCloseReturnModal = () => {
+        setShowCancelModal(false);
+    }
     return (
         <>
             {(isPendingUpdateFormQuestionsMutation) && (
                 <LoadingOverlay />
             )}
             <div className="pb-6 h-[90%]">
+                <Modal
+                    className="items-center justify-center"
+                    show={showPreviewFormModal}
+                    title="Preview Form"
+                    onClose={handleClosePreviewFormModal}
+                >
+                    <FormInstance formInstanceInfo={PreviewForm} setCurrentScreen={setCurrentScreen} currentScreen={currentScreen} />
+                </Modal>
+                <Modal
+                    show={showCancelModal}
+                    title="Cancel changes"
+                    description={message.CANCEL_TEXT}
+                    onClose={handleCloseReturnModal}
+                >
+                    <div className="flex h-16 p-3 m-auto">
+                        <div className="flex flex-col items-center justify-center">
+                            <div className="flex flex-row gap-4 h-16 p-3">
+                                <Button aria-label="Cancel" variant="secondary" onClick={handleCloseReturnModal} >
+                                    Cancel
+                                </Button>
+                                <Button aria-label="Confirm" variant="tertiary" onClick={() => navigate(`/forms/${formId}`)} >
+                                    Confirm
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
                 <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
                     <div className="flex gap-1 items-center">
-                        <Button
-                            variant="secondary"
-                            onClick={() => navigate(`/forms/${formId}`)}
-                        >
-                            <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
-                            Return
-                        </Button>
                         <span className="pl-3 text-2xl text-black">
                             Form&apos;s Questions
                         </span>
@@ -232,11 +331,25 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                     </div>
                     <div className="flex gap-5">
                         <Button
+                            variant="secondary"
+                            onClick={() => setShowCancelModal(true)}
+                        >
+                            <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
+                            Cancel
+                        </Button>
+                        <Button
                             type="button"
                             variant="primary"
-                            onClick={handleSaveClick}
+                            onClick={() => handleSaveClick(1)}
                         >
-                            Save
+                            Save & Continue
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="primary"
+                            onClick={() => handleSaveClick(0)}
+                        >
+                            Save & Finish
                         </Button>
                     </div>
                 </div>
@@ -297,8 +410,17 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: formQ
                         {
                             currentQuestion && (
                                 <div className="h-full flex flex-col overflow-scroll">
-                                    <div className="flex justify-between">
-                                        <div className="flex flex-col">
+                                    <div className="flex justify-between pb-2">
+                                        <div className="flex gap-2 items-center">
+                                            <div>
+                                                <Button
+                                                    type="button"
+                                                    variant="primary"
+                                                    onClick={handlePreviewClick}
+                                                >
+                                                    Preview from question
+                                                </Button>
+                                            </div>
                                             <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
                                         </div>
                                         <div className="flex gap-2 items-center justify-end pb-2 grow">

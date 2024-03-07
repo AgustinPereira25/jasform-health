@@ -5,6 +5,7 @@ import { useFormInstance } from '@/stores/useFormInstance';
 
 export const FinalStepFrmInstance: React.FC = () => {
     const currentState = useFormInstance.getState().formInstance!;
+    const previewMode = useFormInstance.getState().previewMode ?? false;
 
     let publicCode = "0";
     if (currentState) publicCode = currentState.public_code;
@@ -12,15 +13,19 @@ export const FinalStepFrmInstance: React.FC = () => {
     const navigate = useNavigate();
 
     const handleFinishClick = () => {
-        navigate(`/instance-form/${publicCode}`);
-        // Clear state.
-        useFormInstance.setState({ formInstance: null });
+        if (!previewMode) {
+            navigate(`/instance-form/${publicCode}`);
+            // Clear state.
+            useFormInstance.setState({ formInstance: null });
+        }
     }
 
     const handleGoAnotherCodeClick = () => {
-        navigate(`/publicCode`);
-        // Clear state.
-        useFormInstance.setState({ formInstance: null });
+        if (!previewMode) {
+            navigate(`/publicCode`);
+            // Clear state.
+            useFormInstance.setState({ formInstance: null });
+        }
     }
 
     return (

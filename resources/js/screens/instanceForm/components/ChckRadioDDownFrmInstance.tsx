@@ -33,6 +33,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     useEffect(() => {
         const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+        setAnswerInput(savedAnswerInput ? savedAnswerInput : items[0]!.name);
         setComboBoxItems(items);
     }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
 
@@ -61,8 +62,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setError('Answer is mandatory');
                 return;
             }
-            if (!error) {
 
+            if (!error) {
+                console.log("entro aca")
                 let nextQuestionTypeRadio = 0;
                 let nextQuestionTypeRadioOrder = 0;
                 if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
@@ -174,7 +176,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             }
         }
     }
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, comboOptionName = '') => {
         const { value, checked } = e.target;
 
         if (questiontypeId === 3) { //CheckBox
@@ -193,19 +195,42 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setCheckedAnswers(checkedAnswers.filter((answer) => answer.title.toUpperCase() !== value.toUpperCase()));
             }
         } else {
-            if (answerInput !== value && answerInput) {
-                const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
-                const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === value)?.next_question;
+            if (comboOptionName) {
+                // DropDown Combo
+                console.log('answerInput', answerInput)
+                console.log('comboOptionName', comboOptionName)
+                if (answerInput !== comboOptionName && answerInput) {
+                    const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
+                    const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === comboOptionName)?.next_question;
 
-                if (nextQuestionAnswerInput !== nextQuestionValue) {
-                    // Show modal to confirm answer change
-                    setShowDeletionModal(true);
-                    setValueInput(value);
+                    if (nextQuestionAnswerInput !== nextQuestionValue) {
+                        // Show modal to confirm answer change
+                        setShowDeletionModal(true);
+                        setValueInput(comboOptionName);
+                        setError('');
+                    }
+                } else {
+                    setAnswerInput(comboOptionName);
                     setError('');
                 }
             } else {
-                setAnswerInput(value);
-                setError('');
+                // Radio button
+                console.log('answerInput', answerInput)
+                console.log('value', value)
+                if (answerInput !== value && answerInput) {
+                    const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
+                    const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === value)?.next_question;
+
+                    if (nextQuestionAnswerInput !== nextQuestionValue) {
+                        // Show modal to confirm answer change
+                        setShowDeletionModal(true);
+                        setValueInput(value);
+                        setError('');
+                    }
+                } else {
+                    setAnswerInput(value);
+                    setError('');
+                }
             }
         }
     }
@@ -299,9 +324,20 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                 id="chck-radio-answer-dropdown"
                                 // items={[{ id: 1, name: 'Mock Answer 1' }, { id: 2, name: 'Mock Answer 2' }, { id: 3, name: 'Mock Answer 3' }]}
                                 items={comboBoxItems}
-                                defaultValue={comboBoxItems[0]?.name}
+                                defaultValue={!answerInput ? comboBoxItems[0]?.name : answerInput}
                                 // onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
-                                onValueChange={(item) => setAnswerInput(item.name)}
+
+                                // onValueChange={(item) => setAnswerInput(item.name)}
+                                // TODO - TEST THIS IN INSTANCE FORM
+                                onValueChange={(item) => {
+                                    const event = {
+                                        target: {
+                                            name: '',
+                                            value: item.name
+                                        }
+                                    } as React.ChangeEvent<HTMLInputElement>;
+                                    handleChange(event, event.target.value);
+                                }}
                             />
                         )
                     }

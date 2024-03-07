@@ -4,6 +4,7 @@ import type { CompletedForm } from "@/api/formInstance";
 
 export interface FormInstanceState {
   formInstance: CompletedForm | null;
+  previewMode?: boolean;
   setFormInstance: (formInstance: CompletedForm | null) => void;
   clearFormInstance: () => void;
 }

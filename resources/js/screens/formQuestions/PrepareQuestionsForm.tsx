@@ -37,7 +37,9 @@ export const PrepareQuestionsForm: React.FunctionComponent = () => {
                     </td>
                 </tr>
             ) : (
-                <QuestionsForm initialData={formQtsData?.form_questions ?? []} public_code={formQtsData?.public_code} />
+                <QuestionsForm
+                    initialData={formQtsData ?? {}}
+                />
             )}
         </div>
     );

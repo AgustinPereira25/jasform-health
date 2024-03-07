@@ -28,6 +28,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         // console.log("initialFormData:", { initialFormData });
         useFormInstance.setState({
             formInstance: initialFormData,
+            previewMode: false,
         })
     }
     const [firstName, setFirstName] = useState<string>('');
@@ -90,8 +91,8 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     // console.log(`${formInstanceInfo.logo}`)
     {/* <div className="bg-white p-8 rounded-lg max-w-[650px] h-full max-h-[650px] gap-3"> */ }
     return (
-        <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
-            <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
+        <div className="bg-white p-8 rounded-lg w-full max-w-md">
+            <div className="flex flex-col justify-center items-center gap-3 pb-2 w-full">
                 {
                     isValidImageUrl(formInstanceInfo.logo ?? '') && (
                         <img className="object-contain" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
@@ -143,7 +144,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                         onChange={handleChange}
                     />
                     {/* </div> */}
-                    <div className="pb-8">
+                    <div className="">
                         <Button
                             aria-label="Complete the form"
                             type="submit"
