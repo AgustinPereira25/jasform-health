@@ -1,7 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
-
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI } from "./axios";
 
@@ -45,6 +44,7 @@ export interface Question {
   is_mandatory: boolean | 1 | 0;
   form_question_id?: number;
   form_id?: number;
+  mapping_key?: string;
   question_type_id: number;
   question_type_name: string;
   question_options?: QuestionsOption[];
