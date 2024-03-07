@@ -66,26 +66,26 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
     return (
         <div className="flex flex-col py-4">
             <div className="flex flex-col gap-3 md:flex-row">
-                <span className="shrink-0 w-28">Question to Show</span>
+                <span className="shrink-0 w-28">Title to show</span>
                 <Input
                     containerClassName="w-full"
                     // fullHeight
                     type="text"
                     id="title"
-                    placeholder="Question to Show"
+                    placeholder="Title to show"
                     value={questionToShow}
                     onChange={(event) => handleChange(event)}
                 />
             </div>
             <hr />
             <div className="flex flex-col gap-3 md:flex-row py-4">
-                <span className="shrink-0 w-28">Text to Show</span>
+                <span className="shrink-0 w-28">Text to show</span>
                 <Input
                     containerClassName="w-full"
                     fullHeight
                     type="text"
                     id="text"
-                    placeholder="Text to Show"
+                    placeholder="Text to show"
                     // error={errors.firstName?.message}
                     value={textToShow}
                     onChange={(event) => handleChange(event)}
