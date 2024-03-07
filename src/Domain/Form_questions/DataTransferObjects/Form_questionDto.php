@@ -11,6 +11,7 @@ class Form_questionDto
         private readonly string $text,
         private readonly int $order,
         private readonly int $is_mandatory,
+        private readonly string $mapping_key,
         private readonly int $form_id,
         private readonly int $question_type_id,
     ) {
@@ -34,6 +35,11 @@ class Form_questionDto
     public function getIsMandatory(): int
     {
         return $this->is_mandatory;
+    }
+
+    public function getMappingKey(): string
+    {
+        return $this->mapping_key;
     }
 
     public function getFormId(): int

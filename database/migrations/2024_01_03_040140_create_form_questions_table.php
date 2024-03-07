@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('text');
             $table->integer('order');
             $table->boolean('is_mandatory');
+            $table->string('mapping_key')->nullable();;
             $table->timestamps();
 
             $table->unsignedBigInteger('form_id');

@@ -17,6 +17,7 @@ class Form_questionTransformer extends Transformer
             'text' => (string) $form_question->text,
             'order' => (int) $form_question->order,
             'is_mandatory' => (bool) $form_question->is_mandatory,
+            'mapping_key' => (string) $form_question->mapping_key,
             'form_id' => (int) $form_question->form_id,
             'question_type_id' => (int) $form_question->question_type_id,
             'question_type_name' => $form_question->question_type->name,

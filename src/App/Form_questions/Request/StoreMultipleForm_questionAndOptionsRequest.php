@@ -19,6 +19,7 @@ class StoreMultipleForm_questionAndOptionsRequest extends FormRequest
             'form_questions.*.text' => ['required'],
             'form_questions.*.order' => ['required'],
             'form_questions.*.is_mandatory' => ['required'],
+            'form_questions.*.mapping_key' => [],
             'form_questions.*.question_type_id' => ['required'],
         ];
     }
@@ -32,6 +33,7 @@ class StoreMultipleForm_questionAndOptionsRequest extends FormRequest
                     text: $question['text'],
                     order: $question['order'],
                     is_mandatory: $question['is_mandatory'],
+                    mapping_key: $question['mapping_key'],
                     form_id: $question['form_id'],
                     question_type_id: $question['question_type_id'],
                 );
