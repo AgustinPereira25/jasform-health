@@ -18,20 +18,26 @@ class OrganizationsSeeder extends Seeder
     {
         DB::table('organizations')->insert([
             [
-                'name'=>'UDE',
-                'description'=>'Universidad de la empresa',
+                'name' => 'JASForm',
+                'description' => 'JASForm App',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name'=>'Light-it',
-                'description'=>'Healthcare software development',
+                'name' => 'UDE',
+                'description' => 'Universidad de la empresa',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name'=>'AWS',
-                'description'=>'Amazon Web Services',
+                'name' => 'Light-it',
+                'description' => 'Healthcare software development',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'name' => 'AWS',
+                'description' => 'Amazon Web Services',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

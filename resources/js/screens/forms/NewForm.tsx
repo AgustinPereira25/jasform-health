@@ -847,7 +847,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                                 onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
                                                 aria-label="View Form's Instances"
                                             >
-                                                <icons.EyeIcon className={tw(`w-5 h-5`)} />
+                                                <icons.DocumentChartBarIcon className={tw(`w-5 h-5`)} />
                                                 View form&apos;s instances
                                             </Button>
                                         </div>

@@ -103,6 +103,7 @@ class StoreForm_instanceController
                 $completedQuestionDto = new Completed_questionDto(
                     title: $question['title'],
                     answer: $answer,
+                    mapping_key: $question['mapping_key'],
                     form_instance_id: $formInstance->id,
                     question_type_id: $question['question_type_id'],
                 );
@@ -111,9 +112,6 @@ class StoreForm_instanceController
         } catch (\Exception $e) {
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-
-
 
 
         return responder()

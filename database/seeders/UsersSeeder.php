@@ -60,7 +60,7 @@ class UsersSeeder extends Seeder
                 'remember_token' => '5f4971dd-b298-43e2-852a-e59be023b210',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'organization_id' => 1,
+                'organization_id' => 2,
                 'role_id' => 1
             ],
             [
@@ -123,36 +123,36 @@ class UsersSeeder extends Seeder
                 'organization_id' => 3,
                 'role_id' => 2
             ],
-            [
-                'first_name' => 'UserTest',
-                'last_name' => 'WithOutAngPhotoLink',
-                'photo' => '',
-                'position_in_org' => 'Tax examiner',
-                'is_active' => true,
-                'email' => 'usertestwithoutphoto@dayrep.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => Hash::make('JASForm12345'),
-                'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0049',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'organization_id' => 3,
-                'role_id' => 2
-            ],
-            [
-                'first_name' => 'UserTestAngSecond',
-                'last_name' => 'WithInvalidPhotoLink',
-                'photo' => 'https://static.generated.photos/vue-static/face-generator/landing/wall/12.jpgN/A',
-                'position_in_org' => 'Tax iTexaminer',
-                'is_active' => true,
-                'email' => 'usertestwithphoto@dayrep.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => Hash::make('JASForm12345'),
-                'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0049',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'organization_id' => 3,
-                'role_id' => 1
-            ]
+            // [
+            //     'first_name' => 'UserTest',
+            //     'last_name' => 'WithOutAngPhotoLink',
+            //     'photo' => '',
+            //     'position_in_org' => 'Tax examiner',
+            //     'is_active' => true,
+            //     'email' => 'usertestwithoutphoto@dayrep.com',
+            //     'email_verified_at' => Carbon::now(),
+            //     'password' => Hash::make('JASForm12345'),
+            //     'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0049',
+            //     'created_at' => Carbon::now(),
+            //     'updated_at' => Carbon::now(),
+            //     'organization_id' => 3,
+            //     'role_id' => 2
+            // ],
+            // [
+            //     'first_name' => 'UserTestAngSecond',
+            //     'last_name' => 'WithInvalidPhotoLink',
+            //     'photo' => 'https://static.generated.photos/vue-static/face-generator/landing/wall/12.jpgN/A',
+            //     'position_in_org' => 'Tax iTexaminer',
+            //     'is_active' => true,
+            //     'email' => 'usertestwithphoto@dayrep.com',
+            //     'email_verified_at' => Carbon::now(),
+            //     'password' => Hash::make('JASForm12345'),
+            //     'remember_token' => '3bac89e9-64dc-4a46-833a-4bb3314a0049',
+            //     'created_at' => Carbon::now(),
+            //     'updated_at' => Carbon::now(),
+            //     'organization_id' => 3,
+            //     'role_id' => 1
+            // ]
         ]);
     }
 }
