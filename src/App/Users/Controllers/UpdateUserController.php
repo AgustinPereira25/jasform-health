@@ -28,10 +28,11 @@ class UpdateUserController
             }
         }
 
-
-
         sleep(1);
         $idString = (string) $request->id;
+        $user = User::find($idString);
+        $isUserEmailAdmin = $user->email === 'admin@jasform.com';
+
 
         $organizationName = $request->input(UpdateUserRequest::ORGANIZATION_NAME);
         $organization = Organization::firstOrCreate(
@@ -39,6 +40,15 @@ class UpdateUserController
             ['description' => $organizationName]
         );
         $request->merge([UpdateUserRequest::ORGANIZATION_ID => $organization->id]);
+
+        if ($isUserEmailAdmin) {
+            if ($request->input(UpdateUserRequest::ROLE_NAME) !== 'Admin') {
+                return response()->json(['error' => 'Cannot change role for this user', 'code' => 'RoleError'], 400);
+            }
+            if ($request->input(UpdateUserRequest::IS_ACTIVE) !== '1') {
+                return response()->json(['error' => 'Cannot change status for this user', 'code' => 'StatusError'], 400);
+            }
+        }
 
         $roleName = $request->input(UpdateUserRequest::ROLE_NAME);
         $role = Role::where('name', $roleName)->first();
@@ -48,8 +58,6 @@ class UpdateUserController
         }
         $request->merge([UpdateUserRequest::ROLE_ID => $role->id]);
 
-
-        $user = User::find($idString);
 
         if ($user->email !== $request->email) {
             return response()->json(['error' => 'Id does not match with the email'], 400);

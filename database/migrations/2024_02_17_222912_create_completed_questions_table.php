@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('answer');
+            $table->string('mapping_key')->nullable();
             $table->unsignedBigInteger('form_instance_id');
             $table->unsignedBigInteger('question_type_id');
             $table->timestamps();

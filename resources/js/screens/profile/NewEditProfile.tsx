@@ -158,14 +158,13 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             onSuccess: (data) => {
                 updateUser.invalidates(queryClient);
                 toast.success(`User "${data.data.data.first_name}" successfully updated!`);
-                if (pathname.includes(ROUTES.newUser)) {
-                    navigate(ROUTES.users);
-                } else {
+                if (pathname.includes(ROUTES.profile)) {
                     if (loggedUser?.id === data.data.data.id) {
                         setUser(data.data.data);
                     }
                     navigate(ROUTES.myDashboard);
                 }
+                navigate(ROUTES.users);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -176,9 +175,23 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         toast.error(`${valArray[0]}`);
                     });
                 } else {
+                    // if (err.response?.data.code === "RoleError") {
+                    //     toast.error("There was an error trying to update the user role for ADMIN. Please try again later.");
+                    // } else {
+                    //     if (err.response?.data.code === "StatusError") {
+                    //         toast.error("There was an error trying to update the user status for ADMIN. Please try again later.");
+                    //     } else {
                     toast.error("There was an error trying to update the user. Please try again later.");
+                    //     }
+                    // }
+                    navigate(ROUTES.users);
                 }
                 handleAxiosFieldErrors(err, setError);
+                if (pathname.includes(ROUTES.profile)) {
+                    navigate(ROUTES.myDashboard);
+                } else {
+                    navigate(ROUTES.users);
+                }
             },
         });
 

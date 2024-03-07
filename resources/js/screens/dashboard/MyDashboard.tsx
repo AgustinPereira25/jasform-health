@@ -79,7 +79,7 @@ export const MyDashboard = () => {
                             >
                                 <Button
                                     variant="secondary"
-                                    className="bg-white"
+                                    className="bg-white text-primary"
                                     disabled={isFetchingDashboard || !!isErrorDashboard || isFetchingFormsReport || !!isErrorFormsReport}
                                 >
                                     <icons.DocumentArrowDownIcon className="h-5 w-5 mr-2" />

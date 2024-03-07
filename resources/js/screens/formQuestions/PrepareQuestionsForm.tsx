@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import { getFormQuery } from "@/api";
-import { icons } from "@/ui";
 import { QuestionsForm } from "./FormQuestions";
 import { useUserStore } from "@/stores";
 import FormQuestionsSkeleton from "@/ui/common/Skeletons/FormQuestionsSkeleton";

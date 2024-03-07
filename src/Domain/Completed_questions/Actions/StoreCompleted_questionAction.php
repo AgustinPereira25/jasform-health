@@ -19,6 +19,7 @@ class StoreCompleted_questionAction
         return Completed_question::create([
             'title' => $completed_questionDto->getTitle(),
             'answer' => $completed_questionDto->getAnswer(),
+            'mapping_key' => $completed_questionDto->getMappingKey(),
             'form_instance_id' => $completed_questionDto->getFormInstanceId(),
             'question_type_id' => $completed_questionDto->getQuestionTypeId(),
         ]);

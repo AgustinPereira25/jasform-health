@@ -9,6 +9,7 @@ class Completed_questionDto
     public function __construct(
         private readonly string $title,
         private readonly string $answer,
+        private readonly string $mapping_key,
         private readonly int $form_instance_id,
         private readonly int $question_type_id,
     ) {
@@ -22,6 +23,11 @@ class Completed_questionDto
     public function getAnswer(): string
     {
         return $this->answer;
+    }
+
+    public function getMappingKey(): string
+    {
+        return $this->mapping_key;
     }
 
     public function getFormInstanceId(): int

@@ -23,7 +23,11 @@ class DeleteUserController
             }
         }
 
-
+        if ($user->email == 'admin@jasform.com') {
+            return responder()
+                ->error('This user can not be deleted.')
+                ->respond();
+        }
 
         $user->delete();
 

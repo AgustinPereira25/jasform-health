@@ -11,6 +11,7 @@ class StoreCompleted_questionRequest extends FormRequest
 {
     public const TITLE = 'title';
     public const ANSWER = 'answer';
+    public const MAPPING_KEY = 'mapping_key';
     public const FORM_INSTANCE_ID = 'form_instance_id';
     public const QUESTION_TYPE_ID = 'question_type_id';
 
@@ -19,6 +20,7 @@ class StoreCompleted_questionRequest extends FormRequest
         return [
             self::TITLE => ['required'],
             self::ANSWER => ['required'],
+            self::MAPPING_KEY => [],
             self::FORM_INSTANCE_ID => ['required'],
             self::QUESTION_TYPE_ID => ['required'],
         ];
@@ -29,6 +31,7 @@ class StoreCompleted_questionRequest extends FormRequest
         return new Completed_questionDto(
             title: $this->string(self::TITLE)->toString(),
             answer: $this->string(self::ANSWER)->toString(),
+            mapping_key: $this->string(self::MAPPING_KEY)->toString(),
             form_instance_id: $this->string(self::FORM_INSTANCE_ID)->toString(),
             question_type_id: $this->string(self::QUESTION_TYPE_ID)->toString(),
         );

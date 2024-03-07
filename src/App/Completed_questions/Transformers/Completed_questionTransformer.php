@@ -15,6 +15,7 @@ class Completed_questionTransformer extends Transformer
             'id' => (int) $completed_question->id,
             'title' => (string) $completed_question->title,
             'answer' => (string) $completed_question->answer,
+            'mapping_key' => (string) $completed_question->mapping_key,
             'form_instance_id' => (int) $completed_question->form_instance_id,
             'question_type_id' => (int) $completed_question->question_type_id,
             'question_type_name' => $completed_question->question_type->name,

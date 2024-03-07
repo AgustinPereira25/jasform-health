@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int                             $id
  * @property string                          $title
  * @property string                          $answer
+ * @property string                          $mapping_key
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $form_instance_id
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereUpdatedAt($value)
  * @property-read Form_instance $form_instance
  * @property-read Question_type $question_type
+ * @method static \Illuminate\Database\Eloquent\Builder|Completed_question whereMappingKey($value)
  * @mixin \Eloquent
  */
 
@@ -37,6 +39,7 @@ class Completed_question extends Model
     protected $fillable = [
         'title',
         'answer',
+        'mapping_key',
         'form_instance_id',
         'question_type_id',
     ];
