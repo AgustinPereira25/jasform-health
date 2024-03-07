@@ -7,6 +7,7 @@ import type { CompletedQuestion, CompleterUserAnswerCheckedOption } from '@/api/
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { Question, QuestionsOption } from '@/api';
 import { message } from '@/constants/message';
+import { getColorContrast } from '@/helpers/helpers';
 
 export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -32,6 +33,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     useEffect(() => {
         const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+        setAnswerInput(savedAnswerInput ? savedAnswerInput : items[0]!.name);
         setComboBoxItems(items);
     }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
 
@@ -60,8 +62,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setError('Answer is mandatory');
                 return;
             }
-            if (!error) {
 
+            if (!error) {
+                console.log("entro aca")
                 let nextQuestionTypeRadio = 0;
                 let nextQuestionTypeRadioOrder = 0;
                 if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
@@ -173,7 +176,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
             }
         }
     }
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, comboOptionName = '') => {
         const { value, checked } = e.target;
 
         if (questiontypeId === 3) { //CheckBox
@@ -192,19 +195,42 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 setCheckedAnswers(checkedAnswers.filter((answer) => answer.title.toUpperCase() !== value.toUpperCase()));
             }
         } else {
-            if (answerInput !== value && answerInput) {
-                const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
-                const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === value)?.next_question;
+            if (comboOptionName) {
+                // DropDown Combo
+                console.log('answerInput', answerInput)
+                console.log('comboOptionName', comboOptionName)
+                if (answerInput !== comboOptionName && answerInput) {
+                    const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
+                    const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === comboOptionName)?.next_question;
 
-                if (nextQuestionAnswerInput !== nextQuestionValue) {
-                    // Show modal to confirm answer change
-                    setShowDeletionModal(true);
-                    setValueInput(value);
+                    if (nextQuestionAnswerInput !== nextQuestionValue) {
+                        // Show modal to confirm answer change
+                        setShowDeletionModal(true);
+                        setValueInput(comboOptionName);
+                        setError('');
+                    }
+                } else {
+                    setAnswerInput(comboOptionName);
                     setError('');
                 }
             } else {
-                setAnswerInput(value);
-                setError('');
+                // Radio button
+                console.log('answerInput', answerInput)
+                console.log('value', value)
+                if (answerInput !== value && answerInput) {
+                    const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
+                    const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === value)?.next_question;
+
+                    if (nextQuestionAnswerInput !== nextQuestionValue) {
+                        // Show modal to confirm answer change
+                        setShowDeletionModal(true);
+                        setValueInput(value);
+                        setError('');
+                    }
+                } else {
+                    setAnswerInput(value);
+                    setError('');
+                }
             }
         }
     }
@@ -235,10 +261,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 <div className="flex h-16 p-3 m-auto">
                     <div className="flex flex-col items-center justify-center">
                         <div className="flex flex-row gap-4 h-16 p-3">
-                            <Button variant="secondary" onClick={handleCloseDeletionModal} >
+                            <Button aria-label="Cancel" variant="secondary" onClick={handleCloseDeletionModal} >
                                 Cancel
                             </Button>
-                            <Button variant="tertiary" onClick={handleDelete} >
+                            <Button aria-label="Confirm" variant="tertiary" onClick={handleDelete} >
                                 Confirm
                             </Button>
                         </div>
@@ -298,35 +324,53 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                 id="chck-radio-answer-dropdown"
                                 // items={[{ id: 1, name: 'Mock Answer 1' }, { id: 2, name: 'Mock Answer 2' }, { id: 3, name: 'Mock Answer 3' }]}
                                 items={comboBoxItems}
-                                defaultValue={comboBoxItems[0]?.name}
+                                defaultValue={!answerInput ? comboBoxItems[0]?.name : answerInput}
                                 // onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
-                                onValueChange={(item) => setAnswerInput(item.name)}
+
+                                // onValueChange={(item) => setAnswerInput(item.name)}
+                                // TODO - TEST THIS IN INSTANCE FORM
+                                onValueChange={(item) => {
+                                    const event = {
+                                        target: {
+                                            name: '',
+                                            value: item.name
+                                        }
+                                    } as React.ChangeEvent<HTMLInputElement>;
+                                    handleChange(event, event.target.value);
+                                }}
                             />
                         )
                     }
                 </div>
                 <div className="flex justify-between gap-8">
-                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
-                        backgroundColor: formInstanceInfo.secondary_color,
-                        border: formInstanceInfo.rounded_style ? 1 : 'none',
-                        borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
-                        // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
-                    }}
+                    <Button
+                        aria-label="Back"
+                        variant="secondary"
+                        type="button"
+                        id="goBack-answer-btn"
+                        onClick={handleGoBackClick}
+                        style={{
+                            backgroundColor: formInstanceInfo.secondary_color,
+                            border: formInstanceInfo.rounded_style ? 1 : 'none',
+                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                            color: getColorContrast(formInstanceInfo.secondary_color),
+                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                        }}
                     >
-                        Atrás
+                        Back
                     </Button>
                     <Button
+                        aria-label="Next"
                         type="submit"
                         id="submit-answer-btn"
                         style={{
                             backgroundColor: formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            color: getColorContrast(formInstanceInfo.primary_color),
                         }}
                     >
-                        Siguiente
+                        Next
                     </Button>
                 </div>
             </form>

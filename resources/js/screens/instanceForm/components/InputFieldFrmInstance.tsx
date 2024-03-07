@@ -5,6 +5,7 @@ import { useFormInstance } from '@/stores/useFormInstance';
 import { Button, Input } from '@/ui'
 import type { InstanceProps } from '.';
 import type { Question } from '@/api';
+import { getColorContrast } from '@/helpers/helpers';
 
 export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -76,27 +77,34 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                     />
                 </div>
                 <div className="flex justify-between">
-                    <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
-                        backgroundColor: formInstanceInfo.secondary_color,
-                        border: formInstanceInfo.rounded_style ? 1 : 'none',
-                        borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                        color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
-                        // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
-                    }}
+                    <Button
+                        aria-label="Back"
+                        variant="secondary"
+                        type="button"
+                        id="goBack-answer-btn"
+                        onClick={handleGoBackClick}
+                        style={{
+                            backgroundColor: formInstanceInfo.secondary_color,
+                            border: formInstanceInfo.rounded_style ? 1 : 'none',
+                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                            color: getColorContrast(formInstanceInfo.secondary_color),
+                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                        }}
                     >
-                        Atrás
+                        Back
                     </Button>
                     <Button
+                        aria-label="Next"
                         type="submit"
                         id="submit-answer-btn"
                         style={{
                             backgroundColor: formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            color: getColorContrast(formInstanceInfo.primary_color),
                         }}
                     >
-                        Siguiente
+                        Next
                     </Button>
                 </div>
             </form>

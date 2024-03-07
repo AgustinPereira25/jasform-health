@@ -9,24 +9,28 @@ import type { IHttpResponseError } from '@/api';
 import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
 import { ROUTES } from '@/router';
+import { getColorContrast } from '@/helpers/helpers';
 
 export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     let currentState = useFormInstance.getState().formInstance!;
+    const previewMode = useFormInstance.getState().previewMode ?? false;
     const navigate = useNavigate();
 
     const handleFinishClick = () => {
-        useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
-        currentState = useFormInstance.getState().formInstance!;
-        console.log("currentState:", currentState);
-        createFormInstanceMutation(currentState);
-        if (currentState.api_url) {
-            console.log("currentState.api_url:", currentState.api_url)
-            //TODO: crear otro use mutate y enviar la data al endpint de la url.
-            const currentURLAndBody: FormInstanceURL = {
-                url: currentState.api_url,
-                body: currentState,
+        if (!previewMode) {
+            useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
+            currentState = useFormInstance.getState().formInstance!;
+            console.log("currentState:", currentState);
+            createFormInstanceMutation(currentState);
+            if (currentState.api_url) {
+                console.log("currentState.api_url:", currentState.api_url)
+                //TODO: crear otro use mutate y enviar la data al endpint de la url.
+                const currentURLAndBody: FormInstanceURL = {
+                    url: currentState.api_url,
+                    body: currentState,
+                }
+                sendExternalEndpointMutation(currentURLAndBody);
             }
-            sendExternalEndpointMutation(currentURLAndBody);
         }
     }
 
@@ -91,7 +95,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             <div id="final-step-container-form-div" className="bg-white p-7 border rounded-xl flex flex-col justify-between items-center max-w-[650px] h-full max-h-[650px] gap-3">
                 <span className="text-2xl font-semibold">About to submit the form</span>
                 <div className="flex flex-col gap-3">
-                    <span className="text-lg font-light text break-words">Your answers will be sent to your relevant health center.</span>
+                    <span className="text-lg font-light text break-words">{formInstanceInfo.final_text}</span>
                     <span className="text-lg font-light text break-words">Click in &ldquo;Finish & Send&ldquo; button to complete and send the form.</span>
                 </div>
 
@@ -168,11 +172,11 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                             backgroundColor: formInstanceInfo.secondary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            color: formInstanceInfo.secondary_color ? formInstanceInfo.secondary_color.startsWith("#e") || formInstanceInfo.secondary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                            color: getColorContrast(formInstanceInfo.secondary_color),
                             // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                         }}
                         >
-                            Go back
+                            Back
                         </Button>
                     </div>
                     <div>
@@ -181,7 +185,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                                 backgroundColor: formInstanceInfo.primary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                                color: getColorContrast(formInstanceInfo.primary_color),
                             }}
                         >
                             Finish & Send

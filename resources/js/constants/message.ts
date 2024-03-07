@@ -15,4 +15,6 @@ export const message = {
   INVALID_PUBLIC_CODE:
     "The code provided is not valid. Verify the web address, try another one or please contact the Form administrator.",
   MODAL_DELETE_ALL_NEXT_QUESTIONS: "Are you sure you want to change your answer? This action will delete all next question's answers.",
+  FORM_PREVIEW: "Form Preview",
+  CANCEL_TEXT: "All changes will be lost. Are you sure you want to cancel?",
 } as const;

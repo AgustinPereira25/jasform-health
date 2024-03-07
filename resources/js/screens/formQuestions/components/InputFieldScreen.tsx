@@ -47,8 +47,8 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
 
     return (
         <div className="flex flex-col py-4">
-            <div className="flex gap-3">
-                <span className="shrink-0">Question to Show</span>
+            <div className="flex flex-col gap-3 md:flex-row">
+                <span className="shrink-0 w-28">Question to Show</span>
                 <Input
                     containerClassName="w-full"
                     // fullHeight
@@ -60,8 +60,8 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
                 />
             </div>
             <hr />
-            <div className="flex gap-3 py-4">
-                <span className="shrink-0">Text to Show</span>
+            <div className="flex flex-col gap-3 md:flex-row py-4">
+                <span className="shrink-0 w-28">Text to Show</span>
                 <Input
                     containerClassName="w-full"
                     fullHeight

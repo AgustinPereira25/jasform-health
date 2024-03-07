@@ -15,7 +15,7 @@ import Pagination from "@/ui/common/Pagination";
 import { paginatorValues } from "@/constants/pagination";
 import EmptyState from "@/ui/common/EmptyState";
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
-import { parseDate } from "@/helpers/helpers";
+import { parseDate, truncateText } from "@/helpers/helpers";
 import type { Option } from "@/ui/form/Combobox";
 import ComboBox from "@/ui/form/Combobox";
 
@@ -273,7 +273,7 @@ export const Forms = () => {
                                                 <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                                     <div className="flex items-center gap-x-4">
                                                         <div className="truncate text-sm leading-6 text-black">
-                                                            {item.name}
+                                                            {truncateText(item.name!, 30)}
                                                         </div>
                                                     </div>
                                                 </td>
@@ -313,7 +313,7 @@ export const Forms = () => {
                   </td> */}
                                                 <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                                     <a href={`/forms/${item.id}`} className="flex justify-end">
-                                                        <icons.ChevronRightIcon className="h-6 w-6 text-primary" />
+                                                        <icons.ChevronRightIcon aria-label="Edit form" className="h-6 w-6 text-primary" />
                                                     </a>
                                                 </td>
                                             </tr>

@@ -5,7 +5,7 @@ import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
-import { isValidEmail } from '@/helpers/helpers';
+import { getColorContrast, isValidEmail, isValidImageUrl } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const [searchParams] = useSearchParams();
@@ -28,6 +28,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         // console.log("initialFormData:", { initialFormData });
         useFormInstance.setState({
             formInstance: initialFormData,
+            previewMode: false,
         })
     }
     const [firstName, setFirstName] = useState<string>('');
@@ -90,14 +91,18 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     // console.log(`${formInstanceInfo.logo}`)
     {/* <div className="bg-white p-8 rounded-lg max-w-[650px] h-full max-h-[650px] gap-3"> */ }
     return (
-        <div className="bg-white p-8 rounded-lg w-[35%] max-w-md">
-            <div className="flex flex-col justify-center items-center gap-5 pb-6 w-full">
-                <img className="object-contain" src={formInstanceInfo.logo} alt="cardiology" />
+        <div className="bg-white p-8 rounded-lg w-full max-w-md">
+            <div className="flex flex-col justify-center items-center gap-3 pb-2 w-full">
+                {
+                    isValidImageUrl(formInstanceInfo.logo ?? '') && (
+                        <img className="object-contain" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
+                    )
+                }
                 <span className="text-2xl font-medium" style={{
                     color: formInstanceInfo.primary_color ?? '#407EC9',
                 }}>{formInstanceInfo.welcome_text}</span>
                 <div className="p-4 w-full">
-                    <span className="italic">{formInstanceInfo.description}</span>
+                    <span className="break-words italic">{formInstanceInfo.description}</span>
                 </div>
             </div>
             <form
@@ -106,6 +111,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 <div className="grid">
                     {/* <div> */}
                     <Input
+                        aria-label="First Name"
                         type="text"
                         id="first_name"
                         label="First Name"
@@ -117,6 +123,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                     {/* </div> */}
                     {/* <div> */}
                     <Input
+                        aria-label="Last Name"
                         type="text"
                         id="last_name"
                         label="Last Name"
@@ -128,6 +135,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                     {/* </div> */}
                     {/* <div> */}
                     <Input
+                        aria-label="Email Address"
                         id="email"
                         label="Email Address"
                         placeholder="Email@email.com"
@@ -136,8 +144,9 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                         onChange={handleChange}
                     />
                     {/* </div> */}
-                    <div className="pb-8">
+                    <div className="">
                         <Button
+                            aria-label="Complete the form"
                             type="submit"
                             variant="primary"
                             className="flex w-full"
@@ -145,7 +154,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                                 backgroundColor: formInstanceInfo.primary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: formInstanceInfo.primary_color ? formInstanceInfo.primary_color.startsWith("#e") || formInstanceInfo.primary_color.startsWith("#f") ? 'black' : 'white' : 'black',
+                                color: getColorContrast(formInstanceInfo.primary_color),
                             }}
                         >
                             Complete the form

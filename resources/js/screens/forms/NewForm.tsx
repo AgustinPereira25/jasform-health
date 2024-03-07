@@ -18,7 +18,10 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { isValidImageUrl, parseDate } from '@/helpers/helpers'
+import { getColorContrast, isValidImageUrl, parseDate } from '@/helpers/helpers'
+import { FormInstanceScreens } from '../instanceForm/components'
+import type { FormInstanceFlow } from '../instanceForm'
+import { message } from '@/constants/message'
 
 interface NewFormProps {
     initialData: Form;
@@ -119,6 +122,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         formState: { errors },
         setValue,
         setError,
+        getValues,
     } = useForm<FormValues>({
         // // TODO - Complete this fields..
         defaultValues: {
@@ -169,7 +173,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             onSuccess: (data) => {
                 updateForm.invalidates(queryClient);
                 toast.success(`Form "${data.name}" successfully updated!`);
-                navigate(ROUTES.forms);
+                if (navigateBack) navigate(ROUTES.forms);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -187,19 +191,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         });
 
     const onSubmit = (data: NewForm) => {
-        // console.log(data);
-        // if (data.logo !== '') {
-        //     if (!isURL(data.logo!)) {
-        //         setError("logo", { message: "Invalid logo URL" });
-        //         return;
-        //     }
-        // }
-        // if (data.apiURL !== '') {
-        //     if (!isURL(data.apiURL!)) {
-        //         setError("apiURL", { message: "Invalid api URL" });
-        //         return;
-        //     }
-        // }
         const form_CreateFormParams: CreateFormParams = {
             id: form.id,
             name: data.name,
@@ -278,10 +269,42 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
     const [showSecondaryColorPicker, setShowSecondaryColorPicker] = useState(false);
 
     const [showDeletionModal, setshowDeletionModal] = useState(false);
-    const handleOpenDeletionModal = () => {
-        setshowDeletionModal(true);
+
+    const [PreviewForm, setPreviewForm] = useState<Form>({} as Form);
+    const [showPreviewFormModal, setShowPreviewFormModal] = useState<boolean>(false);
+    const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 1 });
+
+    const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
+    const [navigateBack, setNavigateBack] = useState<boolean>(false);
+
+    const FormInstance = FormInstanceScreens[currentScreen.questionType as 0 | 1 | 2 | 3 | 4 | 5 | 6];
+
+    const handlePreviewClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        const actualValues = getValues();
+        const formPreviewInfo: Form = {
+            id: form.id,
+            public_code: actualValues.publicCode,
+            name: actualValues.name,
+            description: actualValues.description,
+            logo: actualValues.logo,
+            is_initial_data_required: actualValues.enabledInitialData,
+            is_user_responses_linked: actualValues.enabledLinkResponsesUser,
+            is_active: actualValues.publishState,
+            welcome_text: actualValues.welcomeTxt,
+            final_text: actualValues.finalTxt,
+            primary_color: actualValues.pcolor,
+            secondary_color: actualValues.scolor,
+            rounded_style: actualValues.borderRadius,
+            form_questions: form.form_questions,
+        };
+        setPreviewForm(formPreviewInfo);
+        // Preview from current question
+        setCurrentScreen({ questionType: 0 as 0 | 1 | 2 | 3 | 4 | 5 | 6, currentQuestionOrder: 1 });
+        setShowPreviewFormModal(true);
     };
-    const handleCloseDeletionModal = () => {
+
+    const handleDeletionModal = () => {
         setshowDeletionModal(false);
     };
 
@@ -291,23 +314,51 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             await navigator.clipboard.writeText(URL);
             toast.success(`Link "${URL}" successfully copied to the clipboard!`);
         }
-    }
+    };
+
+    const handleClosePreviewFormModal = () => {
+        setShowPreviewFormModal(false);
+    };
+
+    const handleCloseReturnModal = () => {
+        setShowCancelModal(false);
+    };
 
     return (
         <>
             {(isPendingCreateFormMutation || isPendingUpdateFormMutation) && (
                 <LoadingOverlay />
             )}
+            <Modal
+                className="items-center justify-center"
+                show={showPreviewFormModal}
+                title="Preview entire Form"
+                onClose={handleClosePreviewFormModal}
+            >
+                <FormInstance formInstanceInfo={PreviewForm} setCurrentScreen={setCurrentScreen} currentScreen={currentScreen} />
+            </Modal>
+            <Modal
+                show={showCancelModal}
+                title="Cancel changes"
+                description={message.CANCEL_TEXT}
+                onClose={handleCloseReturnModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-row gap-4 h-16 p-3">
+                            <Button aria-label="Cancel" variant="secondary" onClick={handleCloseReturnModal} >
+                                Cancel
+                            </Button>
+                            <Button aria-label="Confirm" variant="tertiary" onClick={() => navigate(ROUTES.forms)} >
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="bg-white flex items-center justify-between px-2 pb-4 text-base font-semibold leading-7">
                     <div className="flex gap-1 items-center">
-                        <Button
-                            variant="secondary"
-                            onClick={() => navigate(-1)}
-                        >
-                            <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
-                            Return
-                        </Button>
                         <span className="pl-3 text-2xl text-black">
                             {!form.public_code && 'New'} Form&apos;s Information
                         </span>
@@ -318,33 +369,44 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                         }
                     </div>
                     <div className="flex gap-5">
+                        <Button
+                            variant="secondary"
+                            onClick={() => setShowCancelModal(true)}
+                            aria-label="Cancel"
+                        >
+                            <icons.ArrowLeftIcon className={tw(`w-5 h-5`)} />
+                            Cancel
+                        </Button>
                         {
-                            form.id && (
-                                <Button
-                                    variant="secondary"
-                                    onClick={handleOpenDeletionModal}
-                                >
-                                    <icons.TrashIcon className={tw(`w-5 h-5`)} />
-                                    Delete
-                                </Button>
-                            )
-                        }
-                        {
-                            form.id && (
-                                <Button
-                                    variant="primary"
-                                    onClick={() => navigate(`/forms/${form.id}/questions`)}
-                                >
-                                    <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
-                                    Edit Form&apos;s Questions
-                                </Button>
+                            !pathname.includes(ROUTES.newForm) && (
+                                <>
+                                    <Button
+                                        type="button"
+                                        variant="primary"
+                                        onClick={() => setshowDeletionModal(true)}
+                                        aria-label="Delete"
+                                    >
+                                        <icons.TrashIcon className={tw(`w-5 h-5`)} />
+                                        Delete
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        onClick={() => setNavigateBack(false)}
+                                        aria-label="Save & Continue"
+                                    >
+                                        Save & Continue
+                                    </Button>
+                                </>
                             )
                         }
                         <Button
                             type="submit"
                             variant="primary"
+                            onClick={() => setNavigateBack(true)}
+                            aria-label="Save & Finish"
                         >
-                            Save
+                            Save & Finish
                         </Button>
                     </div>
                 </div>
@@ -352,7 +414,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                     show={showDeletionModal}
                     title="Confirm Deletion"
                     description="Are you sure you want to execute a deletion?"
-                    onClose={handleCloseDeletionModal}
+                    onClose={handleDeletionModal}
                 >
                     <div className="flex h-16 p-3 m-auto">
                         <DeleteFormConfirm />
@@ -369,7 +431,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     <div className="relative p-0">
                                         <img
                                             src={isValidImageUrl(logoUrl ?? '') ? logoUrl : '/LogoPlaceHolder.png'}
-                                            alt="user"
+                                            alt={`${form.name}`}
                                             className="object-scale-down h-[90%] w-[80%]"
                                         />
                                     </div>
@@ -390,6 +452,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="name"
+                                        aria-label="Form Name"
                                         placeholder="Enter Form Name"
                                         {...register("name")}
                                         error={errors.name?.message}
@@ -413,6 +476,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="welcomeTxt"
+                                        aria-label="Welcome text"
                                         placeholder="Enter Welcome Text"
                                         {...register("welcomeTxt")}
                                         error={errors.welcomeTxt?.message}
@@ -436,6 +500,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         containerClassName="w-full"
                                         fullHeight
                                         id="description"
+                                        aria-label="Description"
                                         placeholder="Enter Description"
                                         {...register("description")}
                                         error={errors.description?.message}
@@ -470,6 +535,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         containerClassName="w-full"
                                         fullHeight
                                         id="finalTxt"
+                                        aria-label="Final text"
                                         placeholder="Enter Final Text"
                                         {...register("finalTxt")}
                                         error={errors.finalTxt?.message}
@@ -503,6 +569,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         containerClassName="w-full h-full"
                                         fullHeight
                                         id="logo"
+                                        aria-label="logo url"
                                         placeholder="Enter Logo URL"
                                         {...register("logo")}
                                         error={errors.logo?.message}
@@ -529,6 +596,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="pcolor"
+                                        aria-label="primary color"
                                         placeholder="Primary Color"
                                         {...register("pcolor")}
                                         error={errors.pcolor?.message}
@@ -536,10 +604,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         // value={primaryColor}
                                         onChange={(e) => setPrimaryColor(e.target.value)}
                                     />
-                                    <Button ref={primaryWrapperRef} style={{
+                                    <Button aria-label="Primary color picker" ref={primaryWrapperRef} style={{
                                         backgroundColor: primaryColor,
-                                        color: primaryColor.startsWith("#e") || primaryColor.startsWith("#f") ? 'black' : 'white',
-                                        borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
+                                        color: getColorContrast(primaryColor),
+                                        borderColor: getColorContrast(primaryColor),
                                     }}
                                         onClick={() => setShowPrimaryColorPicker(true)}
                                     >
@@ -570,6 +638,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         fullHeight
                                         type="text"
                                         id="scolor"
+                                        aria-label="secondary color"
                                         placeholder="Secondary Color"
                                         {...register("scolor")}
                                         error={errors.scolor?.message}
@@ -577,10 +646,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         //value={secondaryColor}
                                         onChange={(e) => setSecondaryColor(e.target.value)}
                                     />
-                                    <Button ref={secondaryWrapperRef} style={{
+                                    <Button aria-label="Secondary color picker" ref={secondaryWrapperRef} style={{
                                         backgroundColor: secondaryColor,
-                                        color: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#f") ? 'black' : 'white',
-                                        borderColor: secondaryColor.startsWith("#e") || secondaryColor.startsWith("#fff") ? 'black' : 'white',
+                                        color: getColorContrast(secondaryColor),
+                                        borderColor: getColorContrast(secondaryColor),
                                     }}
                                         onClick={() => setShowSecondaryColorPicker(true)}
                                     >
@@ -616,6 +685,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         error={errors.borderRadius?.message}
                                         // value={passwordInput}
                                         defaultValue={''}
+                                        aria-label="Border Radius"
                                     />
                                 </div>
                             </div>
@@ -753,40 +823,73 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     </>
                                 )
                             }
-                            <hr className="mx-3" />
-                            <div className="flex p-3 h-16 ">
-                                <Button
-                                    variant="primary"
-                                >
-                                    <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
-                                    Get Embedded Windows Code (iFrame)
-                                </Button>
-                            </div>
-                            <hr className="mx-3" />
-                            <div className="flex p-3 h-16 ">
-                                <Button
-                                    variant="primary"
-                                    onClick={handlePublicLinkClick}
-                                >
-                                    <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
-                                    Get Public Link with Code to Share
-                                </Button>
-                            </div>
-                            <hr className="mx-3" />
-                            {
-                                (!pathname.includes(ROUTES.newForm) && form.form_instances_count !== 0) && (
-                                    <div className="flex p-3 h-16 ">
-                                        <Button
-                                            variant="primary"
-                                            onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
-                                        >
-                                            <icons.EyeIcon className={tw(`w-5 h-5`)} />
-                                            View form&apos;s instances
-                                        </Button>
-                                    </div>
-                                )
-                            }
-                            <hr className="mx-3" />
+                            <>
+                                {
+                                    form.id && (
+                                        <div className="flex p-3 h-16 ">
+                                            <Button
+                                                variant="primary"
+                                                onClick={() => navigate(`/forms/${form.id}/questions`)}
+                                                aria-label="Edit Form's Questions"
+                                            >
+                                                <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
+                                                Edit Questions
+                                            </Button>
+                                        </div>
+                                    )
+                                }
+                                <hr className="mx-3" />
+                                {
+                                    (!pathname.includes(ROUTES.newForm) && form.form_instances_count !== 0) && (
+                                        <div className="flex p-3 h-16 ">
+                                            <Button
+                                                variant="primary"
+                                                onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
+                                                aria-label="View Form's Instances"
+                                            >
+                                                <icons.EyeIcon className={tw(`w-5 h-5`)} />
+                                                View form&apos;s instances
+                                            </Button>
+                                        </div>
+                                    )
+                                }
+                                <hr className="mx-3" />
+                                {
+                                    (!pathname.includes(ROUTES.newForm) && form.form_questions_count !== 0) && (
+                                        <div className="flex p-3 h-16 ">
+                                            <Button
+                                                variant="primary"
+                                                onClick={(e) => handlePreviewClick(e)}
+                                                aria-label="View Preview from beginning"
+                                            >
+                                                <icons.EyeIcon className={tw(`w-5 h-5`)} />
+                                                View Preview from beginning
+                                            </Button>
+                                        </div>
+                                    )
+                                }
+                                <hr className="mx-3" />
+                                <div className="flex p-3 h-16 ">
+                                    <Button
+                                        variant="primary"
+                                        onClick={handlePublicLinkClick}
+                                        aria-label="Get Public Link"
+                                    >
+                                        <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
+                                        Get Public Link with Code to Share
+                                    </Button>
+                                </div>
+                                <hr className="mx-3" />
+                                <div className="flex p-3 h-16 ">
+                                    <Button
+                                        variant="primary"
+                                    >
+                                        <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
+                                        Get Embedded Windows Code (iFrame)
+                                    </Button>
+                                </div>
+                                <hr className="mx-3" />
+                            </>
                         </div>
                     </div>
                 </div>
