@@ -21,6 +21,7 @@ class StoreForm_questionAction
             'text' => $form_questionDto->getText(),
             'order' => $form_questionDto->getOrder(),
             'is_mandatory' => $form_questionDto->getIsMandatory(),
+            'mapping_key' => $form_questionDto->getMappingKey(),
             'form_id' => $form_questionDto->getFormId(),
             'question_type_id' => $form_questionDto->getQuestionTypeId(),
         ]);
