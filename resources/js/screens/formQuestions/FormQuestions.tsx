@@ -451,7 +451,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                                     variant="primary"
                                                     onClick={handlePreviewClick}
                                                 >
-                                                    Preview from question
+                                                    Preview from here
                                                 </Button>
                                             </div>
                                             <span className="text-sm font-medium">Q-{currentQuestionOrder}</span>
