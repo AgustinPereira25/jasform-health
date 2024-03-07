@@ -30,6 +30,7 @@ export interface CompletedQuestion {
   form_id?: number;
   completer_user_answer_checked_options?: CompleterUserAnswerCheckedOption[];
   is_completed?: boolean;
+  mapping_key?: string;
 }
 
 export interface CompleterUserAnswerCheckedOption {

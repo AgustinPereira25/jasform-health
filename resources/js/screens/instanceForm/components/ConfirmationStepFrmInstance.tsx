@@ -29,7 +29,6 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             createFormInstanceMutation(currentState);
             if (currentState.api_url) {
                 console.log("currentState.api_url:", currentState.api_url)
-                //TODO: crear otro use mutate y enviar la data al endpint de la url.
                 const currentURLAndBody: FormInstanceURL = {
                     url: currentState.api_url,
                     body: currentState,

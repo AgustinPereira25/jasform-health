@@ -161,6 +161,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     question_type_id: currentQuestionInfo.question_type_id,
                     question_type_name: currentQuestionInfo.question_type_name,
                     completer_user_answer_checked_options: checkedAnswers,
+                    mapping_key: currentQuestionInfo.mapping_key,
                 };
                 if (!currentState.completed_questions.find((question) => question.order === answer.order)) {
                     useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...currentState.completed_questions, answer] } });
