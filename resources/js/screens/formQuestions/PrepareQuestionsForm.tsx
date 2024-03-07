@@ -6,6 +6,7 @@ import { getFormQuery } from "@/api";
 import { icons } from "@/ui";
 import { QuestionsForm } from "./FormQuestions";
 import { useUserStore } from "@/stores";
+import FormQuestionsSkeleton from "@/ui/common/Skeletons/FormQuestionsSkeleton";
 
 export const PrepareQuestionsForm: React.FunctionComponent = () => {
     const { id } = useParams();
@@ -26,16 +27,18 @@ export const PrepareQuestionsForm: React.FunctionComponent = () => {
     //     }
     // }
     // , [isLoadingQuestsForm]);
+
     return (
         <div className="h-full">
             {isLoadingQuestsForm ? (
-                <tr className="h-full items-center">
-                    <td colSpan={5}>
-                        <div className="flex justify-center p-9">
-                            <icons.SpinnerIcon />
-                        </div>
-                    </td>
-                </tr>
+                <FormQuestionsSkeleton />
+                // <tr className="h-full items-center">
+                //     <td colSpan={5}>
+                //         <div className="flex justify-center p-9">
+                //             <icons.SpinnerIcon />
+                //         </div>
+                //     </td>
+                // </tr>
             ) : (
                 <QuestionsForm
                     initialData={formQtsData ?? {}}
