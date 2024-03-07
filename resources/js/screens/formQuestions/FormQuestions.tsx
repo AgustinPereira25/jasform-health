@@ -70,7 +70,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
 
     const [navigateBack, setNavigateBack] = useState<boolean>(false);
-    const [error, setError] = useState<boolean>(false);
 
     useEffect(() => {
         setEnabledIsMandatory(currentQuestion?.is_mandatory as boolean);
@@ -219,7 +218,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
         }
         // console.log(questions);
         const data = questions;
-        setError(false);
+        let error = false;
         data.map((question) => {
             question.form_question_id = Number(formId);
             // Change is_mandatory field from boolean to Number to fit endpoint.
@@ -230,7 +229,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
             if ((!question.question_options || question.question_options.length === 0)
                 && question.question_type_id !== 1 && question.question_type_id !== 2 && question.question_type_id !== 5) {
                 toast.error('Please add options to the Check Box or Radio Button question.');
-                setError(true);
+                error = true;
                 return;
             }
             question.question_options?.map((option) => {
@@ -245,7 +244,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                 const filtered = data.filter((question) => question.mapping_key === mapping_key);
                 if (filtered.length > 1) {
                     toast.error('Mapping key must be unique.');
-                    setError(true);
+                    error = true;
                     return;
                 }
             };
@@ -257,7 +256,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                 const filtered = data.filter((question) => question.title === title);
                 if (filtered.length > 1) {
                     toast.error('There are two or more equal titles, please change them and retry.');
-                    setError(true);
+                    error = true;
                     return;
                 }
             };
