@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Input } from '@/ui'
 import type { Question } from '@/api';
+import { TextArea } from '@/ui/form/TextArea';
 
 interface InputTextScreenProps {
     currentQuestion: Question;
@@ -80,7 +81,17 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
             <hr />
             <div className="flex flex-col gap-3 md:flex-row py-4">
                 <span className="shrink-0 w-28">Text to show</span>
-                <Input
+                <TextArea
+                    className="resize-none"
+                    containerClassName="w-full"
+                    fullHeight
+                    id="text"
+                    aria-label="Text to show"
+                    placeholder="Text to show"
+                    value={textToShow}
+                    onChange={(event) => handleChange(event)}
+                />
+                {/* <Input
                     containerClassName="w-full"
                     fullHeight
                     type="text"
@@ -89,7 +100,7 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
                     // error={errors.firstName?.message}
                     value={textToShow}
                     onChange={(event) => handleChange(event)}
-                />
+                /> */}
             </div>
             <hr />
             <div className="flex flex-col gap-3 md:flex-row py-4">

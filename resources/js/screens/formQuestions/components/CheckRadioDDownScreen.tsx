@@ -4,6 +4,7 @@ import { Button, Input, icons } from '@/ui'
 import ComboBox from '@/ui/form/Combobox';
 import { tw } from '@/utils';
 import type { Question, QuestionsOption } from '@/api';
+import { TextArea } from '@/ui/form/TextArea';
 
 export type ComboBoxOption = "Check Box" | "Radio Button" | "Drop Down Combo";
 
@@ -243,7 +244,17 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                 </div>
                 <div className="flex flex-col gap-3 md:flex-row pt-1">
                     <span className="shrink-0 w-28">Text to show</span>
-                    <Input
+                    <TextArea
+                        className="resize-none"
+                        containerClassName="w-full"
+                        fullHeight
+                        id="text"
+                        aria-label="Text to show"
+                        placeholder="Text to show"
+                        value={textToShow}
+                        onChange={(event) => handleChange(event)}
+                    />
+                    {/* <Input
                         containerClassName="w-full"
                         fullHeight
                         type="text"
@@ -252,7 +263,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                         // error={errors.firstName?.message}
                         value={textToShow}
                         onChange={(event) => handleChange(event)}
-                    />
+                    /> */}
                 </div>
                 {/* <div className="flex flex-col gap-3 md:flex-row py-4">
                     <span className="shrink-0 w-28">Mapping key</span>

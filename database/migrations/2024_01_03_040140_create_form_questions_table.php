@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('form_questions', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('text');
+            $table->text('text');
             $table->integer('order');
             $table->boolean('is_mandatory');
             $table->string('mapping_key')->nullable();;

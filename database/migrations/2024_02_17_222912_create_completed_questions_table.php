@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('completed_questions', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('answer');
+            $table->text('answer');
             $table->string('mapping_key')->nullable();
             $table->unsignedBigInteger('form_instance_id');
             $table->unsignedBigInteger('question_type_id');
