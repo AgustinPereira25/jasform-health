@@ -93,7 +93,7 @@ export const Forms = () => {
     const [enabledActive, setEnabledActive] = useState(false);
 
     const { data, isLoading: isLoadingForms, isFetching: isFetchingForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, userId!.toString(), debouncedSearch.formTitle, debouncedSearch.publicCode, sort?.value ?? "lastModifiedDate"),
+        ...getFormsQuery(perPage, currentPage, userId!.toString(), enabledActive, debouncedSearch.formTitle, debouncedSearch.publicCode, sort?.value ?? "lastModifiedDate"),
         enabled: !!token,
     });
 

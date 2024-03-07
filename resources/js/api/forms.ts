@@ -60,8 +60,8 @@ export interface QuestionsOption {
 export const getFormsQuery = (
   perPage: number,
   currentPage: number,
-  isActive: boolean | number,
   userId: string,
+  isActive?: boolean | number,
   formTitle?: string,
   publicCode?: string,
   sort?: string,
