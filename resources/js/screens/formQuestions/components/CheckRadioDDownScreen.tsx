@@ -229,26 +229,26 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         <div className="flex flex-col">
             <div className="flex flex-col gap-3 py-4">
                 <div className="flex flex-col gap-3 md:flex-row">
-                    <span className="shrink-0 w-28">Title</span>
+                    <span className="shrink-0 w-28">Title to show</span>
                     <Input
                         containerClassName="w-full"
                         // fullHeight
                         type="text"
                         id="title"
-                        placeholder="Title"
+                        placeholder="Title to show"
                         // value={passwordInput}
                         value={title}
                         onChange={(event) => handleChange(event)}
                     />
                 </div>
                 <div className="flex flex-col gap-3 md:flex-row pt-1">
-                    <span className="shrink-0 w-28">Text to Show</span>
+                    <span className="shrink-0 w-28">Text to show</span>
                     <Input
                         containerClassName="w-full"
                         fullHeight
                         type="text"
                         id="text"
-                        placeholder="Text to Show"
+                        placeholder="Text to show"
                         // error={errors.firstName?.message}
                         value={textToShow}
                         onChange={(event) => handleChange(event)}

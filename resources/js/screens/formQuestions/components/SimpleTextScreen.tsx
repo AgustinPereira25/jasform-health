@@ -66,13 +66,13 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
     return (
         <div className="flex flex-col py-4">
             <div className="flex flex-col gap-3 md:flex-row">
-                <span className="shrink-0 w-28">Title</span>
+                <span className="shrink-0 w-28">Title to show</span>
                 <Input
                     containerClassName="w-full"
                     // fullHeight
                     type="text"
                     id="title"
-                    placeholder="Title"
+                    placeholder="Title to show"
                     // value={passwordInput}
                     value={title}
                     onChange={(event) => handleChange(event)}
@@ -80,13 +80,13 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
             </div>
             <hr />
             <div className="flex flex-col gap-3 py-4 md:flex-row">
-                <span className="shrink-0 w-28">Text to Show</span>
+                <span className="shrink-0 w-28">Text to show</span>
                 <Input
                     containerClassName="w-full"
                     fullHeight
                     type="text"
                     id="text"
-                    placeholder="Text to Show"
+                    placeholder="Text to show"
                     value={textToShow}
                     onChange={(event) => handleChange(event)}
                 />

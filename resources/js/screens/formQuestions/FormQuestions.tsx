@@ -301,7 +301,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                     toast.error(err?.response.data.message);
                 } else if (err?.response?.data?.error?.fields) {
                     const errors = err?.response.data.error.fields;
-                    Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title, Text to show and Question to show] are filled.");
+                    Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title and Text to show] are filled.");
 
                 } else {
                     toast.error("There was an error trying to update the user. Please try again later.");
@@ -470,7 +470,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                     <QuestionTypeScreen currentQuestion={currentQuestion} setQuestions={setQuestions} setCurrentQuestion={setCurrentQuestion} currentQuestionOrder={currentQuestionOrder} formQuestions={questions} comboBoxOption={comboBoxOption} />
                                     <div className="flex gap-3 pb-5 pl-2">
                                         <div className="flex w-40 items-center">
-                                            <span>Mandatory Question</span>
+                                            <span>Mandatory question</span>
                                         </div>
                                         <Switch.Group as="div" className="flex items-center justify-between gap-2">
                                             <Switch
