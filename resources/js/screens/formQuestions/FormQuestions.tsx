@@ -4,6 +4,7 @@ import { Switch } from '@headlessui/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { truncateText } from "@/helpers/helpers";
 import { Button, LoadingOverlay, Modal, icons } from '@/ui'
 import { handleAxiosFieldErrors, tw } from '@/utils'
 import type { Form, IHttpResponseError } from '@/api';
@@ -376,13 +377,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                                     idx === 0 && `border-t border-t-gray-200`,
                                                     idx !== 0 && `border-y border-y-gray-200`
                                                 )}>
-                                                <div className="flex flex-col justify-center pl-3 overflow-y-scroll">
+                                                <div className="flex flex-col justify-center pl-3 ">
                                                     <span className={tw(`text-sm font-semibold`,
                                                         item.order === currentQuestion?.order && 'text-[#407EC9]',
                                                         item.order !== currentQuestion?.order && 'text-[#6B7280]'
                                                     )}
                                                     >
-                                                        Question {item.order} - {item.title}
+                                                        {truncateText(`Q-${item.order}:${item.title}`, 30)}
                                                     </span>
                                                 </div>
                                                 <div className="flex gap-2 items-center">
@@ -421,7 +422,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                                     Preview from question
                                                 </Button>
                                             </div>
-                                            <span className="text-sm font-medium">Question {currentQuestionOrder}</span>
+                                            <span className="text-sm font-medium">Q-{currentQuestionOrder}</span>
                                         </div>
                                         <div className="flex gap-2 items-center justify-end pb-2 grow">
                                             <span>Question Type</span>
