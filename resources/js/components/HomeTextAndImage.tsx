@@ -1,8 +1,7 @@
 
 import React from 'react'
 
-import { JASFormLogo } from './Logo'
-"use client";
+import { JASFormLogo } from './Logo';
 import { TypewriterEffect } from "@/ui";
 
 const HomeTextAndImage: React.FC = () => {
@@ -40,7 +39,10 @@ const HomeTextAndImage: React.FC = () => {
     return (
         <div className="z-90 p-6 text-center lg:mr-[10%] justify-center justify-items-center">
             <div className="flex justify-center justify-items-center"
-            ><JASFormLogo className="h-32 w-auto justify-center justify-items-center" />
+            >
+                <a href="https://www.jasform.com" rel="noopener noreferrer">
+                    <JASFormLogo className="h-32 w-auto justify-center justify-items-center" />
+                </a>
             </div>
             <div className="flex flex-col justify-start justify-items-start items-start w-[250px] lg:w-[460px] h-[150px] mt-5 text-left text-5xl font-light tracking-tight text-white leading-[70px]">
                 <TypewriterEffect words={words} />

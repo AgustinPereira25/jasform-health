@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import dayjs from 'dayjs';
 
 import { useUserStore } from "@/stores";
 import { getFormsQuery, getUserDashboard } from "@/api";
@@ -34,10 +35,18 @@ export const MyDashboard = () => {
     });
 
     const { data: formData, isFetching: isFetchingForms, error: isErrorForms } = useQuery({
-        ...getFormsQuery(perPage, currentPage, enabledActive, userId ? userId.toString() : ""),
+        ...getFormsQuery(perPage, currentPage, userId ? userId.toString() : "", enabledActive),
         refetchOnWindowFocus: false,
         enabled: typeof userId === "number",
     });
+
+    const { data: formReportData, isFetching: isFetchingFormsReport, error: isErrorFormsReport } = useQuery({
+        ...getFormsQuery(30, currentPage, userId ? userId.toString() : ""),
+        refetchOnWindowFocus: false,
+        enabled: typeof userId === "number",
+    });
+
+    console.log("formReportData:", formReportData);
 
     const forms = formData?.data;
     if (!userId) {
@@ -51,17 +60,36 @@ export const MyDashboard = () => {
                     Welcome, {user.first_name} {user.last_name}
                 </h1>
                 <div className="flex items-center gap-10">
-                    <div>
-                        <PDFDownloadLink className="text-[#00519E] font-semibold" document={<PDFDashboard data={statsData} />} fileName="PDFDashboard.pdf">
-                            {/* {({ blob, url, loading, error }) =>
-                                loading ? 'Loading document...' : 'Download report now!'
-                            } */}
-                            <Button variant="secondary" className="bg-white">
-                                <icons.DocumentArrowDownIcon className="h-5 w-5 mr-2" />
-                                Get Report
-                            </Button>
-                        </PDFDownloadLink>
-                    </div>
+
+                    {(isFetchingDashboard || !!isErrorDashboard || isFetchingFormsReport || !!isErrorFormsReport) ? (
+                        // <div className="animate-pulse h-full w-full flex flex-col items-center space-y-4 p-4">
+                        //     <div className="w-full flex justify-between items-center pb-2">
+                        //         <div className="w-3/5 flex space-x-2">
+                        //             <div className="animate-pulse w-40 h-6 bg-gray-300 rounded-lg"></div>
+                        //         </div>
+                        //     </div>
+                        // </div>
+                        <div className="animate-pulse w-[142px] h-[38px] bg-gray-300 rounded-lg"></div>
+                    ) : (
+                        <div>
+                            <PDFDownloadLink
+                                className="text-[#00519E] font-semibold"
+                                document={<PDFDashboard data={statsData} userData={user} formDataReport={formReportData?.data} />}
+                                fileName={`JASFormReport_${user.first_name}_${user.last_name}_${dayjs().format('MM-DD-YYYY')}.pdf`}
+                            >
+                                <Button
+                                    variant="secondary"
+                                    className="bg-white"
+                                    disabled={isFetchingDashboard || !!isErrorDashboard || isFetchingFormsReport || !!isErrorFormsReport}
+                                >
+                                    <icons.DocumentArrowDownIcon className="h-5 w-5 mr-2" />
+                                    Get Report
+                                </Button>
+                            </PDFDownloadLink>
+                        </div>
+                    )
+                    }
+
                     <div className="mr-4 text-right">
                         <div>{user.position_in_org} - {user.organization_name}</div>
                         <div>{user.email}</div>
@@ -104,7 +132,7 @@ export const MyDashboard = () => {
                                     <div className="cursor-default w-72 bg-white max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg transition duration-500 transform hover:scale-100">
 
                                         <div className={`h-20 flex items-center justify-between ${colorClass}`}>
-                                            <p className="mr-0 text-white text-lg pl-5 capitalize">{key.replace(/_/g, " ")}</p>
+                                            <p className="mr-0 text-white text-lg pl-5 capitalize">{key.replace(/total_/g, "").replace(/_/g, " ")}</p>
                                         </div>
                                         <div className="flex justify-between pt-6 px-5 mb-2 text-sm text-gray-600">
                                             <p>TOTAL</p>
