@@ -38,29 +38,25 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         setError('');
     }, [savedAnswerInput, currentScreen.currentQuestionOrder]);
 
-    useEffect(() => {
-        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
-        setAnswerInput(savedAnswerInput ? savedAnswerInput : items[0]!.name);
-        setComboBoxItems(items);
-    }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
-
     const savedAnswerCheckedOptions = useMemo(
         () => currentState.completed_questions?.find((question) => question.order === currentScreen.currentQuestionOrder)?.completer_user_answer_checked_options ?? [],
         [currentScreen.currentQuestionOrder, currentState.completed_questions]
     );
 
-    console.log('currentQuestionInfo', currentQuestionInfo)
+    useEffect(() => {
+        const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
+        setAnswerInput(savedAnswerInput ? savedAnswerInput : items[0]!.name);
+        setComboBoxItems(items);
+        setCheckedAnswers(savedAnswerCheckedOptions);
+    }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
 
+    console.log('currentQuestionInfo', currentQuestionInfo)
+    // console.log("savedAnswerCheckedOptions", savedAnswerCheckedOptions)
     const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
 
-    // console.log('savedAnswerCheckedOptions', savedAnswerCheckedOptions)
     // console.log('currentState.completed_questions', currentState.completed_questions);
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
 
-    // if (questiontypeId === 5) {
-    //     // const items = currentQuestionInfo.question_options?.map((option) => ({ id: option.id!, name: option.title })) ?? [];
-    //     // setComboBoxItems(items);
-    // }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const currentState = useFormInstance.getState().formInstance!;
@@ -301,7 +297,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                                 id={`chck-radio-answer-checkbox-${option.id}`}
                                                 value={option.title}
                                                 onChange={handleChange}
-                                                checked={checkedAnswers.some((answer) => answer.title === option.title)}
+                                                checked={checkedAnswers.some((answer) => answer.title.toLowerCase() === option.title.toLowerCase())}
                                             />
                                             <label htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
                                         </div>
