@@ -196,7 +196,8 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         setNewQuestionType(value);
     }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
         // console.log(id, value);
         // if (id === 'title') {
