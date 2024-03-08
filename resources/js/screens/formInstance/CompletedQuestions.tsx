@@ -6,6 +6,7 @@ import { tw } from '@/utils';
 import { Button, icons } from '@/ui';
 import EmptyState from '@/ui/common/EmptyState';
 import { message } from '@/constants/message';
+import { CompleterUserAnswerCheckedOption } from '@/api/formInstance';
 
 // import type { CompletedQuestion } from '@/api/formInstance'
 
@@ -97,10 +98,8 @@ export const CompletedQuestions: React.FC = () => {
                                         <td className="whitespace-pre-wrap w-full max-w-sm py-4 pl-0 pr-3 text-sm leading-6 text-[#6B7280] grow sm:table-cell">
                                             {
                                                 item.question_type_id === 3 ? (
-                                                    //Put only the name of the options selected
-                                                    item.completer_user_answer_checked_options && item.completer_user_answer_checked_options.length > 0
-                                                        ? item.completer_user_answer_checked_options.map((option) => option.title).join(', ')
-                                                        : ''
+                                                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                                                    JSON.parse(item.answer).map((option: CompleterUserAnswerCheckedOption) => option.title).join(', ')
                                                 ) : (
                                                     item.answer
                                                 )
