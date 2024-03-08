@@ -236,11 +236,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         // Show modal to confirm answer change
                         setShowDeletionModal(true);
                         setValueInput(value);
-                        setError('');
                     } else {
                         setAnswerInput(value);
-                        setError('');
                     }
+                    setError('');
                 } else {
                     setAnswerInput(value);
                     setError('');
@@ -261,7 +260,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     }
 
     return (
-        <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3 overflow-y-scroll">
+        <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3 overflow-y-auto">
             <div className="flex flex-col justify-center gap-2">
                 <h1>{`${currentQuestionInfo.title}`}</h1>
                 <p>{`${currentQuestionInfo.text}`}</p>
@@ -285,12 +284,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     </div>
                 </div>
             </Modal>
-            <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow overflow-y-scroll" onSubmit={handleSubmit}>
-                <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-scroll break-all">
 
-                    {
-                        questiontypeId === 3 ? (
-                            <>
+            <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow overflow-y-auto" onSubmit={handleSubmit}>
+
+                {
+                    questiontypeId === 3 ? (
+                        <>
+                            <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap break-all">
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
                                         <div key={option.title} className="flex items-center gap-3">
@@ -310,9 +310,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                 <div className="flex items-center justify-center h-10">
                                     {error && (<span className="text-red-500">{error}</span>)}
                                 </div>
-                            </>
-                        ) : questiontypeId === 4 ? (
-                            <>
+
+                            </div>
+
+                        </>
+                    ) : questiontypeId === 4 ? (
+                        <>
+                            <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap break-all">
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
                                         <div key={option.title} className="flex items-center gap-5">
@@ -332,8 +336,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                 <div className="flex items-center justify-center h-10">
                                     {error && (<span className="text-red-500">{error}</span>)}
                                 </div>
-                            </>
-                        ) : (
+
+                            </div>
+
+                        </>
+                    ) : (
+                        <div className="h-full flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap break-all">
+
                             <ComboBox
                                 id="chck-radio-answer-dropdown"
                                 // items={[{ id: 1, name: 'Mock Answer 1' }, { id: 2, name: 'Mock Answer 2' }, { id: 3, name: 'Mock Answer 3' }]}
@@ -353,9 +362,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                     handleChange(event, event.target.value);
                                 }}
                             />
-                        )
-                    }
-                </div>
+                        </div>
+
+                    )
+                }
                 <div className="flex justify-between gap-8">
                     <Button
                         aria-label="Back"
