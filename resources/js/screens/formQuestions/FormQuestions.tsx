@@ -387,7 +387,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                 </div>
                 <div className="flex gap-3 w-full h-full">
                     <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll overflow-y-scroll">
-                        <span>Content</span>
+                        <span>Questions list:</span>
                         <div className="flex flex-col items-center">
                             {
                                 questions.map((item, idx) => {
@@ -453,7 +453,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                                     Preview from here
                                                 </Button>
                                             </div>
-                                            <span className="text-sm font-medium">Q-{currentQuestionOrder}</span>
+                                            <span className="text-sm font-medium">Question-{currentQuestionOrder}</span>
                                         </div>
                                         <div className="flex gap-2 items-center justify-end pb-2 grow">
                                             <span>Question Type</span>

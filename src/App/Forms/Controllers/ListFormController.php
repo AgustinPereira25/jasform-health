@@ -48,12 +48,6 @@ class ListFormController
             ->withCount('form_questions');
         // ->orderBy('last_modified_date_time', 'desc');
 
-        if ($isActive == 1) {
-            $forms->where('is_active', true);
-        }
-        // if ($isActive == 0) {
-        //     $forms->where('is_active', false);
-        // };
 
         if (!empty($userId)) {
             $forms->where('user_id', $userId);
@@ -106,16 +100,16 @@ class ListFormController
                 $forms->orderByDesc('last_modified_date_time');
                 break;
             case 'questionsAmount':
-                $forms->orderBy('form_questions_count'); // Asegúrate de que este es el nombre correcto del contador
+                $forms->orderBy('form_questions_count');
                 break;
             case '-questionsAmount':
-                $forms->orderByDesc('form_questions_count'); // Asegúrate de que este es el nombre correcto del contador
+                $forms->orderByDesc('form_questions_count');
                 break;
             case 'instancesAmount':
-                $forms->orderBy('form_instances_count'); // Asegúrate de que este es el nombre correcto del contador
+                $forms->orderBy('form_instances_count');
                 break;
             case '-instancesAmount':
-                $forms->orderByDesc('form_instances_count'); // Asegúrate de que este es el nombre correcto del contador
+                $forms->orderByDesc('form_instances_count');
                 break;
             default:
                 $forms->orderBy('name');
@@ -124,6 +118,12 @@ class ListFormController
 
 
 
+        if ($isActive == 1) {
+            $forms->where('is_active', true);
+        }
+        // if ($isActive == 0) {
+        //     $forms->where('is_active', false);
+        // };
 
         $forms = $forms->paginate($perPage);
 

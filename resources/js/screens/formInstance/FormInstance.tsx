@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, icons } from '@/ui';
+import { Button, Label, icons } from '@/ui';
 import { tw } from '@/utils';
 import { paginatorValues } from '@/constants/pagination';
 import Pagination from '@/ui/common/Pagination';
@@ -12,6 +12,21 @@ import EmptyState from '@/ui/common/EmptyState';
 import { message } from '@/constants/message';
 import { truncateText } from '@/helpers/helpers';
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
+import ComboBox from '@/ui/form/Combobox';
+import type { Option } from "@/ui/form/Combobox";
+
+const sortOptions: Option[] = [
+    { id: 0, name: "Name AZ", value: "userName" },
+    { id: 1, name: "Name ZA", value: "-userName" },
+    { id: 2, name: "Email AZ", value: "email" },
+    { id: 3, name: "Email ZA", value: "-email" },
+    { id: 4, name: "Aux User Code AZ", value: "auxUserCode" },
+    { id: 5, name: "Aux User Code ZA", value: "-auxUserCode" },
+    { id: 6, name: "Submitted Date ASC", value: "submittedDate" },
+    { id: 7, name: "Submitted Date DESC", value: "-submittedDate" },
+    { id: 8, name: "Answered Questions amount ASC", value: "answeredQuestions" },
+    { id: 9, name: "Answered Questions amount DESC", value: "-answeredQuestions" },
+];
 
 export const FormInstance: React.FC = () => {
     const { formId } = useParams();
@@ -20,7 +35,7 @@ export const FormInstance: React.FC = () => {
     const { token } = useUserStore();
     const navigate = useNavigate();
 
-    const [perPage, setPerPage] = useState(10);
+    const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
     //TODO - Make the filters work
@@ -46,10 +61,19 @@ export const FormInstance: React.FC = () => {
     //         return updatedState;
     //     });
     // };
+    const [sort, setSort] = useState(sortOptions[7]);
+    const handleComboboxChange = useCallback((selectedOptionId: number) => {
+        console.log("selectedOptionId", selectedOptionId);
+        const selectedOption = sortOptions.find(option => option.id === selectedOptionId);
+        if (selectedOption) {
+            console.log("selectedOption", selectedOption);
+            setSort(selectedOption);
+        }
+    }, []);
 
     const { data, isFetching, isError, isLoading: isLoadingForms } = useQuery({
         // ...getFormInstancesQuery(perPage, currentPage, formId!, debouncedSearch.nameEmailCode, debouncedSearch.submitted_start_date, debouncedSearch.submitted_end_date),
-        ...getFormInstancesQuery(perPage, currentPage, formId!),
+        ...getFormInstancesQuery(perPage, currentPage, formId!, "", "", "", sort?.value ?? "-submittedDate"),
         enabled: !!token,
     });
     const forms = data?.data;
@@ -80,6 +104,15 @@ export const FormInstance: React.FC = () => {
                         <span className="text-2xl text-gray-500">- Form Public Code: {publicCode}</span>
                     )
                 }
+                <div className="ml-auto gap-2 items-center w-80">
+                    <Label containerClassName="justify-end" label={"Sort by"} />
+                    <ComboBox
+                        id="sortOptions"
+                        items={sortOptions}
+                        defaultValue={sort?.name}
+                        onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
+                    />
+                </div>
             </div>
             <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg w-full">
                 {/* <div className="flex gap-5">
@@ -197,7 +230,9 @@ export const FormInstance: React.FC = () => {
                                         <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                             <div className="flex gap-x-3">
                                                 <div className="truncate text-sm leading-6 text-black">
-                                                    {item?.public_code ?? 'Not Apply'}
+                                                    {
+                                                        (item?.completer_user_code && item?.completer_user_code !== "") ? item?.completer_user_code : 'Not Apply'
+                                                    }
                                                 </div>
                                             </div>
                                         </td>

@@ -39,16 +39,31 @@ class UpdateFormController
         Log::info('UpdateFormController-form-user_id: ' . $form->user_id);
         Log::info('UpdateFormController-form-public_code: ' . $form->public_code);
 
-        if (
-            !$form
-            || (string) $form->user_id !== (string) $user_id
-            || (string) $form->public_code !== (string) $public_code
-        ) {
-            return response()->json(
-                ['error' => 'Provided formId, user_id or public_code does not match with the records'],
-                400
-            );
+
+        if ($loggedRoleName == 'Admin') {
+            if (
+                !$form
+                || (string) $form->public_code !== (string) $public_code
+            ) {
+                return response()->json(
+                    ['error' => 'Provided formId or public_code does not match with the records'],
+                    400
+                );
+            }
+        } else {
+            if (
+                !$form
+                || (string) $form->user_id !== (string) $user_id
+                || (string) $form->public_code !== (string) $public_code
+            ) {
+                return response()->json(
+                    ['error' => 'Provided formId, user_id or public_code does not match with the records'],
+                    400
+                );
+            }
         }
+
+
 
         $updatedForm = $updateFormAction->execute($request->toDtoUpdate(), $form);
 
