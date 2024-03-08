@@ -223,19 +223,6 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         };
     }, []);
 
-    // const handleClickOutside = (event: MouseEvent) => {
-    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    //     if (primaryWrapperRef.current && (!primaryWrapperRef.current.contains(event.target) && !primaryPickerRef.current!.contains(event.target))) {
-    //         setShowPrimaryColorPicker(false);
-    //     }
-    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    //     if (secondaryWrapperRef.current && secondaryPickerRef.current && (!secondaryWrapperRef.current.contains(event.target as Node) && !secondaryPickerRef.current.contains(event.target as Node))) {
-    //         setShowSecondaryColorPicker(false);
-    //     }
-    // };
-
-    // const primaryWrapperRef = useRef<HTMLDivElement | null>(null);
-    // const secondaryWrapperRef = useRef<HTMLDivElement | null>(null);
     const primaryWrapperRef = useRef<HTMLButtonElement | null>(null);
     const secondaryWrapperRef = useRef<HTMLButtonElement | null>(null);
 
@@ -276,6 +263,9 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
 
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
     const [navigateBack, setNavigateBack] = useState<boolean>(false);
+
+    const [showLostChangesModal, setShowLostChangesModal] = useState<boolean>(false);
+    const [routeToGo, setRouteToGo] = useState<string>('');
 
     const FormInstance = FormInstanceScreens[currentScreen.questionType as 0 | 1 | 2 | 3 | 4 | 5 | 6];
 
@@ -324,6 +314,19 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         setShowCancelModal(false);
     };
 
+    const handleGoToClick = (route: string) => {
+        setRouteToGo(route);
+        setShowLostChangesModal(true);
+    }
+    // Handlers for lost changes modal
+    const handleCloseLostChangesModal = () => {
+        setShowLostChangesModal(false);
+    };
+
+    const handleLostChanges = () => {
+        navigate(routeToGo);
+        setShowLostChangesModal(false);
+    }
     return (
         <>
             {(isPendingCreateFormMutation || isPendingUpdateFormMutation) && (
@@ -350,6 +353,25 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 Cancel
                             </Button>
                             <Button aria-label="Confirm" variant="tertiary" onClick={() => navigate(ROUTES.forms)} >
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                show={showLostChangesModal}
+                title="Exit Form"
+                description={message.DISCARD_PROCEED_TEXT}
+                onClose={handleCloseLostChangesModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-row gap-4 h-16 p-3">
+                            <Button aria-label="Cancel" variant="secondary" onClick={handleCloseLostChangesModal} >
+                                Cancel
+                            </Button>
+                            <Button aria-label="Confirm" variant="tertiary" onClick={() => handleLostChanges()} >
                                 Confirm
                             </Button>
                         </div>
@@ -829,7 +851,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <div className="flex p-3 h-16 ">
                                             <Button
                                                 variant="primary"
-                                                onClick={() => navigate(`/forms/${form.id}/questions`)}
+                                                //onClick={() => navigate(`/forms/${form.id}/questions`)}
+                                                onClick={() => handleGoToClick(`/forms/${form.id}/questions`)}
                                                 aria-label="Edit Form's Questions"
                                             >
                                                 <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
@@ -844,7 +867,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                         <div className="flex p-3 h-16 ">
                                             <Button
                                                 variant="primary"
-                                                onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
+                                                //onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
+                                                onClick={() => handleGoToClick(`/form-instance/${form.id}?publicCode=${form.public_code}`)}
                                                 aria-label="View Form's Instances"
                                             >
                                                 <icons.DocumentChartBarIcon className={tw(`w-5 h-5`)} />

@@ -17,4 +17,5 @@ export const message = {
   MODAL_DELETE_ALL_NEXT_QUESTIONS: "Are you sure you want to change your answer? This action will delete all next question's answers.",
   FORM_PREVIEW: "Form Preview",
   CANCEL_TEXT: "All changes will be lost. Are you sure you want to cancel?",
+  DISCARD_PROCEED_TEXT: "All changes will be lost. Are you sure you want to proceed?",
 } as const;

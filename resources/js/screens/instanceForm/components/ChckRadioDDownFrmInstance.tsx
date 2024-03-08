@@ -258,7 +258,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     }
 
     return (
-        <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
+        <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3 overflow-y-scroll">
             <div className="flex flex-col justify-center gap-2">
                 <h1>{`${currentQuestionInfo.title}`}</h1>
                 <p>{`${currentQuestionInfo.text}`}</p>
@@ -282,8 +282,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     </div>
                 </div>
             </Modal>
-            <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow" onSubmit={handleSubmit}>
-                <div className="flex flex-col pt-3 pb-3 gap-4">
+            <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow overflow-y-scroll" onSubmit={handleSubmit}>
+                <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-scroll">
 
                     {
                         questiontypeId === 3 ? (

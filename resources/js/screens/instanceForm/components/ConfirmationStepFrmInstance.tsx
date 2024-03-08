@@ -134,7 +134,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                                     </th>
                                     <th
                                         scope="col"
-                                        className="hidden py-1 pl-0 pr-4 font-normal text-[#6B7280] md:table-cell lg:pr-3"
+                                        className="flex justify-center py-1 pl-0 pr-4 font-normal text-[#6B7280] md:table-cell lg:pr-3"
                                     >
                                         GO TO
                                     </th>
@@ -160,7 +160,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                                         <td className="whitespace-normal py-2 pl-0 pr-4 leading-4 text-[#6B7280] md:table-cell lg:pr-3">
                                             {item.question_type_id === 3 ? item.completer_user_answer_checked_options?.map((option) => option.title).join("; ") : item.answer}
                                         </td>
-                                        <td className="whitespace-normal max-w-fit py-2 pl-0 pr-4 leading-4 text-[#6B7280] grow sm:table-cell sm:pr-1 lg:pr-3">
+                                        <td className="flex items-center justify-center whitespace-normal py-2 pl-0 pr-4 leading-4 text-[#6B7280] sm:pr-1 lg:pr-3 cursor-pointer">
                                             <icons.ChevronRightIcon className="w-5 h-5 text-[#00519E]" onClick={() => handleGoCompletedQuestionClick(item.question_type_id, item.order)} />
                                         </td>
                                     </tr>
