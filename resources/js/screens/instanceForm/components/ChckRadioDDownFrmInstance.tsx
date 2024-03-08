@@ -237,6 +237,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         setShowDeletionModal(true);
                         setValueInput(value);
                         setError('');
+                    } else {
+                        setAnswerInput(value);
+                        setError('');
                     }
                 } else {
                     setAnswerInput(value);
@@ -283,7 +286,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 </div>
             </Modal>
             <form id="chck-radio-container-form-form" className="flex flex-col justify-between grow overflow-y-scroll" onSubmit={handleSubmit}>
-                <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-scroll">
+                <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-scroll break-all">
 
                     {
                         questiontypeId === 3 ? (
