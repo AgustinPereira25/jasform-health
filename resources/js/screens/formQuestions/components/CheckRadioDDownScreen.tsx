@@ -44,22 +44,22 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
     //Inputs for text, title and Mapping key
     const [title, setTitle] = React.useState(currentFormQuestion?.title ?? '');
     const [textToShow, setTextToShow] = useState(currentFormQuestion?.text ?? '');
-    // const [mappingKey, setMappingKey] = useState(currentQuestion.mapping_key ?? '');
+    const [mappingKey, setMappingKey] = useState(currentFormQuestion?.mapping_key ?? '');
 
     // Add default options to the list on the top of the list
     transformedSteps.unshift({ id: -1, name: 'Default Next Question' });
     transformedSteps.push({ id: 0, name: 'Go To End' });
 
+    // useEffect(() => {
+    //     setTitle(currentFormQuestion?.title ?? '');
+    //     setTextToShow(currentFormQuestion?.text ?? '');
+    // }, [currentQuestionOrder]);
+
     useEffect(() => {
         setTitle(currentFormQuestion?.title ?? '');
         setTextToShow(currentFormQuestion?.text ?? '');
+        setMappingKey(currentFormQuestion?.mapping_key ?? '');
     }, [currentQuestionOrder]);
-
-    // useEffect(() => {
-    //     setTitle(currentQuestion.title ?? '');
-    //     setTextToShow(currentQuestion.text ?? '');
-    //     setMappingKey(currentQuestion.mapping_key ?? '');
-    // }, [currentQuestionOrder]);
 
     const getQuestionTypeName = (questionTypeId: number) => {
         const questionType = transformedSteps.find((item) => item.id === questionTypeId);
@@ -197,23 +197,24 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        console.log(id, value);
-        if (id === 'title') {
-            setTitle(value);
-        } else if (id === 'text') {
-            setTextToShow(value);
-        }
-        // switch (id) {
-        //     case 'title':
-        //         setTitle(value);
-        //         break;
-        //     case 'text':
-        //         setTextToShow(value);
-        //         break;
-        //     case 'mapping_key':
-        //         setMappingKey(value);
-        //         break;
+        // console.log(id, value);
+        // if (id === 'title') {
+        //     setTitle(value);
+        // } else if (id === 'text') {
+        //     setTextToShow(value);
         // }
+        switch (id) {
+            case 'title':
+                setTitle(value);
+                break;
+            case 'text':
+                setTextToShow(value);
+                break;
+            case 'mapping_key':
+                setMappingKey(value);
+                break;
+        };
+        // Update the formQuestions general state
         const updatedQuestions = formQuestions?.map((question) => {
             if (question.order === currentQuestionOrder) {
                 return {
@@ -254,7 +255,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                         onChange={(event) => handleChange(event)}
                     />
                 </div>
-                {/* <div className="flex flex-col gap-3 md:flex-row py-4">
+                <div className="flex flex-col gap-3 md:flex-row py-4">
                     <span className="shrink-0 w-28">Mapping key</span>
                     <Input
                         containerClassName="w-full"
@@ -266,7 +267,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
                         onChange={(event) => handleChange(event)}
                     />
                 </div>
-                <hr /> */}
+                <hr />
             </div>
             <hr />
             <div className="flex flex-col py-4">

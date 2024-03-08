@@ -53,7 +53,15 @@ export function isValidEmail(email: string) {
   return emailRegex.test(email);
 }
 
-export function getColorContrast(color = '') {
-  const darkColors = ['#6', '#8', '#9', '#b', '#e', '#6f', '#c', '#d', '#a', '#f'];
-  return darkColors.some(prefix => color.startsWith(prefix)) ? 'black' : 'white';
+export function getColorContrast(hexColor = '') {
+    // Convert hex to RGB
+    const r = parseInt(hexColor.slice(1, 3), 16);
+    const g = parseInt(hexColor.slice(3, 5), 16);
+    const b = parseInt(hexColor.slice(5, 7), 16);
+
+    // Calculate relative luminance
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // Choose white or black text based on luminance
+    return luminance > 0.5 ? '#000000' : '#ffffff';
 }

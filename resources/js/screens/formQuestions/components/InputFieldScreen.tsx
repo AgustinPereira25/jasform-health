@@ -18,11 +18,6 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
     const [textToShow, setTextToShow] = useState(currentQuestion.text ?? '');
     const [mappingKey, setMappingKey] = useState(currentQuestion.mapping_key ?? '');
 
-    // useEffect(() => {
-    //     setQuestionToShow(currentQuestion.title ?? '');
-    //     setTextToShow(currentQuestion.text ?? '');
-    // }, [currentQuestion.title, currentQuestion.text]);
-
     useEffect(() => {
         setQuestionToShow(currentQuestion.title ?? '');
         setTextToShow(currentQuestion.text ?? '');
@@ -31,11 +26,6 @@ export const InputFieldScreen: React.FC<InputTextScreenProps> = ({ currentQuesti
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
-        // if (id === 'title') {
-        //     setQuestionToShow(value);
-        // } else if (id === 'text') {
-        //     setTextToShow(value);
-        // }
         switch (id) {
             case 'title':
                 setQuestionToShow(value);

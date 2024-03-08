@@ -15,7 +15,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         const answer: CompletedQuestion = {
             id: currentQuestionInfo.id!,
             title: currentQuestionInfo.title,
-            answer: currentQuestionInfo.text,
+            answer: 'Not apply',
             order: currentQuestionInfo.order,
             is_mandatory: currentQuestionInfo.is_mandatory as boolean,
             question_type_id: currentQuestionInfo.question_type_id,

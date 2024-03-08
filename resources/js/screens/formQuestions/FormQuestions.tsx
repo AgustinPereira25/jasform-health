@@ -68,7 +68,6 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
     const [currentScreen, setCurrentScreen] = useState<FormInstanceFlow>({ questionType: 0, currentQuestionOrder: 1 });
 
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-
     const [navigateBack, setNavigateBack] = useState<boolean>(false);
 
     useEffect(() => {
@@ -304,7 +303,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                     Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title, Text to show and Question to show] are filled.");
 
                 } else {
-                    toast.error("There was an error trying to update the user. Please try again later.");
+                    toast.error("There was an error trying to update the form. Please try again later.");
                 }
                 handleAxiosFieldErrors(err, console.log);
             },
@@ -317,6 +316,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
     const handleCloseReturnModal = () => {
         setShowCancelModal(false);
     }
+
     return (
         <>
             {(isPendingUpdateFormQuestionsMutation) && (
