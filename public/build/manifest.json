@@ -4,8 +4,16 @@
     "isDynamicEntry": true,
     "src": "node_modules/countup.js/dist/countUp.min.js"
   },
+  "public/JASForm_Isologo_big_transp_white.png": {
+    "file": "assets/JASForm_Isologo_big_transp_white-baf88dc5.png",
+    "src": "public/JASForm_Isologo_big_transp_white.png"
+  },
+  "public/Profile-Hello-Smile1b.png": {
+    "file": "assets/Profile-Hello-Smile1b-d75faeee.png",
+    "src": "public/Profile-Hello-Smile1b.png"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-c4fce5ac.css",
+    "file": "assets/app-74c6fa12.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -14,14 +22,18 @@
     "src": "resources/js/App.css"
   },
   "resources/js/App.tsx": {
+    "assets": [
+      "assets/JASForm_Isologo_big_transp_white-baf88dc5.png",
+      "assets/Profile-Hello-Smile1b-d75faeee.png"
+    ],
     "css": [
       "assets/App-d9e3f7bd.css",
-      "assets/app-c4fce5ac.css"
+      "assets/app-74c6fa12.css"
     ],
     "dynamicImports": [
       "node_modules/countup.js/dist/countUp.min.js"
     ],
-    "file": "assets/App-353eb5be.js",
+    "file": "assets/App-214faa5a.js",
     "isEntry": true,
     "src": "resources/js/App.tsx"
   }

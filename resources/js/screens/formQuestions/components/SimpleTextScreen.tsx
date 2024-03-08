@@ -29,7 +29,8 @@ export const SimpleTextScreen: React.FC<SimpleTextScreenProps> = ({ currentQuest
         setMappingKey(currentQuestion.mapping_key ?? '');
     }, [currentQuestion.title, currentQuestion.text, currentQuestion.mapping_key]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = event.target;
         switch (id) {
             case 'title':

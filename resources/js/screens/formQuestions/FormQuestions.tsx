@@ -104,6 +104,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
             completer_user_first_name: "",
             completer_user_last_name: "",
             completer_user_email: "",
+            completer_user_code: "",
             completed_questions_count: 0,
             public_code: public_code!,
             completed_questions: [],

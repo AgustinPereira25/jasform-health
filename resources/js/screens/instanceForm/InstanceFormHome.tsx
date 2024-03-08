@@ -19,6 +19,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             completer_user_first_name: "",
             completer_user_last_name: "",
             completer_user_email: "",
+            completer_user_code: "",
             completed_questions_count: 0,
             public_code: formInstanceInfo.public_code!,
             completed_questions: [],

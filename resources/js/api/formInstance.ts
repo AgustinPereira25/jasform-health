@@ -12,6 +12,7 @@ export interface CompletedForm {
   completer_user_first_name: string;
   completer_user_last_name: string;
   completer_user_email: string;
+  completer_user_code: string;
   public_code: string;
   completed_questions_count: number;
   completed_questions: CompletedQuestion[];
