@@ -75,7 +75,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             mutationFn: sendExternalEndpoint.mutation,
             onSuccess: () => {
                 sendExternalEndpoint.invalidates(queryClient);
-                toast.success(`Form successfully sent!`);
+                toast.success(`DAta successfully sent to external integration!`);
                 navigate(`/instance-form/${currentState.public_code}/finished`);
             },
             onError: (err: IHttpResponseError) => {
