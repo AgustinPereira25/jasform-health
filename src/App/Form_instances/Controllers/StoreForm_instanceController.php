@@ -23,9 +23,7 @@ class StoreForm_instanceController
         StoreCompleted_questionAction $storeCompleted_questionAction,
         Form $formModel,
     ): JsonResponse {
-        Log::info(
-            'StoreForm_instanceController###########'
-        );
+        Log::info('StoreForm_instanceController###########');
 
         Log::info('===StoreForm_instanceController=====> Request data: ', $request->all());
         Log::info('completer_user_email: ' . $request->input('completer_user_email'));
@@ -33,13 +31,16 @@ class StoreForm_instanceController
         Log::info('completer_user_last_name: ' . $request->input('completer_user_last_name'));
         Log::info('aux_code: ' . $request->input('aux_code'));
         Log::info('form_id: ' . $request->input('form_id'));
-
+        Log::info('api_url: ' . $request->input('api_url'));
+        Log::info('initial_date_time: ' . $request->input('initial_date_time'));
+        Log::info('final_date_time: ' . $request->input('final_date_time'));
+        Log::info('public_code: ' . $request->input('public_code'));
+        Log::info('completed_questions_count: ' . $request->input('completed_questions_count'));
 
         $initial_date_time = new \DateTime($request->input('initial_date_time'));
         $formattedInitial_date_time = $initial_date_time->format('Y-m-d H:i:s');
         $final_date_time = new \DateTime($request->input('final_date_time'));
         $formattedFinal_date_time = $final_date_time->format('Y-m-d H:i:s');
-
 
         $completedQuestions = $request->input('completed_questions');
 
@@ -59,6 +60,7 @@ class StoreForm_instanceController
                 $completerUser = $storeCompleter_userAction->execute($completerUserDto);
                 $completerUserId = $completerUser->id;
             } catch (\Exception $e) {
+                Log::info('error-Exception:' . $e->getMessage());
                 return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             }
         } else {
@@ -69,6 +71,7 @@ class StoreForm_instanceController
         try {
             $formModel->findOrFail($formId);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::info('error-ModelNotFoundException:' . $e->getMessage());
             return responder()
                 ->error()
                 ->data([
@@ -89,16 +92,19 @@ class StoreForm_instanceController
         try {
             $formInstance = $storeForm_instanceAction->execute($formInstanceDto);
         } catch (\Exception $e) {
+            Log::info('error-Exception2:' . $e->getMessage());
+
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         try {
             $completedQuestions = $request->input('completed_questions');
             foreach ($completedQuestions as $question) {
+                Log::info('$question[mapping_key]:' . $question['mapping_key']);
                 if (isset($question['completer_user_answer_checked_options'])) {
                     $answer = json_encode($question['completer_user_answer_checked_options']);
                 } else {
-                    $answer = $question['completer_user_answer'];
+                    $answer = $question['answer'];
                 }
                 $completedQuestionDto = new Completed_questionDto(
                     title: $question['title'],
@@ -110,6 +116,8 @@ class StoreForm_instanceController
                 $storeCompleted_questionAction->execute($completedQuestionDto);
             }
         } catch (\Exception $e) {
+            Log::info('error-Exception3:' . $e->getMessage());
+
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 

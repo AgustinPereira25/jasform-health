@@ -34,7 +34,8 @@ class Form_instanceTransformer extends Transformer
             'completer_user_first_name' => $form_instance->completer_user ? $form_instance->completer_user->first_name : null,
             'completer_user_last_name' => $form_instance->completer_user ? $form_instance->completer_user->last_name : null,
             'completer_user_email' => $form_instance->completer_user ? $form_instance->completer_user->email : null,
-            'completer_user_code' => $form_instance->completer_user ? $form_instance->completer_user->code : null, 'completed_questions_count' => (int) $form_instance->completed_questions_count,
+            'completer_user_code' => $form_instance->completer_user ? $form_instance->completer_user->code : null,
+            'completed_questions_count' => (int) $form_instance->completed_questions_count,
             'completed_questions' => $completedQuestions,
         ];
     }
