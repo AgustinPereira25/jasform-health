@@ -8,6 +8,10 @@ import { useFormInstance } from '@/stores/useFormInstance';
 import { getColorContrast, isValidEmail, isValidImageUrl } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () {
+        window.history.go(1);
+    };
     const [searchParams] = useSearchParams();
     const aux_code = searchParams.get('aux_code');
     console.log("aux_code:", aux_code)

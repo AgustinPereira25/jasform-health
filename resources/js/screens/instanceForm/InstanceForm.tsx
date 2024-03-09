@@ -14,6 +14,11 @@ export interface FormInstanceFlow {
     currentQuestionOrder: number
 };
 export const InstanceForm: React.FunctionComponent = () => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+        window.history.go(1);
+    };
+
     const navigate = useNavigate();
     const { publicCode } = useParams(); // publicCode is the form public code to emit.
 

@@ -8,6 +8,7 @@ import type { Question } from '@/api';
 import { getColorContrast } from '@/helpers/helpers';
 
 export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
+    ;
     const currentState = useFormInstance.getState().formInstance!;
 
     const [error, setError] = useState<string>('');

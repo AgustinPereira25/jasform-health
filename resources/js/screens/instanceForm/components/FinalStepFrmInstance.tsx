@@ -6,7 +6,10 @@ import { Button } from '@/ui'
 import { AnimatedCheckIcon } from '@/ui/common/AnimatedCheckIcon';
 
 export const FinalStepFrmInstance: React.FC = () => {
-
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function () {
+        window.history.go(1);
+    };
     const previewMode = useFormInstance.getState().previewMode ?? false;
     const publicCode = useParams<{ publicCode: string }>().publicCode;
 
