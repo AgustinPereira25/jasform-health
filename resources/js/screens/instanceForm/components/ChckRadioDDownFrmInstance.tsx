@@ -364,7 +364,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
                     )
                 }
-                <div className="flex justify-between gap-8">
+                <div className="flex justify-between gap-8 p-1">
                     <Button
                         aria-label="Back"
                         variant="secondary"

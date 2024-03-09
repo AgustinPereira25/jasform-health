@@ -78,7 +78,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                         onChange={handleChange}
                     />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between p-1">
                     <Button
                         aria-label="Back"
                         variant="secondary"

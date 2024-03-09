@@ -45,7 +45,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                 <h1 className="font-semibold">{`${currentQuestionInfo.title}`}</h1>
                 <p>{`${currentQuestionInfo.text}`}</p>
             </div>
-            <div className="flex justify-between pt-3">
+            <div className="flex justify-between p-1 pt-3">
                 <Button
                     aria-label="Back"
                     variant="secondary"
