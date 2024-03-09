@@ -542,7 +542,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                     onClose={handleCloseDeletionModal}
                 >
                     <div className="flex h-16 p-3 m-auto">
-                        <DeleteUserConfirm />
+                        <DeleteUserConfirm handleCloseDeletionModal={handleCloseDeletionModal} />
                     </div>
                 </Modal>
                 <Modal

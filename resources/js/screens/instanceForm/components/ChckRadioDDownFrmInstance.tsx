@@ -99,6 +99,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
+                    text: currentQuestionInfo.text,
                     answer: answerInput,
                     order: currentQuestionInfo.order,
                     is_mandatory: currentQuestionInfo.is_mandatory as boolean,
@@ -152,6 +153,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
+                    text: currentQuestionInfo.text,
                     answer: "",
                     order: currentQuestionInfo.order,
                     is_mandatory: currentQuestionInfo.is_mandatory as boolean,
@@ -258,7 +260,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     return (
         <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3 overflow-y-auto">
             <div className="flex flex-col justify-center gap-2">
-                <h1>{`${currentQuestionInfo.title}`}</h1>
+                <h1 className="font-semibold">{`${currentQuestionInfo.title}`}</h1>
                 <p>{`${currentQuestionInfo.text}`}</p>
             </div>
             <Modal
@@ -286,7 +288,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 {
                     questiontypeId === 3 ? (
                         <>
-                            <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap break-all">
+                            <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap">
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
                                         <div key={option.title} className="flex items-center gap-3">
@@ -299,7 +301,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                                                 onChange={handleChange}
                                                 checked={checkedAnswers.some((answer) => answer.title.toLowerCase() === option.title.toLowerCase())}
                                             />
-                                            <label htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
+                                            <label className="break-words" htmlFor={`chck-radio-answer-checkbox-${option.id}`}>{option.title}</label>
                                         </div>
                                     ))
                                 }

@@ -327,6 +327,17 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         navigate(routeToGo);
         setShowLostChangesModal(false);
     }
+
+    const generateiFrameCode = async () => {
+        if (!pathname.includes(ROUTES.newForm)) {
+            const URL = makeFormURLInstance(form.public_code!);
+            const iFrameText = `<iframe src="${URL}" width="450px" height="600px" title="${form.name}" allowfullscreen=""></iframe>`;
+            await navigator.clipboard.writeText(iFrameText);
+            toast.success(`iFrame successfully copied to the clipboard!`);
+
+            return iFrameText
+        }
+    }
     return (
         <>
             {(isPendingCreateFormMutation || isPendingUpdateFormMutation) && (
@@ -439,7 +450,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                     onClose={handleDeletionModal}
                 >
                     <div className="flex h-16 p-3 m-auto">
-                        <DeleteFormConfirm />
+                        <DeleteFormConfirm handleCloseReturnModal={handleDeletionModal} />
                     </div>
                 </Modal>
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
@@ -907,6 +918,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <div className="flex p-3 h-16 ">
                                     <Button
                                         variant="primary"
+                                        onClick={generateiFrameCode}
                                     >
                                         <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
                                         Get Embedded Windows Code (iFrame)

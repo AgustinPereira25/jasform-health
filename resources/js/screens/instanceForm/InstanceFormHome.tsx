@@ -92,7 +92,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     // console.log(`${formInstanceInfo.logo}`)
     {/* <div className="bg-white p-8 rounded-lg max-w-[650px] h-full max-h-[650px] gap-3"> */ }
     return (
-        <div className="bg-white p-8 rounded-lg w-full max-w-md">
+        <div className="bg-white p-8 rounded-lg w-full max-w-md h-full max-h-[600px]">
             <div className="flex flex-col justify-center items-center gap-3 pb-2 w-full">
                 {
                     isValidImageUrl(formInstanceInfo.logo ?? '') && (
@@ -102,7 +102,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 <span className="text-2xl font-medium" style={{
                     color: formInstanceInfo.primary_color ?? '#407EC9',
                 }}>{formInstanceInfo.welcome_text}</span>
-                <div className="p-4 w-full">
+                <div className="p-4 w-full h-24 overflow-scroll">
                     <span className="break-words italic">{formInstanceInfo.description}</span>
                 </div>
             </div>

@@ -30,6 +30,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
             const answer: CompletedQuestion = {
                 id: currentQuestionInfo.id!,
                 title: currentQuestionInfo.title,
+                text: currentQuestionInfo.text,
                 answer: answerInput,
                 order: currentQuestionInfo.order,
                 is_mandatory: currentQuestionInfo.is_mandatory as boolean,
@@ -62,7 +63,7 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
     return (
         <div id="input-field-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-center gap-2">
-                <h1>{`${currentQuestionInfo.title}`}</h1>
+                <h1 className="font-semibold">{`${currentQuestionInfo.title}`}</h1>
                 <p>{`${currentQuestionInfo.text}`}</p>
             </div>
             <form id="input-field-container-form-form" className="flex flex-col justify-between h-full" onSubmit={handleSubmit}>

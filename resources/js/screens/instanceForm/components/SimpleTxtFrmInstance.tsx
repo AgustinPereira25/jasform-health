@@ -15,6 +15,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         const answer: CompletedQuestion = {
             id: currentQuestionInfo.id!,
             title: currentQuestionInfo.title,
+            text: currentQuestionInfo.text,
             answer: 'Not apply',
             order: currentQuestionInfo.order,
             is_mandatory: currentQuestionInfo.is_mandatory as boolean,
@@ -41,7 +42,7 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
     return (
         <div id="simple-txt-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-start items-start gap-4 h-full">
-                <h1>{`${currentQuestionInfo.title}`}</h1>
+                <h1 className="font-semibold">{`${currentQuestionInfo.title}`}</h1>
                 <p>{`${currentQuestionInfo.text}`}</p>
             </div>
             <div className="flex justify-between pt-3">

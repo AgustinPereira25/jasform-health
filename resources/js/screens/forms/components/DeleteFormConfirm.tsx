@@ -7,7 +7,11 @@ import { ROUTES } from "@/router";
 import { deleteForm } from "@/api";
 import { Button } from "@/ui";
 
-export const DeleteFormConfirm: React.FunctionComponent = () => {
+interface DeleteFormConfirmProps {
+    handleCloseReturnModal: () => void;
+};
+
+export const DeleteFormConfirm: React.FunctionComponent<DeleteFormConfirmProps> = ({ handleCloseReturnModal }) => {
     const navigate = useNavigate();
     const { id } = useParams();
     const queryClient = useQueryClient();
@@ -31,7 +35,10 @@ export const DeleteFormConfirm: React.FunctionComponent = () => {
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="flex flex-row gap-4 h-16 p-3">
-                <Button variant="tertiary" onClick={handleDelete} >
+                <Button aria-label="Cancel" variant="secondary" onClick={handleCloseReturnModal} >
+                    Cancel
+                </Button>
+                <Button aria-label="Confirm" variant="tertiary" onClick={handleDelete} >
                     Confirm
                 </Button>
             </div>

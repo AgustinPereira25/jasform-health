@@ -123,7 +123,7 @@ export const MyDashboard = () => {
                     <h1 className="flex items-center justify-between px-2 pb-2 text-2xl font-semibold leading-7 text-primary ">
                         Stats
                     </h1>
-                    <div className="rounded-xl flex justify-center py-5 p-14 cursor-default gap-6">
+                    {/* <div className="rounded-xl flex justify-center py-5 p-14 cursor-default gap-6">
                         {Object.entries(statsData).map(([key, value], index) => {
                             const colors = ['bg-green-700', 'bg-red-700', 'bg-yellow-600', 'bg-purple-900'];
                             const colorClass = colors[index % colors.length];
@@ -144,6 +144,28 @@ export const MyDashboard = () => {
                                 </div>
                             )
                         })}
+                    </div> */}
+                    <div className="rounded-xl flex justify-center py-5 px-4 md:p-14 cursor-default gap-6">
+                        {Object.entries(statsData).map(([key, value], index) => {
+                            const colors = ['bg-green-700', 'bg-red-700', 'bg-yellow-600', 'bg-purple-900'];
+                            const colorClass = colors[index % colors.length];
+                            return (
+                                <div className="rounded-xl w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 container mx-auto cursor-default" key={key}>
+                                    <div className="cursor-default w-full max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg transition duration-500 transform hover:scale-100">
+
+                                        <div className={`h-20 flex items-center justify-between ${colorClass}`}>
+                                            <p className="mr-0 text-white text-lg pl-5 capitalize">{key.replace(/total_/g, "").replace(/_/g, " ")}</p>
+                                        </div>
+                                        <div className="flex justify-between pt-6 px-5 mb-2 text-sm text-gray-600">
+                                            <p>TOTAL</p>
+                                        </div>
+                                        <p className="py-4 text-3xl ml-5">
+                                            <CountUpStats value={value} />
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -162,7 +184,7 @@ export const MyDashboard = () => {
                             My latest active forms
                         </h1>
                     </div>
-                    <div className="rounded-sm border-[1px] border-gray-300">
+                    <div className="rounded-sm border-[1px] border-gray-300 overflow-x-auto">
                         <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                             <colgroup>
                                 <col className="w-full sm:w-4/12" />
@@ -270,14 +292,6 @@ export const MyDashboard = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        {/* <td className="hidden py-4 pl-3 text-center text-sm text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <Button
-                      variant="tertiary"
-                      onClick={() => console.log('delete')}
-                    >
-                      <icons.LinkIcon />
-                    </Button>
-                  </td> */}
                                         <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             <a href={`/forms/${item.id}`} className="flex justify-end">
                                                 <icons.ChevronRightIcon className="h-6 w-6 text-primary" />
@@ -308,10 +322,9 @@ export const MyDashboard = () => {
                         </Button>
                     </div>
                 </div >
-
             )}
 
-            <div className="h-[100px]"></div>
+            {/* <div className="h-[100px]"></div> */}
 
         </>
     );
