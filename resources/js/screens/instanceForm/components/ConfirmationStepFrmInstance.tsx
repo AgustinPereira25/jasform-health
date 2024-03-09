@@ -2,13 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, LoadingOverlay, icons } from '@/ui'
+import { Button, LoadingOverlay, Tooltip, icons } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
 // import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance } from '@/api/formInstance';
 import { getColorContrast } from '@/helpers/helpers';
+import { message } from '@/constants/message';
 
 export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     let currentState = useFormInstance.getState().formInstance!;
@@ -173,28 +174,40 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
 
                 <div className="flex w-full gap-7 justify-between items-center pt-4">
                     <div>
-                        <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
-                            backgroundColor: formInstanceInfo.secondary_color,
-                            border: formInstanceInfo.rounded_style ? 1 : 'none',
-                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            color: getColorContrast(formInstanceInfo.secondary_color),
-                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
-                        }}
+                        <Tooltip
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                            content={message.TOOLTIP_FINISH_FORM_BACK} className="text-nowrap"
                         >
-                            Back
-                        </Button>
-                    </div>
-                    <div>
-                        <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
-                            style={{
-                                backgroundColor: formInstanceInfo.primary_color,
+                            <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
+                                backgroundColor: formInstanceInfo.secondary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: getColorContrast(formInstanceInfo.primary_color),
+                                color: getColorContrast(formInstanceInfo.secondary_color),
+                                // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                             }}
+                            >
+                                Back
+                            </Button>
+                        </Tooltip>
+                    </div>
+                    <div>
+                        <Tooltip
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                            content={message.TOOLTIP_FINISH_FORM_SEND}
+                            className="text-nowrap"
+                            placement="left"
                         >
-                            Finish & Send
-                        </Button>
+                            <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
+                                style={{
+                                    backgroundColor: formInstanceInfo.primary_color,
+                                    border: formInstanceInfo.rounded_style ? 1 : 'none',
+                                    borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                                    color: getColorContrast(formInstanceInfo.primary_color),
+                                }}
+                            >
+                                Finish & Send
+                            </Button>
+                        </Tooltip>
                     </div>
                 </div>
             </div>

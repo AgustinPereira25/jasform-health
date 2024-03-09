@@ -9,13 +9,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "react-toastify";
 import { useEffect, useRef, useState } from "react";
-import { Modal, Label, TextInput } from 'flowbite-react';
+import { Modal, Label, TextInput, Tooltip } from 'flowbite-react';
 
 import { loginMutation } from "./loginAuth";
 import { Button, Input, LoadingOverlay, BackgroundGradientAnimation } from "@/ui";
 import HomeTextAndImage from "@/components/HomeTextAndImage";
 import { ROUTES } from "@/router";
 import { useUserStore } from "@/stores";
+import { message } from "@/constants/message";
 
 const loginSchema = z
     .object({
@@ -201,15 +202,25 @@ export const Login = () => {
                             <div className="mb-2 block">
                                 <Label htmlFor="publicCodeRef" value="Form Public Code*" />
                             </div>
-                            <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
-                                value={publicCodeInputValue.toUpperCase()}
-                                onChange={(e) => setPublicCodeInputValue(e.target.value.toUpperCase())} maxLength={6} />
+                            <Tooltip
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                                content={message.TOOLTIP_PUBLIC_FORM} className="text-nowrap w-full" placement="right"
+                            >
+                                <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
+                                    value={publicCodeInputValue.toUpperCase()}
+                                    onChange={(e) => setPublicCodeInputValue(e.target.value.toUpperCase())} maxLength={6} />
+                            </Tooltip>
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="auxCodeRef" value="Aux Code (optional)" />
                             </div>
-                            <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional aux code" />
+                            <Tooltip
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                                content={message.TOOLTIP_FORM_AUX_CODE} className="text-nowrap w-full" placement="right"
+                            >
+                                <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional aux code" />
+                            </Tooltip>
                         </div>
                         <div className="w-full flex gap-2 justify-between">
                             <Button variant="secondary" onClick={() => {
