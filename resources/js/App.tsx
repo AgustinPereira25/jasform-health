@@ -1,13 +1,13 @@
 import React from "react";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
-import { env } from "./env";
+// import { env } from "./env";
 import { Router } from "./router";
 
 import "../css/app.css";
@@ -26,9 +26,9 @@ createRoot(document.getElementById("app")!).render(
 
             {/* </GoogleOAuthProvider> */}
 
-            {env.VITE_APP_ENV === "local" && (
+            {/* {env.VITE_APP_ENV === "local" && (
                 <ReactQueryDevtools initialIsOpen={false} />
-            )}
+            )} */}
             <ToastContainer
                 position="top-center"
                 theme="light"
