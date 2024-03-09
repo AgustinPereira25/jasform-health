@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import { Button, LoadingOverlay, Tooltip, icons } from '@/ui'
 import type { InstanceProps } from '.'
@@ -8,7 +9,7 @@ import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
 // import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance } from '@/api/formInstance';
-import { getColorContrast } from '@/helpers/helpers';
+import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
 import { message } from '@/constants/message';
 
 export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
@@ -92,7 +93,11 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
     //             }
     //         },
     //     });
+    const [hoveredPrimary, setHoveredPrimary] = useState(false);
+    const [hoveredSecondary, setHoveredSecondary] = useState(false);
 
+    const hoverColorPrimary = adjustHoverColor(formInstanceInfo.primary_color);
+    const hoverColorSecondary = adjustHoverColor(formInstanceInfo.secondary_color);
     return (
         <>
             {(isPendingCreateFormInstanceMutation || isPendingCreateFormInstanceMutation) && (
@@ -179,12 +184,13 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                             content={message.TOOLTIP_FINISH_FORM_BACK} className="text-nowrap"
                         >
                             <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
-                                backgroundColor: formInstanceInfo.secondary_color,
+                                backgroundColor: hoveredSecondary ? hoverColorSecondary : formInstanceInfo.secondary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
                                 color: getColorContrast(formInstanceInfo.secondary_color),
-                                // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                             }}
+                                onMouseEnter={() => setHoveredSecondary(true)}
+                                onMouseLeave={() => setHoveredSecondary(false)}
                             >
                                 Back
                             </Button>
@@ -199,11 +205,13 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                         >
                             <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
                                 style={{
-                                    backgroundColor: formInstanceInfo.primary_color,
+                                    backgroundColor: hoveredPrimary ? hoverColorPrimary : formInstanceInfo.primary_color,
                                     border: formInstanceInfo.rounded_style ? 1 : 'none',
                                     borderRadius: formInstanceInfo.rounded_style ?? 'none',
                                     color: getColorContrast(formInstanceInfo.primary_color),
                                 }}
+                                onMouseEnter={() => setHoveredPrimary(true)}
+                                onMouseLeave={() => setHoveredPrimary(false)}
                             >
                                 Finish & Send
                             </Button>

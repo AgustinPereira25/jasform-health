@@ -5,7 +5,7 @@ import { Button, Input, icons } from '@/ui';
 import type { InstanceProps } from './components';
 import type { CompletedForm } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
-import { getColorContrast, isValidEmail, isValidImageUrl } from '@/helpers/helpers';
+import { adjustHoverColor, getColorContrast, isValidEmail, isValidImageUrl } from '@/helpers/helpers';
 
 export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     window.history.pushState(null, '', window.location.href);
@@ -41,6 +41,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     const [email, setEmail] = useState<string>('');
 
     const [errors, setErrors] = useState<{ firstName: string, lastName: string, email: string }>({ firstName: '', lastName: '', email: '' });
+    const [hovered, setHovered] = useState(false);
 
     const handleHomeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -94,7 +95,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
     }
     // console.log(`${formInstanceInfo.logo}`)
-    {/* <div className="bg-white p-8 rounded-lg max-w-[650px] h-full max-h-[650px] gap-3"> */ }
+    const hoverColor = adjustHoverColor(formInstanceInfo.primary_color);
     return (
         <div className="bg-white p-8 rounded-lg w-full max-w-md h-full max-h-[600px]">
             <div className="flex flex-col justify-center items-center gap-3 pb-2 w-full">
@@ -154,13 +155,15 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                             aria-label="Complete the form"
                             type="submit"
                             variant="primary"
-                            className="flex w-full"
+                            className={`flex w-full hover:${adjustHoverColor(formInstanceInfo.primary_color)}`}
                             style={{
-                                backgroundColor: formInstanceInfo.primary_color,
+                                backgroundColor: hovered ? hoverColor : formInstanceInfo.primary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
                                 color: getColorContrast(formInstanceInfo.primary_color),
                             }}
+                            onMouseEnter={() => setHovered(true)}
+                            onMouseLeave={() => setHovered(false)}
                         >
                             Complete the form
                             <icons.ArrowRightIcon className="h-5 w-5" />

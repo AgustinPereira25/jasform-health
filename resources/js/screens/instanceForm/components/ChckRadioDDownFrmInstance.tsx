@@ -7,7 +7,7 @@ import type { CompletedQuestion, CompleterUserAnswerCheckedOption } from '@/api/
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { Question, QuestionsOption } from '@/api';
 import { message } from '@/constants/message';
-import { getColorContrast } from '@/helpers/helpers';
+import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
 
 export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -56,6 +56,10 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
 
     // console.log('currentState.completed_questions', currentState.completed_questions);
     const [comboBoxItems, setComboBoxItems] = useState<{ id: number, name: string }[]>([]);
+
+    // Hover colors
+    const [hoveredPrimary, setHoveredPrimary] = useState(false);
+    const [hoveredSecondary, setHoveredSecondary] = useState(false);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -257,6 +261,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
 
+    const hoverColorPrimary = adjustHoverColor(formInstanceInfo.primary_color);
+    const hoverColorSecondary = adjustHoverColor(formInstanceInfo.secondary_color);
+
     return (
         <div id="chck-radio-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3 overflow-y-auto">
             <div className="flex flex-col justify-center gap-2">
@@ -372,12 +379,14 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         id="goBack-answer-btn"
                         onClick={handleGoBackClick}
                         style={{
-                            backgroundColor: formInstanceInfo.secondary_color,
+                            backgroundColor: hoveredSecondary ? hoverColorSecondary : formInstanceInfo.secondary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
                             color: getColorContrast(formInstanceInfo.secondary_color),
                             // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                         }}
+                        onMouseEnter={() => setHoveredSecondary(true)}
+                        onMouseLeave={() => setHoveredSecondary(false)}
                     >
                         Back
                     </Button>
@@ -386,11 +395,13 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         type="submit"
                         id="submit-answer-btn"
                         style={{
-                            backgroundColor: formInstanceInfo.primary_color,
+                            backgroundColor: hoveredPrimary ? hoverColorPrimary : formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
                             color: getColorContrast(formInstanceInfo.primary_color),
                         }}
+                        onMouseEnter={() => setHoveredPrimary(true)}
+                        onMouseLeave={() => setHoveredPrimary(false)}
                     >
                         Next
                     </Button>

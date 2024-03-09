@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { CompletedQuestion } from '@/api/formInstance';
 import { useFormInstance } from '@/stores/useFormInstance';
 import { Button } from '@/ui'
 import type { InstanceProps } from './FormInstanceScreens';
 import type { Question } from '@/api';
-import { getColorContrast } from '@/helpers/helpers';
+import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
 
 export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     const currentState = useFormInstance.getState().formInstance!;
@@ -39,6 +39,14 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
+
+    const [hoveredPrimary, setHoveredPrimary] = useState(false);
+    const [hoveredSecondary, setHoveredSecondary] = useState(false);
+
+    const hoverColorPrimary = adjustHoverColor(formInstanceInfo?.primary_color);
+    const hoverColorSecondary = adjustHoverColor(formInstanceInfo?.secondary_color);
+
+    console.log('color', hoverColorSecondary)
     return (
         <div id="simple-txt-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-start items-start gap-4 h-full">
@@ -53,12 +61,13 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                     id="goBack-answer-btn"
                     onClick={handleGoBackClick}
                     style={{
-                        backgroundColor: formInstanceInfo.secondary_color,
+                        backgroundColor: hoveredSecondary ? hoverColorSecondary : formInstanceInfo.secondary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
                         color: getColorContrast(formInstanceInfo.secondary_color),
-                        // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                     }}
+                    onMouseEnter={() => setHoveredSecondary(true)}
+                    onMouseLeave={() => setHoveredSecondary(false)}
                 >
                     Back
                 </Button>
@@ -67,12 +76,14 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
                     type="button"
                     id="submit-answer-btn"
                     style={{
-                        backgroundColor: formInstanceInfo.primary_color,
+                        backgroundColor: hoveredPrimary ? hoverColorPrimary : formInstanceInfo.primary_color,
                         border: formInstanceInfo.rounded_style ? 1 : 'none',
                         borderRadius: formInstanceInfo.rounded_style ?? 'none',
                         color: getColorContrast(formInstanceInfo.primary_color),
                     }}
                     onClick={handleNextQuestionButton}
+                    onMouseEnter={() => setHoveredPrimary(true)}
+                    onMouseLeave={() => setHoveredPrimary(false)}
                 >
                     Next
                 </Button>

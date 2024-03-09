@@ -5,7 +5,7 @@ import { useFormInstance } from '@/stores/useFormInstance';
 import { Button, Input } from '@/ui'
 import type { InstanceProps } from '.';
 import type { Question } from '@/api';
-import { getColorContrast } from '@/helpers/helpers';
+import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
 
 export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     ;
@@ -61,6 +61,12 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
         const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder - 1)?.question_type_id ?? 0;
         setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder - 1 });
     }
+    const [hoveredPrimary, setHoveredPrimary] = useState(false);
+    const [hoveredSecondary, setHoveredSecondary] = useState(false);
+
+    const hoverColorPrimary = adjustHoverColor(formInstanceInfo.primary_color);
+    const hoverColorSecondary = adjustHoverColor(formInstanceInfo.secondary_color);
+
     return (
         <div id="input-field-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-center gap-2">
@@ -87,12 +93,14 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                         id="goBack-answer-btn"
                         onClick={handleGoBackClick}
                         style={{
-                            backgroundColor: formInstanceInfo.secondary_color,
+                            backgroundColor: hoveredSecondary ? hoverColorSecondary : formInstanceInfo.secondary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
                             color: getColorContrast(formInstanceInfo.secondary_color),
                             // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
                         }}
+                        onMouseEnter={() => setHoveredSecondary(true)}
+                        onMouseLeave={() => setHoveredSecondary(false)}
                     >
                         Back
                     </Button>
@@ -101,11 +109,13 @@ export const InputFieldFrmInstance: React.FC<InstanceProps> = ({ formInstanceInf
                         type="submit"
                         id="submit-answer-btn"
                         style={{
-                            backgroundColor: formInstanceInfo.primary_color,
+                            backgroundColor: hoveredPrimary ? hoverColorPrimary : formInstanceInfo.primary_color,
                             border: formInstanceInfo.rounded_style ? 1 : 'none',
                             borderRadius: formInstanceInfo.rounded_style ?? 'none',
                             color: getColorContrast(formInstanceInfo.primary_color),
                         }}
+                        onMouseEnter={() => setHoveredPrimary(true)}
+                        onMouseLeave={() => setHoveredPrimary(false)}
                     >
                         Next
                     </Button>
