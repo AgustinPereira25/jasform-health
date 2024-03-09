@@ -54,10 +54,13 @@ export function isValidEmail(email: string) {
 }
 
 export function getColorContrast(hexColor = '') {
+  let hexColorDefinitive = hexColor;
+  if (hexColorDefinitive === '') hexColorDefinitive = '#ffffff';
+
     // Convert hex to RGB
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
+    const r = parseInt(hexColorDefinitive.slice(1, 3), 16);
+    const g = parseInt(hexColorDefinitive.slice(3, 5), 16);
+    const b = parseInt(hexColorDefinitive.slice(5, 7), 16);
 
     // Calculate relative luminance
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
@@ -66,11 +69,14 @@ export function getColorContrast(hexColor = '') {
     return luminance > 0.5 ? '#000000' : '#ffffff';
 }
 
-export function adjustHoverColor(hexColor = "#ffffff") {
+export function adjustHoverColor(hexColor = ''){
+  let hexColorDefinitive = hexColor;
+  if (hexColorDefinitive === '') hexColorDefinitive = '#ffffff';
+
   // Convert hex to RGB
-  const r = parseInt(hexColor.slice(1, 3), 16);
-  const g = parseInt(hexColor.slice(3, 5), 16);
-  const b = parseInt(hexColor.slice(5, 7), 16);
+  const r = parseInt(hexColorDefinitive.slice(1, 3), 16);
+  const g = parseInt(hexColorDefinitive.slice(3, 5), 16);
+  const b = parseInt(hexColorDefinitive.slice(5, 7), 16);
 
   // Calculate luminance (perceived brightness)
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;

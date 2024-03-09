@@ -904,26 +904,32 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     )
                                 }
                                 <hr className="mx-3" />
-                                <div className="flex p-3 h-16 ">
-                                    <Button
-                                        variant="primary"
-                                        onClick={handlePublicLinkClick}
-                                        aria-label="Get Public Link"
-                                    >
-                                        <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
-                                        Get Public Link with Code to Share
-                                    </Button>
-                                </div>
-                                <hr className="mx-3" />
-                                <div className="flex p-3 h-16 ">
-                                    <Button
-                                        variant="primary"
-                                        onClick={generateiFrameCode}
-                                    >
-                                        <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
-                                        Get Embedded Windows Code (iFrame)
-                                    </Button>
-                                </div>
+                                {
+                                    (!pathname.includes(ROUTES.newForm)) && (
+                                        <>
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={handlePublicLinkClick}
+                                                    aria-label="Get Public Link"
+                                                >
+                                                    <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
+                                                    Get Public Link with Code to Share
+                                                </Button>
+                                            </div>
+                                            <hr className="mx-3" />
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={generateiFrameCode}
+                                                >
+                                                    <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
+                                                    Get Embedded Windows Code (iFrame)
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )
+                                }
                                 <hr className="mx-3" />
                             </>
                         </div>
