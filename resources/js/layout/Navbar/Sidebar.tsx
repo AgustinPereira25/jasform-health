@@ -1,16 +1,15 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
-import { logOutUserMutation } from "../../screens/login/loginAuth";
 import { ROUTES } from "@/router";
-import { useUserStore } from "@/stores";
-import { Button, Modal, icons, LoadingOverlay, Tooltip } from "@/ui";
+import { Button, Modal, icons, LoadingOverlay } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
+// eslint-disable-next-line import/order
 import { isValidImageUrl } from "@/helpers/helpers";
+import type { MenuBarProps } from "@/shared.types";
 
-const navigation = [
+export const navigation = [
     {
         path: ROUTES.home,
         label: "My Dashboard",
@@ -49,38 +48,24 @@ const navigation = [
     },
 ] as const;
 
-export const Sidebar = ({
+export const Sidebar: React.FC<MenuBarProps> = ({
+    user,
+    navigation,
+    logOutMutation,
+    isPendingLogOutUserMutation,
+    currentPath,
     onCloseSidebar,
 }: {
+    user: MenuBarProps["user"],
+    navigation: MenuBarProps["navigation"],
+    logOutMutation: MenuBarProps["logOutMutation"],
+    isPendingLogOutUserMutation: MenuBarProps["isPendingLogOutUserMutation"],
+    currentPath: MenuBarProps["currentPath"],
     onCloseSidebar?: () => void;
 }) => {
-    const navigate = useNavigate();
-    const { token, clearUser } = useUserStore();
-    useEffect(() => {
-        if (!token) {
-            navigate(ROUTES.login);
-        }
-    }, []);
-
-    const { pathname: currentPath } = useLocation();
-    // TODO - Put real user here and change mocked user in Layout.tsx
-    // const { user: user, setToken } = useUserStore();
-
-    const { user } = useUserStore();
-
     const logout = () => {
         logOutMutation();
     };
-
-    const { mutate: logOutMutation, isPending: isPendingLogOutUserMutation } =
-        useMutation({
-            mutationFn: logOutUserMutation.mutation,
-            onSuccess: () => {
-                clearUser();
-                localStorage.clear()
-                navigate(ROUTES.login);
-            },
-        });
 
     const [showLogOutModal, setShowLogOutModal] = useState(false);
     const handleOpenLogOutModal = () => {
@@ -91,11 +76,11 @@ export const Sidebar = ({
     };
 
     return (
-        <div className="flex h-screen w-[206px] grow flex-col gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5">
+        <div className={`flex flex-col h-screen transition-width duration-500 ease-in-out grow gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5`}>
             {(isPendingLogOutUserMutation) && (
                 <LoadingOverlay />
             )}
-            <div className="flex justify-center h-4 p-2 pt-4 object-contain">
+            <div className="flex justify-center h-4 p-2 pt-4 object-contain shrink-0">
                 <img src="/JASForm_Isologo_big_transp_white.png" alt="Logo" className="h-10" />
             </div>
             {user && (
@@ -115,7 +100,7 @@ export const Sidebar = ({
                                     <Link
                                         to={item.path}
                                         onClick={onCloseSidebar}
-                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
+                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
                                     >
                                         {item.icon}
                                         {item.label}
@@ -128,14 +113,6 @@ export const Sidebar = ({
                             <hr className="w-12/12 bg-[#407EC9]" />
                         )
                     }
-
-                    {/* <button
-                    onClick={() => setToken(null)}
-                    className="pl-5 group flex w-full gap-x-3 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-[#407EC9] hover:text-white"
-                  >
-                    <icons.ArrowLeftOnRectangleIcon className="w-6" />
-                    Sign Out
-                  </button> */}
                     <ul className="flex flex-col gap-y-0 overflow-y-auto">
                         {navigation
                             .filter((item) => item.role_name === user.role_name?.toLowerCase())
@@ -151,7 +128,7 @@ export const Sidebar = ({
                                     <Link
                                         to={item.path}
                                         onClick={onCloseSidebar}
-                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
+                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
                                     >
                                         {item.icon}
                                         {item.label}
@@ -193,7 +170,7 @@ export const Sidebar = ({
                                             </span>
                                             <Link
                                                 to="/profile"
-                                                className="flex text-xs font-normal text-nowrap text-[#8C92AB]"
+                                                className="flex text-xs font-normal whitespace-nowrap text-[#8C92AB]"
                                             >
                                                 <span>{item.label}</span>
                                             </Link>
@@ -232,7 +209,7 @@ export const Sidebar = ({
                 </div>
             </Modal>
 
-            <div className="fixed bottom-0 left-0 m-3">
+            {/* <div className="fixed bottom-0 left-0 m-3">
                 <Tooltip
                     content={"Need help? Go to Documentation"} className="text-nowrap w-64"
                 >
@@ -240,7 +217,7 @@ export const Sidebar = ({
                         <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
                     </a>
                 </Tooltip>
-            </div>
+            </div> */}
         </div >
     );
 };
