@@ -55,7 +55,7 @@ export const Navbar = () => {
     <>
       <div className="hidden h-screen md:block">
         <div
-          className={`transition-width duration-500 ease-in-out ${isNavbarOpen ? 'w-[206px]' : 'w-[80px]'}`}
+          className={`transition-width duration-1000 ease-in-out ${isNavbarOpen ? 'w-[206px]' : 'w-[80px]'}`}
           // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
           onMouseOver={toggleNavbar} // Use onMouseOver instead of onMouseEnter
           onMouseLeave={closeNavbar}

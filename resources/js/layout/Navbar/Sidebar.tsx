@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import { ROUTES } from "@/router";
-import { Button, Modal, icons, LoadingOverlay, Tooltip } from "@/ui";
+import { Button, Modal, icons, LoadingOverlay } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
 // eslint-disable-next-line import/order
@@ -80,7 +80,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
             {(isPendingLogOutUserMutation) && (
                 <LoadingOverlay />
             )}
-            <div className="flex justify-center h-4 p-2 pt-4 object-contain">
+            <div className="flex justify-center h-4 p-2 pt-4 object-contain shrink-0">
                 <img src="/JASForm_Isologo_big_transp_white.png" alt="Logo" className="h-10" />
             </div>
             {user && (
@@ -100,7 +100,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                     <Link
                                         to={item.path}
                                         onClick={onCloseSidebar}
-                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
+                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
                                     >
                                         {item.icon}
                                         {item.label}
@@ -128,7 +128,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                     <Link
                                         to={item.path}
                                         onClick={onCloseSidebar}
-                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold"
+                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
                                     >
                                         {item.icon}
                                         {item.label}
@@ -170,7 +170,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                             </span>
                                             <Link
                                                 to="/profile"
-                                                className="flex text-xs font-normal text-nowrap text-[#8C92AB]"
+                                                className="flex text-xs font-normal whitespace-nowrap text-[#8C92AB]"
                                             >
                                                 <span>{item.label}</span>
                                             </Link>
@@ -209,7 +209,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                 </div>
             </Modal>
 
-            <div className="fixed bottom-0 left-0 m-3">
+            {/* <div className="fixed bottom-0 left-0 m-3">
                 <Tooltip
                     content={"Need help? Go to Documentation"} className="text-nowrap w-64"
                 >
@@ -217,7 +217,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                         <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
                     </a>
                 </Tooltip>
-            </div>
+            </div> */}
         </div >
     );
 };

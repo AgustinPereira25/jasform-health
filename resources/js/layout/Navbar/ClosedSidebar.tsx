@@ -28,7 +28,7 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
             {(isPendingLogOutUserMutation) && (
                 <LoadingOverlay />
             )}
-            <div className="flex justify-center p-2 pt-4 object-contain">
+            <div className="flex justify-center p-2 pt-4 object-contain shrink-0 h-[72px]">
                 <img src="/JASForm_Isologo_for_small_transp 2.png" alt="Logo" className="h-10" />
             </div>
             {user && (
@@ -145,16 +145,6 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                     </div>
                 </div>
             </Modal>
-
-            {/* <div className="fixed bottom-0 left-0 m-3">
-                <Tooltip
-                    content={"Need help? Go to Documentation"} className="text-nowrap w-64"
-                >
-                    <a href="Https://jasform.com/docs" target="_blank" rel="noopener noreferrer" title="Need help? Go to Documentation">
-                        <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
-                    </a>
-                </Tooltip>
-            </div> */}
         </div>
     )
 }
