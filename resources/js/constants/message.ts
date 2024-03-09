@@ -1,5 +1,3 @@
-import { Tooltip } from "flowbite-react";
-
 export const message = {
   INITIAL_EMPTY_STATE_WITH_SEARCH_BUTTON:
     "Get results by selecting filters and clicking the Search button.",

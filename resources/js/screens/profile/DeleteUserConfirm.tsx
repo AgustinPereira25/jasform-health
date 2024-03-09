@@ -8,7 +8,7 @@ import { deleteUser } from "@/api";
 import { Button } from "@/ui";
 
 interface DeleteUserConfirmProps {
-    handleCloseDeletionModal: () => void;
+    handleCloseDeletionModal?: () => void;
 };
 export const DeleteUserConfirm: React.FunctionComponent<DeleteUserConfirmProps> = ({ handleCloseDeletionModal }) => {
     const navigate = useNavigate();
