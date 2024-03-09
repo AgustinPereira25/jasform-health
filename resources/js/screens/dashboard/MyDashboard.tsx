@@ -62,13 +62,6 @@ export const MyDashboard = () => {
                 <div className="flex items-center gap-10">
 
                     {(isFetchingDashboard || !!isErrorDashboard || isFetchingFormsReport || !!isErrorFormsReport) ? (
-                        // <div className="animate-pulse h-full w-full flex flex-col items-center space-y-4 p-4">
-                        //     <div className="w-full flex justify-between items-center pb-2">
-                        //         <div className="w-3/5 flex space-x-2">
-                        //             <div className="animate-pulse w-40 h-6 bg-gray-300 rounded-lg"></div>
-                        //         </div>
-                        //     </div>
-                        // </div>
                         <div className="animate-pulse w-[142px] h-[38px] bg-gray-300 rounded-lg"></div>
                     ) : (
                         <div>
@@ -97,7 +90,7 @@ export const MyDashboard = () => {
                     <div>
                         <img
                             referrerPolicy="no-referrer"
-                            className="h-16 w-16 rounded-full bg-gray-100"
+                            className="h-16 w-16 rounded-full object-contain bg-secondary"
                             src={
                                 isValidImageUrl(user?.photo ?? "")
                                     ? user?.photo
@@ -123,28 +116,6 @@ export const MyDashboard = () => {
                     <h1 className="flex items-center justify-between px-2 pb-2 text-2xl font-semibold leading-7 text-primary ">
                         Stats
                     </h1>
-                    {/* <div className="rounded-xl flex justify-center py-5 p-14 cursor-default gap-6">
-                        {Object.entries(statsData).map(([key, value], index) => {
-                            const colors = ['bg-green-700', 'bg-red-700', 'bg-yellow-600', 'bg-purple-900'];
-                            const colorClass = colors[index % colors.length];
-                            return (
-                                <div className="rounded-xl container mx-auto cursor-default" key={key}>
-                                    <div className="cursor-default w-72 bg-white max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg transition duration-500 transform hover:scale-100">
-
-                                        <div className={`h-20 flex items-center justify-between ${colorClass}`}>
-                                            <p className="mr-0 text-white text-lg pl-5 capitalize">{key.replace(/total_/g, "").replace(/_/g, " ")}</p>
-                                        </div>
-                                        <div className="flex justify-between pt-6 px-5 mb-2 text-sm text-gray-600">
-                                            <p>TOTAL</p>
-                                        </div>
-                                        <p className="py-4 text-3xl ml-5">
-                                            <CountUpStats value={value} />
-                                        </p>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div> */}
                     <div className="rounded-xl flex justify-center py-5 px-4 md:p-14 cursor-default gap-6">
                         {Object.entries(statsData).map(([key, value], index) => {
                             const colors = ['bg-green-700', 'bg-red-700', 'bg-yellow-600', 'bg-purple-900'];
