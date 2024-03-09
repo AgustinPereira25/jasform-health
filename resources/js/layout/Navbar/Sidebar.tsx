@@ -143,14 +143,17 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                             .map((item) => (
                                 <li
                                     key={item.label}
-                                    className="mt-auto flex items-center gap-x-3 bg-[#0B365F] py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                    //className="mt-auto flex items-center gap-x-3 bg-[#0B365F] py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                    className="mt-auto flex items-center gap-x-3 bg-[#0B365F] h-28 text-sm font-semibold leading-6 text-white"
                                 >
                                     <div
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
                                         className={tw(
                                             item.path === currentPath
-                                                ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-8 pr-3 text-white"
-                                                : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-8 pr-3 text-white"
+                                                ? "flex justify-end grow items-center gap-2 h-full rounded-r-xl bg-[#00519E] text-white"
+                                                : "flex justify-end grow items-center gap-2 h-full rounded-r-xl text-white"
+                                            // ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-8 pr-3 text-white"
+                                            // : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-8 pr-3 text-white"
                                         )}
                                     >
                                         <img
@@ -164,7 +167,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                             alt={user.first_name}
                                         />
                                         <span className="sr-only">Your profile</span>
-                                        <div>
+                                        <div className="flex flex-col w-[100px]">
                                             <span aria-hidden="true">
                                                 {user.first_name} {user.last_name}
                                             </span>
@@ -175,14 +178,16 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                                 <span>{item.label}</span>
                                             </Link>
                                         </div>
+                                        <div className="cursor-pointer flex flex-col w-9 justify-center items-end h-full">
+                                            <button
+                                                className="mr-2"
+                                                onClick={handleOpenLogOutModal}
+                                                title="Logout"
+                                            >
+                                                {item.icon}
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button
-                                        className="mr-2"
-                                        onClick={handleOpenLogOutModal}
-                                        title="Logout"
-                                    >
-                                        {item.icon}
-                                    </button>
                                 </li>
                             ))}
                     </ul>
