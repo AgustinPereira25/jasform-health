@@ -17,6 +17,9 @@ class UpdateFormController
         Log::info(
             'UpdateFormController###########'
         );
+        Log::info(
+            'request api_url::' .  $request->input('api_url')
+        );
         $loggedUser = $request->user();
         if (!$loggedUser) {
             return responder()->error('Unauthenticated')->respond(500);
@@ -38,7 +41,7 @@ class UpdateFormController
         Log::info('UpdateFormController-form-id: ' . $form->id);
         Log::info('UpdateFormController-form-user_id: ' . $form->user_id);
         Log::info('UpdateFormController-form-public_code: ' . $form->public_code);
-
+        Log::info('UpdateFormController-form-api_url: ' . $form->api_url);
 
         if ($loggedRoleName == 'Admin') {
             if (

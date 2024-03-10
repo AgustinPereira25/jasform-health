@@ -5,7 +5,6 @@ import { ROUTES } from "@/router";
 import { Button, Modal, icons, LoadingOverlay } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
-// eslint-disable-next-line import/order
 import { isValidImageUrl } from "@/helpers/helpers";
 import type { MenuBarProps } from "@/shared.types";
 import { message } from "@/constants/message";
@@ -55,6 +54,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     logOutMutation,
     isPendingLogOutUserMutation,
     currentPath,
+    onCloseSidebar,
 }: {
     user: MenuBarProps["user"],
     navigation: MenuBarProps["navigation"],
@@ -88,6 +88,9 @@ export const Sidebar: React.FC<MenuBarProps> = ({
 
     const handleLostChanges = () => {
         setShowLostChangesModal(false);
+        if (onCloseSidebar) {
+            onCloseSidebar();
+        }
         navigate(routeToNavigate);
     }
 

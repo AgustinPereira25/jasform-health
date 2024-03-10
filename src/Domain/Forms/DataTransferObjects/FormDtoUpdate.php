@@ -45,7 +45,7 @@ class FormDtoUpdate
             'rounded_style' => $this->getRoundedStyle(),
             'api_url' => $this->getApiUrl(),
             'html_head' => $this->getHtmlHead(),
-            'api_url' => $this->getHtmlBody(),
+            'html_body' => $this->getHtmlBody(),
             'is_active' => $this->getIsActive(),
             'is_user_responses_linked' => $this->getIsUserResponsesLinked(),
             'is_initial_data_required' => $this->getIsInitialDataRequired(),

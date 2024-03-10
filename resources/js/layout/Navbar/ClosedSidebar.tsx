@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -91,7 +91,7 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                             .map((item) => (
                                 <li
                                     key={item.label}
-                                    className="mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                    className="mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
                                 >
                                     <div
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
