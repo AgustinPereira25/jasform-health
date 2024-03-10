@@ -91,14 +91,14 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                             .map((item) => (
                                 <li
                                     key={item.label}
-                                    className="mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                    className="mt-auto w-full flex flex-col justify-center items-center gap-x-3 bg-[#0B365F] h-28 text-sm font-semibold leading-6 text-white"
                                 >
                                     <div
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
                                         className={tw(
                                             item.path === currentPath
-                                                ? "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 pl-5 pr-3 text-white h-28 bg-[#00519E]"
-                                                : "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 pl-5 pr-3 text-white h-28"
+                                                ? "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 text-white h-28 bg-[#00519E]"
+                                                : "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 text-white h-28"
                                         )}
                                     >
                                         <button className="flex items-center justify-center w-full h-full pl-1" onClick={() => navigate("/profile")}>
