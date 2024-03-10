@@ -189,7 +189,7 @@ export const Forms = () => {
                         !forms?.length ? (
                             <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
                         ) : (
-                            <div className="rounded-lg border border-gray-300">
+                            <div className="rounded-lg border border-gray-300 overflow-y-auto">
                                 <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                                     <colgroup>
                                         <col className="sm:w-2/12" />
@@ -262,10 +262,12 @@ export const Forms = () => {
                                             </tr>
                                         )}
                                         {forms?.map((item) => (
+
                                             <tr key={item.id}
                                                 onClick={() => { navigate(`/forms/${item.id}`) }}
                                                 className="cursor-pointer hover:bg-gray-100"
                                             >
+
                                                 <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
                                                     <div className="flex items-center gap-x-4">
                                                         <div className="truncate text-sm leading-6 text-black">

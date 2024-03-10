@@ -54,7 +54,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     logOutMutation,
     isPendingLogOutUserMutation,
     currentPath,
-    onCloseSidebar,
+    closeNavbar,
 }: {
     user: MenuBarProps["user"],
     navigation: MenuBarProps["navigation"],
@@ -62,6 +62,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     isPendingLogOutUserMutation: MenuBarProps["isPendingLogOutUserMutation"],
     currentPath: MenuBarProps["currentPath"],
     onCloseSidebar?: () => void;
+    closeNavbar: MenuBarProps["closeNavbar"],
 }) => {
 
     const navigate = useNavigate();
@@ -87,10 +88,8 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     }
 
     const handleLostChanges = () => {
+        closeNavbar();
         setShowLostChangesModal(false);
-        if (onCloseSidebar) {
-            onCloseSidebar();
-        }
         navigate(routeToNavigate);
     }
 
