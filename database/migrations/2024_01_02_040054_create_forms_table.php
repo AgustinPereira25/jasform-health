@@ -19,11 +19,13 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->dateTime('creation_date_time');
             $table->dateTime('last_modified_date_time')->nullable();
-            $table->string('logo')->nullable();
+            $table->text('logo')->nullable();
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
             $table->string('rounded_style')->nullable();
-            $table->string('api_url')->nullable();
+            $table->text('api_url')->nullable();
+            $table->text('html_head')->nullable();
+            $table->text('html_body')->nullable();
             $table->boolean('is_active');
             $table->boolean('is_user_responses_linked');
             $table->boolean('is_initial_data_required');

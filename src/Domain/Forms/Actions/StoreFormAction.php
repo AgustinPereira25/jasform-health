@@ -28,6 +28,8 @@ class StoreFormAction
             'secondary_color' => $formDto->getSecondaryColor(),
             'rounded_style' => $formDto->getRoundedStyle(),
             'api_url' => $formDto->getApiUrl(),
+            'html_head' => $formDto->getHtmlHead(),
+            'html_body' => $formDto->getHtmlBody(),
             'is_active' => $formDto->getIsActive(),
             'is_user_responses_linked' => $formDto->getIsUserResponsesLinked(),
             'is_initial_data_required' => $formDto->getIsInitialDataRequired(),

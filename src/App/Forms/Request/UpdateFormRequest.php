@@ -23,6 +23,8 @@ class UpdateFormRequest extends FormRequest
     public const SECONDARY_COLOR = 'secondary_color';
     public const ROUNDED_STYLE = 'rounded_style';
     public const API_URL = 'api_url';
+    public const HTML_HEAD = 'html_head';
+    public const HTML_BODY = 'html_body';
     public const IS_ACTIVE = 'is_active';
     public const IS_USER_RESPONSES_LINKED = 'is_user_responses_linked';
     public const IS_INITIAL_DATA_REQUIRED = 'is_initial_data_required';
@@ -59,6 +61,8 @@ class UpdateFormRequest extends FormRequest
             secondary_color: $this->string(self::SECONDARY_COLOR)->toString(),
             rounded_style: $this->string(self::ROUNDED_STYLE)->toString(),
             api_url: $this->string(self::API_URL)->toString(),
+            html_head: $this->string(self::HTML_HEAD)->toString(),
+            html_body: $this->string(self::HTML_BODY)->toString(),
             is_active: $this->string(self::IS_ACTIVE)->toString(),
             is_user_responses_linked: $this->string(self::IS_USER_RESPONSES_LINKED)->toString(),
             is_initial_data_required: $this->string(self::IS_INITIAL_DATA_REQUIRED)->toString(),
