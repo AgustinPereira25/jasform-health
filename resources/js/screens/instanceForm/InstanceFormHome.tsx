@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Button, Input, icons } from '@/ui';
@@ -95,13 +95,13 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         }
     }
 
-    useEffect(() => {
-        // Put HTML on head tag
-        const htmlExampleHead = '<link href="prueba JASFORM" />';
-        const htmlExampleBody = '<p>Prueba Body</p>';
-        document.getElementsByTagName("head")[0]!.innerHTML += htmlExampleHead;
-        document.getElementsByTagName("body")[0]!.innerHTML += htmlExampleBody;
-    }, [])
+    // useEffect(() => {
+    //     // Put HTML on head tag
+    //     const htmlExampleHead = formInstanceInfo.html_head;
+    //     const htmlExampleBody = formInstanceInfo.html_body;
+    //     document.getElementsByTagName("head")[0]!.innerHTML += htmlExampleHead;
+    //     document.getElementsByTagName("body")[0]!.innerHTML += htmlExampleBody;
+    // }, [])
 
     // document.getElementsByTagName('head')[0].appendChild(formInstanceInfo.html_head);
     // console.log(`${formInstanceInfo.logo}`)
