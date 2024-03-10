@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Modal } from 'flowbite-react';
-import ReactJson from "react-json-view";
+import { JSONTree } from 'react-json-tree';
 
 import { Button, Label, icons } from '@/ui';
 import { tw } from '@/utils';
@@ -16,6 +16,27 @@ import { isValidJson, parseDate, truncateText } from '@/helpers/helpers';
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import ComboBox from '@/ui/form/Combobox';
 import type { Option } from "@/ui/form/Combobox";
+
+const theme = {
+    scheme: 'monokai',
+    author: 'wimer hazenberg (http://www.monokai.nl)',
+    base00: '#272822',
+    base01: '#383830',
+    base02: '#49483e',
+    base03: '#75715e',
+    base04: '#a59f85',
+    base05: '#f8f8f2',
+    base06: '#f5f4f1',
+    base07: '#f9f8f5',
+    base08: '#f92672',
+    base09: '#fd971f',
+    base0A: '#f4bf75',
+    base0B: '#a6e22e',
+    base0C: '#a1efe4',
+    base0D: '#66d9ef',
+    base0E: '#ae81ff',
+    base0F: '#cc6633',
+};
 
 const sortOptions: Option[] = [
     { id: 0, name: "Name AZ", value: "userName" },
@@ -302,7 +323,9 @@ export const FormInstance: React.FC = () => {
                                 <div>
                                     <p>
                                         {isValidJson(apiResponseToShow)
-                                            ? <ReactJson src={JSON.parse(apiResponseToShow) as Record<string, unknown>} />
+                                            ?
+                                            <JSONTree theme={theme} invertTheme={true} data={JSON.parse(apiResponseToShow) as Record<string, unknown>} />
+                                            // <ReactJson src={JSON.parse(apiResponseToShow) as Record<string, unknown>} />
                                             : apiResponseToShow}
                                     </p>
                                 </div>
