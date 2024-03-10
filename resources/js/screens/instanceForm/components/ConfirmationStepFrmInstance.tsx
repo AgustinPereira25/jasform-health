@@ -1,20 +1,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-import { Button, LoadingOverlay, icons } from '@/ui'
+import { Button, LoadingOverlay, Tooltip, icons } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
 import type { FormInstanceURL } from '@/api/formInstance';
 import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
-import { getColorContrast } from '@/helpers/helpers';
+import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
+import { message } from '@/constants/message';
 
 export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo, currentScreen, setCurrentScreen }) => {
     let currentState = useFormInstance.getState().formInstance!;
     const previewMode = useFormInstance.getState().previewMode ?? false;
     const navigate = useNavigate();
-
+    console.log('currentState', currentState);
     const handleFinishClick = () => {
         if (!previewMode) {
             useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
@@ -91,7 +93,10 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                 }
             },
         });
-
+    const [hoveredPrimary, setHoveredPrimary] = useState(false);
+    const [hoveredSecondary, setHoveredSecondary] = useState(false);
+    const hoverColorPrimary = adjustHoverColor(formInstanceInfo.primary_color);
+    const hoverColorSecondary = adjustHoverColor(formInstanceInfo.secondary_color);
     return (
         <>
             {(isPendingCreateFormInstanceMutation || isPendingCreateFormInstanceMutation) && (
@@ -142,12 +147,12 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5 text-xs">
-                                {currentState.completed_questions?.map((item) => (
+                                {currentState.completed_questions?.filter((item) => item.question_type_id !== 1).map((item) => (
                                     <tr key={item.id} className="font-normal">
                                         <td className="py-2 pl-4 pr-4 sm:pl-6 lg:pl-6">
                                             <div className="flex items-center gap-x-4">
                                                 <div className="whitespace-normal leading-4 text-black">
-                                                    {item.title}
+                                                    {item.text}
                                                 </div>
                                             </div>
                                         </td>
@@ -173,28 +178,43 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
 
                 <div className="flex w-full gap-7 justify-between items-center pt-4">
                     <div>
-                        <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
-                            backgroundColor: formInstanceInfo.secondary_color,
-                            border: formInstanceInfo.rounded_style ? 1 : 'none',
-                            borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                            color: getColorContrast(formInstanceInfo.secondary_color),
-                            // borderColor: primaryColor.startsWith("#e") || primaryColor.startsWith("#fff") ? 'black' : 'white',
-                        }}
+                        <Tooltip
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                            content={message.TOOLTIP_FINISH_FORM_BACK} className="text-nowrap"
                         >
-                            Back
-                        </Button>
-                    </div>
-                    <div>
-                        <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
-                            style={{
-                                backgroundColor: formInstanceInfo.primary_color,
+                            <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
+                                backgroundColor: hoveredSecondary ? hoverColorSecondary : formInstanceInfo.secondary_color,
                                 border: formInstanceInfo.rounded_style ? 1 : 'none',
                                 borderRadius: formInstanceInfo.rounded_style ?? 'none',
-                                color: getColorContrast(formInstanceInfo.primary_color),
+                                color: getColorContrast(formInstanceInfo.secondary_color),
                             }}
+                                onMouseEnter={() => setHoveredSecondary(true)}
+                                onMouseLeave={() => setHoveredSecondary(false)}
+                            >
+                                Back
+                            </Button>
+                        </Tooltip>
+                    </div>
+                    <div>
+                        <Tooltip
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                            content={message.TOOLTIP_FINISH_FORM_SEND}
+                            className="text-nowrap"
+                            placement="left"
                         >
-                            Finish & Send
-                        </Button>
+                            <Button onClick={handleFinishClick} variant="primary" type="button" id="final-step-close-window-btn"
+                                style={{
+                                    backgroundColor: hoveredPrimary ? hoverColorPrimary : formInstanceInfo.primary_color,
+                                    border: formInstanceInfo.rounded_style ? 1 : 'none',
+                                    borderRadius: formInstanceInfo.rounded_style ?? 'none',
+                                    color: getColorContrast(formInstanceInfo.primary_color),
+                                }}
+                                onMouseEnter={() => setHoveredPrimary(true)}
+                                onMouseLeave={() => setHoveredPrimary(false)}
+                            >
+                                Finish & Send
+                            </Button>
+                        </Tooltip>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Label, TextInput } from 'flowbite-react';
+import { Label, TextInput, Tooltip } from 'flowbite-react';
 import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "@/router";
 import { Button, BackgroundGradientAnimation } from "@/ui";
+import { message } from "@/constants/message";
 
 export const PublicCode: React.FC = () => {
     const navigate = useNavigate();
@@ -39,15 +40,27 @@ export const PublicCode: React.FC = () => {
                             <div className="mb-2 block">
                                 <Label htmlFor="publicCodeRef" value="Form Public Code*" />
                             </div>
-                            <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
-                                value={publicCodeInputValue}
-                                onChange={(e) => setPublicCodeInputValue(e.target.value.toUpperCase())} maxLength={6} />
+                            <Tooltip
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                                content={message.TOOLTIP_PUBLIC_FORM} className="text-nowrap" placement="right"
+                            >
+                                <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
+                                    value={publicCodeInputValue}
+                                    onChange={(e) => setPublicCodeInputValue(e.target.value.toUpperCase())} maxLength={6} />
+                            </Tooltip>
                         </div>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="auxCodeRef" value="Aux Code (optional)" />
                             </div>
-                            <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional aux code" />
+                            <div className="">
+                                <Tooltip
+                                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                                    content={message.TOOLTIP_FORM_AUX_CODE} className="text-nowrap" placement="right"
+                                >
+                                    <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional aux code" />
+                                </Tooltip>
+                            </div>
                         </div>
                         <div className="flex justify-center w-full">
                             <Button disabled={goToFormDisabled} variant="primary" className=

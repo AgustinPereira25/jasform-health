@@ -14,8 +14,14 @@ export const message = {
     "The form is currently inactive. Please contact the Form administrator.",
   INVALID_PUBLIC_CODE:
     "The code provided is not valid. Verify the web address, try another one or please contact the Form administrator.",
-  MODAL_DELETE_ALL_NEXT_QUESTIONS: "Are you sure you want to change your answer? This action will delete all next question's answers.",
+  MODAL_DELETE_ALL_NEXT_QUESTIONS:
+    "Are you sure you want to change your answer? This action will delete all next question's answers.",
   FORM_PREVIEW: "Form Preview",
   CANCEL_TEXT: "All changes will be lost. Are you sure you want to cancel?",
-  DISCARD_PROCEED_TEXT: "All changes will be lost. Are you sure you want to proceed?",
+  DISCARD_PROCEED_TEXT:
+    "All changes will be lost. Are you sure you want to proceed?",
+  TOOLTIP_PUBLIC_FORM: "Code given by your form provider.",
+  TOOLTIP_FORM_AUX_CODE: "Optional code if your form provider indicated it.",
+  TOOLTIP_FINISH_FORM_BACK: "Get back to edit my answer.",
+  TOOLTIP_FINISH_FORM_SEND: "Send my answer to the form provider.",
 } as const;

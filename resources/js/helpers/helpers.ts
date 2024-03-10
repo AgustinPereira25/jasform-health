@@ -54,6 +54,7 @@ export function isValidEmail(email: string) {
 }
 
 export function getColorContrast(hexColor = '') {
+
     // Convert hex to RGB
     const r = parseInt(hexColor.slice(1, 3), 16);
     const g = parseInt(hexColor.slice(3, 5), 16);
@@ -65,3 +66,34 @@ export function getColorContrast(hexColor = '') {
     // Choose white or black text based on luminance
     return luminance > 0.5 ? '#000000' : '#ffffff';
 }
+
+export function adjustHoverColor(hexColor = ''){
+
+  // Convert hex to RGB
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
+
+  // Calculate luminance (perceived brightness)
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  // Define a threshold for determining light or dark color
+  const threshold = 0.5;
+
+  // Adjust hover color based on luminance
+  let hoverColor;
+  if (luminance > threshold) {
+      // If the color is light, make it darker
+      hoverColor = `#${Math.max(0, Math.round(r * 0.8)).toString(16).padStart(2, '0')}${Math.max(0, Math.round(g * 0.8)).toString(16).padStart(2, '0')}${Math.max(0, Math.round(b * 0.8)).toString(16).padStart(2, '0')}`;
+  } else {
+      // If the color is dark, make it lighter
+      hoverColor = `#${Math.min(255, Math.round(r + (255 - r) * 0.2)).toString(16).padStart(2, '0')}${Math.min(255, Math.round(g + (255 - g) * 0.2)).toString(16).padStart(2, '0')}${Math.min(255, Math.round(b + (255 - b) * 0.2)).toString(16).padStart(2, '0')}`;
+  }
+
+  return hoverColor;
+}
+
+// export function isValidHTML(htmlString = '') {
+//   const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+//   return htmlString !== doc.body.textContent;
+// }

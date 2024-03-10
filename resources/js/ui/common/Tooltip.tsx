@@ -5,7 +5,8 @@ import type { CustomFlowbiteTheme } from 'flowbite-react';
 interface TooltipProps {
     content: string,
     children: ReactNode,
-    className?: string
+    className?: string,
+    placement?: 'top' | 'bottom' | 'left' | 'right',
 }
 
 const customTheme: CustomFlowbiteTheme['tooltip'] = {
@@ -19,9 +20,9 @@ const customTheme: CustomFlowbiteTheme['tooltip'] = {
         "placement": "-4px"
     }
 };
-function Tooltip({ content, children, className = '' }: TooltipProps) {
+function Tooltip({ content, children, className = '', placement = 'right' }: TooltipProps) {
     return (
-        <FlowbiteTooltip theme={customTheme} placement="right" style="light" animation="duration-1000" arrow={true} content={content} className={`z-10 ${className}`}>
+        <FlowbiteTooltip theme={customTheme} placement={placement} style="light" animation="duration-1000" arrow={true} content={content} className={`z-10 ${className}`}>
             {children}
         </FlowbiteTooltip>
     )

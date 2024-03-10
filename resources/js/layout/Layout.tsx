@@ -13,12 +13,12 @@ export const Layout = () => {
         <div className="h-screen flex-col overflow-hidden bg-white md:flex md:flex-row">
             <div className="absolute z-50">
                 <Navbar />
-                <div className="fixed bottom-0 left-0 m-3">
+                <div className="fixed bottom-0 right-0 m-3">
                     <Tooltip
                         content={"Need help? Go to Documentation"} className="text-nowrap w-64"
                     >
                         <a href="Https://jasform.com/docs" target="_blank" rel="noopener noreferrer" title="Need help? Go to Documentation">
-                            <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
+                            <icons.QuestionMarkCircleIcon className="h-6 w-6 text-primary hover:text-secondary" />
                         </a>
                     </Tooltip>
                 </div>

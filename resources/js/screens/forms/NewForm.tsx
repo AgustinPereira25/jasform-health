@@ -41,6 +41,8 @@ interface NewForm {
     publishState?: boolean;
     enabledInitialData?: boolean;
     enabledLinkResponsesUser?: boolean;
+    html_head?: string;
+    html_body?: string;
 };
 
 function classNames(...classes: string[]) {
@@ -96,6 +98,8 @@ const formSchema = z
         publishState: z.boolean(),
         enabledInitialData: z.boolean(),
         enabledLinkResponsesUser: z.boolean(),
+        html_head: z.string(),
+        html_body: z.string(),
     });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -139,6 +143,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             publishState: form.is_active ?? false,
             enabledInitialData: form.is_initial_data_required ?? false,
             enabledLinkResponsesUser: form.is_user_responses_linked ?? false,
+            html_head: form.html_head ?? '',
+            html_body: form.html_body ?? '',
         },
         resolver: zodResolver(formSchema),
     });
@@ -208,6 +214,8 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             is_initial_data_required: data.enabledInitialData,
             is_user_responses_linked: data.enabledLinkResponsesUser,
             user_id: userId,
+            html_head: data.html_head,
+            html_body: data.html_body,
         }
         console.log(form_CreateFormParams)
         if (pathname.includes(ROUTES.newForm)) {
@@ -327,6 +335,25 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
         navigate(routeToGo);
         setShowLostChangesModal(false);
     }
+
+    const generateiFrameCode = async () => {
+        if (!pathname.includes(ROUTES.newForm)) {
+            const URL = makeFormURLInstance(form.public_code!);
+            const iFrameText = `<iframe src="${URL}" width="450px" height="600px" title="${form.name}" allowfullscreen=""></iframe>`;
+            await navigator.clipboard.writeText(iFrameText);
+            toast.success(`iFrame successfully copied to the clipboard!`);
+
+            return iFrameText
+        }
+    }
+
+    // const handleValidateHTML = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    //     const { id, value: htmlInput } = e.target;
+    //     console.log(id, htmlInput)
+    //     if (!isValidHTML(htmlInput))
+    //         setError(id as 'html_body' | 'html_head', { message: 'Invalid HTML code.' });
+    // };
+
     return (
         <>
             {(isPendingCreateFormMutation || isPendingUpdateFormMutation) && (
@@ -439,7 +466,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                     onClose={handleDeletionModal}
                 >
                     <div className="flex h-16 p-3 m-auto">
-                        <DeleteFormConfirm />
+                        <DeleteFormConfirm handleCloseReturnModal={handleDeletionModal} />
                     </div>
                 </Modal>
                 <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-full">
@@ -735,7 +762,52 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 </div>
                             </div>
                             <hr className="mx-3" />
+                            <div className={tw(
+                                'flex p-3 h-20',
+                                errors.html_head && 'pb-5'
+                            )}
+                            >
+                                <div className="flex shrink-0 w-40">
+                                    <span>HTML Head</span>
+                                </div>
+                                <div className="flex w-full">
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="html_head"
+                                        placeholder="Enter HTML Head"
+                                        {...register("html_head")}
+                                        error={errors.html_head?.message}
+                                        // value={passwordInput}
+                                        defaultValue={''}
+                                    />
+                                </div>
+                            </div>
+                            <div className={tw(
+                                'flex p-3 h-20',
+                                errors.html_body && 'pb-5'
+                            )}
+                            >
+                                <div className="flex shrink-0 w-40">
+                                    <span>HTML Body</span>
+                                </div>
+                                <div className="flex w-full">
+                                    <TextArea
+                                        className="resize-none"
+                                        containerClassName="w-full"
+                                        fullHeight
+                                        id="html_body"
+                                        placeholder="Enter HTML Body"
+                                        {...register("html_body")}
+                                        error={errors.html_body?.message}
+                                        // value={passwordInput}
+                                        defaultValue={''}
+                                    />
+                                </div>
+                            </div>
                         </div>
+                        <hr className="mx-3" />
                         <div className="w-[40%] shrink-0">
                             <div className="flex p-3 h-16 items-center justify-between">
                                 <span>Form&apos;s Publish State</span>
@@ -893,25 +965,32 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                     )
                                 }
                                 <hr className="mx-3" />
-                                <div className="flex p-3 h-16 ">
-                                    <Button
-                                        variant="primary"
-                                        onClick={handlePublicLinkClick}
-                                        aria-label="Get Public Link"
-                                    >
-                                        <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
-                                        Get Public Link with Code to Share
-                                    </Button>
-                                </div>
-                                <hr className="mx-3" />
-                                <div className="flex p-3 h-16 ">
-                                    <Button
-                                        variant="primary"
-                                    >
-                                        <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
-                                        Get Embedded Windows Code (iFrame)
-                                    </Button>
-                                </div>
+                                {
+                                    (!pathname.includes(ROUTES.newForm)) && (
+                                        <>
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={handlePublicLinkClick}
+                                                    aria-label="Get Public Link"
+                                                >
+                                                    <icons.ArrowTopRightOnSquareIcon className={tw(`w-5 h-5`)} />
+                                                    Get Public Link with Code to Share
+                                                </Button>
+                                            </div>
+                                            <hr className="mx-3" />
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={generateiFrameCode}
+                                                >
+                                                    <icons.CodeBracketIcon className={tw(`w-5 h-5`)} />
+                                                    Get Embedded Windows Code (iFrame)
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )
+                                }
                                 <hr className="mx-3" />
                             </>
                         </div>
