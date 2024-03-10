@@ -226,7 +226,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
 
             delete question.id;
             delete question.form_id;
-            if ((!question.question_options || question.question_options.length === 0)
+            if ((!question.question_options || question.question_options.length === 0 && !error)
                 && question.question_type_id !== 1 && question.question_type_id !== 2 && question.question_type_id !== 5) {
                 toast.error('Please add options to the Check Box or Radio Button question.');
                 error = true;
@@ -238,29 +238,30 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
         });
 
         //Check if there is a question with the same mapping_key of another question
-        data.forEach((question) => {
+        data.some((question) => {
             const mapping_key = question.mapping_key;
             if (mapping_key && mapping_key.length > 0) {
                 const filtered = data.filter((question) => question.mapping_key === mapping_key);
                 if (filtered.length > 1) {
                     toast.error('Mapping key must be unique.');
                     error = true;
-                    return;
+                    return true;
                 }
             };
         });
-
-        data.forEach((question) => {
+        // Check if there is a question with the same title of another question
+        data.some((question) => {
             const title = question.title;
             if (title.length > 0) {
                 const filtered = data.filter((question) => question.title === title);
                 if (filtered.length > 1) {
                     toast.error('There are two or more equal titles, please change them and retry.');
                     error = true;
-                    return;
+                    return true;
                 }
             };
         });
+
         console.log("error", error)
         if (error) {
             return;
