@@ -1,6 +1,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
+
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI, urlAPI } from "./axios";
 
@@ -16,6 +17,7 @@ export interface CompletedForm {
   completed_questions_count: number;
   completed_questions: CompletedQuestion[];
   api_url?: string;
+  api_response?: string;
   aux_code?: string;
 }
 
