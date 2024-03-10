@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 
 export function isValidImageUrl(url: string) {
   const imageExtensions = ["png", "jpg", "jpeg", "webp"];
@@ -26,20 +26,20 @@ export function truncateText(text: string, maxLength: number) {
 }
 
 export const parseDate = (date: string | undefined) => {
-  let finalDate = '';
+  let finalDate = "";
 
-  if (date){
-    dayjs.extend(utc)
-    dayjs.extend(timezone)
-    dayjs.tz.guess()
+  if (date) {
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+    dayjs.tz.guess();
 
     // Get timezone from browser
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    finalDate = dayjs.utc(date).tz(tz).format('MM/DD/YYYY hh:mm A');
+    finalDate = dayjs.utc(date).tz(tz).format("MM/DD/YYYY hh:mm A");
   }
 
   return finalDate;
-}
+};
 
 export function isURL(str: string) {
   // Regular expression for a basic URL validation
@@ -53,22 +53,20 @@ export function isValidEmail(email: string) {
   return emailRegex.test(email);
 }
 
-export function getColorContrast(hexColor = '') {
+export function getColorContrast(hexColor = "") {
+  // Convert hex to RGB
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
 
-    // Convert hex to RGB
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
+  // Calculate relative luminance
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
-    // Calculate relative luminance
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-    // Choose white or black text based on luminance
-    return luminance > 0.5 ? '#000000' : '#ffffff';
+  // Choose white or black text based on luminance
+  return luminance > 0.5 ? "#000000" : "#ffffff";
 }
 
-export function adjustHoverColor(hexColor = ''){
-
+export function adjustHoverColor(hexColor = "") {
   // Convert hex to RGB
   const r = parseInt(hexColor.slice(1, 3), 16);
   const g = parseInt(hexColor.slice(3, 5), 16);
@@ -83,11 +81,23 @@ export function adjustHoverColor(hexColor = ''){
   // Adjust hover color based on luminance
   let hoverColor;
   if (luminance > threshold) {
-      // If the color is light, make it darker
-      hoverColor = `#${Math.max(0, Math.round(r * 0.8)).toString(16).padStart(2, '0')}${Math.max(0, Math.round(g * 0.8)).toString(16).padStart(2, '0')}${Math.max(0, Math.round(b * 0.8)).toString(16).padStart(2, '0')}`;
+    // If the color is light, make it darker
+    hoverColor = `#${Math.max(0, Math.round(r * 0.8))
+      .toString(16)
+      .padStart(2, "0")}${Math.max(0, Math.round(g * 0.8))
+      .toString(16)
+      .padStart(2, "0")}${Math.max(0, Math.round(b * 0.8))
+      .toString(16)
+      .padStart(2, "0")}`;
   } else {
-      // If the color is dark, make it lighter
-      hoverColor = `#${Math.min(255, Math.round(r + (255 - r) * 0.2)).toString(16).padStart(2, '0')}${Math.min(255, Math.round(g + (255 - g) * 0.2)).toString(16).padStart(2, '0')}${Math.min(255, Math.round(b + (255 - b) * 0.2)).toString(16).padStart(2, '0')}`;
+    // If the color is dark, make it lighter
+    hoverColor = `#${Math.min(255, Math.round(r + (255 - r) * 0.2))
+      .toString(16)
+      .padStart(2, "0")}${Math.min(255, Math.round(g + (255 - g) * 0.2))
+      .toString(16)
+      .padStart(2, "0")}${Math.min(255, Math.round(b + (255 - b) * 0.2))
+      .toString(16)
+      .padStart(2, "0")}`;
   }
 
   return hoverColor;
@@ -97,3 +107,12 @@ export function adjustHoverColor(hexColor = ''){
 //   const doc = new DOMParser().parseFromString(htmlString, 'text/html');
 //   return htmlString !== doc.body.textContent;
 // }
+
+export function isValidJson(json: string) {
+  try {
+    JSON.parse(json);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

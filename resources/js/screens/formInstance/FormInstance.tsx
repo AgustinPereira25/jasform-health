@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Modal } from 'flowbite-react';
+import ReactJson from "react-json-view";
 
 import { Button, Label, icons } from '@/ui';
 import { tw } from '@/utils';
@@ -11,7 +12,7 @@ import { getFormInstancesQuery } from '@/api/formInstance';
 import { useCompletedQuestions, useUserStore } from '@/stores';
 import EmptyState from '@/ui/common/EmptyState';
 import { message } from '@/constants/message';
-import { parseDate, truncateText } from '@/helpers/helpers';
+import { isValidJson, parseDate, truncateText } from '@/helpers/helpers';
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import ComboBox from '@/ui/form/Combobox';
 import type { Option } from "@/ui/form/Combobox";
@@ -296,11 +297,13 @@ export const FormInstance: React.FC = () => {
                                 />
                             )}
                         <Modal position={"center"} show={isModalOpen} size="7xl" popup onClose={() => setIsModalOpen(false)}>
-                            <Modal.Header />
+                            <Modal.Header>API Response</Modal.Header>
                             <Modal.Body>
                                 <div>
                                     <p>
-                                        {apiResponseToShow}
+                                        {isValidJson(apiResponseToShow)
+                                            ? <ReactJson src={JSON.parse(apiResponseToShow) as Record<string, unknown>} />
+                                            : apiResponseToShow}
                                     </p>
                                 </div>
                             </Modal.Body>

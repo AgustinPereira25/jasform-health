@@ -77,7 +77,7 @@ export const Users = () => {
     const [perPage, setPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [enabledActive, setEnabledActive] = useState(false);
+    const [enabledActive, setEnabledActive] = useState(true);
     const [enabledAdmin, setEnabledAdmin] = useState(false);
 
     const { data, isFetching, isError, isLoading: isLoadingUsers } = useQuery({

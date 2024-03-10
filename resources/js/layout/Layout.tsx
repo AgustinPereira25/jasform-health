@@ -15,7 +15,7 @@ export const Layout = () => {
                 <Navbar />
                 <div className="fixed bottom-0 right-0 m-3">
                     <Tooltip
-                        content={"Need help? Go to Documentation"} className="text-nowrap w-64"
+                        placement="left" content={"Need help? Go to Documentation"} className="text-nowrap w-64"
                     >
                         <a href="Https://jasform.com/docs" target="_blank" rel="noopener noreferrer" title="Need help? Go to Documentation">
                             <icons.QuestionMarkCircleIcon className="h-6 w-6 text-primary hover:text-secondary" />
@@ -24,7 +24,7 @@ export const Layout = () => {
                 </div>
             </div>
 
-            <main className="h-full ml-[80px] grow overflow-y-auto p-5">
+            <main className="h-full ml-[80px] grow overflow-y-auto p-5 pb-8">
                 <Outlet />
             </main>
         </div>
