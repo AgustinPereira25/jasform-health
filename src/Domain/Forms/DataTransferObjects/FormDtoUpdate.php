@@ -19,6 +19,8 @@ class FormDtoUpdate
         private readonly string $secondary_color,
         private readonly string $rounded_style,
         private readonly string $api_url,
+        private readonly string $html_head,
+        private readonly string $html_body,
         private readonly string $is_active,
         private readonly string $is_user_responses_linked,
         private readonly string $is_initial_data_required,
@@ -42,6 +44,8 @@ class FormDtoUpdate
             'secondary_color' => $this->getSecondaryColor(),
             'rounded_style' => $this->getRoundedStyle(),
             'api_url' => $this->getApiUrl(),
+            'html_head' => $this->getHtmlHead(),
+            'api_url' => $this->getHtmlBody(),
             'is_active' => $this->getIsActive(),
             'is_user_responses_linked' => $this->getIsUserResponsesLinked(),
             'is_initial_data_required' => $this->getIsInitialDataRequired(),
@@ -103,6 +107,16 @@ class FormDtoUpdate
     public function getApiUrl(): string
     {
         return $this->api_url;
+    }
+
+    public function getHtmlHead(): string
+    {
+        return $this->html_head;
+    }
+
+    public function getHtmlBody(): string
+    {
+        return $this->html_body;
     }
 
     public function getIsActive(): string

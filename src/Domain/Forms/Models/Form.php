@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string                          $api_url
  * @property string                          $status
  * @property string                          $public_code
+ * @property string                          $html_head
+ * @property string                          $html_body
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int                             $user_creator_id
@@ -62,6 +64,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereLastModifiedDateTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereFinalText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsInitialDataRequired($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereHtmlBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereHtmlHead($value)
  * @mixin \Eloquent
  */
 class Form extends Model
@@ -78,6 +82,8 @@ class Form extends Model
         'secondary_color',
         'rounded_style',
         'api_url',
+        'html_head',
+        'html_body',
         'is_active',
         'is_user_responses_linked',
         'is_initial_data_required',

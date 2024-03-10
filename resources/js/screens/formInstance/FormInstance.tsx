@@ -222,8 +222,18 @@ export const FormInstance: React.FC = () => {
                                         <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                             <div className="flex items-center gap-x-4">
                                                 <div className="flex flex-col truncate text-sm leading-6 text-black">
-                                                    <span>{truncateText(`${item.completer_user_first_name} ${item.completer_user_last_name}`, 30)}</span>
-                                                    <span className="text-gray-500 italic"> {truncateText(item.completer_user_email, 30)}</span>
+                                                    <span>{
+                                                        (() => {
+                                                            const completeName = `${item.completer_user_first_name || ''} ${item.completer_user_last_name || ''}`;
+                                                            if (!completeName.trim()) {
+                                                                return 'Not Apply';
+                                                            } else {
+                                                                return truncateText(completeName, 30);
+                                                            }
+                                                        })()
+
+                                                    }</span>
+                                                    <span className="text-gray-500 italic"> {truncateText(item.completer_user_email ?? ' ', 30)}</span>
                                                 </div>
                                             </div>
                                         </td>
