@@ -45,7 +45,7 @@ class UpdateUserRequest extends FormRequest
             position_in_org: $this[self::POSITION] ? $this[self::POSITION] : '',
             is_active: $this[self::IS_ACTIVE],
             email: $this[self::EMAIL],
-            password: $this[self::PASSWORD],
+            // password: $this[self::PASSWORD],
             organization_id: (string) $this[self::ORGANIZATION_ID],
             role_id: (string) $this[self::ROLE_ID],
         );

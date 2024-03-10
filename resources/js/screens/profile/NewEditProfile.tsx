@@ -102,7 +102,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const defaultRole: string = user.role_name ?? Roles[1]!.name;
     // For toggles
     const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
-    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "JASForm12345" : "");
+    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "" : "");
 
     const [photoUrl, setPhotoUrl] = useState(user?.photo);
 
@@ -206,7 +206,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             email: data.email,
             organization_name: data.organization,
             role_name: data.role,
-            password: passwordInput === "" ? "JASForm12345" : passwordInput,
+            password: passwordInput === "" ? "" : passwordInput,
             passwordConfirmation: passwordInput
         }
         if (pathname.includes(ROUTES.newUser)) {
