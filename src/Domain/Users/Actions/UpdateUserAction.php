@@ -11,7 +11,11 @@ class UpdateUserAction
 {
     public function execute(UserDtoUpdate $userDtoUpdate, User $user): User
     {
-        $user->update($userDtoUpdate->toArray());
+        // $user->update($userDtoUpdate->toArray());
+
+        $data = $userDtoUpdate->toArray();
+        unset($data['password']);
+        $user->update($data);
 
         return $user;
     }

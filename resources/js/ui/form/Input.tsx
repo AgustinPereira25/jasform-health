@@ -52,7 +52,7 @@ export const Input = forwardRef(
                 <div
                     className={tw(
                         "flex flex-row rounded-md shadow-sm items-baseline",
-                        !!rest.disabled && "opacity-30",
+                        !!rest.disabled && "opacity-80",
                         fullHeight && "h-full",
                     )}
                 >
@@ -74,7 +74,7 @@ export const Input = forwardRef(
                                 "block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500",
                                 !!error && "border-red-400 focus:border-red-400 focus:ring-red-50",
                                 !!left && "pl-10",
-                                !!rest.disabled && "border-gray-500 bg-gray-100",
+                                !!rest.disabled && "border-gray-100 bg-gray-100",
                                 fullHeight && "h-full",
                                 className,
                             )}
@@ -90,7 +90,7 @@ export const Input = forwardRef(
                                     "block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500",
                                     !!error && "border-red-400 focus:border-red-400 focus:ring-red-50",
                                     !!left && "pl-10",
-                                    !!rest.disabled && "border-gray-500 bg-gray-100",
+                                    !!rest.disabled && "border-gray-400 bg-gray-100",
                                     fullHeight && "h-full",
                                     className,
                                 )}

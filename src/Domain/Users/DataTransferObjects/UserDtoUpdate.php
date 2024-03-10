@@ -14,7 +14,7 @@ class UserDtoUpdate
         private readonly ?string $position_in_org,
         private readonly string $is_active,
         private readonly string $email,
-        private readonly string $password,
+        // private readonly string $password,
         private readonly string $organization_id,
         private readonly string $role_id,
     ) {
@@ -30,7 +30,7 @@ class UserDtoUpdate
             'position_in_org' => $this->getPosition(),
             'is_active' => $this->getIsActive(),
             'email' => $this->getEmail(),
-            'password' => $this->getPassword(),
+            // 'password' => $this->getPassword(),
             'organization_id' => $this->getOrganization(),
             'role_id' => $this->getRole(),
         ];
@@ -71,10 +71,10 @@ class UserDtoUpdate
         return $this->email;
     }
 
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
+    // public function getPassword(): string
+    // {
+    //     return $this->password;
+    // }
 
     public function getOrganization(): string
     {
