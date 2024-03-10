@@ -85,13 +85,19 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                             ))}
                     </ul>
                     <hr className="w-12/12 bg-[#407EC9]" />
-                    <ul className="flex flex-col gap-y-0 overflow-y-auto">
+                    <ul className="flex flex-col gap-y-0 ">
                         {navigation
                             .filter((item) => item.role_name === "all")
                             .map((item) => (
                                 <li
                                     key={item.label}
-                                    className="mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                    className={tw(
+                                        item.path === currentPath
+                                            ? "mt-auto w-full flex flex-col items-center gap-x-3 bg-[#00519E] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                            : "mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                    )}
+
+                                // className="mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
                                 >
                                     <div
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
