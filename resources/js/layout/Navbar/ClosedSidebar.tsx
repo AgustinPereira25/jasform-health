@@ -94,13 +94,9 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
 
                                     className={tw(
                                         item.path === currentPath
-                                            ? "mt-auto w-full flex flex-col items-center gap-x-3 bg-[#00519E] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
-                                            : "mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
+                                            ? "mt-auto w-full flex flex-col justify-center items-center gap-x-3 h-28 text-sm font-semibold leading-6 text-white bg-[#00519E]"
+                                            : "mt-auto w-full flex flex-col justify-center items-center gap-x-3 h-28 text-sm font-semibold leading-6 text-white bg-[#0B365F]"
                                     )}
-
-                                // className="mt-auto w-full flex flex-col items-center gap-x-3 bg-[#0B365F] h-28 py-8 pr-3 text-sm font-semibold leading-6 text-white"
-                               //dev
-        //    className="mt-auto w-full flex flex-col justify-center items-center gap-x-3 bg-[#0B365F] h-28 text-sm font-semibold leading-6 text-white"
                                 >
                                     <div
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
@@ -125,7 +121,7 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                         <button
                                             onClick={handleOpenLogOutModal}
                                             title="Logout"
-                                            className="pb-5"
+                                            className="pb-5 pl-1"
                                         >
                                             {item.icon}
                                         </button>
