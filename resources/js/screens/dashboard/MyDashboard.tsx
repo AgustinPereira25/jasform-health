@@ -66,6 +66,7 @@ export const MyDashboard = () => {
                     ) : (
                         <div>
                             <PDFDownloadLink
+                                key={user.id}
                                 className="text-[#00519E] font-semibold"
                                 document={<PDFDashboard data={statsData} userData={user} formDataReport={formReportData?.data} />}
                                 fileName={`JASFormReport_${user.first_name}_${user.last_name}_${dayjs().format('MM-DD-YYYY')}.pdf`}

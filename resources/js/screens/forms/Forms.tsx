@@ -189,7 +189,7 @@ export const Forms = () => {
                         !forms?.length ? (
                             <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
                         ) : (
-                            <div className="rounded-lg borderborder-gray-300">
+                            <div className="rounded-lg border border-gray-300 overflow-y-auto">
                                 <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                                     <colgroup>
                                         <col className="sm:w-2/12" />

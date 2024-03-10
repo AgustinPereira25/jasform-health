@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 const ItemsTable = ({ data = [] }) => (
     <View style={styles.tableContainer}>
         {data.map((item, index) => (
-            <TableRow index={index} item={item} />
+            <TableRow key={index} index={index} item={item} />
         ))}
     </View>
 );

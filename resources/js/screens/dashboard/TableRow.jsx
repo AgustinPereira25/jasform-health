@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
 const TableRow = ({ index, item }) => {
     return (
-        <View style={styles.row}>
+        <View style={styles.row} key={item.id}>
             <Text style={styles.publicCode}>{index + 1}-Pub.Code: {item.public_code}</Text>
             <Text style={styles.name}>{truncateText(item.name, 15)}</Text>
             <Text style={styles.date}>Last Mod.:{dayjs(item.last_modified_date_time).format('MM-DD-YYYY')}</Text>

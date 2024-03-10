@@ -18,10 +18,10 @@ export interface FormDropdownItem {
 }
 
 export interface MenuBarProps {
-  user: User | null;
-  logOutMutation: () => void;
-  isPendingLogOutUserMutation: boolean;
-  currentPath: string;
-  navigation: typeof navigation;
-  onCloseSidebar?: () => void;
+    user: User | null;
+    logOutMutation: () => void;
+    isPendingLogOutUserMutation: boolean;
+    currentPath: string;
+    navigation: typeof navigation;
+    closeNavbar: () => void;
 }

@@ -77,7 +77,7 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                         to={item.path}
                                         // TODO - Fix this
                                         // onClick={onCloseSidebar}
-                                        className="group flex gap-x-3 py-3 pl-7 text-sm font-semibold"
+                                        className="group flex gap-x-3 py-3 pl-7 h-11 text-sm font-semibold"
                                     >
                                         {item.icon}
                                     </Link>
@@ -101,7 +101,7 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                                 : "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 pl-5 pr-3 text-white h-28"
                                         )}
                                     >
-                                        <button className="w-full h-full pl-1" onClick={() => navigate("/profile")}>
+                                        <button className="flex items-center justify-center w-full h-full pl-1" onClick={() => navigate("/profile")}>
                                             <img
                                                 referrerPolicy="no-referrer"
                                                 className="-ml-1 h-8 w-8 rounded-full bg-gray-800"
@@ -116,6 +116,7 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                         <button
                                             onClick={handleOpenLogOutModal}
                                             title="Logout"
+                                            className="pb-5"
                                         >
                                             {item.icon}
                                         </button>
