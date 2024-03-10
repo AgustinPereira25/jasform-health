@@ -33,6 +33,8 @@ export interface Form {
   user_id?: number;
   form_instances_count?: number;
   form_questions_count?: number;
+  html_head?: string;
+  html_body?: string;
   form_questions?: Question[];
 }
 

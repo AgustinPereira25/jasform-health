@@ -92,3 +92,8 @@ export function adjustHoverColor(hexColor = ''){
 
   return hoverColor;
 }
+
+// export function isValidHTML(htmlString = '') {
+//   const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+//   return htmlString !== doc.body.textContent;
+// }

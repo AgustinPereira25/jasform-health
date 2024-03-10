@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Button, Input, icons } from '@/ui';
@@ -34,8 +34,8 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
         useFormInstance.setState({
             formInstance: initialFormData,
             previewMode: false,
-        })
-    }
+        });
+    };
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -94,6 +94,16 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 break;
         }
     }
+
+    useEffect(() => {
+        // Put HTML on head tag
+        const htmlExampleHead = '<link href="prueba JASFORM" />';
+        const htmlExampleBody = '<p>Prueba Body</p>';
+        document.getElementsByTagName("head")[0]!.innerHTML += htmlExampleHead;
+        document.getElementsByTagName("body")[0]!.innerHTML += htmlExampleBody;
+    }, [])
+
+    // document.getElementsByTagName('head')[0].appendChild(formInstanceInfo.html_head);
     // console.log(`${formInstanceInfo.logo}`)
     const hoverColor = adjustHoverColor(formInstanceInfo.primary_color);
     return (

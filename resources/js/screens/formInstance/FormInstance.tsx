@@ -223,7 +223,7 @@ export const FormInstance: React.FC = () => {
                                             <div className="flex items-center gap-x-4">
                                                 <div className="flex flex-col truncate text-sm leading-6 text-black">
                                                     <span>{truncateText(`${item.completer_user_first_name} ${item.completer_user_last_name}`, 30)}</span>
-                                                    <span className="text-gray-500 italic"> {truncateText(item.completer_user_email, 30)}</span>
+                                                    <span className="text-gray-500 italic"> {item.completer_user_email ? truncateText(item.completer_user_email, 30) : "Not Apply"}</span>
                                                 </div>
                                             </div>
                                         </td>

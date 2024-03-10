@@ -87,7 +87,7 @@ export const MyDashboard = () => {
                         <div>{user.position_in_org} - {user.organization_name}</div>
                         <div>{user.email}</div>
                     </div>
-                    <div>
+                    <div className="hidden md:flex">
                         <img
                             referrerPolicy="no-referrer"
                             className="h-16 w-16 rounded-full object-contain bg-secondary"

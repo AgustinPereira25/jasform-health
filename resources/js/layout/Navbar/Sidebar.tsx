@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { ROUTES } from "@/router";
@@ -8,6 +8,7 @@ import { LogOutLogo } from "./components";
 // eslint-disable-next-line import/order
 import { isValidImageUrl } from "@/helpers/helpers";
 import type { MenuBarProps } from "@/shared.types";
+import { message } from "@/constants/message";
 
 export const navigation = [
     {
@@ -54,7 +55,6 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     logOutMutation,
     isPendingLogOutUserMutation,
     currentPath,
-    onCloseSidebar,
 }: {
     user: MenuBarProps["user"],
     navigation: MenuBarProps["navigation"],
@@ -63,11 +63,18 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     currentPath: MenuBarProps["currentPath"],
     onCloseSidebar?: () => void;
 }) => {
+
+    const navigate = useNavigate();
+    const pathname = location.pathname;
+
     const logout = () => {
         logOutMutation();
     };
 
     const [showLogOutModal, setShowLogOutModal] = useState(false);
+    const [showLostChangesModal, setShowLostChangesModal] = useState<boolean>(false);
+    const [routeToNavigate, setRouteToNavigate] = useState<string>("");
+
     const handleOpenLogOutModal = () => {
         setShowLogOutModal(true);
     };
@@ -75,8 +82,46 @@ export const Sidebar: React.FC<MenuBarProps> = ({
         setShowLogOutModal(false);
     };
 
+    const handleCloseLostChangesModal = () => {
+        setShowLostChangesModal(false);
+    }
+
+    const handleLostChanges = () => {
+        setShowLostChangesModal(false);
+        navigate(routeToNavigate);
+    }
+
+    const handleCheckCurrentPath = (route: string) => {
+        if (pathname.includes(ROUTES.forms + '/') || pathname.includes(ROUTES.profile) || pathname.includes(ROUTES.newUser)
+            || pathname.includes(ROUTES.users + '/')) {
+            console.log('TRUE')
+            setShowLostChangesModal(true);
+            setRouteToNavigate(route);
+        } else {
+            navigate(route);
+        }
+    }
     return (
         <div className={`flex flex-col h-screen transition-width duration-500 ease-in-out grow gap-y-12 overflow-y-auto bg-[#1B4A76] ring-1 ring-white/5`}>
+            <Modal
+                show={showLostChangesModal}
+                title="Exit Form"
+                description={message.DISCARD_PROCEED_TEXT}
+                onClose={handleCloseLostChangesModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-row gap-4 h-16 p-3">
+                            <Button aria-label="Cancel" variant="secondary" onClick={handleCloseLostChangesModal} >
+                                Cancel
+                            </Button>
+                            <Button aria-label="Confirm" variant="tertiary" onClick={() => handleLostChanges()} >
+                                Confirm
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
             {(isPendingLogOutUserMutation) && (
                 <LoadingOverlay />
             )}
@@ -97,14 +142,22 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                             : "text-gray-400 hover:bg-[#407EC9] hover:text-white"
                                     )}
                                 >
-                                    <Link
+                                    {/* <Link
                                         to={item.path}
-                                        onClick={onCloseSidebar}
+                                        //onClick={() => setShowLostChangesModal(true)}
                                         className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
                                     >
                                         {item.icon}
                                         {item.label}
-                                    </Link>
+                                    </Link> */}
+                                    <div
+                                        role="presentation"
+                                        onClick={() => handleCheckCurrentPath(item.path)}
+                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
+                                    >
+                                        {item.icon}
+                                        {item.label}
+                                    </div>
                                 </li>
                             ))}
                     </ul>
@@ -125,14 +178,22 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                             : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white"
                                     )}
                                 >
-                                    <Link
+                                    {/* <Link
                                         to={item.path}
                                         onClick={onCloseSidebar}
                                         className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
                                     >
                                         {item.icon}
                                         {item.label}
-                                    </Link>
+                                    </Link> */}
+                                    <div
+                                        role="presentation"
+                                        onClick={() => handleCheckCurrentPath(item.path)}
+                                        className="group flex gap-x-3 py-3 pl-5 text-sm font-semibold whitespace-nowrap"
+                                    >
+                                        {item.icon}
+                                        {item.label}
+                                    </div>
                                 </li>
                             ))}
                     </ul>
@@ -171,12 +232,19 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                             <span aria-hidden="true">
                                                 {user.first_name} {user.last_name}
                                             </span>
-                                            <Link
+                                            {/* <Link
                                                 to="/profile"
                                                 className="flex text-xs font-normal whitespace-nowrap text-[#8C92AB]"
                                             >
                                                 <span>{item.label}</span>
-                                            </Link>
+                                            </Link> */}
+                                            <div
+                                                role="presentation"
+                                                onClick={() => handleCheckCurrentPath('/profile')}
+                                                className="cursor-pointer flex text-xs font-normal whitespace-nowrap text-[#8C92AB]"
+                                            >
+                                                <span>{item.label}</span>
+                                            </div>
                                         </div>
                                         <div className="cursor-pointer flex flex-col w-9 justify-center items-end h-full">
                                             <button
@@ -213,16 +281,6 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                     </div>
                 </div>
             </Modal>
-
-            {/* <div className="fixed bottom-0 left-0 m-3">
-                <Tooltip
-                    content={"Need help? Go to Documentation"} className="text-nowrap w-64"
-                >
-                    <a href="Https://jasform.com/docs" target="_blank" rel="noopener noreferrer" title="Need help? Go to Documentation">
-                        <icons.QuestionMarkCircleIcon className="h-6 w-6 text-white hover:text-secondary" />
-                    </a>
-                </Tooltip>
-            </div> */}
         </div >
     );
 };
