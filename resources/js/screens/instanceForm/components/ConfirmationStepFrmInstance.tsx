@@ -7,8 +7,8 @@ import { Button, LoadingOverlay, Tooltip, icons } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
-import type { FormInstanceURL } from '@/api/formInstance';
-import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
+// import type { FormInstanceURL } from '@/api/formInstance';
+import { createFormInstance } from '@/api/formInstance'; //, sendExternalEndpoint
 import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
 import { message } from '@/constants/message';
 
@@ -29,14 +29,14 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
 
             console.log("currentState:", currentState);
             createFormInstanceMutation(currentState);
-            if (currentState.api_url) {
-                console.log("currentState.api_url:", currentState.api_url)
-                const currentURLAndBody: FormInstanceURL = {
-                    url: currentState.api_url,
-                    body: currentState,
-                }
-                sendExternalEndpointMutation(currentURLAndBody);
-            }
+            // if (currentState.api_url) {
+            //     console.log("currentState.api_url:", currentState.api_url)
+            //     const currentURLAndBody: FormInstanceURL = {
+            //         url: currentState.api_url,
+            //         body: currentState,
+            //     }
+            //     sendExternalEndpointMutation(currentURLAndBody);
+            // }
         }
     }
 
@@ -72,27 +72,28 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             },
         });
 
-    const { mutate: sendExternalEndpointMutation } =
-        useMutation({
-            mutationFn: sendExternalEndpoint.mutation,
-            onSuccess: () => {
-                sendExternalEndpoint.invalidates(queryClient);
-                // toast.success(`Data successfully sent to external integration!`);
-                navigate(`/instance-form/${currentState.public_code}/finished`);
-            },
-            onError: (err: IHttpResponseError) => {
-                if (err?.response?.data?.message) {
-                    // toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
-                    // const errors = err?.response.data.error.fields;
-                    // Object.entries(errors).forEach(([_, valArray]) => {
-                    // toast.error(`${valArray[0]}`);
-                    // });
-                } else {
-                    // toast.error("There was an error. Please try again later.");
-                }
-            },
-        });
+    // const { mutate: sendExternalEndpointMutation } =
+    //     useMutation({
+    //         mutationFn: sendExternalEndpoint.mutation,
+    //         onSuccess: () => {
+    //             sendExternalEndpoint.invalidates(queryClient);
+    //             // toast.success(`Data successfully sent to external integration!`);
+    //             navigate(`/instance-form/${currentState.public_code}/finished`);
+    //         },
+    //         onError: (err: IHttpResponseError) => {
+    //             if (err?.response?.data?.message) {
+    //                 // toast.error(err?.response.data.message);
+    //             } else if (err?.response?.data?.error?.fields) {
+    //                 // const errors = err?.response.data.error.fields;
+    //                 // Object.entries(errors).forEach(([_, valArray]) => {
+    //                 // toast.error(`${valArray[0]}`);
+    //                 // });
+    //             } else {
+    //                 // toast.error("There was an error. Please try again later.");
+    //             }
+    //         },
+    //     });
+
     const [hoveredPrimary, setHoveredPrimary] = useState(false);
     const [hoveredSecondary, setHoveredSecondary] = useState(false);
     const hoverColorPrimary = adjustHoverColor(formInstanceInfo.primary_color);
@@ -179,7 +180,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                 <div className="flex w-full gap-7 justify-between items-center pt-4">
                     <div>
                         <Tooltip
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                             content={message.TOOLTIP_FINISH_FORM_BACK} className="text-nowrap"
                         >
                             <Button variant="secondary" type="button" id="goBack-answer-btn" onClick={handleGoBackClick} style={{
@@ -197,7 +198,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                     </div>
                     <div>
                         <Tooltip
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                             content={message.TOOLTIP_FINISH_FORM_SEND}
                             className="text-nowrap"
                             placement="left"

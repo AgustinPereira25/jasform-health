@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('initial_date_time');
             $table->dateTime('final_date_time')->nullable();
-            $table->string('api_response')->nullable();
+            $table->text('api_response')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('form_id');
             $table->foreign('form_id')->references('id')->on('forms')->onUpdate('cascade')->onDelete('cascade');

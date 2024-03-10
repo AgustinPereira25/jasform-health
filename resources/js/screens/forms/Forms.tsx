@@ -262,7 +262,12 @@ export const Forms = () => {
                                             </tr>
                                         )}
                                         {forms?.map((item) => (
-                                            <tr key={item.id} className="hover:bg-gray-100 cursor-pointer">
+
+                                            <tr key={item.id}
+                                                onClick={() => { navigate(`/forms/${item.id}`) }}
+                                                className="cursor-pointer hover:bg-gray-100"
+                                            >
+
                                                 <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
                                                     <div className="flex items-center gap-x-4">
                                                         <div className="truncate text-sm leading-6 text-black">

@@ -5,7 +5,7 @@ import { ROUTES } from "@/router";
 import { Button, Modal, icons, LoadingOverlay } from "@/ui";
 import { tw } from "@/utils";
 import { LogOutLogo } from "./components";
-import { isValidImageUrl } from "@/helpers/helpers";
+import { isValidImageUrl, truncateText } from "@/helpers/helpers";
 import type { MenuBarProps } from "@/shared.types";
 import { message } from "@/constants/message";
 
@@ -132,7 +132,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
             </div>
             {user && (
                 <nav className="flex flex-1 flex-col">
-                    <ul className="flex flex-1 flex-col gap-y-0 overflow-y-auto mt-4">
+                    <ul className="flex flex-1 flex-col gap-y-0 overflow-y-auto mt-4 overflow-x-hidden">
                         {navigation
                             .filter((item) => item.role_name !== "admin" && item.role_name !== "all")
                             .map((item) => (
@@ -141,7 +141,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                     className={tw(
                                         item.path === currentPath
                                             ? "bg-[#00519E] text-white cursor-pointer"
-                                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white cursor-pointer"
+                                            : "text-gray-200 hover:bg-[#407EC9] hover:text-white cursor-pointer"
                                     )}
                                 >
                                     {/* <Link
@@ -168,7 +168,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                             <hr className="w-12/12 bg-[#407EC9]" />
                         )
                     }
-                    <ul className="flex flex-col gap-y-0 overflow-y-auto">
+                    <ul className="flex flex-col gap-y-0 overflow-y-auto overflow-x-hidden">
                         {navigation
                             .filter((item) => item.role_name === user.role_name?.toLowerCase())
                             .map((item) => (
@@ -177,7 +177,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                     className={tw(
                                         item.path === currentPath
                                             ? "bg-[#00519E] text-white cursor-pointer"
-                                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white cursor-pointer"
+                                            : "bg-[#1B4A76] text-gray-200 hover:bg-[#407EC9] hover:text-white cursor-pointer"
                                     )}
                                 >
                                     {/* <Link
@@ -200,7 +200,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                             ))}
                     </ul>
                     <hr className="w-12/12 bg-[#407EC9]" />
-                    <ul className="flex flex-col gap-y-0 overflow-y-auto">
+                    <ul className="flex flex-col gap-y-0 overflow-y-auto overflow-x-hidden">
                         {navigation
                             .filter((item) => item.role_name === "all")
                             .map((item) => (
@@ -228,11 +228,12 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                                     : "/Profile-Hello-Smile1b.png"
                                             }
                                             alt={user.first_name}
+
                                         />
-                                        <span className="sr-only">Your profile</span>
-                                        <div className="flex flex-col w-[100px]">
+                                        <span className="sr-only ">Your profile</span>
+                                        <div className="flex flex-col w-[100px]" >
                                             <span aria-hidden="true">
-                                                {user.first_name} {user.last_name}
+                                                {truncateText(user.first_name + " " + user.last_name, 20)}
                                             </span>
                                             {/* <Link
                                                 to="/profile"
@@ -243,7 +244,8 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                             <div
                                                 role="presentation"
                                                 onClick={() => handleCheckCurrentPath('/profile')}
-                                                className="cursor-pointer flex text-xs font-normal whitespace-nowrap text-[#8C92AB]"
+                                                className="cursor-pointer flex text-xs font-normal whitespace-nowrap
+                                                text-gray-200"
                                             >
                                                 <span>{item.label}</span>
                                             </div>
