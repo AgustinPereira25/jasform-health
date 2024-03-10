@@ -117,7 +117,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
                 <span className="text-2xl font-medium" style={{
                     color: formInstanceInfo.primary_color ?? '#407EC9',
                 }}>{formInstanceInfo.welcome_text}</span>
-                <div className="p-4 w-full h-24 overflow-scroll">
+                <div className="p-4 w-full h-24 overflow-auto">
                     <span className="break-words italic">{formInstanceInfo.description}</span>
                 </div>
             </div>

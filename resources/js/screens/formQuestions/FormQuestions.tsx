@@ -387,7 +387,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                     </div>
                 </div>
                 <div className="flex gap-3 w-full h-full">
-                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-scroll overflow-y-scroll">
+                    <div className="bg-white shadow-lg pt-4 px-6 pb-2 border-[1px] rounded-xl w-[30%] overflow-auto overflow-y-auto">
                         <span>Questions list:</span>
                         <div className="flex flex-col items-center">
                             {
@@ -442,7 +442,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                     <div className="bg-white shadow-lg pt-4 px-4 pb-2 border-[1px] rounded-xl w-[70%]">
                         {
                             currentQuestion && (
-                                <div className="h-full flex flex-col overflow-scroll">
+                                <div className="h-full flex flex-col overflow-auto">
                                     <div className="flex justify-between pb-2">
                                         <div className="flex gap-2 items-center">
                                             <div>
@@ -457,13 +457,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                             <span className="text-sm font-medium">Question-{currentQuestionOrder}</span>
                                         </div>
                                         <div className="flex gap-2 items-center justify-end pb-2 grow">
-                                            <span>Question Type</span>
+                                            <span>Type</span>
                                             <ComboBox
                                                 id="questionType"
                                                 items={questionTypes}
                                                 defaultValue={currentQuestion.question_type_name}
                                                 onValueChange={(item) => handleComboboxChange(item.id as keyof typeof questionScreens)}
-                                                className="w-2/5"
+                                                className="w-4/5 2xl:w-2/5"
                                             />
                                         </div>
                                     </div>
