@@ -415,7 +415,7 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
                                                         item.order !== currentQuestion?.order && 'text-[#6B7280]'
                                                     )}
                                                     >
-                                                        {truncateText(`Q-${item.order}:${item.title}`, 40)}
+                                                        {truncateText(`Q-${item.order}: ${item.title}`, 40)}
                                                     </span>
                                                 </div>
                                                 <div className="flex gap-2 items-center">

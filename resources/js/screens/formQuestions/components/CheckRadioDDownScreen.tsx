@@ -31,7 +31,7 @@ export const CheckRadioDDownScreen: React.FC<CheckRadioDDownScreenProps> = ({ fo
         return lastQuestion;
     };
 
-    const transformedSteps: ComboBoxOptions[] = formQuestions ? formQuestions.map((item) => ({ id: item.order, name: item.title })) : [];
+    const transformedSteps: ComboBoxOptions[] = formQuestions ? formQuestions.map((item) => ({ id: item.order, name: `Q-${item.order}: ${item.title}` })) : [];
 
     const [newQuestionType, setNewQuestionType] = useState<ComboBoxOptions>(transformedSteps[0] ?? { id: 1, name: '' });
 
