@@ -20,7 +20,7 @@ export const message = {
   CANCEL_TEXT: "All changes will be lost. Are you sure you want to cancel?",
   DISCARD_PROCEED_TEXT:
     "All changes will be lost. Are you sure you want to proceed?",
-  TOOLTIP_PUBLIC_FORM: "Code given by your form provider.",
+  TOOLTIP_PUBLIC_FORM: "Code given by your form provider. 6 uppercase letters.",
   TOOLTIP_FORM_AUX_CODE: "Optional code if your form provider indicated it.",
   TOOLTIP_FINISH_FORM_BACK: "Get back to edit my answer.",
   TOOLTIP_FINISH_FORM_SEND: "Send my answer to the form provider.",

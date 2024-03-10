@@ -194,32 +194,32 @@ export const Login = () => {
 
                 </div>
             </BackgroundGradientAnimation>
-            <Modal position={"center"} show={openModal} size="sm" popup onClose={() => setOpenModal(false)} initialFocus={publicCodeRef}>
-                <Modal.Header />
-                <Modal.Body>
+            <Modal position={"center"} show={openModal} size="sm" popup onClose={() => setOpenModal(false)} initialFocus={publicCodeRef} >
+                <Modal.Header className="bg-white text-black" />
+                <Modal.Body className="bg-white text-black">
                     <div className="space-y-6">
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="publicCodeRef" value="Form Public Code*" />
+                                <Label htmlFor="publicCodeRef" value="Form Public Code*" color={"#ffffff"} />
                             </div>
                             <Tooltip
 
                                 content={message.TOOLTIP_PUBLIC_FORM} className="text-nowrap w-full" placement="right"
                             >
-                                <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
+                                <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" color={"#ffffff"} required
                                     value={publicCodeInputValue.toUpperCase()}
                                     onChange={(e) => setPublicCodeInputValue(e.target.value.toUpperCase())} maxLength={6} />
                             </Tooltip>
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="auxCodeRef" value="Auxiliary Code (optional)" />
+                                <Label htmlFor="auxCodeRef" value="Auxiliary Code (optional)" color={"#ffffff"} />
                             </div>
                             <Tooltip
 
                                 content={message.TOOLTIP_FORM_AUX_CODE} className="text-nowrap w-full" placement="right"
                             >
-                                <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional auxiliary code" />
+                                <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional auxiliary code" color={"#ffffff"} />
                             </Tooltip>
                         </div>
                         <div className="w-full flex gap-2 justify-between">
@@ -235,7 +235,7 @@ export const Login = () => {
 
                     </div>
                 </Modal.Body>
-            </Modal>
+            </Modal >
         </>
     );
 };

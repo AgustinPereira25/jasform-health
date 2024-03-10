@@ -11,7 +11,7 @@ export const icons = {
             <svg
                 aria-hidden="true"
                 className={tw(
-                    "mr-2 h-14 w-14 animate-spin fill-primary text-gray-200 dark:text-gray-600",
+                    "mr-2 h-14 w-14 animate-spin fill-primary text-gray-200",
                     className,
                 )}
                 viewBox="0 0 100 101"
