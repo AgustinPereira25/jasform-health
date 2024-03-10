@@ -127,7 +127,7 @@ Route::prefix('forms')
     });
 
 Route::prefix('forms')
-    ->middleware([])
+    ->middleware(['auth:sanctum'])
     ->group(static function () {
         Route::post('/', StoreFormController::class);
         Route::put('/', UpdateFormController::class);

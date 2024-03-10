@@ -41,8 +41,8 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                     key={item.label}
                                     className={tw(
                                         item.path === currentPath
-                                            ? "bg-[#00519E] text-white"
-                                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white"
+                                            ? "bg-[#00519E] text-white cursor-pointer"
+                                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white cursor-pointer"
                                     )}
                                 >
                                     <Link
@@ -69,8 +69,8 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                     key={item.label}
                                     className={tw(
                                         item.path === currentPath
-                                            ? "bg-[#00519E] text-white"
-                                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white"
+                                            ? "bg-[#00519E] text-white cursor-pointer"
+                                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white cursor-pointer"
                                     )}
                                 >
                                     <Link
@@ -97,8 +97,8 @@ export const ClosedSidebar: React.FC<MenuBarProps> = ({ user, navigation, logOut
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
                                         className={tw(
                                             item.path === currentPath
-                                                ? "flex flex-col gap-4 w-full items-center rounded-r-xl bg-[#00519E] py-2 pl-5 pr-3 text-white"
-                                                : "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 pl-5 pr-3 text-white"
+                                                ? "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 pl-5 pr-3 text-white h-28 bg-[#00519E]"
+                                                : "flex flex-col gap-4 w-full items-center rounded-r-xl py-2 pl-5 pr-3 text-white h-28"
                                         )}
                                     >
                                         <button className="w-full h-full pl-1" onClick={() => navigate("/profile")}>
