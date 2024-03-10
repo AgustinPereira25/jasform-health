@@ -41,7 +41,7 @@ export const PublicCode: React.FC = () => {
                                 <Label htmlFor="publicCodeRef" value="Form Public Code*" />
                             </div>
                             <Tooltip
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                                 content={message.TOOLTIP_PUBLIC_FORM} className="text-nowrap" placement="right"
                             >
                                 <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
@@ -51,14 +51,14 @@ export const PublicCode: React.FC = () => {
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="auxCodeRef" value="Aux Code (optional)" />
+                                <Label htmlFor="auxCodeRef" value="Auxiliary Code (optional)" />
                             </div>
                             <div className="">
                                 <Tooltip
-                                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                                     content={message.TOOLTIP_FORM_AUX_CODE} className="text-nowrap" placement="right"
                                 >
-                                    <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional aux code" />
+                                    <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional auxiliary code" />
                                 </Tooltip>
                             </div>
                         </div>

@@ -203,7 +203,7 @@ export const Login = () => {
                                 <Label htmlFor="publicCodeRef" value="Form Public Code*" />
                             </div>
                             <Tooltip
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                                 content={message.TOOLTIP_PUBLIC_FORM} className="text-nowrap w-full" placement="right"
                             >
                                 <TextInput className="w-full uppercase" id="publicCode" ref={publicCodeRef} placeholder="ABCDEF" required
@@ -213,13 +213,13 @@ export const Login = () => {
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="auxCodeRef" value="Aux Code (optional)" />
+                                <Label htmlFor="auxCodeRef" value="Auxiliary Code (optional)" />
                             </div>
                             <Tooltip
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                                 content={message.TOOLTIP_FORM_AUX_CODE} className="text-nowrap w-full" placement="right"
                             >
-                                <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional aux code" />
+                                <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional auxiliary code" />
                             </Tooltip>
                         </div>
                         <div className="w-full flex gap-2 justify-between">
