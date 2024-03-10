@@ -35,7 +35,7 @@ export const InstanceForm: React.FunctionComponent = () => {
     return (
         <div className="w-full h-full">
             {isLoading || isFetching ? (
-                <div className="flex h-full items-center justify-center">
+                <div className="flex h-full items-center justify-center ">
                     <icons.SpinnerIcon />
                 </div>
             ) : (
