@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { Modal } from 'flowbite-react';
 
 import { Button, Label, icons } from '@/ui';
 import { tw } from '@/utils';
@@ -10,7 +11,7 @@ import { getFormInstancesQuery } from '@/api/formInstance';
 import { useCompletedQuestions, useUserStore } from '@/stores';
 import EmptyState from '@/ui/common/EmptyState';
 import { message } from '@/constants/message';
-import { truncateText } from '@/helpers/helpers';
+import { parseDate, truncateText } from '@/helpers/helpers';
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import ComboBox from '@/ui/form/Combobox';
 import type { Option } from "@/ui/form/Combobox";
@@ -37,6 +38,14 @@ export const FormInstance: React.FC = () => {
 
     const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [apiResponseToShow, setApiResponseToShow] = useState("");
+    const handleRowClick = (apiReponse: string) => {
+        setApiResponseToShow(apiReponse);
+        setIsModalOpen(true);
+    };
 
     //TODO - Make the filters work
     // const [search, setSearch] = useState({ nameEmailCode: "", submitted_start_date: "", submitted_end_date: "" });
@@ -199,6 +208,13 @@ export const FormInstance: React.FC = () => {
                                     >
                                         # ANSWERED QUESTIONS
                                     </th>
+
+                                    <th
+                                        scope="col"
+                                        className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                                    >
+                                        API RESPONSE
+                                    </th>
                                     <th
                                         scope="col"
                                         className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
@@ -247,13 +263,20 @@ export const FormInstance: React.FC = () => {
                                             </div>
                                         </td>
                                         <td className="hidden py-4 pl-0 pr-8 text-sm leading-6 text-[#6B7280] md:table-cell lg:pr-20">
-                                            {item.final_date_time?.toString()}
+                                            {parseDate(item.final_date_time?.toString())}
                                         </td>
                                         <td className="hidden py-4 pl-0 pr-4 text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             {item?.completed_questions_count}
                                         </td>
                                         <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                                            <icons.ChevronRightIcon aria-label="Go completed questions" color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
+                                            <div className="flex justify-center">
+                                                <icons.CommandLineIcon aria-label="View API Response" color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleRowClick(item.api_response ?? 'Not Apply')} />
+                                            </div>
+                                        </td>
+                                        <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                            <div className="flex justify-end">
+                                                <icons.ChevronRightIcon aria-label="Go completed questions" color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -272,6 +295,16 @@ export const FormInstance: React.FC = () => {
                                     }}
                                 />
                             )}
+                        <Modal position={"center"} show={isModalOpen} size="7xl" popup onClose={() => setIsModalOpen(false)}>
+                            <Modal.Header />
+                            <Modal.Body>
+                                <div>
+                                    <p>
+                                        {apiResponseToShow}
+                                    </p>
+                                </div>
+                            </Modal.Body>
+                        </Modal>
                     </div>
                 )
                 }
