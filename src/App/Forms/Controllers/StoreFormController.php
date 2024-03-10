@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Faker\Factory as Faker;
+// use Faker\Factory as Faker;
 
 class StoreFormController
 {
@@ -38,10 +38,15 @@ class StoreFormController
                 ->respond(JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $faker = Faker::create();
+        // $faker = Faker::create();
+        // do {
+        //     $publicCode = implode($faker->randomElements(array_merge(range('A', 'Z')), 6));
+        // } while (Form::where('public_code', $publicCode)->exists());
+
         do {
-            $publicCode = implode($faker->randomElements(array_merge(range('A', 'Z')), 6));
+            $publicCode = $this->randomString(6);
         } while (Form::where('public_code', $publicCode)->exists());
+
 
         $now = Carbon::now()->toDateTimeString();
 
@@ -54,5 +59,14 @@ class StoreFormController
         return responder()
             ->success($form, FormTransformer::class)
             ->respond(JsonResponse::HTTP_CREATED);
+    }
+
+    private function randomString($length)
+    {
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= chr(rand(65, 90));
+        }
+        return $result;
     }
 }
