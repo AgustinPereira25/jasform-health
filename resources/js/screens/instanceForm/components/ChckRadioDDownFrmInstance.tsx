@@ -321,7 +321,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         </>
                     ) : questiontypeId === 4 ? (
                         <>
-                            <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap break-all">
+                            <div className="flex flex-col pt-3 pb-3 gap-4 overflow-y-auto whitespace-pre-wrap">
                                 {
                                     currentQuestionInfo.question_options?.map((option) => (
                                         <div key={option.title} className="flex items-center gap-5">
