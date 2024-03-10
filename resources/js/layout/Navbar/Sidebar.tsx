@@ -141,8 +141,8 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                     key={item.label}
                                     className={tw(
                                         item.path === currentPath
-                                            ? "bg-[#00519E] text-white"
-                                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white"
+                                            ? "bg-[#00519E] text-white cursor-pointer"
+                                            : "text-gray-400 hover:bg-[#407EC9] hover:text-white cursor-pointer"
                                     )}
                                 >
                                     {/* <Link
@@ -177,8 +177,8 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                     key={item.label}
                                     className={tw(
                                         item.path === currentPath
-                                            ? "bg-[#00519E] text-white"
-                                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white"
+                                            ? "bg-[#00519E] text-white cursor-pointer"
+                                            : "bg-[#1B4A76] text-gray-400 hover:bg-[#407EC9] hover:text-white cursor-pointer"
                                     )}
                                 >
                                     {/* <Link
@@ -208,7 +208,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                 <li
                                     key={item.label}
                                     //className="mt-auto flex items-center gap-x-3 bg-[#0B365F] py-8 pr-3 text-sm font-semibold leading-6 text-white"
-                                    className="mt-auto flex items-center gap-x-3 bg-[#0B365F] h-28 text-sm font-semibold leading-6 text-white"
+                                    className="mt-auto flex items-center gap-x-3 bg-[#0B365F] h-28 text-sm font-semibold leading-6 text-white cursor-default"
                                 >
                                     <div
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
