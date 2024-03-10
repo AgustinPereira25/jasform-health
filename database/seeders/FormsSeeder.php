@@ -28,6 +28,8 @@ class FormsSeeder extends Seeder
                 'secondary_color' => '#6923da',
                 'rounded_style' => '20',
                 'api_url' => 'http://127.0.0.1:89/api/user_form/',
+                'html_head' => '<></>',
+                'html_body' => '<></>',
                 'is_active' => true,
                 'is_user_responses_linked' => true,
                 'is_initial_data_required' => true,
@@ -48,6 +50,8 @@ class FormsSeeder extends Seeder
                 'secondary_color' => '#6923da',
                 'rounded_style' => '20',
                 'api_url' => 'http://127.0.0.1:89/api/user_form/',
+                'html_head' => '<></>',
+                'html_body' => '<></>',
                 'is_active' => false,
                 'is_user_responses_linked' => true,
                 'is_initial_data_required' => true,
@@ -150,7 +154,7 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Chest Pain Question',
+                'title' => 'Chest Pain',
                 'text' => 'Do you have any chest pain or discomfort?',
                 'order' => 2,
                 'is_mandatory' => true,
@@ -161,7 +165,7 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Breath Shortness Question',
+                'title' => 'Breath Shortness',
                 'text' => 'Are you experiencing shortness of breath?',
                 'order' => 3,
                 'is_mandatory' => true,
@@ -172,7 +176,7 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'High Blood Pressure Question',
+                'title' => 'High Blood Pressure',
                 'text' => 'Have you been diagnosed with high blood pressure?',
                 'order' => 4,
                 'is_mandatory' => true,
@@ -183,7 +187,7 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Family History Question',
+                'title' => 'Family History',
                 'text' => 'Do you have any family history of heart disease?',
                 'order' => 5,
                 'is_mandatory' => true,
@@ -194,7 +198,7 @@ class FormsSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'title' => 'Smoking Habit Question',
+                'title' => 'Smoking Habit',
                 'text' => 'Do you smoke?',
                 'order' => 6,
                 'is_mandatory' => true,
@@ -264,7 +268,7 @@ class FormsSeeder extends Seeder
         DB::table('question_options')->insert([
             [
                 'order' => 1,
-                'title' => 'Yes, I been diagnosed with high blood pressure',
+                'title' => 'Yes, I have been diagnosed with high blood pressure',
                 'next_question' => -1,
                 'form_question_id' => 4,
                 'created_at' => Carbon::now(),
@@ -272,7 +276,7 @@ class FormsSeeder extends Seeder
             ],
             [
                 'order' => 2,
-                'title' => 'No, I been diagnosed with high blood pressure',
+                'title' => 'No, I have not been diagnosed with high blood pressure',
                 'next_question' => -1,
                 'form_question_id' => 4,
                 'created_at' => Carbon::now(),

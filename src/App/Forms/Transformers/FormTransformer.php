@@ -30,6 +30,8 @@ class FormTransformer extends Transformer
             'secondary_color' => (string) $form->secondary_color,
             'rounded_style' => (string) $form->rounded_style,
             'api_url' => (string) $form->api_url,
+            'html_head' => (string) $form->html_head,
+            'html_body' => (string) $form->html_body,
             'is_active' => (bool) $form->is_active,
             'is_user_responses_linked' => (bool) $form->is_user_responses_linked,
             'is_initial_data_required' => (bool) $form->is_initial_data_required,
@@ -45,7 +47,7 @@ class FormTransformer extends Transformer
                             return $questionOptionTransformer->transform($questionOption);
                         }
                     );
-    
+
                     return $formQuestionData;
                 }
             ),

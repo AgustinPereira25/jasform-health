@@ -121,9 +121,14 @@ Route::prefix('forms')
         Route::get('/', ListFormController::class);
         Route::get('/byUserId/{user}', ListForm_byUserIdController::class);
         Route::get('/{form}', GetFormController::class);
+        Route::delete('/{form}', DeleteFormController::class);
+    });
+
+Route::prefix('forms')
+    ->middleware(['auth:sanctum'])
+    ->group(static function () {
         Route::post('/', StoreFormController::class);
         Route::put('/', UpdateFormController::class);
-        Route::delete('/{form}', DeleteFormController::class);
     });
 
 Route::prefix('activity_records')

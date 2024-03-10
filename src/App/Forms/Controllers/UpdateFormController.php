@@ -63,8 +63,6 @@ class UpdateFormController
             }
         }
 
-
-
         $updatedForm = $updateFormAction->execute($request->toDtoUpdate(), $form);
 
         return responder()

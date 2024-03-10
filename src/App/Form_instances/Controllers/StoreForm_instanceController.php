@@ -13,6 +13,7 @@ use Domain\Form_instances\DataTransferObjects\Form_instanceDto;
 use Domain\Forms\Models\Form;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class StoreForm_instanceController
 {
@@ -50,10 +51,10 @@ class StoreForm_instanceController
             && $request->filled('completer_user_last_name')
         ) {
             $completerUserDto = new Completer_userDto(
-                email: $request->input('completer_user_email'),
-                first_name: $request->input('completer_user_first_name'),
-                last_name: $request->input('completer_user_last_name'),
-                code: $request->input('aux_code', null)
+                email: $request->input('completer_user_email') ?? 'Not apply',
+                first_name: $request->input('completer_user_first_name') ?? 'Not apply',
+                last_name: $request->input('completer_user_last_name') ?? 'Not apply',
+                code: $request->input('aux_code') ?? 'Not apply',
             );
 
             try {
@@ -121,6 +122,26 @@ class StoreForm_instanceController
             return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
+        try {
+            $apiUrl = $request->input('api_url');
+            $response = Http::post($apiUrl, $request->all());
+
+            $formInstance->api_response = $response->body();
+            $formInstance->save();
+
+            if ($response->successful()) {
+                // $formInstance->api_response = $response->body();
+                // $formInstance->save();
+            } else {
+                Log::info('error-ExternalApiError:' . $response->body());
+                // return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch (\Exception $e) {
+            $formInstance->api_response = $e->getMessage();
+            $formInstance->save();
+            Log::info('error-Exception4:' . $e->getMessage());
+            // return responder()->error()->respond(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return responder()
             ->success($formInstance, Form_instanceTransformer::class)

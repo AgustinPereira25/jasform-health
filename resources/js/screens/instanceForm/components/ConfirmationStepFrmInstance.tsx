@@ -7,8 +7,8 @@ import { Button, LoadingOverlay, Tooltip, icons } from '@/ui'
 import type { InstanceProps } from '.'
 import { useFormInstance } from '@/stores/useFormInstance';
 import type { IHttpResponseError } from '@/api';
-// import type { FormInstanceURL } from '@/api/formInstance';
-import { createFormInstance } from '@/api/formInstance';
+import type { FormInstanceURL } from '@/api/formInstance';
+import { createFormInstance, sendExternalEndpoint } from '@/api/formInstance';
 import { adjustHoverColor, getColorContrast } from '@/helpers/helpers';
 import { message } from '@/constants/message';
 
@@ -29,14 +29,14 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
 
             console.log("currentState:", currentState);
             createFormInstanceMutation(currentState);
-            // if (currentState.api_url) {
-            //     console.log("currentState.api_url:", currentState.api_url)
-            //     const currentURLAndBody: FormInstanceURL = {
-            //         url: currentState.api_url,
-            //         body: currentState,
-            //     }
-            //     sendExternalEndpointMutation(currentURLAndBody);
-            // }
+            if (currentState.api_url) {
+                console.log("currentState.api_url:", currentState.api_url)
+                const currentURLAndBody: FormInstanceURL = {
+                    url: currentState.api_url,
+                    body: currentState,
+                }
+                sendExternalEndpointMutation(currentURLAndBody);
+            }
         }
     }
 
@@ -72,30 +72,29 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             },
         });
 
-    // const { mutate: sendExternalEndpointMutation } =
-    //     useMutation({
-    //         mutationFn: sendExternalEndpoint.mutation,
-    //         onSuccess: () => {
-    //             sendExternalEndpoint.invalidates(queryClient);
-    //             toast.success(`Data successfully sent to external integration!`);
-    //             navigate(`/instance-form/${currentState.public_code}/finished`);
-    //         },
-    //         onError: (err: IHttpResponseError) => {
-    //             if (err?.response?.data?.message) {
-    //                 toast.error(err?.response.data.message);
-    //             } else if (err?.response?.data?.error?.fields) {
-    //                 const errors = err?.response.data.error.fields;
-    //                 Object.entries(errors).forEach(([_, valArray]) => {
-    //                     toast.error(`${valArray[0]}`);
-    //                 });
-    //             } else {
-    //                 toast.error("There was an error. Please try again later.");
-    //             }
-    //         },
-    //     });
+    const { mutate: sendExternalEndpointMutation } =
+        useMutation({
+            mutationFn: sendExternalEndpoint.mutation,
+            onSuccess: () => {
+                sendExternalEndpoint.invalidates(queryClient);
+                // toast.success(`Data successfully sent to external integration!`);
+                navigate(`/instance-form/${currentState.public_code}/finished`);
+            },
+            onError: (err: IHttpResponseError) => {
+                if (err?.response?.data?.message) {
+                    // toast.error(err?.response.data.message);
+                } else if (err?.response?.data?.error?.fields) {
+                    // const errors = err?.response.data.error.fields;
+                    // Object.entries(errors).forEach(([_, valArray]) => {
+                    // toast.error(`${valArray[0]}`);
+                    // });
+                } else {
+                    // toast.error("There was an error. Please try again later.");
+                }
+            },
+        });
     const [hoveredPrimary, setHoveredPrimary] = useState(false);
     const [hoveredSecondary, setHoveredSecondary] = useState(false);
-
     const hoverColorPrimary = adjustHoverColor(formInstanceInfo.primary_color);
     const hoverColorSecondary = adjustHoverColor(formInstanceInfo.secondary_color);
     return (
