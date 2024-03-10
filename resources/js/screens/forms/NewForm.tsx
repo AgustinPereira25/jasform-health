@@ -476,7 +476,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                 <div className="flex w-40 shrink-0">
                                     <span>Form Logo</span>
                                 </div>
-                                <div className="flex shrink-0 overflow-hidden rounded-lg">
+                                <div className="flex shrink-0 overflow-hidden rounded-lg w-[80%]">
                                     <div className="relative p-0">
                                         <img
                                             src={isValidImageUrl(logoUrl ?? '') ? logoUrl : '/LogoPlaceHolder.png'}
