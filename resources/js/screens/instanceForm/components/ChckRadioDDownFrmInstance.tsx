@@ -221,6 +221,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         setShowDeletionModal(true);
                         setValueInput(comboOptionName);
                         setError('');
+                    } else {
+                        setAnswerInput(comboOptionName);
+                        setError('');
                     }
                 } else {
                     setAnswerInput(comboOptionName);
