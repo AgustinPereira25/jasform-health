@@ -920,51 +920,57 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             <>
                                 {
                                     form.id && (
-                                        <div className="flex p-3 h-16 ">
-                                            <Button
-                                                variant="primary"
-                                                //onClick={() => navigate(`/forms/${form.id}/questions`)}
-                                                onClick={() => handleGoToClick(`/forms/${form.id}/questions`)}
-                                                aria-label="Edit Form's Questions"
-                                            >
-                                                <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
-                                                Edit Questions
-                                            </Button>
-                                        </div>
+                                        <>
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    //onClick={() => navigate(`/forms/${form.id}/questions`)}
+                                                    onClick={() => handleGoToClick(`/forms/${form.id}/questions`)}
+                                                    aria-label="Edit Form's Questions"
+                                                >
+                                                    <icons.PencilSquareIcon className={tw(`w-5 h-5`)} />
+                                                    Edit Questions
+                                                </Button>
+                                            </div>
+                                            <hr className="mx-3" />
+                                        </>
                                     )
                                 }
-                                <hr className="mx-3" />
                                 {
                                     (!pathname.includes(ROUTES.newForm) && form.form_instances_count !== 0) && (
-                                        <div className="flex p-3 h-16 ">
-                                            <Button
-                                                variant="primary"
-                                                //onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
-                                                onClick={() => handleGoToClick(`/form-instance/${form.id}?publicCode=${form.public_code}`)}
-                                                aria-label="View Form's Instances"
-                                            >
-                                                <icons.DocumentChartBarIcon className={tw(`w-5 h-5`)} />
-                                                View form&apos;s instances
-                                            </Button>
-                                        </div>
+                                        <>
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    //onClick={() => { navigate(`/form-instance/${form.id}?publicCode=${form.public_code}`) }}
+                                                    onClick={() => handleGoToClick(`/form-instance/${form.id}?publicCode=${form.public_code}`)}
+                                                    aria-label="View Form's Instances"
+                                                >
+                                                    <icons.DocumentChartBarIcon className={tw(`w-5 h-5`)} />
+                                                    View form&apos;s instances
+                                                </Button>
+                                            </div>
+                                            <hr className="mx-3" />
+                                        </>
                                     )
                                 }
-                                <hr className="mx-3" />
                                 {
                                     (!pathname.includes(ROUTES.newForm) && form.form_questions_count !== 0) && (
-                                        <div className="flex p-3 h-16 ">
-                                            <Button
-                                                variant="primary"
-                                                onClick={(e) => handlePreviewClick(e)}
-                                                aria-label="View Preview from beginning"
-                                            >
-                                                <icons.EyeIcon className={tw(`w-5 h-5`)} />
-                                                View Preview from beginning
-                                            </Button>
-                                        </div>
+                                        <>
+                                            <div className="flex p-3 h-16 ">
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={(e) => handlePreviewClick(e)}
+                                                    aria-label="View Preview from beginning"
+                                                >
+                                                    <icons.EyeIcon className={tw(`w-5 h-5`)} />
+                                                    View Preview from beginning
+                                                </Button>
+                                            </div>
+                                            <hr className="mx-3" />
+                                        </>
                                     )
                                 }
-                                <hr className="mx-3" />
                                 {
                                     (!pathname.includes(ROUTES.newForm)) && (
                                         <>
@@ -988,10 +994,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                                                     Get Embedded Windows Code (iFrame)
                                                 </Button>
                                             </div>
+                                            <hr className="mx-3" />
                                         </>
                                     )
                                 }
-                                <hr className="mx-3" />
                             </>
                         </div>
                     </div>
