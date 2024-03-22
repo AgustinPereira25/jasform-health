@@ -96,7 +96,7 @@ export const Sidebar: React.FC<MenuBarProps> = ({
     const handleCheckCurrentPath = (route: string) => {
         if (pathname.includes(ROUTES.forms + '/') || pathname.includes(ROUTES.profile) || pathname.includes(ROUTES.newUser)
             || pathname.includes(ROUTES.users + '/')) {
-            console.log('TRUE')
+            // console.log('TRUE')
             setShowLostChangesModal(true);
             setRouteToNavigate(route);
         } else {

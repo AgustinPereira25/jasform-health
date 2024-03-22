@@ -24,7 +24,7 @@ export interface FormQuestionsPost {
 export const updateFormQuestions = {
   mutation: async (params: FormQuestionsPost) => {
     const { ...rest } = params;
-    console.log(params);
+    // console.log(params);
     const response = await privateAPI.post<ServiceResponse<FormQuestionsPost>>("/form_questions/store_multiple_questions_with_options/", {
       ...rest,
     });

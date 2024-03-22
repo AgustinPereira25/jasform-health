@@ -79,7 +79,7 @@ interface PDFDashboardProps {
 };
 
 export const PDFDashboard: React.FC<PDFDashboardProps> = ({ data, userData, formDataReport }) => {
-    console.log("data:", data)
+    // console.log("data:", data)
     return (
         <Document author="JASForm" title="Dashboard report">
             <Page size="A4" style={styles.page}>

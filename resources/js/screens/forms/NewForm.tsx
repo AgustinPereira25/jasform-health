@@ -217,7 +217,7 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             html_head: data.html_head,
             html_body: data.html_body,
         }
-        console.log(form_CreateFormParams)
+        // console.log(form_CreateFormParams)
         if (pathname.includes(ROUTES.newForm)) {
             createFormMutation(form_CreateFormParams);
         } else {
