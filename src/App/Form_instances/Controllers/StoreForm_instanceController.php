@@ -70,7 +70,7 @@ class StoreForm_instanceController
 
         $formId = intval($request->input('form_id'));
         try {
-            $formModel->findOrFail($formId);
+            $formInstance = $formModel->findOrFail($formId);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::info('error-ModelNotFoundException:' . $e->getMessage());
             return responder()
@@ -82,12 +82,16 @@ class StoreForm_instanceController
                 ->respond(JsonResponse::HTTP_BAD_REQUEST);
         }
 
+        $isUserResponsesLinked = $formInstance->is_user_responses_linked;
+
+        Log::info('isUserResponsesLinked:' . $isUserResponsesLinked);
+
         $formInstanceDto = new Form_instanceDto(
             initial_date_time: $formattedInitial_date_time,
             final_date_time: $formattedFinal_date_time,
             api_response: "",
             form_id: $formId,
-            completer_user_id: $completerUserId,
+            completer_user_id: $isUserResponsesLinked ? $completerUserId : null,
         );
 
         try {

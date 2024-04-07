@@ -28,6 +28,7 @@ use App\Form_instances\Controllers\ListForm_instance_byFormIdController;
 use App\Form_instances\Controllers\GetForm_instanceController;
 use App\Form_instances\Controllers\StoreForm_instanceController;
 use App\Form_instances\Controllers\DeleteForm_instanceController;
+use App\Form_instances\Controllers\DeleteAllForm_instances_byFormIdController;
 use App\Form_questions\Controllers\ListForm_questionController;
 use App\Form_questions\Controllers\ListForm_question_byFormIdController;
 use App\Form_questions\Controllers\GetForm_questionController;
@@ -168,6 +169,7 @@ Route::prefix('form_instances')
         Route::get('/byFormId/{form}', ListForm_instance_byFormIdController::class);
         Route::get('/{form_instance}', GetForm_instanceController::class);
         Route::delete('/{form_instance}', DeleteForm_instanceController::class);
+        Route::delete('/byFormId/{form}', DeleteAllForm_instances_byFormIdController::class);
     });
 
 Route::prefix('form_questions')
