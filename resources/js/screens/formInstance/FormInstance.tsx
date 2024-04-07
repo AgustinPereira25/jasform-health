@@ -94,10 +94,10 @@ export const FormInstance: React.FC = () => {
     // };
     const [sort, setSort] = useState(sortOptions[7]);
     const handleComboboxChange = useCallback((selectedOptionId: number) => {
-        console.log("selectedOptionId", selectedOptionId);
+        // console.log("selectedOptionId", selectedOptionId);
         const selectedOption = sortOptions.find(option => option.id === selectedOptionId);
         if (selectedOption) {
-            console.log("selectedOption", selectedOption);
+            // console.log("selectedOption", selectedOption);
             setSort(selectedOption);
         }
     }, []);
@@ -184,17 +184,6 @@ export const FormInstance: React.FC = () => {
                 ) : !forms?.length ? (
                     <EmptyState message={message.EMPTY_STATE_WITHOUT_FILTER} iconName="MagnifyingGlassIcon" />
                 ) : (
-
-                    // {
-                    //     isError ? (
-                    //         <EmptyState
-                    //             message={message.ERROR_STATE}
-                    //             iconName="ArchiveBoxXMarkIcon"
-                    //         />
-                    //     ) : !forms?.length ? (
-                    //         <EmptyState message={message.EMPTY_STATE_WITHOUT_FILTER} iconName="PencilSquareIcon" />
-                    //     ) : (
-
                     <div className="rounded-sm border-[1px] border-gray-300">
                         <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                             <colgroup>
@@ -256,7 +245,7 @@ export const FormInstance: React.FC = () => {
                                     </tr>
                                 )}
                                 {forms?.map((item, idx) => (
-                                    <tr key={item.public_code} className="font-normal">
+                                    <tr key={idx} className="font-normal">
                                         <td className="py-4 pl-4 pr-8 sm:pl-6 lg:pl-8">
                                             <div className="flex items-center gap-x-4">
                                                 <div className="flex flex-col truncate text-sm leading-6 text-black">

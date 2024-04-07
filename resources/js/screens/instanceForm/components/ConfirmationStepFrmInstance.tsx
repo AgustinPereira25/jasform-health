@@ -16,7 +16,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
     let currentState = useFormInstance.getState().formInstance!;
     const previewMode = useFormInstance.getState().previewMode ?? false;
     const navigate = useNavigate();
-    console.log('currentState', currentState);
+    // console.log('currentState', currentState);
     const handleFinishClick = () => {
         if (!previewMode) {
             useFormInstance.setState({ formInstance: { ...currentState, final_date_time: new Date, completed_questions_count: currentState.completed_questions.length } });
@@ -27,7 +27,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
                 delete question.is_completed;
             });
 
-            console.log("currentState:", currentState);
+            // console.log("currentState:", currentState);
             createFormInstanceMutation(currentState);
             // if (currentState.api_url) {
             //     console.log("currentState.api_url:", currentState.api_url)

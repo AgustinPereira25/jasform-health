@@ -50,7 +50,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         setCheckedAnswers(savedAnswerCheckedOptions);
     }, [currentQuestionInfo.order, currentQuestionInfo.question_options, currentQuestionInfo.question_type_id])
 
-    console.log('currentQuestionInfo', currentQuestionInfo)
+    // console.log('currentQuestionInfo', currentQuestionInfo)
     // console.log("savedAnswerCheckedOptions", savedAnswerCheckedOptions)
     const [checkedAnswers, setCheckedAnswers] = useState<CompleterUserAnswerCheckedOption[]>(savedAnswerCheckedOptions);
 
@@ -76,8 +76,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 if (questiontypeId === 4 || questiontypeId === 5) // Radio Button or Drop Down
                 {
                     const next_question = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
-                    console.log('next_question', next_question);
-                    console.log('answerInput', answerInput);
+                    // console.log('next_question', next_question);
+                    // console.log('answerInput', answerInput);
                     switch (next_question) {
                         case 0:
                             nextQuestionTypeRadio = 6; // Finish form instance.
@@ -99,7 +99,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                     }
                 }
                 setIsCompleted(true);
-                console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
+                // console.log('nextQuestionTypeRadio', nextQuestionTypeRadio);
                 const answer: CompletedQuestion = {
                     id: currentQuestionInfo.id!,
                     title: currentQuestionInfo.title,
@@ -141,8 +141,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                         nextQuestionType = nextQuestionTypeRadio;
                         break;
                 }
-                console.log('nextQuestionType', nextQuestionType)
-                console.log('nextQuestionOrder', nextQuestionOrder)
+                // console.log('nextQuestionType', nextQuestionType)
+                // console.log('nextQuestionOrder', nextQuestionOrder)
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: nextQuestionOrder });
             }
         }
@@ -181,8 +181,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 // useFormInstance.setState({ formInstance: { ...currentState, completed_questions: [...updatedState, answer] } });
 
                 const nextQuestionType: number = formInstanceInfo.form_questions?.find((question) => question.order === currentScreen.currentQuestionOrder + 1)?.question_type_id ?? 6;
-                console.log('nextQuestionType', nextQuestionType);
-                console.log('nextQuestionOrder', currentScreen.currentQuestionOrder + 1);
+                // console.log('nextQuestionType', nextQuestionType);
+                // console.log('nextQuestionOrder', currentScreen.currentQuestionOrder + 1);
 
                 setCurrentScreen({ questionType: nextQuestionType, currentQuestionOrder: currentScreen.currentQuestionOrder + 1 });
             }
@@ -209,9 +209,9 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
         } else {
             if (comboOptionName) {
                 // DropDown Combo
-                console.log('answerInput', answerInput);
-                console.log('comboOptionName', comboOptionName);
-                console.log('isCompleted', isCompleted);
+                // console.log('answerInput', answerInput);
+                // console.log('comboOptionName', comboOptionName);
+                // console.log('isCompleted', isCompleted);
                 if (isCompleted && answerInput !== comboOptionName && answerInput) {
                     const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
                     const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === comboOptionName)?.next_question;
@@ -231,8 +231,8 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
                 }
             } else {
                 // Radio button
-                console.log('answerInput', answerInput)
-                console.log('value', value)
+                // console.log('answerInput', answerInput)
+                // console.log('value', value)
                 if (isCompleted && answerInput !== value && answerInput) {
                     const nextQuestionAnswerInput = currentQuestionInfo.question_options?.find((option) => option.title === answerInput)?.next_question;
                     const nextQuestionValue = currentQuestionInfo.question_options?.find((option) => option.title === value)?.next_question;
@@ -255,7 +255,7 @@ export const ChckRadioDDownFrmInstance: React.FC<InstanceProps> = ({ formInstanc
     const handleDelete = () => {
         setAnswerInput(valueInput);
         const updatedState = currentState.completed_questions.slice(0, currentQuestionInfo.order - 1);
-        console.log('updatedState', updatedState);
+        // console.log('updatedState', updatedState);
         useFormInstance.setState({ formInstance: { ...currentState, completed_questions: updatedState } });
         setShowDeletionModal(false);
     }

@@ -14,7 +14,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
     };
     const [searchParams] = useSearchParams();
     const aux_code = searchParams.get('aux_code');
-    console.log("aux_code:", aux_code)
+    // console.log("aux_code:", aux_code)
     const currentState = useFormInstance.getState().formInstance!;
     if (!currentState) {
         const initialFormData: CompletedForm = {

@@ -46,7 +46,6 @@ export const SimpleTxtFrmInstance: React.FC<InstanceProps> = ({ formInstanceInfo
     const hoverColorPrimary = adjustHoverColor(formInstanceInfo?.primary_color);
     const hoverColorSecondary = adjustHoverColor(formInstanceInfo?.secondary_color);
 
-    console.log('color', hoverColorSecondary)
     return (
         <div id="simple-txt-container-form-div" className="flex flex-col grow max-w-[400px] h-full max-h-[400px] bg-white p-6 border rounded-xl gap-3">
             <div className="flex flex-col justify-start items-start gap-4 h-full">

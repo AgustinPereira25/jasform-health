@@ -15,7 +15,7 @@ import { CompleterUserAnswerCheckedOption } from '@/api/formInstance';
 // }
 export const CompletedQuestions: React.FC = () => {
     const completed_questions = useCompletedQuestions.getState().completedQuestions!;
-    console.log(completed_questions);
+    // console.log(completed_questions);
 
     const navigate = useNavigate();
 

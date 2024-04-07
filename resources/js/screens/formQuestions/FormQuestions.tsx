@@ -262,13 +262,13 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
             };
         });
 
-        console.log("error", error)
+        // console.log("error", error)
         if (error) {
             return;
         }
         // console.log('data', data);
         const postQuestions = { form_id: Number(formId), form_questions: data };
-        console.log(postQuestions);
+        // console.log(postQuestions);
         updateFormQuestionsMutation(postQuestions);
     }
 

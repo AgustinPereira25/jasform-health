@@ -189,7 +189,7 @@ export const Forms = () => {
                         !forms?.length ? (
                             <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
                         ) : (
-                            <div className="rounded-lg border border-gray-300 overflow-y-auto">
+                            <div className="rounded-lg border border-gray-300 overflow-x-auto">
                                 <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                                     <colgroup>
                                         <col className="sm:w-2/12" />
@@ -308,14 +308,6 @@ export const Forms = () => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {/* <td className="hidden py-4 pl-3 text-center text-sm text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
-                    <Button
-                      variant="tertiary"
-                      onClick={() => console.log('delete')}
-                    >
-                      <icons.LinkIcon />
-                    </Button>
-                  </td> */}
                                                 <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                                     <a href={`/forms/${item.id}`} className="flex justify-end">
                                                         <icons.ChevronRightIcon aria-label="Edit form" className="h-6 w-6 text-primary" />

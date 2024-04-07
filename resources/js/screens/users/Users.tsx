@@ -202,7 +202,7 @@ export const Users = () => {
                     <EmptyState message={message.EMPTY_STATE} iconName="PencilSquareIcon" />
                 ) : (
 
-                    <div className="rounded-lg border border-gray-300">
+                    <div className="rounded-lg border border-gray-300 overflow-x-auto">
                         <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                             <colgroup>
                                 <col className="w-full sm:w-4/12" />
