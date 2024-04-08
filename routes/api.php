@@ -6,6 +6,7 @@ use App\Users\Controllers\GetUserDashboardController;
 use App\Users\Controllers\ListUserController;
 use App\Users\Controllers\StoreUserController;
 use App\Users\Controllers\UpdateUserController;
+use App\Users\Controllers\UpdateUserPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -112,6 +113,7 @@ Route::prefix('users')
         Route::get('/getDashboard/{user}', GetUserDashboardController::class);
         Route::post('/', StoreUserController::class);
         Route::put('/', UpdateUserController::class);
+        Route::put('/updatePassword', UpdateUserPasswordController::class);
         Route::delete('/{user}', DeleteUserController::class);
     });
 

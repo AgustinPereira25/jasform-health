@@ -556,8 +556,8 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                             <Input
                                 type="password"
                                 id="actualPassword"
-                                label="Actual Password*"
-                                placeholder="Enter Actual Password"
+                                label="Current Password*"
+                                placeholder="Enter Current Password"
                                 value={passwordInput}
                                 defaultValue={passwordInput}
                                 onChange={e => setPasswordInput(e.target.value)}
@@ -591,7 +591,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 onClick={() => {
                                     setPasswordInput("")
                                     //TODO: Finished this
-                                    // console.log('Update Password CONFIRMED')
+                                    console.log('Update Password CONFIRMED')
                                 }}
                             >
                                 Confirm New Password
