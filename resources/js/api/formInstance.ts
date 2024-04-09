@@ -1,10 +1,13 @@
 import type { QueryClient } from "@tanstack/react-query";
 
 import { query_keys } from "@/constants/query_keys";
+
 import type { ServiceResponse } from "./api.types";
 import { getAuthHeaders, privateAPI, urlAPI } from "./axios";
+import type { Form } from "./forms";
 
 export interface CompletedForm {
+  id?: number;
   form_id: number;
   initial_date_time: Date;
   final_date_time?: Date;
@@ -48,14 +51,12 @@ const ALL = "all";
 
 export const createFormInstance = {
   mutation: async (body: CompletedForm) => {
-    // console.log("body:", body);
     const response = await privateAPI.post<ServiceResponse<CompletedForm>>(
       "/form_instances",
       {
         ...body,
       },
     );
-    // console.log("response:", { response });
     return response.data.data;
   },
   invalidates: (queryClient: QueryClient) => {
@@ -69,15 +70,12 @@ export interface FormInstanceURL {
 }
 export const sendExternalEndpoint = {
   mutation: async (info: FormInstanceURL) => {
-    // console.log("body:", info.body);
-    // console.log("url:", info.url);
     const response = await urlAPI.post<ServiceResponse<CompletedForm>>(
       info.url,
       {
         ...info.body,
       },
     );
-    // console.log("response:", { response });
     return response.data.data;
   },
   invalidates: (queryClient: QueryClient) => {
@@ -107,7 +105,6 @@ export const getFormInstancesQuery = (
   ],
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
-    // console.log("getFormInstancesQuery-sort:", sort);
     const response = await privateAPI.get<ServiceResponse<CompletedForm[]>>(
       `form_instances/byFormId/${formId}`,
       {
@@ -119,7 +116,32 @@ export const getFormInstancesQuery = (
         headers: getAuthHeaders(),
       },
     );
-    // // console.log(response)
     return response.data;
   },
 });
+
+export const deleteAllInstancesByFormId = {
+  mutation: async (formId: Form["id"]) => {
+    await privateAPI.delete(`form_instances/byFormId/${formId}`);
+  },
+  invalidates: (
+    queryClient: QueryClient,
+    { formId }: { formId: Form["id"] },
+  ) => {
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, formId] });
+  },
+};
+
+export const deleteOneInstanceById = {
+  mutation: async (id: CompletedForm["id"]) => {
+    await privateAPI.delete(`form_instances/${id}`);
+  },
+  invalidates: (
+    queryClient: QueryClient,
+    { id }: { id: CompletedForm["id"] },
+  ) => {
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, id] });
+  },
+};

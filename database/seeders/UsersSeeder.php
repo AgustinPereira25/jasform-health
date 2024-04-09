@@ -166,7 +166,7 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3,
-                'role_id' => 1
+                'role_id' => 2
             ],
             [
                 'first_name' => 'Angela',

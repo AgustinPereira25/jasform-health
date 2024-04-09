@@ -4,11 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { Modal } from 'flowbite-react';
 import { JSONTree } from 'react-json-tree';
 
-import { Button, Label, icons } from '@/ui';
+import { Button, Label, icons, Modal as ModalConfirm } from '@/ui';
 import { tw } from '@/utils';
 import { paginatorValues } from '@/constants/pagination';
 import Pagination from '@/ui/common/Pagination';
 import { getFormInstancesQuery } from '@/api/formInstance';
+import type { CompletedForm } from '@/api/formInstance';
 import { useCompletedQuestions, useUserStore } from '@/stores';
 import EmptyState from '@/ui/common/EmptyState';
 import { message } from '@/constants/message';
@@ -16,6 +17,8 @@ import { isValidJson, parseDate, truncateText } from '@/helpers/helpers';
 import TableSkeleton from "@/ui/common/Skeletons/TableSkeleton";
 import ComboBox from '@/ui/form/Combobox';
 import type { Option } from "@/ui/form/Combobox";
+import { DeleteAllFormsInstancesConfirm } from './DeleteAllFormsInstancesConfirm';
+import { DeleteOneFormsInstancesConfirm } from './DeleteOneFormsInstancesConfirm';
 
 const theme = {
     scheme: 'monokai',
@@ -64,9 +67,17 @@ export const FormInstance: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [apiResponseToShow, setApiResponseToShow] = useState("");
+
+    const [instanceToDelete, setInstanceToDelete] = useState<CompletedForm>();
+
     const handleRowClick = (apiReponse: string) => {
         setApiResponseToShow(apiReponse);
         setIsModalOpen(true);
+    };
+
+    const handleDeleteOneInstanceRowClick = (instanceToDeleteFromRow: CompletedForm) => {
+        setInstanceToDelete(instanceToDeleteFromRow);
+        handleOpenDeletionOneInstanceModal();
     };
 
     //TODO - Make the filters work
@@ -94,16 +105,13 @@ export const FormInstance: React.FC = () => {
     // };
     const [sort, setSort] = useState(sortOptions[7]);
     const handleComboboxChange = useCallback((selectedOptionId: number) => {
-        // console.log("selectedOptionId", selectedOptionId);
         const selectedOption = sortOptions.find(option => option.id === selectedOptionId);
         if (selectedOption) {
-            // console.log("selectedOption", selectedOption);
             setSort(selectedOption);
         }
     }, []);
 
     const { data, isFetching, isError, isLoading: isLoadingForms } = useQuery({
-        // ...getFormInstancesQuery(perPage, currentPage, formId!, debouncedSearch.nameEmailCode, debouncedSearch.submitted_start_date, debouncedSearch.submitted_end_date),
         ...getFormInstancesQuery(perPage, currentPage, formId!, "", "", "", sort?.value ?? "-submittedDate"),
         enabled: !!token,
     });
@@ -114,6 +122,22 @@ export const FormInstance: React.FC = () => {
             completedQuestions: forms![idx]!.completed_questions,
         });
         navigate(`/form-instance/${formId}/completed-questions`);
+    };
+
+    const [showDeletionMasiveModal, setshowDeletionMasiveModal] = useState(false);
+    const handleOpenDeletionMasiveModal = () => {
+        setshowDeletionMasiveModal(true);
+    };
+    const handleCloseDeletionMasiveModal = () => {
+        setshowDeletionMasiveModal(false);
+    };
+
+    const [showDeletionOneInstanceModal, setshowDeletionOneInstanceModal] = useState(false);
+    const handleOpenDeletionOneInstanceModal = () => {
+        setshowDeletionOneInstanceModal(true);
+    };
+    const handleCloseDeletionOneInstanceModal = () => {
+        setshowDeletionOneInstanceModal(false);
     };
 
     return (
@@ -144,6 +168,11 @@ export const FormInstance: React.FC = () => {
                         onValueChange={(item) => handleComboboxChange(item.id as keyof typeof Option)}
                     />
                 </div>
+
+                <Button variant="primary" className="mt-5 ml-5" onClick={handleOpenDeletionMasiveModal}>
+                    <icons.TrashIcon className={tw(`h-5 w-5`)} />
+                    Delete all instances
+                </Button>
             </div>
             <div className="rounded-xl border-[1px] bg-white p-2 pt-4 shadow-lg w-full">
                 {/* <div className="flex gap-5">
@@ -219,12 +248,17 @@ export const FormInstance: React.FC = () => {
                                     >
                                         # ANSWERED QUESTIONS
                                     </th>
-
                                     <th
                                         scope="col"
                                         className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
                                     >
                                         API RESPONSE
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="hidden py-2 pl-0 pr-4 text-right font-normal text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8"
+                                    >
+                                        DELETE
                                     </th>
                                     <th
                                         scope="col"
@@ -285,6 +319,11 @@ export const FormInstance: React.FC = () => {
                                             </div>
                                         </td>
                                         <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
+                                            <div className="flex justify-center">
+                                                <icons.TrashIcon aria-label="Delete this instance" color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleDeleteOneInstanceRowClick(item)} />
+                                            </div>
+                                        </td>
+                                        <td className="hidden py-4 pl-3 pr-1 text-right text-sm leading-6 text-[#6B7280] sm:table-cell sm:pr-6 lg:pr-8">
                                             <div className="flex justify-end">
                                                 <icons.ChevronRightIcon aria-label="Go completed questions" color={'#00519E'} className={tw(`w-5 h-5`, 'cursor-pointer')} onClick={() => handleGoCompletedQuestions(idx)} />
                                             </div>
@@ -325,6 +364,37 @@ export const FormInstance: React.FC = () => {
                 }
             </div>
             <div className="h-[100px]"></div>
+            <ModalConfirm
+                show={showDeletionMasiveModal}
+                title="Confirm Deletion"
+                description="Are you sure you want to execute a massive deletion?"
+                onClose={handleCloseDeletionMasiveModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <DeleteAllFormsInstancesConfirm formId={formId ?? "0"} handleCloseDeletionMasiveModal={handleCloseDeletionMasiveModal} />
+                </div>
+            </ModalConfirm>
+            <ModalConfirm
+                show={showDeletionOneInstanceModal}
+                title="Confirm Deletion"
+                description="Are you sure you want to execute the instance deletion?"
+                onClose={handleCloseDeletionOneInstanceModal}
+            >
+                <div className="text-md text-primary">
+                    <p>
+                        {instanceToDelete?.completer_user_first_name} {instanceToDelete?.completer_user_last_name} {instanceToDelete?.completer_user_email}
+                    </p>
+                    <p>
+                        <strong>Submitted Date:</strong> {parseDate(instanceToDelete?.final_date_time?.toString())}
+                    </p>
+                    <p>
+                        <strong># Answered Questions:</strong> {instanceToDelete?.completed_questions_count}
+                    </p>
+                </div>
+                <div className="flex h-16 p-3 m-auto">
+                    <DeleteOneFormsInstancesConfirm instanceIdToDelete={instanceToDelete?.id ?? 0} handleCloseDeletionOneInstanceModal={handleCloseDeletionOneInstanceModal} />
+                </div>
+            </ModalConfirm>
         </div>
     )
 }
