@@ -73,18 +73,65 @@ const userSchema = z
         ),
         position_in_org: z.string().optional(),
         role: z.string(),
-        isActive: z.boolean(),
-        // password: z
-        //     .string()
-        //     .trim()
-        //     .min(8, { message: "Password needs at least 8 characters" }),
-        // passwordConfirmation: z.string().trim(),
+        isActive: z.boolean()
     })
-// .refine((data) => data.password === data.passwordConfirmation, {
-//     message: "Passwords must match",
-//     path: ["passwordConfirmation"],
-// });
-type UserFormValues = z.infer<typeof userSchema>;
+
+// type UserFormValues = z.infer<typeof userSchema>;
+
+const userSchemaWithPassword = z
+    .object({
+        firstName: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Name must contain more than two letters" }
+        ),
+        lastName: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Last Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Last name must contain more than two letters" }
+        ),
+        email: z
+            .string()
+            .min(1, { message: "Email is required" })
+            .email({ message: "Invalid email" }),
+        photo: z.string()
+            .optional()
+            .refine(photo => photo === undefined || photo === '' || /([/|.|\w|\s|-])*\.(jpeg|jpg|webp|png)$/.test(photo), {
+                message: "Invalid image URL"
+            }),
+        organization: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Organization Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Organization name must contain more than two letters" }
+        ),
+        position_in_org: z.string().optional(),
+        role: z.string(),
+        isActive: z.boolean(),
+        password: z
+            .string()
+            .trim()
+            .min(8, { message: "Password needs at least 8 characters" })
+            .refine(
+                password => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password),
+                { message: "Password must contain at least one uppercase letter, one lowercase letter and one number" }
+            ),
+        passwordConfirmation: z
+            .string()
+            .trim()
+            .min(8, { message: "Password needs at least 8 characters" })
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+        message: "Passwords must match",
+        path: ["passwordConfirmation"],
+    });
+
+type UserFormValuesWithPassword = z.infer<typeof userSchemaWithPassword>;
 
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
@@ -102,7 +149,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const defaultRole: string = user.role_name ?? Roles[1]!.name;
     // For toggles
     const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
-    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "" : "");
+    const randomValidPassword = "justAValidPassword123";
+    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "" : randomValidPassword);
+    const [passwordConfirmationInput, setPasswordConfirmationInput] = useState(pathname.includes(ROUTES.newUser) ? "" : randomValidPassword);
 
     const [photoUrl, setPhotoUrl] = useState(user?.photo);
 
@@ -112,8 +161,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
         formState: { errors },
         setValue,
         setError,
-    } = useForm<UserFormValues>({
-        resolver: zodResolver(userSchema),
+    } = useForm<UserFormValuesWithPassword>({
+        resolver: zodResolver(pathname.includes(ROUTES.newUser) ? userSchemaWithPassword : userSchema),
+        // resolver: zodResolver(userSchema),
         //TODO: limpiar campos default
         defaultValues: {
             firstName: user?.first_name ?? "",
@@ -124,6 +174,8 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             role: user?.role_name ?? defaultRole,
             isActive: user?.is_active ?? true,
             photo: user?.photo ?? "",
+            password: "",
+            passwordConfirmation: "",
         },
     });
 
@@ -163,8 +215,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         setUser(data.data.data);
                     }
                     navigate(ROUTES.myDashboard);
+                } else {
+                    navigate(ROUTES.users);
                 }
-                navigate(ROUTES.users);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
@@ -184,7 +237,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                     toast.error("There was an error trying to update the user. Please try again later.");
                     //     }
                     // }
-                    navigate(ROUTES.users);
+                    navigate(ROUTES.myDashboard);
                 }
                 handleAxiosFieldErrors(err, setError);
                 if (pathname.includes(ROUTES.profile)) {
@@ -207,7 +260,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             organization_name: data.organization,
             role_name: data.role,
             password: passwordInput === "" ? "" : passwordInput,
-            passwordConfirmation: passwordInput
+            passwordConfirmation: passwordConfirmationInput === "" ? "" : passwordConfirmationInput,
         }
         if (pathname.includes(ROUTES.newUser)) {
             createUserMutation(user_CreateUserParams);
@@ -298,7 +351,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Enter First Name"
                                     {...register("firstName")}
                                     error={errors.firstName?.message}
-                                    // value={passwordInput}
                                     defaultValue={user?.first_name}
                                 />
                             </div>
@@ -317,7 +369,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Enter Last Name"
                                     {...register("lastName")}
                                     error={errors.lastName?.message}
-                                    //value={passwordInput}
                                     defaultValue={user?.last_name}
                                 />
                             </div>
@@ -336,9 +387,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Enter Email address"
                                     {...register("email")}
                                     error={errors.email?.message}
-                                    //value={passwordInput}
                                     defaultValue={user?.email}
                                     disabled={Boolean(user.id) && !pathname.includes(ROUTES.newUser)}
+                                    autocomplete="off"
                                 />
                             </div>
                         </div>
@@ -379,7 +430,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Organization"
                                     {...register("organization")}
                                     error={errors.organization?.message}
-                                    // value={passwordInput}
                                     defaultValue={user?.organization_name}
                                 />
                             </div>
@@ -398,24 +448,72 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Position in Organization"
                                     {...register("position_in_org")}
                                     error={errors.position_in_org?.message}
-                                    //value={passwordInput}
                                     defaultValue={user?.position_in_org}
                                 />
                             </div>
                         </div>
-                        <hr className="mx-3" />
-                        <div className="flex h-16 p-3">
-                            <Button
-                                variant="tertiary"
-                                onClick={handleOpenPasswordModal}
-                            >
-                                <icons.KeyIcon />
-                                Change Password
-                            </Button>
-                        </div>
-                        <hr className="mx-3" />
+
+                        {!pathname.includes(ROUTES.newUser) ? (
+                            <>
+                                <hr className="mx-3" />
+                                <div className="flex h-16 p-3">
+                                    <Button
+                                        variant="tertiary"
+                                        onClick={handleOpenPasswordModal}
+                                    >
+                                        <icons.KeyIcon />
+                                        Change Password
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <hr className="mx-3" />
+                                <div className={tw("flex h-16 p-3", errors.password && "pb-5")}>
+                                    <div className="flex w-40">
+                                        <span>New Password*</span>
+                                    </div>
+                                    <div className="flex grow">
+                                        <Input
+                                            containerClassName="w-full"
+                                            type="password"
+                                            id="newPassword"
+                                            placeholder="Enter New Password"
+                                            value={passwordInput}
+                                            // defaultValue={passwordInput}
+                                            {...register("password")}
+                                            onChange={e => setPasswordInput(e.target.value)}
+                                            error={errors.password?.message}
+                                            autocomplete="new-password"
+                                        />
+                                    </div>
+                                </div>
+                                <hr className="mx-3" />
+                                <div className={tw("flex h-16 p-3", errors.passwordConfirmation && "pb-5")}>
+                                    <div className="flex w-40">
+                                        <span>Confirmation*</span>
+                                    </div>
+                                    <div className="flex grow">
+                                        <Input
+                                            containerClassName="w-full"
+                                            type="password"
+                                            id="newPasswordConfirmation"
+                                            placeholder="Enter New Password Confirmation"
+                                            value={passwordConfirmationInput}
+                                            // defaultValue={passwordConfirmationInput}
+                                            {...register("passwordConfirmation")}
+                                            onChange={e => setPasswordConfirmationInput(e.target.value)}
+                                            error={errors.passwordConfirmation?.message}
+                                            autocomplete="new-password"
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )
+                        }
                         {user.id && (
                             <>
+                                <hr className="mx-3" />
                                 <div className="flex h-16 p-3">
                                     <div className="flex w-32 flex-col">
                                         <span className="text-[#008001]">Active Forms:</span>
@@ -567,6 +665,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 id="newPassword"
                                 label="New Password*"
                                 placeholder="Enter New Password"
+                                autocomplete="new-password"
                                 value={passwordInput}
                                 defaultValue={passwordInput}
                                 onChange={e => setPasswordInput(e.target.value)}
@@ -578,9 +677,10 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 id="newPasswordConfirmation"
                                 label="New Password Confirmation*"
                                 placeholder="Enter New Password Confirmation"
+                                autocomplete="new-password"
                                 value={passwordInput}
                                 defaultValue={passwordInput}
-                                onChange={e => setPasswordInput(e.target.value)}
+                                onChange={e => setPasswordConfirmationInput(e.target.value)}
                             // {...register("passwordConfirmation")}
                             // error={errors.passwordConfirmation?.message}
                             />

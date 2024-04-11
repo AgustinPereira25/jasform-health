@@ -213,8 +213,8 @@ export const Sidebar: React.FC<MenuBarProps> = ({
                                         // className="flex gap-3 bg-gray-500 pl-10 py-2 rounded-r-xl items-center w-10/12"
                                         className={tw(
                                             item.path === currentPath
-                                                ? "flex justify-end grow items-center gap-2 h-full rounded-r-xl bg-[#00519E] text-white"
-                                                : "flex justify-end grow items-center gap-2 h-full rounded-r-xl text-white"
+                                                ? "flex justify-end grow items-center gap-2 h-full bg-[#00519E] text-white"
+                                                : "flex justify-end grow items-center gap-2 h-full text-white"
                                             // ? "flex w-10/12 items-center gap-3 rounded-r-xl bg-[#00519E] py-2 pl-8 pr-3 text-white"
                                             // : "flex w-10/12 items-center gap-3 rounded-r-xl py-2 pl-8 pr-3 text-white"
                                         )}
