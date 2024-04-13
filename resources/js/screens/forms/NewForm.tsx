@@ -161,11 +161,15 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
-                    const errors = err?.response.data.error.fields;
-                    Object.entries(errors).forEach(([_, valArray]) => {
-                        toast.error(`${valArray[0]}`);
-                    });
+                } else if (err?.response?.data?.error) {
+                    const error = err?.response?.data?.error;
+                    if (typeof error === 'string') {
+                        toast.error(error);
+                    } else if (error?.fields) {
+                        Object.entries(error.fields).forEach(([_, valArray]) => {
+                            toast.error(`${valArray[0]}`);
+                        });
+                    }
                 } else {
                     toast.error("There was an error trying to create the form. Please try again later.");
                 }
@@ -184,11 +188,15 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
-                    const errors = err?.response.data.error.fields;
-                    Object.entries(errors).forEach(([_, valArray]) => {
-                        toast.error(`${valArray[0]}`);
-                    });
+                } else if (err?.response?.data?.error) {
+                    const error = err?.response?.data?.error;
+                    if (typeof error === 'string') {
+                        toast.error(error);
+                    } else if (error?.fields) {
+                        Object.entries(error.fields).forEach(([_, valArray]) => {
+                            toast.error(`${valArray[0]}`);
+                        });
+                    }
                 } else {
                     toast.error("There was an error trying to update the form. Please try again later.");
                 }

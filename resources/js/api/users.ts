@@ -161,9 +161,34 @@ export interface IHttpResponseError extends Error {
   response?: {
     data?: {
       message?: string;
-      error?: {
-        fields?: Record<string, any[]>;
-      };
+      error?:
+        | string
+        | {
+            fields?: Record<string, any[]>;
+          };
     };
   };
 }
+
+export interface ChangePasswordParams {
+  id: number;
+  email: string;
+  current_password: string;
+  new_password: string;
+  confirmation_password: string;
+}
+
+export const changePassword = {
+  mutation: async (params: ChangePasswordParams) => {
+    const response = await privateAPI.put<ServiceResponse<User>>(
+      "/users/updatePassword",
+      {
+        ...params,
+      },
+    );
+    return response;
+  },
+  invalidates: (queryClient: QueryClient) => {
+    void queryClient.invalidateQueries({ queryKey: [DOMAIN, ALL] });
+  },
+};
