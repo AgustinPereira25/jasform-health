@@ -490,7 +490,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     error={errors.email?.message}
                                     defaultValue={user?.email}
                                     disabled={Boolean(user.id) && !pathname.includes(ROUTES.newUser)}
-                                    autocomplete="off"
+                                    autoComplete="off"
                                 />
                             </div>
                         </div>
@@ -585,7 +585,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                             {...register("password")}
                                             onChange={e => setPasswordInput(e.target.value)}
                                             error={errors.password?.message}
-                                            autocomplete="new-password"
+                                            autoComplete="new-password"
                                         />
                                     </div>
                                 </div>
@@ -605,7 +605,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                             {...register("passwordConfirmation")}
                                             onChange={e => setPasswordConfirmationInput(e.target.value)}
                                             error={errors.passwordConfirmation?.message}
-                                            autocomplete="new-password"
+                                            autoComplete="new-password"
                                         />
                                     </div>
                                 </div>
@@ -764,7 +764,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     id="change_current_password"
                                     label="Current Password*"
                                     placeholder="Enter Current Password"
-                                    autocomplete="new-password"
+                                    autoComplete="new-password"
                                     {...registerChangePassword("change_current_password")}
                                     error={errorsChangePassword.change_current_password?.message}
                                     defaultValue={""}
@@ -775,7 +775,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 id="change_new_password"
                                 label="New Password*"
                                 placeholder="Enter New Password"
-                                autocomplete="new-password"
+                                autoComplete="new-password"
                                 {...registerChangePassword("change_new_password")}
                                 error={errorsChangePassword.change_new_password?.message}
                                 defaultValue={""}
@@ -785,7 +785,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                 id="change_confirmation_password"
                                 label="New Password Confirmation*"
                                 placeholder="Enter New Password Confirmation"
-                                autocomplete="new-password"
+                                autoComplete="new-password"
                                 {...registerChangePassword("change_confirmation_password")}
                                 error={errorsChangePassword.change_confirmation_password?.message}
                                 defaultValue={""}

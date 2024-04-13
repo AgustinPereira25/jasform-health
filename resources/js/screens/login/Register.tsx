@@ -109,6 +109,7 @@ export const Register = () => {
                                     placeholder="email@email.com"
                                     {...register("email")}
                                     error={errors.email?.message}
+                                    autoComplete="new-password"
                                 />
                             </div>
                             <div>
@@ -119,6 +120,7 @@ export const Register = () => {
                                     placeholder="Enter Password"
                                     {...register("password")}
                                     error={errors.password?.message}
+                                    autoComplete="new-password"
                                 />
                             </div>
                             <div className="pb-8">
