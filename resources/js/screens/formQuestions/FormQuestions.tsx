@@ -300,9 +300,15 @@ export const QuestionsForm: React.FC<FormQuestionsProps> = ({ initialData: form 
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
-                    const errors = err?.response.data.error.fields;
-                    Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title and Text to show] are filled.");
+                } else if (err?.response?.data?.error) {
+                    const error = err?.response?.data?.error;
+                    if (typeof error === 'string') {
+                        toast.error(error);
+                    } else if (error?.fields) {
+                        Object.entries(error).length !== 0 && toast.error("Please make sure the mandatory fields [Title and Text to show] are filled.");
+                    }
+                    // const errors = err?.response.data.error.fields;
+                    // Object.entries(errors).length !== 0 && toast.error("Please make sure the mandatory fields [Title and Text to show] are filled.");
 
                 } else {
                     toast.error("There was an error trying to update the form. Please try again later.");

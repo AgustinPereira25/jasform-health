@@ -7,13 +7,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-import type { CreateUserParams, IHttpResponseError, User } from "@/api";
+import type { CreateUserParams, ChangePasswordParams, IHttpResponseError, User } from "@/api";
 import { Button, icons, Input, Modal, LoadingOverlay } from "@/ui";
 import ComboBox from "@/ui/form/Combobox";
 import { tw } from "@/utils";
 import { ROUTES } from "@/router";
 import { isValidImageUrl } from "@/helpers/helpers";
-import { createUser, updateUser } from "@/api";
+import { createUser, updateUser, changePassword } from "@/api";
 import { handleAxiosFieldErrors } from "@/utils";
 import { TextArea } from "@/ui/form/TextArea";
 import { DeleteUserConfirm } from "./DeleteUserConfirm";
@@ -31,6 +31,13 @@ interface NewEditProfileForm {
     isActive?: boolean;
     photo?: string;
 }
+
+interface ChangePasswordForm {
+    change_current_password: string;
+    change_new_password: string;
+    change_confirmation_password: string;
+}
+
 interface NewEditProfileProps {
     initialData: User;
 }
@@ -73,18 +80,92 @@ const userSchema = z
         ),
         position_in_org: z.string().optional(),
         role: z.string(),
-        isActive: z.boolean(),
-        // password: z
-        //     .string()
-        //     .trim()
-        //     .min(8, { message: "Password needs at least 8 characters" }),
-        // passwordConfirmation: z.string().trim(),
+        isActive: z.boolean()
     })
-// .refine((data) => data.password === data.passwordConfirmation, {
-//     message: "Passwords must match",
-//     path: ["passwordConfirmation"],
-// });
-type UserFormValues = z.infer<typeof userSchema>;
+
+// type UserFormValues = z.infer<typeof userSchema>;
+
+const userSchemaWithPassword = z
+    .object({
+        firstName: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Name must contain more than two letters" }
+        ),
+        lastName: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Last Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Last name must contain more than two letters" }
+        ),
+        email: z
+            .string()
+            .min(1, { message: "Email is required" })
+            .email({ message: "Invalid email" }),
+        photo: z.string()
+            .optional()
+            .refine(photo => photo === undefined || photo === '' || /([/|.|\w|\s|-])*\.(jpeg|jpg|webp|png)$/.test(photo), {
+                message: "Invalid image URL"
+            }),
+        organization: z.string().refine(
+            name => name.trim().length > 0,
+            { message: "Organization Name is required" }
+        ).refine(
+            name => name.trim().length >= 2,
+            { message: "Organization name must contain more than two letters" }
+        ),
+        position_in_org: z.string().optional(),
+        role: z.string(),
+        isActive: z.boolean(),
+        password: z
+            .string()
+            .trim()
+            .min(8, { message: "Password needs at least 8 characters" })
+            .refine(
+                password => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password),
+                { message: "Password must contain at least one uppercase letter, one lowercase letter and one number" }
+            ),
+        passwordConfirmation: z
+            .string()
+            .trim()
+            .min(8, { message: "Password needs at least 8 characters" })
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+        message: "Passwords must match",
+        path: ["passwordConfirmation"],
+    });
+
+type UserFormValuesWithPassword = z.infer<typeof userSchemaWithPassword>;
+
+const userSchemaChangePassword = z
+    .object({
+        change_current_password: z.string(),
+        change_new_password: z
+            .string()
+            .trim()
+            .min(8, { message: "Password needs at least 8 characters" })
+            .refine(
+                password => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password),
+                { message: "Password must contain at least one uppercase letter, one lowercase letter and one number" }
+            ),
+        change_confirmation_password: z
+            .string()
+            .trim()
+            .min(8, { message: "Password needs at least 8 characters" })
+    })
+    .refine((data) => data.change_current_password !== data.change_new_password, {
+        message: "Current Password and new one must be different",
+        path: ["change_new_password"],
+    })
+    .refine((data) => data.change_new_password === data.change_confirmation_password, {
+        message: "Passwords must match",
+        path: ["change_confirmation_password"],
+    });
+
+type UserFormValuesChangePassword = z.infer<typeof userSchemaChangePassword>;
 
 export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
@@ -102,7 +183,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const defaultRole: string = user.role_name ?? Roles[1]!.name;
     // For toggles
     const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
-    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "" : "");
+    const randomValidPassword = "justAValidPassword123";
+    const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "" : randomValidPassword);
+    const [passwordConfirmationInput, setPasswordConfirmationInput] = useState(pathname.includes(ROUTES.newUser) ? "" : randomValidPassword);
 
     const [photoUrl, setPhotoUrl] = useState(user?.photo);
 
@@ -112,8 +195,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
         formState: { errors },
         setValue,
         setError,
-    } = useForm<UserFormValues>({
-        resolver: zodResolver(userSchema),
+    } = useForm<UserFormValuesWithPassword>({
+        resolver: zodResolver(pathname.includes(ROUTES.newUser) ? userSchemaWithPassword : userSchema),
+        // resolver: zodResolver(userSchema),
         //TODO: limpiar campos default
         defaultValues: {
             firstName: user?.first_name ?? "",
@@ -124,6 +208,21 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             role: user?.role_name ?? defaultRole,
             isActive: user?.is_active ?? true,
             photo: user?.photo ?? "",
+            password: "",
+            passwordConfirmation: "",
+        },
+    });
+
+    const {
+        register: registerChangePassword,
+        handleSubmit: handleSubmitChangePassword,
+        formState: { errors: errorsChangePassword },
+    } = useForm<UserFormValuesChangePassword>({
+        resolver: zodResolver(userSchemaChangePassword),
+        defaultValues: {
+            change_current_password: pathname.includes(ROUTES.profile) ? "" : randomValidPassword,
+            change_new_password: "",
+            change_confirmation_password: "",
         },
     });
 
@@ -140,11 +239,19 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
-                    const errors = err?.response.data.error.fields;
-                    Object.entries(errors).forEach(([_, valArray]) => {
-                        toast.error(`${valArray[0]}`);
-                    });
+                } else if (err?.response?.data?.error) {
+                    const error = err?.response?.data?.error;
+                    if (typeof error === 'string') {
+                        toast.error(error);
+                    } else if (error?.fields) {
+                        Object.entries(error.fields).forEach(([_, valArray]) => {
+                            toast.error(`${valArray[0]}`);
+                        });
+                    }
+                    // const errors = err?.response.data.error.fields;
+                    // Object.entries(errors).forEach(([_, valArray]) => {
+                    //     toast.error(`${valArray[0]}`);
+                    // });
                 } else {
                     toast.error("There was an error trying to create the user. Please try again later.");
                 }
@@ -163,17 +270,26 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                         setUser(data.data.data);
                     }
                     navigate(ROUTES.myDashboard);
+                } else {
+                    navigate(ROUTES.users);
                 }
-                navigate(ROUTES.users);
             },
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
                     toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
-                    const errors = err?.response.data.error.fields;
-                    Object.entries(errors).forEach(([_, valArray]) => {
-                        toast.error(`${valArray[0]}`);
-                    });
+                } else if (err?.response?.data?.error) {
+                    const error = err?.response?.data?.error;
+                    if (typeof error === 'string') {
+                        toast.error(error);
+                    } else if (error?.fields) {
+                        Object.entries(error.fields).forEach(([_, valArray]) => {
+                            toast.error(`${valArray[0]}`);
+                        });
+                    }
+                    // const errors = err?.response.data.error.fields;
+                    // Object.entries(errors).forEach(([_, valArray]) => {
+                    //     toast.error(`${valArray[0]}`);
+                    // });
                 } else {
                     // if (err.response?.data.code === "RoleError") {
                     //     toast.error("There was an error trying to update the user role for ADMIN. Please try again later.");
@@ -184,7 +300,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                     toast.error("There was an error trying to update the user. Please try again later.");
                     //     }
                     // }
-                    navigate(ROUTES.users);
+                    navigate(ROUTES.myDashboard);
                 }
                 handleAxiosFieldErrors(err, setError);
                 if (pathname.includes(ROUTES.profile)) {
@@ -207,7 +323,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             organization_name: data.organization,
             role_name: data.role,
             password: passwordInput === "" ? "" : passwordInput,
-            passwordConfirmation: passwordInput
+            passwordConfirmation: passwordConfirmationInput === "" ? "" : passwordConfirmationInput,
         }
         if (pathname.includes(ROUTES.newUser)) {
             createUserMutation(user_CreateUserParams);
@@ -215,6 +331,44 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             updateUserMutation(user_CreateUserParams);
         }
     };
+
+    const { mutate: changePasswordMutation, isPending: isPendingchangePasswordMutation } =
+        useMutation({
+            mutationFn: changePassword.mutation,
+            onSuccess: () => {
+                changePassword.invalidates(queryClient);
+                toast.success(`Password successfully updated!`);
+                setshowPasswordModal(false);
+            },
+            onError: (err: IHttpResponseError) => {
+                if (err?.response?.data?.message) {
+                    toast.error(err?.response.data.message);
+                } else if (err?.response?.data?.error) {
+                    const error = err?.response?.data?.error;
+                    if (typeof error === 'string') {
+                        toast.error(error);
+                    } else if (error?.fields) {
+                        Object.entries(error.fields).forEach(([_, valArray]) => {
+                            toast.error(`${valArray[0]}`);
+                        });
+                    }
+                } else {
+                    toast.error("There was an error trying to update the password. Please try again later.");
+                }
+            },
+        });
+
+    const onSubmitChangePassword = (data: ChangePasswordForm) => {
+        const user_ChangePasswordParams: ChangePasswordParams = {
+            id: user.id ?? 0,
+            email: user.email ?? "",
+            current_password: data.change_current_password,
+            new_password: data.change_new_password,
+            confirmation_password: data.change_confirmation_password,
+        }
+        changePasswordMutation(user_ChangePasswordParams);
+    };
+
     const navigate = useNavigate();
 
     const [showDeletionModal, setshowDeletionModal] = useState(false);
@@ -235,7 +389,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
 
     return (
         <>
-            {(isPendingCreateUserMutation || isPendingUpdateUserMutation) && (
+            {(isPendingCreateUserMutation || isPendingUpdateUserMutation || isPendingchangePasswordMutation) && (
                 <LoadingOverlay />
             )}
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -298,7 +452,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Enter First Name"
                                     {...register("firstName")}
                                     error={errors.firstName?.message}
-                                    // value={passwordInput}
                                     defaultValue={user?.first_name}
                                 />
                             </div>
@@ -317,7 +470,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Enter Last Name"
                                     {...register("lastName")}
                                     error={errors.lastName?.message}
-                                    //value={passwordInput}
                                     defaultValue={user?.last_name}
                                 />
                             </div>
@@ -336,9 +488,9 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Enter Email address"
                                     {...register("email")}
                                     error={errors.email?.message}
-                                    //value={passwordInput}
                                     defaultValue={user?.email}
                                     disabled={Boolean(user.id) && !pathname.includes(ROUTES.newUser)}
+                                    autoComplete="off"
                                 />
                             </div>
                         </div>
@@ -379,7 +531,6 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Organization"
                                     {...register("organization")}
                                     error={errors.organization?.message}
-                                    // value={passwordInput}
                                     defaultValue={user?.organization_name}
                                 />
                             </div>
@@ -398,24 +549,72 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     placeholder="Position in Organization"
                                     {...register("position_in_org")}
                                     error={errors.position_in_org?.message}
-                                    //value={passwordInput}
                                     defaultValue={user?.position_in_org}
                                 />
                             </div>
                         </div>
-                        <hr className="mx-3" />
-                        <div className="flex h-16 p-3">
-                            <Button
-                                variant="tertiary"
-                                onClick={handleOpenPasswordModal}
-                            >
-                                <icons.KeyIcon />
-                                Change Password
-                            </Button>
-                        </div>
-                        <hr className="mx-3" />
+
+                        {!pathname.includes(ROUTES.newUser) ? (
+                            <>
+                                <hr className="mx-3" />
+                                <div className="flex h-16 p-3">
+                                    <Button
+                                        variant="tertiary"
+                                        onClick={handleOpenPasswordModal}
+                                    >
+                                        <icons.KeyIcon />
+                                        Change Password
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <hr className="mx-3" />
+                                <div className={tw("flex h-16 p-3", errors.password && "pb-5")}>
+                                    <div className="flex w-40">
+                                        <span>New Password*</span>
+                                    </div>
+                                    <div className="flex grow">
+                                        <Input
+                                            containerClassName="w-full"
+                                            type="password"
+                                            id="newPassword"
+                                            placeholder="Enter New Password"
+                                            value={passwordInput}
+                                            // defaultValue={passwordInput}
+                                            {...register("password")}
+                                            onChange={e => setPasswordInput(e.target.value)}
+                                            error={errors.password?.message}
+                                            autoComplete="new-password"
+                                        />
+                                    </div>
+                                </div>
+                                <hr className="mx-3" />
+                                <div className={tw("flex h-16 p-3", errors.passwordConfirmation && "pb-5")}>
+                                    <div className="flex w-40">
+                                        <span>Confirmation*</span>
+                                    </div>
+                                    <div className="flex grow">
+                                        <Input
+                                            containerClassName="w-full"
+                                            type="password"
+                                            id="newPasswordConfirmation"
+                                            placeholder="Enter New Password Confirmation"
+                                            value={passwordConfirmationInput}
+                                            // defaultValue={passwordConfirmationInput}
+                                            {...register("passwordConfirmation")}
+                                            onChange={e => setPasswordConfirmationInput(e.target.value)}
+                                            error={errors.passwordConfirmation?.message}
+                                            autoComplete="new-password"
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )
+                        }
                         {user.id && (
                             <>
+                                <hr className="mx-3" />
                                 <div className="flex h-16 p-3">
                                     <div className="flex w-32 flex-col">
                                         <span className="text-[#008001]">Active Forms:</span>
@@ -535,71 +734,75 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                     }
 
                 </div>
-                <Modal
-                    show={showDeletionModal}
-                    title="Confirm Deletion"
-                    description="Are you sure you want to execute a deletion?"
-                    onClose={handleCloseDeletionModal}
-                >
-                    <div className="flex h-16 p-3 m-auto">
-                        <DeleteUserConfirm handleCloseDeletionModal={handleCloseDeletionModal} />
-                    </div>
-                </Modal>
-                <Modal
-                    show={showPasswordModal}
-                    title="Update Password"
-                    description="Complete the form below to update the password."
-                    onClose={handleClosePasswordModal}
-                >
-                    <>
+
+            </form>
+            <Modal
+                show={showDeletionModal}
+                title="Confirm Deletion"
+                description="Are you sure you want to execute a deletion?"
+                onClose={handleCloseDeletionModal}
+            >
+                <div className="flex h-16 p-3 m-auto">
+                    <DeleteUserConfirm handleCloseDeletionModal={handleCloseDeletionModal} />
+                </div>
+            </Modal>
+            <Modal
+                show={showPasswordModal}
+                title="Update Password"
+                description="Complete the form below to update the password."
+                onClose={handleClosePasswordModal}
+            >
+                <>
+                    {isPendingchangePasswordMutation && (
+                        <LoadingOverlay />
+                    )}
+                    <form onSubmit={handleSubmitChangePassword(onSubmitChangePassword)}>
                         <div>
+                            {pathname.includes(ROUTES.profile) &&
+                                <Input
+                                    type="password"
+                                    id="change_current_password"
+                                    label="Current Password*"
+                                    placeholder="Enter Current Password"
+                                    autoComplete="new-password"
+                                    {...registerChangePassword("change_current_password")}
+                                    error={errorsChangePassword.change_current_password?.message}
+                                    defaultValue={""}
+                                />
+                            }
                             <Input
                                 type="password"
-                                id="actualPassword"
-                                label="Actual Password*"
-                                placeholder="Enter Actual Password"
-                                value={passwordInput}
-                                defaultValue={passwordInput}
-                                onChange={e => setPasswordInput(e.target.value)}
-                            />
-                            <Input
-                                type="password"
-                                id="newPassword"
+                                id="change_new_password"
                                 label="New Password*"
                                 placeholder="Enter New Password"
-                                value={passwordInput}
-                                defaultValue={passwordInput}
-                                onChange={e => setPasswordInput(e.target.value)}
-                            // {...register("password")}
-                            // error={errors.password?.message}
+                                autoComplete="new-password"
+                                {...registerChangePassword("change_new_password")}
+                                error={errorsChangePassword.change_new_password?.message}
+                                defaultValue={""}
                             />
                             <Input
                                 type="password"
-                                id="newPasswordConfirmation"
+                                id="change_confirmation_password"
                                 label="New Password Confirmation*"
                                 placeholder="Enter New Password Confirmation"
-                                value={passwordInput}
-                                defaultValue={passwordInput}
-                                onChange={e => setPasswordInput(e.target.value)}
-                            // {...register("passwordConfirmation")}
-                            // error={errors.passwordConfirmation?.message}
+                                autoComplete="new-password"
+                                {...registerChangePassword("change_confirmation_password")}
+                                error={errorsChangePassword.change_confirmation_password?.message}
+                                defaultValue={""}
                             />
                         </div>
-                        <div className="flex h-16 p-3 m-auto">
+                        <div className="flex h-16 p-3 m-auto justify-center items-center">
                             <Button
+                                type="submit"
                                 variant="tertiary"
-                                onClick={() => {
-                                    setPasswordInput("")
-                                    //TODO: Finished this
-                                    // console.log('Update Password CONFIRMED')
-                                }}
                             >
                                 Confirm New Password
                             </Button>
                         </div>
-                    </>
-                </Modal>
-            </form>
+
+                    </form>
+                </>
+            </Modal>
         </>
     );
 };

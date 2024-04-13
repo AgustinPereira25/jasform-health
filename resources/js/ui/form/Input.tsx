@@ -18,6 +18,7 @@ export interface InputProps extends ComponentPropsWithoutRef<"input"> {
     message?: string;
     fullHeight?: boolean;
     right?: ReactNode;
+    autoComplete?: string;
 }
 
 export const Input = forwardRef(
@@ -34,6 +35,7 @@ export const Input = forwardRef(
             message,
             fullHeight = false,
             type = "text",
+            autoComplete,
             ...rest
         }: InputProps,
         ref: ForwardedRef<HTMLInputElement>,
@@ -45,7 +47,6 @@ export const Input = forwardRef(
         };
 
         const isPassword = type === "password";
-
         return (
             <div className={tw("relative", containerClassName)}>
                 {!!label && <Label htmlFor={id} label={label} />}
@@ -69,6 +70,7 @@ export const Input = forwardRef(
                             ref={ref}
                             type={(isPassword && !isPasswordVisible) ? "password" : "text"}
                             id={id}
+                            autoComplete={autoComplete}
                             {...rest}
                             className={tw(
                                 "block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500",
@@ -85,6 +87,7 @@ export const Input = forwardRef(
                                 ref={ref}
                                 type={type}
                                 id={id}
+                                autoComplete={autoComplete}
                                 {...rest}
                                 className={tw(
                                     "block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-black placeholder:text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500",

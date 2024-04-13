@@ -61,7 +61,7 @@ export const ConfirmationStepFrmInstance: React.FC<InstanceProps> = ({ formInsta
             onError: (err: IHttpResponseError) => {
                 if (err?.response?.data?.message) {
                     // toast.error(err?.response.data.message);
-                } else if (err?.response?.data?.error?.fields) {
+                } else if (err?.response?.data?.error) {
                     // const errors = err?.response.data.error.fields;
                     // Object.entries(errors).forEach(([_, valArray]) => {
                     //     toast.error(`${valArray[0]}`);
