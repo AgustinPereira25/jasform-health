@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Users\Request\StoreUserRequest;
 use App\Users\Transformers\UserListTransformer;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
@@ -9,6 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Domain\Users\Actions\StoreUserAction;
+use Illuminate\Http\JsonResponse;
+use App\Users\Transformers\UserTransformer;
+use Domain\Organizations\Models\Organization;
+use Domain\Roles\Models\Role;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+
 
 class AuthController
 {
@@ -78,10 +87,41 @@ class AuthController
             ->respond(status: 500);
     }
 
-    // public function register(Request $request)
-    // {
-    //     return response()->json([
-    //         'message' => 'An error occurred. Please try again later, or contact us if the problem persists.',
-    //     ], 500);
-    // }
+    public function register(StoreUserRequest
+    $request, StoreUserAction $storeUserAction): JsonResponse
+    {
+        sleep(1);
+        $organizationName = $request->input(StoreUserRequest::ORGANIZATION_NAME);
+        $organization = Organization::firstOrCreate(
+            ['name' => $organizationName],
+            ['description' => $organizationName]
+        );
+        $request->merge([StoreUserRequest::ORGANIZATION_ID => $organization->id]);
+
+        $roleName = "Creator";
+        $role = Role::where('name', $roleName)->first();
+        if (!$role) {
+            $errorMessage = "The role '$roleName' does not exist.";
+            throw new \RuntimeException($errorMessage);
+        }
+        $request->merge([StoreUserRequest::ROLE_ID => $role->id]);
+
+        $user = null;
+
+        DB::transaction(function () use ($request, $storeUserAction, &$user) {
+            try {
+                $user = $storeUserAction->execute($request->toDto());
+            } catch (QueryException $e) {
+                if ($e->getCode() == 23000) {
+                    $errorMessage = 'An account with this email already exists.';
+                    throw new \InvalidArgumentException($errorMessage);
+                }
+                throw $e;
+            }
+        });
+
+        return responder()
+            ->success($user->refresh(), UserTransformer::class)
+            ->respond(JsonResponse::HTTP_CREATED);
+    }
 }

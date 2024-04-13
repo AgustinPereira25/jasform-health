@@ -42,8 +42,19 @@ export const recoverMutation = {
   },
 };
 
+export interface RegisterParams {
+  first_name: string;
+  last_name: string;
+  organization_name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  role_name: "Creator";
+  is_active: 1;
+}
+
 export const registerMutation = {
-  mutation: async (params: LoginParams) => {
+  mutation: async (params: RegisterParams) => {
     const response = await publicAPI.post<LoginResponse>("/register", params);
     return response;
   },
