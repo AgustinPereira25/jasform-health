@@ -126,9 +126,7 @@ class AuthController
         }
 
         return responder()
-            ->success(
-                // 'An email has been sent successfully. Check your email and click on the link to reset your password.'
-            )
+            ->success()
             ->respond(status: 200);
     }
 
@@ -183,9 +181,7 @@ class AuthController
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
         return responder()
-            ->success(
-                // message: 'Password has been updated successfully. Try login again.'
-            )
+            ->success()
             ->respond(status: 200);
     }
 
