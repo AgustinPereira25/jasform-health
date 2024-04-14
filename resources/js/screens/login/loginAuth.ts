@@ -42,6 +42,23 @@ export const recoverMutation = {
   },
 };
 
+export interface RecoverChangePasswordParams {
+  token: string;
+  email: string;
+  newPassword: string;
+  newPassword_confirmation: string;
+}
+
+export const recoverChangePasswordMutation = {
+  mutation: async (params: RecoverChangePasswordParams) => {
+    const response = await publicAPI.post<LoginResponse>(
+      "/recover-change-password",
+      params,
+    );
+    return response;
+  },
+};
+
 export interface RegisterParams {
   first_name: string;
   last_name: string;

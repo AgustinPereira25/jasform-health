@@ -17,7 +17,9 @@ use Domain\Organizations\Models\Organization;
 use Domain\Roles\Models\Role;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class AuthController
 {
@@ -80,11 +82,107 @@ class AuthController
 
     public function recover(Request $request)
     {
+        sleep(1);
+        if (!$request->has('email')) {
+            return responder()
+                ->error(
+                    message: 'An email address is required to recover your password.'
+                )
+                ->respond(status: 500);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return responder()
+                ->error(
+                    message: 'An error occurred. Please try again later, or contact us if the problem persists.'
+                )
+                ->respond(status: 500);
+        }
+
+        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+
+        $token = Hash::make($user->email . Str::random(40));
+        DB::table('password_reset_tokens')->insert([
+            'email' => $user->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        $userFullName = "$user->first_name $user->last_name";
+
+        try {
+            Mail::send('emails.recover', ['userFullName' => $userFullName, 'token' => $token], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Recover your Account - JASForm');
+            });
+        } catch (\Exception $e) {
+            return responder()
+                ->error(
+                    message: 'An error occurred while sending the email. Please try again.'
+                )
+                ->respond(status: 500);
+        }
+
         return responder()
-            ->error(
-                message: 'An error occurred. Please try again later, or contact us if the problem persists.'
-            )
-            ->respond(status: 500);
+            ->success()
+            ->respond(status: 200);
+    }
+
+    public function recoverChangePassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'newPassword' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return responder()
+                ->error(
+                    message: 'An error occurred. Please try again later, or contact us if the problem persists.'
+                )
+                ->respond(status: 404);
+        }
+
+        $tokenData = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+
+        if (!$tokenData) {
+            return responder()
+                ->error(
+                    message: 'There is no data for these parameters. Please try again.'
+                )
+                ->respond(status: 400);
+        }
+
+        if (($request->token !== $tokenData->token) || ($request->email !== $tokenData->email)) {
+            return responder()
+                ->error(
+                    message: 'All data does not match. Please try again.'
+                )
+                ->respond(status: 400);
+        }
+
+        $tokenCreationDate = Carbon::parse($tokenData->created_at);
+
+        if (Carbon::now()->diffInMinutes($tokenCreationDate) > 30) {
+            return responder()
+                ->error(
+                    message: 'The token has expired. Please request a new one.'
+                )
+                ->respond(status: 400);
+        }
+
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return responder()
+            ->success()
+            ->respond(status: 200);
     }
 
     public function register(StoreUserRequest
