@@ -19,6 +19,7 @@ export interface InputProps extends ComponentPropsWithoutRef<"input"> {
     fullHeight?: boolean;
     right?: ReactNode;
     autoComplete?: string;
+    labelClassName?: string;
 }
 
 export const Input = forwardRef(
@@ -36,6 +37,7 @@ export const Input = forwardRef(
             fullHeight = false,
             type = "text",
             autoComplete,
+            labelClassName,
             ...rest
         }: InputProps,
         ref: ForwardedRef<HTMLInputElement>,
@@ -49,7 +51,7 @@ export const Input = forwardRef(
         const isPassword = type === "password";
         return (
             <div className={tw("relative", containerClassName)}>
-                {!!label && <Label htmlFor={id} label={label} />}
+                {!!label && <Label htmlFor={id} label={label} className={labelClassName} />}
                 <div
                     className={tw(
                         "flex flex-row rounded-md shadow-sm items-baseline",
