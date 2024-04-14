@@ -216,7 +216,6 @@ export const Login = () => {
                                 <Label htmlFor="auxCodeRef" value="Auxiliary Code (optional)" color={"#ffffff"} />
                             </div>
                             <Tooltip
-
                                 content={message.TOOLTIP_FORM_AUX_CODE} className="text-nowrap w-full" placement="right"
                             >
                                 <TextInput className="w-full" id="auxCode" ref={auxCodeRef} placeholder="Optional auxiliary code" color={"#ffffff"} />

@@ -4,6 +4,7 @@ export const ROUTES = {
   login: "/login",
   register: "/register",
   recover: "/recover",
+  recoverPassword: "/recover-password",
   logout: "/logout",
   home: "/home",
   publicCode: "/publicCode",

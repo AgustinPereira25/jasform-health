@@ -6,6 +6,7 @@ import { NotFound, Users } from "@/screens";
 import { Login } from "@/screens/login/Login";
 import { Register } from "@/screens/login/Register";
 import { Recover } from "@/screens/login/Recover";
+import { RecoverPassword } from "@/screens/login/RecoverPassword";
 import { PublicCode } from "@/screens/login/PublicCode";
 import { Logout } from "@/screens/login/Logout";
 import { ModalRouter } from "./ModalRouter";
@@ -38,6 +39,7 @@ export const Router = () => {
                     <Route element={<Logout />} path={ROUTES.logout} />
                     <Route element={<Register />} path={ROUTES.register} />
                     <Route element={<Recover />} path={ROUTES.recover} />
+                    <Route element={<RecoverPassword />} path={ROUTES.recoverPassword} />
                     <Route element={<PublicCode />} path={ROUTES.publicCode} />
                 </Route>
                 {/* FormInstanceLayout Routes */}

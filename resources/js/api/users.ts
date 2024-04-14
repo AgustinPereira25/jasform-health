@@ -165,6 +165,7 @@ export interface IHttpResponseError extends Error {
         | string
         | {
             fields?: Record<string, any[]>;
+            message?: string;
           };
     };
   };
