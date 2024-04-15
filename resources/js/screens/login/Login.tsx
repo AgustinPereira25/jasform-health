@@ -104,11 +104,7 @@ export const Login = () => {
 
     const onSubmit = (data: LoginFormValues) => {
         if (twoFactorCode === "") {
-            // if (is2FACodeSent === true) {
-            //     toast.error("Enter the 2FA code sent to your email");
-            // } else {
             loginUserMutation(data);
-            // }
         } else {
             loginUserMutation({ ...data, two_factor_code: twoFactorCode });
         }
@@ -130,15 +126,6 @@ export const Login = () => {
             setGoToFormDisabled(true);
         }
     }, [publicCodeInputValue]);
-
-    // const resendCode = () => {
-    //     // setIsOkResponse(false);
-    //     // if (getValues("email")) {
-    //     //     registerPreValidationEmailMutation(getValues("email"));
-    //     // } else {
-    //     //     toast.error("Please enter your email");
-    //     // }
-    // };
 
     return (
         <>
@@ -163,8 +150,6 @@ export const Login = () => {
                                         placeholder="email@email.com"
                                         {...register("email")}
                                         error={errors.email?.message}
-                                    // value={emailInput}
-                                    // onChange={(e) => { setEmailInput(e.target.value); }}
                                     />
                                 </div>
                                 <div>
@@ -175,8 +160,6 @@ export const Login = () => {
                                         placeholder="Enter Password"
                                         {...register("password")}
                                         error={errors.password?.message}
-                                    //value={passwordInput}
-                                    //onChange={(e) => { setPasswordInput(e.target.value); }}
                                     />
                                 </div>
                                 {is2FACodeSent && (
@@ -189,16 +172,10 @@ export const Login = () => {
                                                 containerClassName="mb-[-10px]"
                                                 defaultValue={twoFactorCode}
                                                 onChange={(e) => setTwoFactorCode(e.target.value)}
-                                                // {...register("login2FACode")}
-                                                // error={errors.login2FACode?.message}
                                                 autoComplete="new-password"
                                                 labelClassName="text-orange-400"
                                             />
                                         </div>
-                                        {/* <div className="flex justify-end mt-[-10px]">
-                                            <button
-                                                className="text-sm font-medium text-blue-600">Resend code</button>
-                                        </div> */}
                                     </>
                                 )}
                                 <div className="pb-2">

@@ -23,7 +23,6 @@ class UserListTransformer extends Transformer
             'position_in_org' => (string) $user->position_in_org,
             'is_active' => (bool) $user->is_active,
             'is_2fa_email_active' => (bool) $user->is_two_factor_email_active,
-            // 'is_2fa_email_active' => boolval($user->is_two_factor_email_active),
             'email' => (string) $user->email,
             'organization_name' => $user->organization->name,
             'role_name' => $user->role->name,

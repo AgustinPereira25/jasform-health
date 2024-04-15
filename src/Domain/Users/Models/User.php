@@ -110,7 +110,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        // 'is_two_factor_email_active' => 'boolean',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];

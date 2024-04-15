@@ -11,11 +11,6 @@ class UserDetailTransformer extends UserListTransformer
 {
     public function transform(User $user): array
     {
-
-        // Log::info('UserDetailTransformer###########');
-        // Log::info('UserDetailTransformer-user:' . $user);
-        // Log::info('UserDetailTransformer-$user->is_two_factor_email_active:' . $user->is_two_factor_email_active);
-
         $userArray = parent::transform($user);
 
         $extraAttributes = [
