@@ -19,6 +19,7 @@ export type LoginResponse = ServiceResponse<LoginData>;
 export interface LoginParams {
   email: string;
   password?: string;
+  two_factor_code?: string;
 }
 
 export const loginMutation = {
@@ -59,6 +60,18 @@ export const recoverChangePasswordMutation = {
   },
 };
 
+export const registerPreEmailValidationMutation = {
+  mutation: async (email: string) => {
+    const response = await publicAPI.post<LoginResponse>(
+      "/register-pre-email-validation",
+      {
+        email: email,
+      },
+    );
+    return response;
+  },
+};
+
 export interface RegisterParams {
   first_name: string;
   last_name: string;
@@ -68,6 +81,7 @@ export interface RegisterParams {
   password_confirmation: string;
   role_name: "Creator";
   is_active: 1;
+  emailValidationCode: string;
 }
 
 export const registerMutation = {

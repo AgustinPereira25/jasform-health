@@ -26,6 +26,7 @@ class StoreUserAction
             'password' => $this->hasher->make($userDto->getPassword()),
             'organization_id' => $userDto->getOrganization(),
             'role_id' => $userDto->getRole(),
+            'is_two_factor_email_active' => $userDto->getIsTwoFactorEmailActive(),
         ]);
     }
 }

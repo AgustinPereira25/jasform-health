@@ -85,6 +85,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/recover', [AuthController::class, 'recover']);
 Route::post('/recover-change-password', [AuthController::class, 'recoverChangePassword']);
+Route::post('/register-pre-email-validation', [AuthController::class, 'registerPreEmailValidation']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::prefix('forms')

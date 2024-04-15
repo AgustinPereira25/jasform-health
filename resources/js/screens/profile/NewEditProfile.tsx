@@ -29,6 +29,7 @@ interface NewEditProfileForm {
     subscription?: string;
     role?: string;
     isActive?: boolean;
+    is2FAEmailActive?: boolean;
     photo?: string;
 }
 
@@ -80,7 +81,8 @@ const userSchema = z
         ),
         position_in_org: z.string().optional(),
         role: z.string(),
-        isActive: z.boolean()
+        isActive: z.boolean(),
+        is2FAEmailActive: z.boolean(),
     })
 
 // type UserFormValues = z.infer<typeof userSchema>;
@@ -120,6 +122,7 @@ const userSchemaWithPassword = z
         position_in_org: z.string().optional(),
         role: z.string(),
         isActive: z.boolean(),
+        is2FAEmailActive: z.boolean(),
         password: z
             .string()
             .trim()
@@ -171,6 +174,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     initialData: user = {},
 }) => {
     const { user: loggedUser, setUser } = useUserStore();
+    console.log("user:", user);
     const location = useLocation();
     const pathname = location.pathname;
 
@@ -183,6 +187,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
     const defaultRole: string = user.role_name ?? Roles[1]!.name;
     // For toggles
     const [enabledActive, setEnabledActive] = useState(user?.is_active ?? true);
+    const [enabled2FAEmailActive, setEnabled2FAEmailActive] = useState(user?.is_2fa_email_active ?? false);
     const randomValidPassword = "justAValidPassword123";
     const [passwordInput, setPasswordInput] = useState(pathname.includes(ROUTES.newUser) ? "" : randomValidPassword);
     const [passwordConfirmationInput, setPasswordConfirmationInput] = useState(pathname.includes(ROUTES.newUser) ? "" : randomValidPassword);
@@ -207,6 +212,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             organization: user?.organization_name ?? "",
             role: user?.role_name ?? defaultRole,
             isActive: user?.is_active ?? true,
+            is2FAEmailActive: user?.is_2fa_email_active ?? false,
             photo: user?.photo ?? "",
             password: "",
             passwordConfirmation: "",
@@ -319,6 +325,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
             photo: data.photo,
             position_in_org: data.position_in_org,
             is_active: data.isActive,
+            is_2fa_email_active: data.is2FAEmailActive,
             email: data.email,
             organization_name: data.organization,
             role_name: data.role,
@@ -551,6 +558,41 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     error={errors.position_in_org?.message}
                                     defaultValue={user?.position_in_org}
                                 />
+                            </div>
+                        </div>
+                        <hr className="mx-3" />
+                        <div className="flex h-16 p-3 ">
+                            <div className="flex w-40 items-center">
+                                <span>Email 2FA Enabled?</span>
+                            </div>
+                            <div className="flex grow">
+                                <Switch.Group
+                                    as="div"
+                                    className="flex items-center justify-between gap-2"
+                                >
+                                    <Switch
+                                        id="is2FAEmailActive"
+                                        {...register("is2FAEmailActive")}
+                                        checked={enabled2FAEmailActive}
+                                        // onChange={setEnabled2FAEmailActive}
+                                        onChange={(checked) => {
+                                            setEnabled2FAEmailActive(checked);
+                                            setValue("is2FAEmailActive", checked);
+                                        }}
+                                        className={classNames(
+                                            enabled2FAEmailActive ? "bg-[#00519E]" : "bg-gray-200",
+                                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#00519E] focus:ring-offset-2",
+                                        )}
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className={classNames(
+                                                enabled2FAEmailActive ? "translate-x-5" : "translate-x-0",
+                                                "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
+                                            )}
+                                        />
+                                    </Switch>
+                                </Switch.Group>
                             </div>
                         </div>
 

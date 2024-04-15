@@ -59,6 +59,59 @@ class AuthController
                 ->respond(402);
         }
 
+        if ($user->is_two_factor_email_active) {
+            if (!$request->has('two_factor_code')) {
+                DB::table('two_factor_tokens')->where('email', $user->email)->delete();
+
+                $token = Str::random(8);
+                DB::table('two_factor_tokens')->insert([
+                    'email' => $user->email,
+                    'token' => $token,
+                    'token_type' => 'email',
+                    'created_at' => Carbon::now(),
+                ]);
+
+                $userFullName = "$user->first_name $user->last_name";
+
+                try {
+                    Mail::send('emails.loginTwoFactorEmail', ['userFullName' => $userFullName, 'token' => $token], function ($message) use ($user) {
+                        $message->to($user->email);
+                        $message->subject('Login with Two Factor Authentication - JASForm');
+                    });
+                } catch (\Exception $e) {
+                    return responder()
+                        ->error(
+                            message: 'An error occurred while sending the email. Please try again.'
+                        )
+                        ->respond(status: 500);
+                }
+
+                return responder()
+                    ->success([
+                        'message' => 'A two-factor authentication code has been sent to your email.'
+                    ])
+                    ->respond(273);
+            }
+
+            $twoFactorToken = DB::table('two_factor_tokens')
+                ->where('email', $user->email)
+                ->where('token', $request->two_factor_code)
+                ->where('token_type', 'email')
+                ->first();
+
+            if (!$twoFactorToken || Carbon::now()->diffInMinutes($twoFactorToken->created_at) > 15) {
+                return responder()
+                    ->error()
+                    ->data([
+                        'message' => 'The provided two-factor authentication code is incorrect or expired.',
+                    ])
+                    ->respond(401);
+            }
+
+            DB::table('two_factor_tokens')->where('email', $user->email)->where('token_type', 'email')->delete();
+        }
+
+
         // if (!Auth::attempt($credentials)) {
         //     return response()->json([
         //         'message' => 'Incorrect email or password',
@@ -79,6 +132,7 @@ class AuthController
             ])
             ->respond();
     }
+
 
     public function recover(Request $request)
     {
@@ -185,10 +239,79 @@ class AuthController
             ->respond(status: 200);
     }
 
+
+    public function registerPreEmailValidation(Request $request)
+    {
+        sleep(1);
+
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $email = $request->input('email');
+
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            return response()->json(['error' => 'There was an error. Try again later or contact us.'], 400);
+        }
+
+        DB::table('password_reset_tokens')->where('email', $email)->delete();
+
+        $token = Str::random(8);
+
+        DB::table('password_reset_tokens')->insert([
+            'email' => $email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        try {
+            Mail::send('emails.registerEmailValidation', ['email' => $email, 'token' => $token], function ($message) use ($email) {
+                $message->to($email);
+                $message->subject('Pre-Validate your email - JASForm');
+            });
+        } catch (\Exception $e) {
+            return responder()
+                ->error(
+                    message: 'An error occurred while sending the email. Please try again.'
+                )
+                ->respond(status: 500);
+        }
+
+        return response()->json(['success' => 'A code has been sent to your email.'], 200);
+    }
+
+
     public function register(StoreUserRequest
     $request, StoreUserAction $storeUserAction): JsonResponse
     {
         sleep(1);
+        $request->validate([
+            'emailValidationCode' => 'required',
+        ]);
+        $emailValidationCode = $request->input('emailValidationCode');
+
+        $tokenRecord = DB::table('password_reset_tokens')->where('token', $emailValidationCode)->first();
+        if (!$tokenRecord) {
+            return response()->json(['error' => 'Invalid validation code.'], 400);
+        }
+        $emailRecord = DB::table('password_reset_tokens')->where('email', $request->input('email'))->first();
+        if (!$emailRecord) {
+            return response()->json(['error' => 'There is no email record.'], 400);
+        }
+
+        $matchRecords = DB::table('password_reset_tokens')->where('email', $request->input('email'))->first();
+        if ($matchRecords->token !== $emailValidationCode) {
+            return response()->json(['error' => 'The data does not match'], 400);
+        }
+
+        $tokenAge = Carbon::now()->diffInMinutes($tokenRecord->created_at);
+        if ($tokenAge > 30) {
+            DB::table('password_reset_tokens')->where('email', $request->input('email'))->delete();
+            return response()->json(['error' => 'The validation code has expired. Try again.'], 400);
+        }
+
         $organizationName = $request->input(StoreUserRequest::ORGANIZATION_NAME);
         $organization = Organization::firstOrCreate(
             ['name' => $organizationName],
@@ -204,11 +327,16 @@ class AuthController
         }
         $request->merge([StoreUserRequest::ROLE_ID => $role->id]);
 
+        $request->merge([StoreUserRequest::IS_TWO_FACTOR_EMAIL_ACTIVE => 0]);
+        // $request->merge([StoreUserRequest::IS_ACTIVE => 0]);
+
         $user = null;
 
         DB::transaction(function () use ($request, $storeUserAction, &$user) {
             try {
                 $user = $storeUserAction->execute($request->toDto());
+                $user->email_verified_at = Carbon::now();
+                $user->save();
             } catch (QueryException $e) {
                 if ($e->getCode() == 23000) {
                     $errorMessage = 'An account with this email already exists.';
@@ -217,6 +345,8 @@ class AuthController
                 throw $e;
             }
         });
+
+        DB::table('password_reset_tokens')->where('email', $request->input('email'))->delete();
 
         return responder()
             ->success($user->refresh(), UserTransformer::class)

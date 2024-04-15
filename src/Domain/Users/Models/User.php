@@ -64,9 +64,11 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property string|null $phone
+ * @property int $is_two_factor_email_active
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionInOrg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsTwoFactorEmailActive($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -89,6 +91,7 @@ class User extends Authenticatable
         'password',
         'organization_id',
         'role_id',
+        'is_two_factor_email_active',
     ];
 
     /**

@@ -16,6 +16,7 @@ class UpdateUserRequest extends FormRequest
     public const PHOTO = 'photo';
     public const POSITION = 'position_in_org';
     public const IS_ACTIVE = 'is_active';
+    public const IS_TWO_FACTOR_EMAIL_ACTIVE = 'is_two_factor_email_active';
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
     public const ORGANIZATION_ID = 'organization_id';
@@ -44,6 +45,7 @@ class UpdateUserRequest extends FormRequest
             photo: $this[self::PHOTO] ? $this[self::PHOTO] : '',
             position_in_org: $this[self::POSITION] ? $this[self::POSITION] : '',
             is_active: $this[self::IS_ACTIVE],
+            is_two_factor_email_active: $this[self::IS_TWO_FACTOR_EMAIL_ACTIVE],
             email: $this[self::EMAIL],
             // password: $this[self::PASSWORD],
             organization_id: (string) $this[self::ORGANIZATION_ID],

@@ -32,6 +32,11 @@ const loginSchema = z
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const Login = () => {
+    const [is2FACodeSent, setIs2FACodeSent] = useState<boolean>(false);
+    const [twoFactorCode, setTwoFactorCode] = useState<string>("");
+
+    // const [isOkResponse, setIsOkResponse] = useState<boolean>(false);
+
     const navigate = useNavigate();
     const { token } = useUserStore();
     useEffect(() => {
@@ -77,9 +82,14 @@ export const Login = () => {
         useMutation({
             mutationFn: loginMutation.mutation,
             onSuccess: (data) => {
-                setUser(data.data.data.user);
-                setToken(data.data.data.accessToken);
-                navigate(ROUTES.myDashboard);
+                if (data?.status === 273) {
+                    setIs2FACodeSent(true);
+                    toast.warning(data?.data?.data?.message);
+                } else {
+                    setUser(data.data.data.user);
+                    setToken(data.data.data.accessToken);
+                    navigate(ROUTES.myDashboard);
+                }
             },
             onError: (error: any) => {
                 if (error.response) {
@@ -93,8 +103,11 @@ export const Login = () => {
         });
 
     const onSubmit = (data: LoginFormValues) => {
-        console.info("onSubmit");
-        loginUserMutation(data);
+        if (twoFactorCode === "") {
+            loginUserMutation(data);
+        } else {
+            loginUserMutation({ ...data, two_factor_code: twoFactorCode });
+        }
     };
 
     const [openModal, setOpenModal] = useState(false);
@@ -137,8 +150,6 @@ export const Login = () => {
                                         placeholder="email@email.com"
                                         {...register("email")}
                                         error={errors.email?.message}
-                                    // value={emailInput}
-                                    // onChange={(e) => { setEmailInput(e.target.value); }}
                                     />
                                 </div>
                                 <div>
@@ -149,13 +160,24 @@ export const Login = () => {
                                         placeholder="Enter Password"
                                         {...register("password")}
                                         error={errors.password?.message}
-                                    //value={passwordInput}
-                                    //onChange={(e) => { setPasswordInput(e.target.value); }}
                                     />
                                 </div>
-                                <div className="flex justify-end">
-                                    <button onClick={() => navigate(ROUTES.recover)} className="text-sm font-medium text-blue-600">Forgot password?</button>
-                                </div>
+                                {is2FACodeSent && (
+                                    <>
+                                        <div>
+                                            <Input
+                                                id="login2FACode"
+                                                label="Email 2FA code"
+                                                placeholder="Email 2FA code"
+                                                containerClassName="mb-[-10px]"
+                                                defaultValue={twoFactorCode}
+                                                onChange={(e) => setTwoFactorCode(e.target.value)}
+                                                autoComplete="new-password"
+                                                labelClassName="text-orange-400"
+                                            />
+                                        </div>
+                                    </>
+                                )}
                                 <div className="pb-2">
                                     <Button
                                         type="submit"
@@ -169,8 +191,11 @@ export const Login = () => {
                 ) : (
                   "Log in"
                 )} */}
-                                        Log in
+                                        {!is2FACodeSent ? "Log in" : "Login with 2FA Code"}
                                     </Button>
+                                </div>
+                                <div className="flex justify-end">
+                                    <button onClick={() => navigate(ROUTES.recover)} className="text-sm font-medium text-blue-600">Forgot password?</button>
                                 </div>
                             </div>
                         </form>

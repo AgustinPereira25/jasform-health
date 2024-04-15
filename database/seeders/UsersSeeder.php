@@ -46,7 +46,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 1,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'LightIt',
@@ -61,7 +62,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Alan',
@@ -76,7 +78,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Javier',
@@ -91,7 +94,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Adam',
@@ -106,7 +110,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Agustin',
@@ -121,7 +126,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 1,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Joaquin',
@@ -136,7 +142,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 1,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Sebastian',
@@ -151,7 +158,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 1,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'UDE',
@@ -166,7 +174,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 3,
-                'role_id' => 2
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Angela',
@@ -181,7 +190,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 2,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Scott',
@@ -196,7 +206,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 2,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Nolan',
@@ -211,7 +222,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 1,
-                'role_id' => 2
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Dustin',
@@ -226,7 +238,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 2,
-                'role_id' => 1
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             [
                 'first_name' => 'Bertha',
@@ -241,7 +254,8 @@ class UsersSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'organization_id' => 2,
-                'role_id' => 2
+                'role_id' => 1,
+                'is_two_factor_email_active' => false
             ],
             // [
             //     'first_name' => 'UserTest',
@@ -256,7 +270,8 @@ class UsersSeeder extends Seeder
             //     'created_at' => Carbon::now(),
             //     'updated_at' => Carbon::now(),
             //     'organization_id' => 3,
-            //     'role_id' => 2
+            //     'role_id' => 1,
+            //     'is_two_factor_email_active' => false
             // ],
             // [
             //     'first_name' => 'UserTestAngSecond',
@@ -271,7 +286,8 @@ class UsersSeeder extends Seeder
             //     'created_at' => Carbon::now(),
             //     'updated_at' => Carbon::now(),
             //     'organization_id' => 3,
-            //     'role_id' => 1
+            //     'role_id' => 1,
+            //     'is_two_factor_email_active' => false
             // ]
         ]);
     }

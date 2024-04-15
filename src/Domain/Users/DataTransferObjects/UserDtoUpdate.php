@@ -17,6 +17,7 @@ class UserDtoUpdate
         // private readonly string $password,
         private readonly string $organization_id,
         private readonly string $role_id,
+        private readonly string $is_two_factor_email_active,
     ) {
     }
 
@@ -33,6 +34,7 @@ class UserDtoUpdate
             // 'password' => $this->getPassword(),
             'organization_id' => $this->getOrganization(),
             'role_id' => $this->getRole(),
+            'is_two_factor_email_active' => $this->getIsTwoFactorEmailActive(),
         ];
     }
 
@@ -84,5 +86,10 @@ class UserDtoUpdate
     public function getRole(): string
     {
         return $this->role_id;
+    }
+
+    public function getIsTwoFactorEmailActive(): string
+    {
+        return $this->is_two_factor_email_active;
     }
 }
