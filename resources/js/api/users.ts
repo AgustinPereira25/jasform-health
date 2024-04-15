@@ -26,6 +26,7 @@ export interface User {
   photo?: string;
   position_in_org?: string;
   is_active?: boolean;
+  is_2fa_email_active?: boolean;
   email?: string;
   organization_id?: string;
   organization_name?: string;
@@ -58,7 +59,6 @@ export const getUsersQuery = (
   ],
   queryFn: async () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
-
     const response = await privateAPI.get<ServiceResponse<User[]>>("users", {
       params: {
         perPage,
@@ -116,10 +116,12 @@ export interface CreateUserParams extends User {
 
 export const createUser = {
   mutation: async (params: CreateUserParams) => {
-    const { passwordConfirmation, is_active, ...rest } = params;
+    const { passwordConfirmation, is_active, is_2fa_email_active, ...rest } =
+      params;
     const response = await privateAPI.post<ServiceResponse<User>>("/users", {
       ...rest,
       is_active: is_active ? "1" : "0",
+      is_two_factor_email_active: is_2fa_email_active ? "1" : "0",
       password_confirmation: passwordConfirmation,
     });
     return response;
@@ -131,10 +133,12 @@ export const createUser = {
 
 export const updateUser = {
   mutation: async (params: CreateUserParams) => {
-    const { passwordConfirmation, is_active, ...rest } = params;
+    const { passwordConfirmation, is_active, is_2fa_email_active, ...rest } =
+      params;
     const response = await privateAPI.put<ServiceResponse<User>>("/users", {
       ...rest,
       is_active: is_active ? "1" : "0",
+      is_two_factor_email_active: is_2fa_email_active ? "1" : "0",
       password_confirmation: passwordConfirmation,
     });
     return response;

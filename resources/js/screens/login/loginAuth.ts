@@ -19,6 +19,7 @@ export type LoginResponse = ServiceResponse<LoginData>;
 export interface LoginParams {
   email: string;
   password?: string;
+  two_factor_code?: string;
 }
 
 export const loginMutation = {

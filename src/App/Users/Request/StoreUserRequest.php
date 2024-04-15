@@ -15,6 +15,7 @@ class StoreUserRequest extends FormRequest
     public const PHOTO = 'photo';
     public const POSITION = 'position_in_org';
     public const IS_ACTIVE = 'is_active';
+    public const IS_TWO_FACTOR_EMAIL_ACTIVE = 'is_two_factor_email_active';
     public const EMAIL = 'email';
     public const PASSWORD = 'password';
     public const ORGANIZATION_ID = 'organization_id';
@@ -42,6 +43,7 @@ class StoreUserRequest extends FormRequest
             photo: $this->string(self::PHOTO)->toString(),
             position_in_org: $this->string(self::POSITION)->toString(),
             is_active: $this->string(self::IS_ACTIVE)->toString(),
+            is_two_factor_email_active: $this->string(self::IS_TWO_FACTOR_EMAIL_ACTIVE)->toString(),
             email: $this->string(self::EMAIL)->toString(),
             password: $this->string(self::PASSWORD)->toString(),
             organization_id: $this->string(self::ORGANIZATION_ID)->toString(),

@@ -120,7 +120,7 @@ export const Register = () => {
         useMutation({
             mutationFn: registerPreEmailValidationMutation.mutation,
             onSuccess: () => {
-                toast.success(`A code has been sent to ${getValues("email")}. Please check your inbox.`);
+                toast.warning(`A code has been sent to ${getValues("email")}. Please check your inbox.`);
                 setIsOkResponse(true);
                 setIsValidationCodeSent(true);
             },

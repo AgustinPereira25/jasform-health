@@ -58,6 +58,8 @@ class UpdateUserController
         }
         $request->merge([UpdateUserRequest::ROLE_ID => $role->id]);
 
+        $request->merge([UpdateUserRequest::IS_TWO_FACTOR_EMAIL_ACTIVE => $request->input(UpdateUserRequest::IS_TWO_FACTOR_EMAIL_ACTIVE)]);
+
 
         if ($user->email !== $request->email) {
             return response()->json(['error' => 'Id does not match with the email'], 400);
