@@ -12,6 +12,7 @@ export const ROUTES = {
   myForms: "/my-forms",
   forms: "/forms",
   formsByUserId: "/forms/byUserId/:user_id",
+  organizations: "/organizations",
   profile: "/profile",
   editUser: "/users/:id",
   deleteUser: "/users/:id/delete",

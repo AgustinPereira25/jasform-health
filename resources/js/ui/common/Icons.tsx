@@ -90,6 +90,14 @@ export const icons = {
             <path d="M12.9485 6.95996V12.9553M9.95081 9.20822V12.9553M6.95312 11.4565V12.9553" stroke="#6EBFE9" strokeWidth="1.49884" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     ),
+    SystemsOrganizationsIcon: () => (
+        <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.413 2.26855H5.91882C5.09104 2.26855 4.41998 2.93961 4.41998 3.7674V15.7581H14.9119V3.7674C14.9119 2.93961 14.2408 2.26855 13.413 2.26855Z" fill="#E8EEF9" />
+            <path d="M14.9119 15.7581V3.7674C14.9119 2.93961 14.2408 2.26855 13.413 2.26855H5.91882C5.09104 2.26855 4.41998 2.93961 4.41998 3.7674V15.7581M14.9119 15.7581L16.4107 15.7581M14.9119 15.7581H4.41998M4.41998 15.7581L2.92114 15.7581" stroke="#E8EEF9" strokeWidth="1.49884" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M7.41766 5.2666H8.16708M7.41766 8.26428H8.16708M11.1648 5.2666H11.9142M11.1648 8.26428H11.9142M10.4153 11.262H8.9165C8.50261 11.262 8.16708 11.5975 8.16708 12.0114V15.7585H11.1648V12.0114C11.1648 11.5975 10.8292 11.262 10.4153 11.262Z" stroke="#6EBFE9" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+
+    ),
     SystemsBillingIcon: () => (
         <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15.7376 9.88834C15.7376 13.6134 12.7179 16.6331 8.99283 16.6331C5.26779 16.6331 2.24805 13.6134 2.24805 9.88834C2.24805 6.1633 5.26779 3.14355 8.99283 3.14355C12.7179 3.14355 15.7376 6.1633 15.7376 9.88834Z" fill="#E8EEF9" stroke="#E8EEF9" strokeWidth="1.49884" strokeLinecap="round" strokeLinejoin="round" />

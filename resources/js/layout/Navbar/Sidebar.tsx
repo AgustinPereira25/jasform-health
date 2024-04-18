@@ -34,6 +34,12 @@ export const navigation = [
         icon: <icons.SystemsFormsIcon />,
         role_name: "admin",
     },
+    {
+        path: ROUTES.organizations,
+        label: "Organizations",
+        icon: <icons.SystemsOrganizationsIcon />,
+        role_name: "admin",
+    },
     // {
     //     path: "#",
     //     label: "System's Billing",
