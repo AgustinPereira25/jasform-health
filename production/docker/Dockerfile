@@ -7,9 +7,9 @@ WORKDIR /var/www/html
 RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY . /var/www/html/
-COPY ./production/certs/cert1.pem /etc/ssl/web/cert1.pem
-COPY ./production/certs/privkey1.pem /etc/ssl/web/privkey1.pem
-COPY ./production/certs/fullchain1.pem /etc/ssl/web/fullchain1.pem
+COPY ./production/certs/cert4.pem /etc/ssl/web/cert1.pem
+COPY ./production/certs/privkey4.pem /etc/ssl/web/privkey1.pem
+COPY ./production/certs/fullchain4.pem /etc/ssl/web/fullchain1.pem
 COPY ./production/https.conf /etc/nginx/site-opts.d/https.conf
 
 # RUN mv /var/www/html/.env /var/www/html/.env.ori
