@@ -13,6 +13,7 @@ import { ModalRouter } from "./ModalRouter";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
 import { Forms } from "@/screens/forms";
+import { Organizations } from "@/screens/organizations";
 import { Profile } from "@/screens/profile";
 // import NewForm from "@/screens/forms/NewForm";
 import { PrepareProfileForm } from "@/screens/profile/PrepareProfileForm";
@@ -58,6 +59,7 @@ export const Router = () => {
                     <Route element={<Profile />} path={ROUTES.profile} />
                     <Route element={<PrepareProfileForm />} path={ROUTES.editUser} />
                     <Route element={<Forms />} path={ROUTES.myForms} />
+                    <Route element={<Organizations />} path={ROUTES.organizations} />
                     <Route element={<PrepareFormForm />} path={ROUTES.newForm} />
                     <Route element={<PrepareFormForm />} path={ROUTES.editForm} />
                     <Route element={<PrepareQuestionsForm />} path={ROUTES.questionsForm} />

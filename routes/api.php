@@ -191,9 +191,9 @@ Route::prefix('organizations')
     ->middleware(['sanitize_input', 'auth:sanctum'])
     ->group(static function () {
         Route::get('/', ListOrganizationController::class);
-        Route::get('/{organization}', GetOrganizationController::class);
-        Route::post('/', StoreOrganizationController::class);
-        Route::delete('/{organization}', DeleteOrganizationController::class);
+        // Route::get('/{organization}', GetOrganizationController::class);
+        // Route::post('/', StoreOrganizationController::class);
+        // Route::delete('/{organization}', DeleteOrganizationController::class);
     });
 
 Route::prefix('question_options')
