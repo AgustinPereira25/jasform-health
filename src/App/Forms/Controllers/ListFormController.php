@@ -45,7 +45,8 @@ class ListFormController
 
         $forms = QueryBuilder::for(Form::class)
             ->withCount('form_instances')
-            ->withCount('form_questions');
+            ->withCount('form_questions')
+            ->with('user');
         // ->orderBy('last_modified_date_time', 'desc');
 
 

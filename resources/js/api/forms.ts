@@ -31,6 +31,8 @@ export interface Form {
   is_initial_data_required?: boolean;
   public_code?: string;
   user_id?: number;
+  user_name?: string;
+  user_email?: string;
   form_instances_count?: number;
   form_questions_count?: number;
   html_head?: string;

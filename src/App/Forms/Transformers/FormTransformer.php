@@ -37,6 +37,8 @@ class FormTransformer extends Transformer
             'is_initial_data_required' => (bool) $form->is_initial_data_required,
             'public_code' => (string) $form->public_code,
             'user_id' => (int) $form->user_id,
+            'user_name' => $form->user ? (string) ($form->user->first_name . " " . $form->user->last_name) : null,
+            'user_email' => $form->user ? (string) $form->user->email : null,
             'form_instances_count' => $form->form_instances()->count(),
             'form_questions_count' => $form->form_questions()->count(),
             'form_questions' => $form->form_questions->transform(

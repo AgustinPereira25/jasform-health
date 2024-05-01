@@ -18,7 +18,7 @@ import { useUserStore } from '@/stores'
 import { DeleteFormConfirm } from './components'
 import { TextArea } from '@/ui/form/TextArea'
 import { makeFormURLInstance } from '@/utils'
-import { getColorContrast, isValidImageUrl, parseDate } from '@/helpers/helpers'
+import { getColorContrast, isValidImageUrl, parseDate, truncateText } from '@/helpers/helpers'
 import { FormInstanceScreens } from '../instanceForm/components'
 import type { FormInstanceFlow } from '../instanceForm'
 import { message } from '@/constants/message'
@@ -907,6 +907,10 @@ export const NewForm: React.FC<NewFormProps> = ({ initialData: form = {} }) => {
                             {
                                 !pathname.includes(ROUTES.newForm) && (
                                     <>
+                                        <div className="flex px-3 h-16 items-center justify-between">
+                                            <span>User: {truncateText(`${form.user_name!} ${form.user_email}`, 40)}</span>
+                                        </div>
+                                        <hr className="mx-3" />
                                         <div className="flex px-3 h-16 items-center justify-between">
                                             <span>Creation Date: {parseDate(form.creation_date_time?.toString())}</span>
                                         </div>

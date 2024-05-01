@@ -213,6 +213,16 @@ export const Forms = () => {
                                             >
                                                 TITLE
                                             </th>
+                                            {
+                                                !isMyFormsRoute && (
+                                                    <th
+                                                        scope="col"
+                                                        className="py-2 pl-2 pr-8 font-normal text-[#6B7280] sm:pl-4 lg:pl-5"
+                                                    >
+                                                        USER
+                                                    </th>
+                                                )
+                                            }
                                             <th
                                                 scope="col"
                                                 className="hidden py-2 pl-0 pr-8 font-normal text-[#6B7280] sm:table-cell"
@@ -282,6 +292,17 @@ export const Forms = () => {
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {
+                                                    !isMyFormsRoute && (
+                                                        <td className="py-4 pl-2 pr-5 sm:pl-4 lg:pl-5">
+                                                            <div className="flex items-center gap-x-4">
+                                                                <div className="truncate text-sm leading-6 text-black">
+                                                                    {truncateText(item.user_name!, 30)}
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    )
+                                                }
                                                 <td className="hidden py-4 pl-0 pr-4 sm:table-cell sm:pr-8">
                                                     <div className="flex gap-x-3">
                                                         <div className="truncate text-sm leading-6 text-black">

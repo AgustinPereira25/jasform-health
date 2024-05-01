@@ -4,6 +4,7 @@ namespace Domain\Forms\Models;
 
 use Domain\Form_instances\Models\Form_instance;
 use Domain\Form_questions\Models\Form_question;
+use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -101,9 +102,8 @@ class Form extends Model
         return $this->hasMany(Form_question::class);
     }
 
-    // TODO
-    // public function user(): BelongsTo
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
