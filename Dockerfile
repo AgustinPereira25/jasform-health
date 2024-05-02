@@ -5,7 +5,7 @@ ENV SSL_MODE mixed
 WORKDIR /var/www/html
 COPY . .
 
-RUN chmod -R 755 /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html/
 RUN composer install --optimize-autoloader --no-dev
 RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -17,7 +17,8 @@ COPY ./production/certs/jasform.com.origin.key /etc/ssl/web/jasform.com.origin.k
 COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.pem
 
 RUN mv -f /var/www/html/production/.env.prod /var/www/html/.env
-RUN chown -R webuser:webgroup /var/www/html/
+# RUN chown -R webuser:webgroup /var/www/html/
+RUN chown -R www-data:www-data /var/www/html/
 
 EXPOSE 80
 EXPOSE 443
