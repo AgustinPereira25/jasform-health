@@ -1,12 +1,13 @@
 FROM serversideup/php:8.2-fpm-nginx
 
+USER root
+
 ENV SSL_MODE mixed
     # AUTORUN_LARAVEL_MIGRATION=true
 WORKDIR /var/www/html
 COPY . .
 
-# RUN composer install --optimize-autoloader --no-dev
-RUN composer install
+RUN composer install --optimize-autoloader --no-dev
 RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./production/certs/cert4.pem /etc/ssl/web/cert1.pem
@@ -19,7 +20,6 @@ COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.p
 RUN mv -f /var/www/html/production/.env.test /var/www/html/.env
 RUN cp /var/www/html/production/test.html /var/www/html/public/
 RUN chown -R webuser:webgroup /var/www/html/
-# RUN chown -R www-data:www-data /var/www/html/
 
 EXPOSE 80
 EXPOSE 443
