@@ -213,7 +213,7 @@ export const FormInstance: React.FC = () => {
                 ) : !forms?.length ? (
                     <EmptyState message={message.EMPTY_STATE_WITHOUT_FILTER} iconName="MagnifyingGlassIcon" />
                 ) : (
-                    <div className="rounded-sm border-[1px] border-gray-300">
+                    <div className="rounded-sm border-[1px] border-gray-300 overflow-x-auto">
                         <table className="w-full whitespace-nowrap bg-white text-left shadow-md">
                             <colgroup>
                                 <col className="w-full sm:w-4/12" />

@@ -67,6 +67,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsInitialDataRequired($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereHtmlBody($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereHtmlHead($value)
+ * @property-read User $user
  * @mixin \Eloquent
  */
 class Form extends Model

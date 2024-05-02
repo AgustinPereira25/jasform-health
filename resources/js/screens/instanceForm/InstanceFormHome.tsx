@@ -111,7 +111,7 @@ export const InstanceFormHome: React.FC<InstanceProps> = ({ formInstanceInfo, cu
             <div className="flex flex-col justify-center items-center gap-3 pb-2 w-full">
                 {
                     isValidImageUrl(formInstanceInfo.logo ?? '') && (
-                        <img className="object-contain" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
+                        <img className="object-scale-down max-h-[70px]" src={formInstanceInfo.logo} alt={formInstanceInfo.name} />
                     )
                 }
                 <span className="text-2xl font-medium" style={{
