@@ -4,6 +4,7 @@ ENV SSL_MODE mixed
 
 WORKDIR /var/www/html
 COPY . .
+
 RUN composer install --optimize-autoloader --no-dev
 RUN apt update -y && apt upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
