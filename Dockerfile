@@ -1,6 +1,4 @@
-FROM serversideup/php:8.2-fpm-nginx
-
-USER root
+FROM serversideup/php:8.2-fpm-nginx-v2.2.1
 
 ENV SSL_MODE mixed
 
@@ -18,7 +16,7 @@ COPY ./production/certs/jasform.com.origin.key /etc/ssl/web/jasform.com.origin.k
 COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.pem
 
 RUN mv -f /var/www/html/production/.env.prod /var/www/html/.env
-RUN chown -R www-data:www-data /var/www/html/
+RUN chown -R webuser:webgroup /var/www/html/
 
 EXPOSE 80
 EXPOSE 443
