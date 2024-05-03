@@ -128,7 +128,7 @@ export const Forms = () => {
                         type="search"
                         id="formTitle"
                         label="Title"
-                        placeholder="Form title"
+                        placeholder="Form Title"
                         className="min-w-[210px] h-[43px]"
                         value={search.formTitle}
                         onChange={handleInputChange}

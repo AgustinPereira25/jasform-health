@@ -492,7 +492,7 @@ export const NewEditProfile: React.FC<NewEditProfileProps> = ({
                                     fullHeight
                                     type="text"
                                     id="email"
-                                    placeholder="Enter Email address"
+                                    placeholder="Enter Email Address"
                                     {...register("email")}
                                     error={errors.email?.message}
                                     defaultValue={user?.email}

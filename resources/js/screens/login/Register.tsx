@@ -208,7 +208,7 @@ export const Register = () => {
                                 <Input
                                     id="organization"
                                     label="Organization"
-                                    placeholder="Your Organization"
+                                    placeholder="Your organization"
                                     containerClassName="mb-[-20px]"
                                     {...register("organization")}
                                     error={errors.organization?.message}
@@ -221,7 +221,7 @@ export const Register = () => {
                                         type="password"
                                         id="password"
                                         label="Password"
-                                        placeholder="Enter Password"
+                                        placeholder="Enter password"
                                         containerClassName="mb-[-20px]"
                                         {...register("password")}
                                         error={errors.password?.message}

@@ -92,7 +92,7 @@ export const UserForm = ({ onClose }: { onClose: () => void }) => {
                     type="password"
                     id="passwordConfirmation"
                     label="Password Confirmation"
-                    placeholder="Re-enter your password"
+                    placeholder="Re-enter your Password"
                     {...register("passwordConfirmation")}
                     error={errors.passwordConfirmation?.message}
                 />
