@@ -15,7 +15,7 @@ COPY ./production/certs/jasform.com.origin.pem /etc/ssl/web/jasform.com.origin.p
 COPY ./production/certs/jasform.com.origin.key /etc/ssl/web/jasform.com.origin.key
 COPY ./production/certs/origin_ca_rsa_root.pem /etc/ssl/web/origin_ca_rsa_root.pem
 
-# RUN sed -i '/add_header X-Frame-Options[[:space:]]*"SAMEORIGIN"[[:space:]]*always;/ s/^/#/' /etc/nginx/server-opts.d/security.conf
+RUN sed -i '/add_header X-Frame-Options[[:space:]]*"SAMEORIGIN"[[:space:]]*always;/ s/^/#/' /etc/nginx/server-opts.d/security.conf
 RUN mv -f /var/www/html/production/.env.test /var/www/html/.env
 RUN cp /var/www/html/production/test.html /var/www/html/public/
 RUN chown -R webuser:webgroup /var/www/html/
